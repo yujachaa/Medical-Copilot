@@ -1,0 +1,16 @@
+@import '../../style/globals_variant.scss';
+
+.main {
+  background-color: $sidebar-bg;
+}
+
+.menuBtn {
+  color: $blue-btn;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+
+  &:hover {
+    color: $blue-logo;
+  }
+}
