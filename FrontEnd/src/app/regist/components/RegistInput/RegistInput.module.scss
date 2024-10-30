@@ -1,0 +1,29 @@
+@import '@/style/globals_variant.scss';
+
+.input {
+  padding-left: 20px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.text {
+  font-size: 12px;
+  font-weight: bold;
+  color: red;
+}
+
+.cancel {
+  background-color: $purple;
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+  box-shadow: 3 3 3 0 rgb(0, 0, 0, 0.2);
+}
+
+.confirm {
+  background-color: $blue-btn;
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+  box-shadow: 3 3 3 0 rgb(0, 0, 0, 0.2);
+}
