@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta } from '@storybook/react';
 import TabBoard from './TabBoard';
 
 const meta = {
@@ -7,7 +7,5 @@ const meta = {
 } satisfies Meta<typeof TabBoard>;
 
 export default meta;
-
-// type Story = StoryObj<typeof TabBoard>;
 
 export const Default = () => <TabBoard />;
