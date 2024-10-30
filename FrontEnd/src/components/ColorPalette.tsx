@@ -1,5 +1,5 @@
 import React from 'react';
-import colors from '../styles/colors';
+import colors from '../style/colors';
 import styles from './ColorPalette.module.scss';
 
 const ColorPalette: React.FC = () => {
