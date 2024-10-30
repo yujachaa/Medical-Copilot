@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  width: 80%;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-weight: 700;
+    color: black;
+    text-align: center;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
