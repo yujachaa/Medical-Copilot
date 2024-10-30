@@ -11,6 +11,7 @@ export default function LoginInput() {
         <input
           className={`${styles.PW} w-[422] h-[70]`}
           placeholder="Password"
+          type="password"
         />
       </div>
       <div className={`${styles.btn} flex justify-between w-full`}>
