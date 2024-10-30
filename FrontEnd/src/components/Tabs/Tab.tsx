@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Tab.module.scss';
 import Logo from '../../assets/images/logo.svg';
 import { CgClose } from 'react-icons/cg';
+
 export default function Tab() {
   return (
     <div className={styles.tab}>
