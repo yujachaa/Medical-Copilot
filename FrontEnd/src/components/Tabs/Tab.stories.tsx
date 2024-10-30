@@ -8,6 +8,6 @@ const meta = {
 
 export default meta;
 
-type Story = StoryObj<typeof TabBoard>;
+// type Story = StoryObj<typeof TabBoard>;
 
 export const Default = () => <TabBoard />;
