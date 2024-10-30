@@ -1,0 +1,46 @@
+@import '../../style/globals_variant.scss';
+
+.tab {
+  margin-top: auto;
+  display: flex;
+  width: 250px;
+  height: 40px;
+  border: 1px solid white;
+  border-radius: 12px 12px 0 0;
+  border-bottom: none;
+  position: relative;
+  background-color: white;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 7px;
+
+  p {
+    font-size: 1.25rem;
+  }
+}
+
+.tab::before {
+  width: 5px;
+  height: 40px;
+  content: ' ';
+  transform: translateX(calc(-100% + 4px));
+  position: absolute;
+  background-color: $tab-bg;
+  bottom: 0px;
+  border-bottom: 1px solid white;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.tab::after {
+  width: 5px;
+  height: 40px;
+  content: ' ';
+  background-color: $tab-bg;
+  transform: translateX(calc(5000% - 4px));
+  position: absolute;
+  bottom: 0px;
+  border-bottom: 1px solid white;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
