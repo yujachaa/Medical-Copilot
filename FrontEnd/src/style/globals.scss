@@ -1,22 +1,7 @@
-$white: #ffffff;
-$black: #000000;
-$cancel: #c4c4c4;
-$placeholder: #667085;
-$blue-logo: #2380ec;
-$blue-base: #ebf4ff;
-$blue-btn: #1f9dff;
-$blue-msg: #5da6f6;
-$save: #ffb703;
-$purple: #cfbaf0;
-$mint: #c6ffe7;
-$tab-bg: #e8eaed;
-$sidebar-bg: #404040;
-
-$admin-log-base: #f2ecee;
-$admin-log-text: #dcdaf5;
-$admin-log-error: #ff8090;
-$admin-main: #6ea7e9;
-$admin-mint: #a5dce4;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
+  margin: 0;
 }
