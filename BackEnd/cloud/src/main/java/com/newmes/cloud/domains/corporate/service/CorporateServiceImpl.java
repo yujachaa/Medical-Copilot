@@ -2,14 +2,18 @@ package com.newmes.cloud.domains.corporate.service;
 
 import com.newmes.cloud.domains.corporate.domain.Corporate;
 import com.newmes.cloud.domains.corporate.dto.request.CorporateRequestDto;
+import com.newmes.cloud.domains.corporate.dto.response.CorporateDetailResponseDto;
 import com.newmes.cloud.domains.corporate.entity.CorporateEntity;
 import com.newmes.cloud.domains.corporate.exception.CorporateNotFoundException;
 import com.newmes.cloud.domains.corporate.repository.CorporateRepository;
+import com.newmes.cloud.domains.usage.dto.response.UsageResponseDto;
+import com.newmes.cloud.domains.usage.service.UsageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -17,12 +21,15 @@ import java.util.stream.Collectors;
 public class CorporateServiceImpl implements CorporateService {
 
     private final CorporateRepository corporateRepository;
+    private final UsageService usageService;
 
     @Override
     @Transactional
     public Corporate registerCorporate(CorporateRequestDto corporateRequestDto) {
         Corporate corporate = Corporate.builder()
                 .comName(corporateRequestDto.comName())
+                .grade(corporateRequestDto.grade())
+                .key(UUID.randomUUID().toString())
                 .build();
         CorporateEntity entity = corporate.toEntity();
         CorporateEntity savedEntity = corporateRepository.save(entity);
@@ -31,9 +38,9 @@ public class CorporateServiceImpl implements CorporateService {
 
     @Override
     @Transactional
-    public Corporate updateCorporate(Long id, CorporateRequestDto corporateRequestDto) {
-        CorporateEntity entity = corporateRepository.findById(id)
-                .orElseThrow(() -> new CorporateNotFoundException(corporateRequestDto.comName()));
+    public Corporate updateCorporate(String key, CorporateRequestDto corporateRequestDto) {
+        CorporateEntity entity = corporateRepository.findByKey(key)
+                .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
 
         entity.updateCorporateDetails(corporateRequestDto.comName());
         CorporateEntity updatedEntity = corporateRepository.save(entity);
@@ -43,10 +50,13 @@ public class CorporateServiceImpl implements CorporateService {
 
     @Override
     @Transactional(readOnly = true)
-    public Corporate getCorporateById(Long id) {
-        CorporateEntity entity = corporateRepository.findById(id)
-                .orElseThrow(() -> new CorporateNotFoundException(id+""));
-        return Corporate.fromEntity(entity);
+    public CorporateDetailResponseDto getCorporateDetailWithUsages(String key) {
+        Corporate corporate = Corporate.fromEntity(corporateRepository.findByKey(key)
+                .orElseThrow(() -> new CorporateNotFoundException("Key: " + key)));
+
+        List<UsageResponseDto> usageList = usageService.getAllUsageByCorporateId(key);
+
+        return CorporateDetailResponseDto.from(corporate, usageList);
     }
 
     @Override
