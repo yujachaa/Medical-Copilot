@@ -2,6 +2,7 @@
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import testSlices from '../features/testSlice';
+import tabSlices from '../features/tab/tabSlice';
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { persistStore } from 'redux-persist';
@@ -15,6 +16,7 @@ const persistConfig = {
 
 const reducer = combineReducers({
   test: testSlices.reducer,
+  tab: tabSlices.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
