@@ -42,7 +42,8 @@ const tabSlices = createSlice({
       if (index !== -1) {
         if (index < state.selectedIndex) {
           state.selectedIndex--;
-        }
+        } else if (index === state.selectedIndex && index === state.tablist.length - 1)
+          state.selectedIndex--;
       }
       const temp = state.tablist.filter((tab) => tab.id !== action.payload);
       state.tablist = [...temp];

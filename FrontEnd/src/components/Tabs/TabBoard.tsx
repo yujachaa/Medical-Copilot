@@ -12,8 +12,9 @@ export default function TabBoard() {
   const handleDelete = (id: number) => {
     dispatch(deleteTab(id));
   };
+
   return (
-    <div className={styles.tab}>
+    <div className={styles.container}>
       {tablist.map((tab, index) => (
         <Tab
           key={tab.id}
@@ -23,7 +24,6 @@ export default function TabBoard() {
           HandleDelete={handleDelete}
         />
       ))}
-
       <NewTab onPlus={() => dispatch(addTab())} />
     </div>
   );
