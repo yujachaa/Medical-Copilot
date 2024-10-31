@@ -12,27 +12,35 @@ type Story = StoryObj<typeof Tab>;
 
 export const Default: Story = {
   args: {
-    onClose: () => console.log('Tab closed'),
-    text: 'Default Plugins',
-    LogoType: 'default',
+    HandleDelete: () => console.log('Tab closed'),
+    tab: {
+      id: 1,
+      title: 'Default Plugins',
+      type: 'default',
+    },
     isActive: true,
   },
 };
 
 export const CXR: Story = {
   args: {
-    onClose: () => console.log('Tab closed'),
-    text: 'CXR',
-    LogoType: 'cxr',
+    tab: {
+      id: 1,
+      title: 'CXR Plugins',
+      type: 'cxr',
+    },
     isActive: true,
   },
 };
 
 export const Capsule: Story = {
   args: {
-    onClose: () => console.log('Tab closed'),
-    text: 'Capsule',
-    LogoType: 'capsule',
+    HandleDelete: () => console.log('Tab closed'),
+    tab: {
+      id: 1,
+      title: 'CapSule',
+      type: 'capsule',
+    },
     isActive: true,
   },
 };

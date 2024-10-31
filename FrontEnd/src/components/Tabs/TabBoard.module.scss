@@ -6,8 +6,10 @@
   background-color: $white;
   display: flex;
   flex-direction: row;
+  align-items: center;
   background-color: $tab-bg;
   border-bottom: 2px solid white;
   box-sizing: border-box;
   padding-left: 1rem;
+  gap: 4px;
 }
