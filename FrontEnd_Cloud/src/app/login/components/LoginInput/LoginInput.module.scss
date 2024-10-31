@@ -1,0 +1,39 @@
+@import '@/style/globals_variant.scss';
+
+.Email {
+  border-radius: 10px;
+  padding-left: 20px;
+  font-size: 20px;
+  font-weight: 700;
+  &::placeholder {
+    font-weight: 700;
+    font-size: 20;
+  }
+}
+
+.PW {
+  border-radius: 10px;
+  padding-left: 20px;
+  font-size: 20px;
+  font-weight: 700;
+  &::placeholder {
+    font-weight: 700;
+    font-size: 20;
+  }
+}
+
+.signup {
+  background-color: $purple;
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px 0 rgb(0, 0, 0, 0.2);
+  font-size: 24;
+  font-weight: 700;
+}
+
+.login {
+  background-color: $blue-btn;
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px 0 rgb(0, 0, 0, 0.2);
+  font-size: 24;
+  font-weight: 700;
+}
