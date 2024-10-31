@@ -17,5 +17,6 @@ const colors = {
   'admin-log-error': '#FF8090',
   'admin-main': '#6EA7E9',
   'admin-mint': '#A5DCE4',
+  'rgb0.5': '#00000080',
 };
 export default colors;

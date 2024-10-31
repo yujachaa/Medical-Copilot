@@ -5,6 +5,7 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './stories/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     extend: {
@@ -12,6 +13,7 @@ const config: Config = {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
         white: '#ffffff',
+        'rgb0.5': '#00000080',
       },
     },
   },
