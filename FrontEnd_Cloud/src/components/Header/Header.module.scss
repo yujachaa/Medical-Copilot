@@ -1,0 +1,16 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  background-color: $admin_main;
+}
+
+.clientRegist {
+  background-color: white;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.logout {
+  color: white;
+  font-size: 40px;
+}
