@@ -1,4 +1,16 @@
 package com.newmes.onpremise.domains.member.exception;
 
-public class MemberNotFoundException {
+
+import org.springframework.http.HttpStatus;
+
+public class MemberNotFoundException extends RuntimeException {
+
+    private final HttpStatus status;
+    private final String msg;
+
+    public MemberNotFoundException(String email) {
+        super("Member not found");
+        this.status = HttpStatus.NOT_FOUND;
+        this.msg = " 해당 멤버를 찾을 수 없습니다. email: "+email;
+    }
 }
