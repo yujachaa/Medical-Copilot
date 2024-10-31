@@ -5,6 +5,7 @@ import com.newmes.cloud.global.util.HttpResponseUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -16,6 +17,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final HttpResponseUtil responseUtil;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
@@ -31,7 +33,7 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestParam String username, @RequestParam String password) {
-        memberService.signup(username, password);
+        memberService.signup(username, passwordEncoder.encode(password));
         return responseUtil.createSuccessResponse(200, "signup success");
     }
 }

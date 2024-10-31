@@ -7,6 +7,7 @@ import com.newmes.cloud.domains.corporate.exception.CorporateNotFoundException;
 import com.newmes.cloud.domains.corporate.repository.CorporateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ public class CorporateServiceImpl implements CorporateService {
     private final CorporateRepository corporateRepository;
 
     @Override
+    @Transactional
     public Corporate registerCorporate(CorporateRequestDto corporateRequestDto) {
         Corporate corporate = Corporate.builder()
                 .comName(corporateRequestDto.comName())
@@ -28,9 +30,10 @@ public class CorporateServiceImpl implements CorporateService {
     }
 
     @Override
+    @Transactional
     public Corporate updateCorporate(Long id, CorporateRequestDto corporateRequestDto) {
         CorporateEntity entity = corporateRepository.findById(id)
-                .orElseThrow(() -> new CorporateNotFoundException("Corporate not found with id: " + id));
+                .orElseThrow(() -> new CorporateNotFoundException(corporateRequestDto.comName()));
 
         entity.updateCorporateDetails(corporateRequestDto.comName());
         CorporateEntity updatedEntity = corporateRepository.save(entity);
@@ -39,13 +42,15 @@ public class CorporateServiceImpl implements CorporateService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Corporate getCorporateById(Long id) {
         CorporateEntity entity = corporateRepository.findById(id)
-                .orElseThrow(() -> new CorporateNotFoundException("Corporate not found with id: " + id));
+                .orElseThrow(() -> new CorporateNotFoundException(id+""));
         return Corporate.fromEntity(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Corporate> getAllCorporates() {
         return corporateRepository.findAll().stream()
                 .map(Corporate::fromEntity)

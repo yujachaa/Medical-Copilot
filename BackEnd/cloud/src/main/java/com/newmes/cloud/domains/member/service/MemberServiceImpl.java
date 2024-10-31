@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,13 +26,13 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional(readOnly = true)
     public void login(String name, String password) {
         MemberEntity entity = memberRepository.findByUsername(name)
                 .orElseThrow(() -> new MemberNotFoundException(name));
         Member member = Member.fromEntity(entity);
 
         if (!passwordEncoder.matches(password, member.getPassword())) {
-            log.info("{}, {}", password, member.getPassword());
             throw new InvalidPasswordException();
         }
 
@@ -49,7 +50,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void signup(String name, String password) {
-        memberRepository.save(new MemberEntity(name,passwordEncoder.encode(password)));
+        memberRepository.save(new MemberEntity(name,password));
     }
 }
