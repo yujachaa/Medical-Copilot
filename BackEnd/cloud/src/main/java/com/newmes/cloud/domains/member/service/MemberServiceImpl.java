@@ -16,6 +16,10 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +40,10 @@ public class MemberServiceImpl implements MemberService {
             throw new InvalidPasswordException();
         }
 
-        Authentication authToken = new UsernamePasswordAuthenticationToken(name, password);
+
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_"+member.getRole().name()));
+        Authentication authToken = new UsernamePasswordAuthenticationToken(name, password, authorities);
+
         Authentication authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
