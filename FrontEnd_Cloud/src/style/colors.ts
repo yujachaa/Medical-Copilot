@@ -1,0 +1,21 @@
+const colors = {
+  white: '#FFFFFF',
+  black: '#000000',
+  cancel: '#c4c4c4',
+  placeholder: '#667085',
+  'blue-logo': '#2380EC',
+  'blue-base': '#EBF4FF',
+  'blue-btn': '#1F9DFF',
+  'blue-msg': '#5DA6F6',
+  save: '#FFB703',
+  purple: '#CFBAF0',
+  mint: '#C6FFE7',
+  'tab-bg': '#E8EAED',
+  'sidebar-bg': '#404040',
+  'admin-log-base': '#F2ECEE',
+  'admin-log-text': '#DCDAF5',
+  'admin-log-error': '#FF8090',
+  'admin-main': '#6EA7E9',
+  'admin-mint': '#A5DCE4',
+};
+export default colors;
