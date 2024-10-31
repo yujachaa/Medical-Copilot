@@ -4,7 +4,7 @@
   margin-top: auto;
   display: flex;
   width: 250px;
-  height: 40px;
+  height: 42px;
   border: 1px solid white;
   border-radius: 12px 12px 0 0;
   border-bottom: none;
@@ -16,31 +16,36 @@
 
   p {
     font-size: 1.25rem;
+    height: 32px;
   }
 }
 
-.tab::before {
-  width: 5px;
-  height: 40px;
-  content: ' ';
-  transform: translateX(calc(-100% + 4px));
-  position: absolute;
+.active {
   background-color: $tab-bg;
-  bottom: 0px;
-  border-bottom: 1px solid white;
-  border-top-left-radius: 8px;
-  border-bottom-right-radius: 8px;
 }
 
-.tab::after {
-  width: 5px;
-  height: 40px;
-  content: ' ';
-  background-color: $tab-bg;
-  transform: translateX(calc(5000% - 4px));
-  position: absolute;
-  bottom: 0px;
-  border-bottom: 1px solid white;
-  border-top-right-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
+// .tab::before {
+//   width: 5px;
+//   height: 40px;
+//   content: ' ';
+//   transform: translateX(calc(-100% + 4px));
+//   position: absolute;
+//   background-color: transparent;
+//   bottom: 0px;
+//   border-bottom: 1px solid white;
+//   border-top-left-radius: 8px;
+//   border-bottom-right-radius: 8px;
+// }
+
+// .tab::after {
+//   width: 5px;
+//   height: 40px;
+//   content: ' ';
+//   background-color: transparent;
+//   transform: translateX(calc(5000% - 4px));
+//   position: absolute;
+//   bottom: 0px;
+//   border-bottom: 1px solid white;
+//   border-top-right-radius: 8px;
+//   border-bottom-left-radius: 8px;
+// }
