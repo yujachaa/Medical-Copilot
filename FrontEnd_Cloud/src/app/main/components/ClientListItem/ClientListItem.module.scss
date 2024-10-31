@@ -1,0 +1,42 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  background-color: $blue-base;
+}
+
+.clientId {
+  font-size: 14px;
+  font-weight: 700;
+  color: $blue-btn;
+
+  .clientIdNumber {
+    color: black;
+  }
+}
+
+.clientName {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: -5px;
+}
+
+.tag {
+  width: 100%;
+  font-weight: 700;
+  color: white;
+  span {
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+  }
+}
+
+.usage {
+  background-color: $blue-btn;
+}
+
+.week {
+  background-color: $admin_mint;
+}
