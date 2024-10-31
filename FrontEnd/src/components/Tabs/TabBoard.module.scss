@@ -1,6 +1,6 @@
 @import '@/style/globals_variant.scss';
 
-.tab {
+.container {
   width: 100vw;
   height: 50px;
   background-color: $white;
@@ -11,5 +11,6 @@
   border-bottom: 2px solid white;
   box-sizing: border-box;
   padding-left: 1rem;
+  flex-shrink: 0;
   gap: 4px;
 }
