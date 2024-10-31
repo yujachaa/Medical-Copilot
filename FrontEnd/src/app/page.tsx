@@ -1,4 +1,10 @@
+import Link from 'next/link';
+
 export default function Home() {
-  console.log('123');
-  return <div className=" ">메인페이지입니다!</div>;
+  return (
+    <>
+      <div className="">첫 페이지입니다!</div>
+      <Link href="/login">123123</Link>
+    </>
+  );
 }
