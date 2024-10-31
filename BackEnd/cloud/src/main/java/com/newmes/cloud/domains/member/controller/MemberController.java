@@ -1,5 +1,6 @@
 package com.newmes.cloud.domains.member.controller;
 
+import com.newmes.cloud.domains.member.dto.MemberRequestDto;
 import com.newmes.cloud.domains.member.service.MemberService;
 import com.newmes.cloud.global.util.HttpResponseUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,8 +21,8 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
-        memberService.login(username, password);
+    public ResponseEntity<?> login(@RequestBody MemberRequestDto requestDto) {
+        memberService.login(requestDto);
         return responseUtil.createSuccessResponse(200, "login success");
     }
 
@@ -32,8 +33,8 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestParam String username, @RequestParam String password) {
-        memberService.signup(username, passwordEncoder.encode(password));
+    public ResponseEntity<?> signup(@RequestBody MemberRequestDto requestDto) {
+        memberService.signup(requestDto.username(), passwordEncoder.encode(requestDto.password()));
         return responseUtil.createSuccessResponse(200, "signup success");
     }
 }
