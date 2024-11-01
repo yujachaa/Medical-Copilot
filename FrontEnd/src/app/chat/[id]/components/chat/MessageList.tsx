@@ -1,7 +1,7 @@
 import Message from './Message';
 import styles from './MessageList.module.scss';
 
-export default function MessaageList() {
+export default function MessageList() {
   return (
     <div className={styles.msgList}>
       <Message

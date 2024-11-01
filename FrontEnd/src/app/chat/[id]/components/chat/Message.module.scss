@@ -23,6 +23,8 @@
   .msg {
     padding: 10px 15px;
     border-radius: 5px;
+    max-width: 90%;
+    font-size: 0.9rem;
 
     &.botStyle {
       display: flex;
