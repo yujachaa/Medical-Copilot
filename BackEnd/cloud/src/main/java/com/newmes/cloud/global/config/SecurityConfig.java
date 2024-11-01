@@ -22,7 +22,7 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
     private static final String[] AUTH_WHITELIST = {
-            "/swagger-ui/**", "/api/member/**", "/api/**"}; //, "swagger-ui-custom.html"};
+            "/swagger-ui/**", "/member/**", "/**"};
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);

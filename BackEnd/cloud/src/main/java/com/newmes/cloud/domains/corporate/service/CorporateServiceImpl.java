@@ -3,6 +3,7 @@ package com.newmes.cloud.domains.corporate.service;
 import com.newmes.cloud.domains.corporate.domain.Corporate;
 import com.newmes.cloud.domains.corporate.dto.request.CorporateRequestDto;
 import com.newmes.cloud.domains.corporate.dto.response.CorporateDetailResponseDto;
+import com.newmes.cloud.domains.corporate.dto.response.CorporateResponseDto;
 import com.newmes.cloud.domains.corporate.entity.CorporateEntity;
 import com.newmes.cloud.domains.corporate.exception.CorporateNotFoundException;
 import com.newmes.cloud.domains.corporate.repository.CorporateRepository;
@@ -42,11 +43,29 @@ public class CorporateServiceImpl implements CorporateService {
         CorporateEntity entity = corporateRepository.findByKey(key)
                 .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
 
-        entity.updateCorporateDetails(corporateRequestDto.comName());
+        if(corporateRequestDto.comName() != null) {
+            entity.updateCorporateDetails(corporateRequestDto.comName());
+        }
+        if(corporateRequestDto.grade() != null) {
+            entity.updateCorporateGrade(corporateRequestDto.grade());
+        }
         CorporateEntity updatedEntity = corporateRepository.save(entity);
 
         return Corporate.fromEntity(updatedEntity);
     }
+
+    @Override
+    @Transactional
+    public CorporateResponseDto init(String key){
+        CorporateEntity entity = corporateRepository.findByKey(key)
+                .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
+
+        entity.initCount();
+        CorporateEntity updatedEntity = corporateRepository.save(entity);
+
+        return CorporateResponseDto.from(Corporate.fromEntity(updatedEntity));
+    }
+
 
     @Override
     @Transactional(readOnly = true)

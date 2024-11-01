@@ -56,4 +56,11 @@ public class CorporateEntity extends BaseTimeEntity {
         }
         totalCount++;
     }
+
+    public void initCount() {
+        this.cxrCount = 0L;
+        this.capsuleCount = 0L;
+        this.medGuruCount = 0L;
+        this.totalCount = 0L;
+    }
 }
