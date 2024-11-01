@@ -1,0 +1,13 @@
+@import '../../style/globals_variant.scss';
+
+.header {
+  width: 100vw;
+  height: 50px;
+  background-color: $white;
+  display: flex;
+  flex-direction: row;
+  background-color: $tab-bg;
+  border-bottom: 2px solid white;
+  box-sizing: border-box;
+  padding-left: 1rem;
+}
