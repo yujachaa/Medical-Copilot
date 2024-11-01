@@ -1,12 +1,22 @@
 stages:
   - trigger
 
-webhook_trigger:
+backend_webhook_trigger:
   stage: trigger
   only:
     refs:
-      - develop  # 모니터링할 브랜치 명
+      - develop  # 모니터링할 브랜치
     changes:
-      - BackEnd/cloud/**  # 모니터링할 폴더 경로
+      - BackEnd/cloud/**  # BackEnd/cloud 폴더 경로 모니터링
   script:
     - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_back"
+
+frontend_webhook_trigger:
+  stage: trigger
+  only:
+    refs:
+      - develop  # 모니터링할 브랜치
+    changes:
+      - FrontEnd_Cloud/**  # FrontEnd_Cloud 폴더 경로 모니터링
+  script:
+    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_front"
