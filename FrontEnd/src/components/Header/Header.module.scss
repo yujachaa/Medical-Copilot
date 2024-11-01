@@ -2,7 +2,12 @@
 
 .header {
   width: 100vw;
-  height: 50px;
+  display: flex;
+  flex-direction: column;
+}
+.headerTab {
+  width: 100vw;
+  height: 40px;
   background-color: $white;
   display: flex;
   flex-direction: row;
@@ -10,4 +15,12 @@
   border-bottom: 2px solid white;
   box-sizing: border-box;
   padding-left: 1rem;
+}
+
+.mainHeader {
+  width: 100vw;
+  display: flex;
+  gap: 10px;
+  padding: 0.5rem 1rem;
+  align-items: center;
 }
