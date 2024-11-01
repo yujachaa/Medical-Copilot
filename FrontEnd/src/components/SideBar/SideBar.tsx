@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './SideBar.module.scss';
 import Logo from '../../assets/images/logo.svg';
 import { IoSearch } from 'react-icons/io5';
@@ -13,15 +14,23 @@ import { FaUserLarge } from 'react-icons/fa6';
 
 export default function SideBar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
 
   const clickUser = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const goMain = () => {
+    router.push('/main');
+  };
+
   return (
     <div className={`w-[55] h-screen flex flex-col justify-between pt-2 pb-2 ${styles.main}`}>
       <div className={`w-[55] h-[67] flex justify-center items-center`}>
-        <Logo className={`w-[35] cursor-pointer`} />
+        <Logo
+          className={`w-[35] cursor-pointer`}
+          onClick={goMain}
+        />
       </div>
       <div className={`w-[55] h-[890] flex flex-col justify-center items-center gap-8`}>
         <IoSearch className={`${styles.menuBtn}`} />
