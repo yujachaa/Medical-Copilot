@@ -1,7 +1,6 @@
 package com.newmes.cloud.domains.usage.entity;
 
 import com.newmes.cloud.domains.corporate.entity.CorporateEntity;
-import com.newmes.cloud.domains.usage.domain.AgentType;
 import com.newmes.cloud.domains.usage.domain.Usage;
 import com.newmes.cloud.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -12,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
+@Table(name = "usage")
 public class UsageEntity extends BaseTimeEntity {
 
     @Id
@@ -19,26 +19,33 @@ public class UsageEntity extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "com_id", nullable = false)
+    @JoinColumn(name = "corporate_id", nullable = false)
     private CorporateEntity corporate;
 
-    @Enumerated(EnumType.STRING)
-    private AgentType agent;
+    private int agentCount;
+
+    private String key;
 
     @Builder
-    public UsageEntity(CorporateEntity corporate, AgentType agent) {
+    public UsageEntity(CorporateEntity corporate, int agentCount, String key) {
         this.corporate = corporate;
-        this.agent = agent;
+        this.agentCount = agentCount;
+        this.key = key;
     }
 
     public static UsageEntity fromDomain(Usage usage) {
         return UsageEntity.builder()
                 .corporate(usage.getCorporate().toEntity())
-                .agent(usage.getAgent())
+                .agentCount(usage.getAgentCount())
+                .key(usage.getKey())
                 .build();
     }
 
-    public void updateEntity(CorporateEntity entity){
-        corporate = entity;
+    public void incrementAgentCount() {
+        this.agentCount += 1;
+    }
+
+    public void initAgentCount(){
+        this.agentCount = 0;
     }
 }

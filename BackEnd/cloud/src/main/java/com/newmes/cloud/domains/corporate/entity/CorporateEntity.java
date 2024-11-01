@@ -1,7 +1,6 @@
 package com.newmes.cloud.domains.corporate.entity;
 
 import com.newmes.cloud.domains.corporate.domain.Grade;
-import com.newmes.cloud.domains.usage.domain.AgentType;
 import com.newmes.cloud.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,18 +24,9 @@ public class CorporateEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Grade grade;
 
-    private Long cxrCount = 0L;
-    private Long capsuleCount = 0L;
-    private Long medGuruCount = 0L;
-    private Long totalCount = 0L;
-
     public CorporateEntity(String comName, Grade grade, String key) {
         this.comName = comName;
         this.grade = grade;
-        this.key = key;
-    }
-
-    public CorporateEntity(String key) {
         this.key = key;
     }
 
@@ -46,21 +36,5 @@ public class CorporateEntity extends BaseTimeEntity {
 
     public void updateCorporateGrade(Grade grade) {
         this.grade = grade;
-    }
-
-    public void incrementUsageCount(AgentType agentType) {
-        switch (agentType) {
-            case CXR -> cxrCount++;
-            case Capsule -> capsuleCount++;
-            case MedGuru -> medGuruCount++;
-        }
-        totalCount++;
-    }
-
-    public void initCount() {
-        this.cxrCount = 0L;
-        this.capsuleCount = 0L;
-        this.medGuruCount = 0L;
-        this.totalCount = 0L;
     }
 }
