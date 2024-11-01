@@ -1,10 +1,12 @@
 package com.newmes.cloud.domains.corporate.controller;
 
 import com.newmes.cloud.domains.corporate.dto.request.CorporateRequestDto;
+import com.newmes.cloud.domains.corporate.dto.response.CorporateDetailResponseDto;
 import com.newmes.cloud.domains.corporate.dto.response.CorporateResponseDto;
 import com.newmes.cloud.domains.corporate.service.CorporateService;
 import com.newmes.cloud.global.util.HttpResponseUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +15,8 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/corporate")
+@RequestMapping("/corporate")
+@Slf4j
 public class CorporateController {
 
     private final CorporateService corporateService;
@@ -25,12 +28,12 @@ public class CorporateController {
         return httpResponseUtil.createSuccessResponse(createdCorporate, "Corporate registered successfully");
     }
 
-    @PutMapping("{corporateId}")
+    @PutMapping("{corporateKey}")
     public ResponseEntity<?> updateCorporate(
-            @PathVariable("corporateId") Long id,
+            @PathVariable("corporateKey") String key,
             @RequestBody CorporateRequestDto corporate) {
-        CorporateResponseDto updatedCorporate = CorporateResponseDto.from(corporateService.updateCorporate(id, corporate));
-        return httpResponseUtil.createSuccessResponse(updatedCorporate, "Corporate updated successfully");
+        CorporateResponseDto updatedCorporate = CorporateResponseDto.from(corporateService.updateCorporate(key, corporate));
+        return httpResponseUtil.createResponse(updatedCorporate);
     }
 
     @GetMapping("/all")
@@ -41,9 +44,15 @@ public class CorporateController {
         return httpResponseUtil.createResponse(corporates);
     }
 
-    @GetMapping("/{corporateId}")
-    public ResponseEntity<?> getCorporateById(@PathVariable("corporateId") Long id) {
-        CorporateResponseDto corporate = CorporateResponseDto.from(corporateService.getCorporateById(id));
+    @GetMapping("/{corporateKey}")
+    public ResponseEntity<?> getCorporateById(@PathVariable("corporateKey") String key) {
+        CorporateDetailResponseDto corporate = corporateService.getCorporateDetailWithUsages(key);
         return httpResponseUtil.createResponse(corporate);
+    }
+
+    @GetMapping("/{corporateKey}/init")
+    public ResponseEntity<?> initCorporate(@PathVariable("corporateKey") String key) {
+        CorporateResponseDto corporate = corporateService.init(key);
+        return httpResponseUtil.createSuccessResponse(200, "Corporate init successfully");
     }
 }
