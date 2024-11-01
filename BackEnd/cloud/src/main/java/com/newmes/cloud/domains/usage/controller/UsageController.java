@@ -23,7 +23,6 @@ public class UsageController {
                 .orTimeout(10, TimeUnit.SECONDS)
                 .thenApply(result -> ResponseEntity.ok(result))
                 .exceptionally(e -> {
-                    e.printStackTrace();
                     if (e.getCause() instanceof TimeoutException) {
                         return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Agent Request Timed Out");
                     }
