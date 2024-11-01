@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/corporate")
+@RequestMapping("/corporate")
 @Slf4j
 public class CorporateController {
 
@@ -48,5 +48,11 @@ public class CorporateController {
     public ResponseEntity<?> getCorporateById(@PathVariable("corporateKey") String key) {
         CorporateDetailResponseDto corporate = corporateService.getCorporateDetailWithUsages(key);
         return httpResponseUtil.createResponse(corporate);
+    }
+
+    @GetMapping("/{corporateKey}/init")
+    public ResponseEntity<?> initCorporate(@PathVariable("corporateKey") String key) {
+        CorporateResponseDto corporate = corporateService.init(key);
+        return httpResponseUtil.createSuccessResponse(200, "Corporate init successfully");
     }
 }
