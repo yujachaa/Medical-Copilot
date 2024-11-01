@@ -3,7 +3,7 @@
 .tab {
   display: flex;
   width: 250px;
-  height: 42px;
+  height: 32px;
   margin-top: auto;
   border-radius: 12px 12px 0 0;
   position: relative;
@@ -27,8 +27,7 @@
   }
 
   p {
-    font-size: 1.25rem;
-    height: 32px;
+    font-size: 0.9rem;
     flex: 1;
     overflow: hidden;
   }
