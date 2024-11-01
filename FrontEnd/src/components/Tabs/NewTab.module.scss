@@ -1,0 +1,18 @@
+@import '@/style/globals_variant.scss';
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 12px;
+  background-color: $tab-bg;
+  box-sizing: border-box;
+  position: relative;
+  padding: 7px;
+
+  &:hover {
+    background-color: rgb(0, 0, 0, 0.1);
+  }
+}
