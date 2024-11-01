@@ -40,7 +40,7 @@ pipeline {
 						ssh -o StrictHostKeyChecking=no ubuntu@k11s205.p.ssafy.io '
 						docker stop medical-copilot-back-cloud
 						docker rm medical-copilot-back-cloud
-						docker rmi -f jiyoungheo/medical-copilot-back-cloud
+						docker image prune -f
 						docker login -u jiyoungheo.dev@gmail.com -p $DOCKERHUB_PASSWORD
 						docker pull jiyoungheo/medical-copilot-back-cloud:v1
 						docker run -d -p 8080:8080 -v /home/ubuntu/medical-copilot/backend/cloud/.env:/app/.env --name medical-copilot-back-cloud jiyoungheo/medical-copilot-back-cloud:v1
