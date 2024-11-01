@@ -1,0 +1,10 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  background-color: $blue_base;
+
+  @media screen and (max-width: 1024px) {
+    display: flex;
+    flex-direction: column;
+  }
+}

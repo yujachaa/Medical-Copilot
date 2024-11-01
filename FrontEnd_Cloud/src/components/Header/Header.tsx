@@ -6,7 +6,7 @@ import Logo from '@/assets/images/logo.svg';
 
 export default function Header() {
   return (
-    <div className={`${styles.main} w-screen h-[70] flex justify-between items-center pl-4 pr-4`}>
+    <div className={`${styles.main} w-screen h-[70] flex justify-between items-center pl-6 pr-6`}>
       <Logo />
       <div className={`flex justify-center items-center gap-6`}>
         <div
