@@ -1,0 +1,12 @@
+stages:
+  - trigger
+
+webhook_trigger:
+  stage: trigger
+  only:
+    refs:
+      - develop  # 모니터링할 브랜치 명
+    changes:
+      - BackEnd/cloud/**  # 모니터링할 폴더 경로
+  script:
+    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_back"
