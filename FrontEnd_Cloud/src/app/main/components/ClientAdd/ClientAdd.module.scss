@@ -1,0 +1,37 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  background-color: rgb(0, 0, 0, 0.4);
+  z-index: 20;
+}
+
+.addBox {
+  background-color: $blue-base;
+}
+
+.inputs {
+  height: calc(100% - 100px);
+}
+
+.title {
+  font-size: 40px;
+  font-weight: 700;
+  background-color: $admin_main;
+}
+
+.inputTitle {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.add {
+  background-color: $admin-main;
+}
+
+.cancel {
+  background-color: #c4c4c4;
+}

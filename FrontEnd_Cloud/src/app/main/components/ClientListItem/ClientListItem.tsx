@@ -5,7 +5,6 @@ import { FaChevronRight } from 'react-icons/fa';
 type dataType = { id: number; clientName: string; usageAi: number; week: number; state: string };
 
 export default function ClientListItem({ client }: { client: dataType }) {
-  console.log(client);
   return (
     <Link
       className={`${styles.main} w-full h-[110] rounded-[10] flex pl-4 pt-3 pr-2 pb-3`}
