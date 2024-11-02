@@ -1,0 +1,48 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+}
+
+.name {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+  color: $blue-logo;
+}
+
+.tokens {
+  font-size: 20px;
+}
+
+.edit {
+  font-size: 20px;
+  color: white;
+  font-weight: 700;
+  width: 70px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: $admin_main;
+}
+
+.stop {
+  font-size: 20px;
+  color: white;
+  font-weight: 700;
+  width: 70px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: $admin_main;
+}
+
+.key {
+  font-size: 20px;
+}
+
+.medGuruCount {
+  color: $blue-logo;
+}
+
+.usage {
+  font-size: 48px;
+  font-weight: 700;
+}
