@@ -20,6 +20,7 @@ export default function ClientAdd() {
         >
           <span>Add Client</span>
           <IoCloseOutline
+            className={`cursor-pointer`}
             onClick={() => {
               dispatch(setClientAddModal());
             }}
@@ -44,15 +45,15 @@ export default function ClientAdd() {
             </select>
           </div>
           <div
-            className={`${styles.btns} flex border h-fit justify-end absolute bottom-0 right-[24] gap-3 text-white`}
+            className={`${styles.btns} flex h-fit justify-end absolute bottom-0 right-[24] gap-3 text-white`}
           >
             <button
-              className={`${styles.add} flex justify-center items-center w-[80] h-[40] rounded-[10] border`}
+              className={`${styles.add} flex justify-center items-center w-[80] h-[40] rounded-[10] cursor-pointer`}
             >
               Add
             </button>
             <button
-              className={`${styles.cancel} flex justify-center items-center w-[80] h-[40] rounded-[10] border`}
+              className={`${styles.cancel} flex justify-center items-center w-[80] h-[40] rounded-[10] cursor-pointer`}
               onClick={() => {
                 dispatch(setClientAddModal());
               }}
