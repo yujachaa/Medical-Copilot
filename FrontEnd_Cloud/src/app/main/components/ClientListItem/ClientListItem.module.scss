@@ -2,6 +2,12 @@
 
 .main {
   background-color: $blue-base;
+
+  &:hover {
+    background-color: #c9e1ff;
+    transform: scale(0.99);
+    transition: transform 0.3s linear;
+  }
 }
 
 .clientId {

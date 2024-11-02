@@ -10,7 +10,7 @@ export default function ClientListItem({ client }: { client: dataType }) {
       className={`${styles.main} w-full h-[110] rounded-[10] flex pl-4 pt-3 pr-2 pb-3`}
       href={`/main/${client.id}`}
     >
-      <div className={`${styles.main} w-[95%] h-full flex flex-col`}>
+      <div className={`w-[95%] h-full flex flex-col`}>
         <span className={`${styles.clientId}`}>
           No.<span className={`${styles.clientIdNumber}`}>{client.id}</span>
         </span>
