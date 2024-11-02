@@ -22,4 +22,8 @@
   font-weight: 700;
   background-color: $admin_log_error;
   box-shadow: 0 2 5 0 rgba(0, 0, 0, 0.25);
+
+  @media screen and (max-width: 768px) {
+    transform: scale(0.9);
+  }
 }

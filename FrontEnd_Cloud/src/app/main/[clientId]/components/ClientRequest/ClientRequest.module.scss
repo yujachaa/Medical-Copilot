@@ -4,6 +4,10 @@
   width: calc((100vw - 72px) * 60 / 100);
   background-color: $blue-base;
   box-shadow: 0 2 5 0 rgb(0, 0, 0, 0.25);
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 }
 .title {
   font-weight: 700;
