@@ -3,20 +3,20 @@ stages:
 
 backend_webhook_trigger:
   stage: trigger
-  only:
-    refs:
-      - develop  # 모니터링할 브랜치
-    changes:
-      - BackEnd/cloud/**  # BackEnd/cloud 폴더 경로 모니터링
+  rules:
+    - changes:
+        - BackEnd/cloud/**  # BackEnd/cloud 폴더 경로 모니터링
+      when: always
+    - if: '$CI_COMMIT_REF_NAME == "develop"'  # 브랜치 조건
   script:
     - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_back"
 
 frontend_webhook_trigger:
   stage: trigger
-  only:
-    refs:
-      - develop  # 모니터링할 브랜치
-    changes:
-      - FrontEnd_Cloud/**  # FrontEnd_Cloud 폴더 경로 모니터링
+  rules:
+    - changes:
+        - FrontEnd_Cloud/**  # FrontEnd_Cloud 폴더 경로 모니터링
+      when: always
+    - if: '$CI_COMMIT_REF_NAME == "develop"'  # 브랜치 조건
   script:
     - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_front"
