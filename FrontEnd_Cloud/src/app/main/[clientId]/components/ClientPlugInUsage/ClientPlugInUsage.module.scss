@@ -1,0 +1,10 @@
+@import '@/style/globals_variant.scss';
+
+.usage {
+  width: calc((100vw - 72px) * 40 / 100);
+  background-color: $blue-base;
+  box-shadow: 0 2 5 0 rgb(0, 0, 0, 0.25);
+}
+.title {
+  font-weight: 700;
+}
