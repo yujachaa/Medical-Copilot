@@ -3,28 +3,10 @@
 import Image from 'next/image';
 import Logo from '@/assets/images/Logo_Landing.png';
 import styles from './page.module.scss';
-import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useLandingAnimation } from '@/hooks/useLandingAnimation';
 
 export default function Home() {
-  const router = useRouter();
-
-  const medicalRef = useRef(null);
-  const copilotRef = useRef(null);
-  const [animation, setAnimation] = useState<boolean>(false);
-
-  useEffect(() => {
-    const element1 = medicalRef.current;
-    const element2 = copilotRef.current;
-    if (element1 && element2) {
-      setTimeout(() => {
-        setAnimation(true);
-      }, 500);
-      setTimeout(() => {
-        router.push('/login');
-      }, 3000);
-    }
-  }, []);
+  const { animation, medicalRef, copilotRef } = useLandingAnimation();
   return (
     <>
       <div className={`w-screen h-screen flex justify-center items-center gap-5 overflow-hidden`}>
