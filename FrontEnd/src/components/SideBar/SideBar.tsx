@@ -5,7 +5,7 @@ import { CgMenuGridR } from 'react-icons/cg';
 import { FaBell } from 'react-icons/fa';
 import { TbSettingsFilled } from 'react-icons/tb';
 import { TbLogout } from 'react-icons/tb';
-
+import Link from 'next/link';
 export default function SideBar() {
   return (
     <div className={`w-[70] h-screen flex flex-col justify-between pt-2 pb-2 ${styles.main}`}>
@@ -15,7 +15,10 @@ export default function SideBar() {
       <div className={`w-[70] h-[890] flex flex-col justify-center items-center gap-10`}>
         <IoSearch className={`${styles.menuBtn}`} />
         <CgMenuGridR className={`${styles.menuBtn}`} />
-        <FaBell className={`${styles.menuBtn} p-0.5`} />
+        <Link href={`/main/alarm`}>
+          <FaBell className={`${styles.menuBtn} p-0.5`} />
+        </Link>
+
         <TbSettingsFilled className={`${styles.menuBtn}`} />
       </div>
       <div className={`w-[70] h-[67] flex justify-center items-center`}>
