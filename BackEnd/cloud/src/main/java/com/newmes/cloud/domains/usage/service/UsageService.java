@@ -1,15 +1,12 @@
 package com.newmes.cloud.domains.usage.service;
 
 import com.newmes.cloud.domains.usage.dto.request.UsageRequestDto;
-import com.newmes.cloud.domains.usage.dto.response.TotalUsageResponseDto;
-import com.newmes.cloud.domains.usage.dto.response.UsageResponseDto;
 
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface UsageService {
-    UsageResponseDto registerUsage(UsageRequestDto requestDto);
 
-    TotalUsageResponseDto getTotalUsage();
+    CompletableFuture<String> processAgentUsage(UsageRequestDto requestDto);
 
-    List<UsageResponseDto> getAllUsageByCorporateId(String key);
+
 }

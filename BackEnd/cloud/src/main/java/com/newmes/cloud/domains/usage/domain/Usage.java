@@ -10,20 +10,23 @@ public class Usage {
 
     private final Long id;
     private final Corporate corporate;
-    private final AgentType agent;
+    private final int agentCount;
+    private final String key;
 
     @Builder
-    private Usage(Long id, Corporate corporate, AgentType agent) {
+    public Usage(Long id, Corporate corporate, int agentCount, String key) {
         this.id = id;
         this.corporate = corporate;
-        this.agent = agent;
+        this.agentCount = agentCount;
+        this.key = key;
     }
 
     public static Usage fromEntity(UsageEntity entity) {
         return Usage.builder()
                 .id(entity.getId())
                 .corporate(Corporate.fromEntity(entity.getCorporate()))
-                .agent(entity.getAgent())
+                .agentCount(entity.getAgentCount())
+                .key(entity.getKey())
                 .build();
     }
 }

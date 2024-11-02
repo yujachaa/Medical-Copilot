@@ -13,10 +13,6 @@ public class CorporateResponseDto {
     private String comName;
     private Grade grade;
     private String key;
-    private Long cxrCount = 0L;
-    private Long capsuleCount = 0L;
-    private Long medGuruCount = 0L;
-    private Long totalCount = 0L;
     
     public static CorporateResponseDto from(Corporate corporate) {
         return CorporateResponseDto.builder()
@@ -24,10 +20,6 @@ public class CorporateResponseDto {
                 .comName(corporate.getComName())
                 .grade(corporate.getGrade())
                 .key(corporate.getKey())
-                .cxrCount(corporate.getCxrCount())
-                .capsuleCount(corporate.getCapsuleCount())
-                .medGuruCount(corporate.getMedGuruCount())
-                .totalCount(corporate.getTotalCount())
                 .build();
     }
 }
