@@ -34,8 +34,8 @@ const tabSlices = createSlice({
     },
     addTab: (state) => {
       const newTab: tab = { id: ++state.increment, title: `New Tab`, type: 'default' };
-      state.selectedIndex = state.tablist.length;
       state.tablist.push(newTab);
+      state.selectedIndex = state.tablist.length;
     },
     deleteTab: (state, action: PayloadAction<number>) => {
       const index = state.tablist.findIndex((tab) => tab.id === action.payload);
