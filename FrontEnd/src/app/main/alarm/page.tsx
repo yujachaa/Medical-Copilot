@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './page.module.scss';
-import ReadButton from '../components/ReadButton';
+import ReadButton from './components/ReadButton';
 import Item from './components/Item';
 export default function page() {
   return (

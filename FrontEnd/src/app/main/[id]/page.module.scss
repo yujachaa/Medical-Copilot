@@ -1,0 +1,17 @@
+@import '@/style/globals_variant.scss';
+
+.container {
+  width: calc(100vw - 70px);
+  height: calc(100vh - 55px);
+  overflow: auto;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10%;
+  font-size: 3.5rem;
+  color: $blue-logo;
+  font-weight: 700;
+}
