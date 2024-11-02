@@ -5,6 +5,7 @@ import testSlices from '../features/testSlice';
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { persistStore } from 'redux-persist';
+import modalSlices from '../features/modal/modalSlice';
 
 const persistConfig = {
   key: 'persist',
@@ -15,6 +16,7 @@ const persistConfig = {
 
 const reducer = combineReducers({
   test: testSlices.reducer,
+  modal: modalSlices.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
