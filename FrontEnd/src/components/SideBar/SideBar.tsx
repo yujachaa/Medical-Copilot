@@ -10,7 +10,7 @@ export default function SideBar() {
   return (
     <div className={`w-[70] h-screen flex flex-col justify-between pt-2 pb-2 ${styles.main}`}>
       <div className={`w-[70] h-[67] flex justify-center items-center`}>
-        <Logo className={`cursor-pointer`} />
+        <Logo className={`w-[40] h-[40] cursor-pointer`} />
       </div>
       <div className={`w-[70] h-[890] flex flex-col justify-center items-center gap-10`}>
         <IoSearch className={`${styles.menuBtn}`} />
