@@ -23,6 +23,7 @@ export default function Tab({ HandleDelete, onClick, tab, isActive }: TabProps) 
     <Link
       className={` ${styles.tab} ${isActive === true && styles.active}`}
       href={`/main/${tab.id}`}
+      prefetch={true}
       onClick={onClick}
     >
       {SelectTabIcons(type)}
