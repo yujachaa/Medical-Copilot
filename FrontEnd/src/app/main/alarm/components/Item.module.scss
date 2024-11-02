@@ -3,7 +3,7 @@
 .container {
   width: 100%;
   margin: 0 auto;
-  height: 85px;
+  min-height: 85px;
   display: flex;
   flex-direction: row;
   align-items: center;
