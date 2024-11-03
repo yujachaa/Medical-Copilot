@@ -11,10 +11,6 @@ public class Corporate {
     private final String comName;
     private final Grade grade;
     private final String key;
-    private Long cxrCount = 0L;
-    private Long capsuleCount = 0L;
-    private Long medGuruCount = 0L;
-    private Long totalCount = 0L;
 
     @Builder
     public Corporate(Long id, String comName, Grade grade, String key) {
