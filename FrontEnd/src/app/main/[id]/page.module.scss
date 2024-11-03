@@ -15,3 +15,33 @@
   color: $blue-logo;
   font-weight: 700;
 }
+
+.main{
+    width: 60px;
+    height: 60px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+
+.icon1, .icon2 , .icon3{
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 왼쪽으로 펼쳐지도록 위치 설정 */
+.active .icon1 { transform: translateY(70px); opacity: 1; pointer-events: auto; }
+.active .icon2 { transform: translateY(130px); opacity: 1; pointer-events: auto; }
+.active .icon3 { transform: translateY(190px); opacity: 1; pointer-events: auto; }
