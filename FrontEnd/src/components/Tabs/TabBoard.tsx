@@ -15,8 +15,8 @@ export default function TabBoard() {
   };
 
   const handleCreateTab = () => {
-    router.push(`/main/${increment + 1}`);
     dispatch(addTab());
+    router.push(`/main/${increment + 1}`);
   };
   return (
     <div className={styles.container}>

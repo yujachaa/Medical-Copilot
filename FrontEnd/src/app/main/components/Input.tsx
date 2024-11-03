@@ -6,9 +6,10 @@ import Send from '@/assets/images/send.svg';
 export default function Input() {
   return (
     <div className={styles.container}>
-      <div className={styles.file}>
+      <label htmlFor="file" className={styles.file}>
         <HiPaperClip className="rotate-135 w-6 h-6 text-clip" />
-      </div>
+      </label>
+      <input id="file" type="file" className='hidden w-0 h-0'/>
       <input
         className={styles.input}
         type="text"

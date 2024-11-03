@@ -20,6 +20,7 @@
   align-items: center;
   padding-left: 10px;
   position: relative;
+  cursor: pointer;
 }
 .file:hover::before {
   position: absolute;
