@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ColorPalette from './ColorPalette';
 
 const meta = {
-  title: 'Colors',
+  title: 'components/Colors',
   component: ColorPalette,
 } satisfies Meta<typeof ColorPalette>;
 
