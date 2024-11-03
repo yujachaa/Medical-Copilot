@@ -70,7 +70,7 @@ export default function ClientListBox() {
         <span className={`${styles.title} text-2xl`}>Client List</span>
         <IoSearch className={`${styles.search} text-3xl`} />
       </div>
-      <div className={`${styles.items} w-full h-full flex flex-col gap-3 overflow-y-scroll scroll`}>
+      <div className={`${styles.items} w-full h-full flex flex-col gap-3 overflow-y-scroll`}>
         {data.map((client) => {
           return (
             <ClientListItem
