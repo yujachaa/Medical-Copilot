@@ -31,7 +31,7 @@ export default function Page({ params }: paramsType) {
       </div>
       <div className={`flex justify-center items-center mt-12`}>
         <div className={`relative w-[60px] h-[60px] mr-4 cursor-pointer ${isActive ? styles.active : ''}`}>
-        <div className={styles.main} onClick={toggleIcons}><SelectTabIcons logoType={plugin} w={"[60px]"} h={"[60px]"}/></div>
+        <div className={styles.main} onClick={toggleIcons}><SelectTabIcons logoType={plugin} className={"w-[60px] h-[60px]"}/></div>
         <Logo className={styles.icon1} onClick={()=>{setPlugin('default');setIsActive(false)}}/>
         <Cxr className={styles.icon2} onClick={()=>{setPlugin('cxr');setIsActive(false)}}/>
         <CapSule className={styles.icon3} onClick={()=>{setPlugin('capsule');setIsActive(false)}}/>

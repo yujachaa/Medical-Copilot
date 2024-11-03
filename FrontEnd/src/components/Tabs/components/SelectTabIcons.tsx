@@ -6,11 +6,10 @@ import { PluginType } from '../Tab';
 
 type Props ={
   logoType: PluginType;
-  w? : string;
-  h? : string;
+  className?: string;
 }
-export default function SelectTabIcons({logoType,w='8',h='8'} : Props) {
-  if (logoType === 'default') return <Default className={`w-${w} h-${h}`} />;
-  if (logoType === 'capsule') return <Capsule className={`w-${w} h-${h}`} />;
-  if (logoType === 'cxr') return <Cxr className={`w-${w} h-${h}`} />;
+export default function SelectTabIcons({logoType,className} : Props) {
+  if (logoType === 'default') return <Default className={className} />;
+  if (logoType === 'capsule') return <Capsule className={className} />;
+  if (logoType === 'cxr') return <Cxr className={className} />;
 }

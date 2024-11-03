@@ -26,7 +26,7 @@ export default function Tab({ HandleDelete, onClick, tab, isActive }: TabProps) 
       prefetch={true}
       onClick={onClick}
     >
-      <SelectTabIcons logoType={type}/>
+      <SelectTabIcons logoType={type} className={"w-8 h-8"}/>
       <p>{title}</p>
       <CgClose
         className="w-5 h-5 ml-auto cursor-pointer text-rgb0.5"
