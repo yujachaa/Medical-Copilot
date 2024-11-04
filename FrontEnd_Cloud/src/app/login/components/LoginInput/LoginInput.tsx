@@ -4,13 +4,13 @@ import styles from './LoginInput.module.scss';
 export default function LoginInput() {
   return (
     <div className={`${styles.main} flex flex-col items-center gap-10`}>
-      <div className={`flex flex-col gap-[7]`}>
+      <div className={`flex flex-col gap-[7px]`}>
         <input
-          className={`${styles.Email} w-[422] h-[70]`}
+          className={`${styles.Email} w-[422px] h-[70px]`}
           placeholder="Email"
         />
         <input
-          className={`${styles.PW} w-[422] h-[70]`}
+          className={`${styles.PW} w-[422px] h-[70px]`}
           placeholder="Password"
           type="password"
         />
@@ -18,7 +18,7 @@ export default function LoginInput() {
       <div className={`${styles.btn} flex w-full`}>
         <Link
           href="/main"
-          className={`${styles.signup} w-[422] h-[64] flex justify-center items-center`}
+          className={`${styles.signup} w-[422x] h-[64px] flex justify-center items-center`}
         >
           Login
         </Link>
