@@ -13,7 +13,7 @@ pipeline {
 					git branch: 'develop', credentialsId: 'git-access-token', url: 'https://lab.ssafy.com/s11-final/S11P31S205.git'
 				  
 				}
-			}
+			} 
 			
 			stage('Build image') {
 				steps {
@@ -63,7 +63,7 @@ pipeline {
                 channel: 's205_git'
                 )
             }
-        } 
+        }
         failure {
         	script {
                 def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
