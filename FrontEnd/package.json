@@ -8,12 +8,12 @@
     "lint": "eslint --cache .",
     "dev": "next dev --turbo",
     "build": "next build",
-    "start": "next start",
-    "storybook": "storybook dev -p 6006",
+    "start": "next start -p 3001",
+    "storybook": "storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,css,scss}": [
+    "*.{js,ts,tsx,css,scss,json}": [
       "prettier --write"
     ]
   },
@@ -23,11 +23,13 @@
     }
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^10.2.9",
     "@nivo/core": "^0.87.0",
     "@nivo/line": "^0.87.0",
     "@nivo/pie": "^0.87.0",
     "@reduxjs/toolkit": "^2.3.0",
     "lint-staged": "^15.2.10",
+    "lodash": "^4.17.21",
     "next": "^14.2.16",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -43,6 +45,7 @@
     "@storybook/addon-interactions": "^8.3.6",
     "@storybook/addon-links": "^8.3.6",
     "@storybook/addon-onboarding": "^8.3.6",
+    "@storybook/addon-styling-webpack": "^1.0.1",
     "@storybook/blocks": "^8.3.6",
     "@storybook/nextjs": "^8.3.6",
     "@storybook/react": "^8.3.6",

@@ -1,4 +1,5 @@
 import styles from './ReportData.module.scss';
+import { TbEdit } from 'react-icons/tb';
 
 export default function Diagnosis() {
   return (
@@ -20,6 +21,10 @@ export default function Diagnosis() {
             {index < 3 && <hr />}
           </div>
         ))}
+      </div>
+
+      <div className={styles.editorBtn}>
+        <TbEdit />
       </div>
     </div>
   );

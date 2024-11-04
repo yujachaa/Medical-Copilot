@@ -1,11 +1,9 @@
+'use client';
+
 import styles from './ClientBtn.module.scss';
 import { LuDoorOpen } from 'react-icons/lu';
 
-export default function ClientBtn({
-  setLogModal,
-}: {
-  setLogModal: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+export default function ClientBtn() {
   return (
     <div
       className={`${styles.main} flex justify-between items-center pl-4 pr-4 h-[10%] min-h-[60px]`}
@@ -17,9 +15,9 @@ export default function ClientBtn({
       </div>
       <div
         className={`${styles.errorlog} flex justify-center items-center w-[200px] h-[40px] gap-3 rounded-[10px]`}
-        onClick={() => {
-          setLogModal((prev) => !prev);
-        }}
+        // onClick={() => {
+        //   setLogModal((prev) => !prev);
+        // }}
       >
         <LuDoorOpen />
         <span>Error Log</span>
