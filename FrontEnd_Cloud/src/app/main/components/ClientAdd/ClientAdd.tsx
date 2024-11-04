@@ -13,10 +13,10 @@ export default function ClientAdd() {
   return (
     <div className={`${styles.main} fixed w-full h-full flex justify-center items-center`}>
       <div
-        className={`${styles.addBox} flex flex-col w-[400px] h-[50%] min-h-[300px] max-h-[400px] rounded-[20]`}
+        className={`${styles.addBox} flex flex-col w-[400px] h-[50%] min-h-[300px] max-h-[400px] rounded-[20px]`}
       >
         <div
-          className={`${styles.title} flex h-[80px] justify-between items-center pl-6 pr-6 rounded-se-[20] rounded-ss-[20]`}
+          className={`${styles.title} flex h-[80px] justify-between items-center pl-6 pr-6 rounded-se-[20px] rounded-ss-[20px]`}
         >
           <span>Add Client</span>
           <IoCloseOutline
@@ -30,14 +30,14 @@ export default function ClientAdd() {
           <div className={`${styles.input} flex flex-col`}>
             <span className={`${styles.inputTitle}`}>Client Name</span>
             <input
-              className={`${styles.name} h-[50px] rounded-[10] pl-4`}
+              className={`${styles.name} h-[50px] rounded-[10px] pl-4`}
               placeholder="Client Name"
               type="text"
             />
           </div>
           <div className={`${styles.input} flex flex-col`}>
             <span className={`${styles.inputTitle}`}>Plan</span>
-            <select className={`${styles.plan} h-[50px] pl-4 rounded-[10]`}>
+            <select className={`${styles.plan} h-[50px] pl-4 rounded-[10px]`}>
               <option>default - 50tokens</option>
               <option>silber - 100tokens</option>
               <option>gold - 200tokens</option>
@@ -45,15 +45,15 @@ export default function ClientAdd() {
             </select>
           </div>
           <div
-            className={`${styles.btns} flex h-fit justify-end absolute bottom-0 right-[24] gap-3 text-white`}
+            className={`${styles.btns} flex h-fit justify-end absolute bottom-0 right-[24px] gap-3 text-white`}
           >
             <button
-              className={`${styles.add} flex justify-center items-center w-[80] h-[40] rounded-[10] cursor-pointer`}
+              className={`${styles.add} flex justify-center items-center w-[80px] h-[40px] rounded-[10px] cursor-pointer`}
             >
               Add
             </button>
             <button
-              className={`${styles.cancel} flex justify-center items-center w-[80] h-[40] rounded-[10] cursor-pointer`}
+              className={`${styles.cancel} flex justify-center items-center w-[80px] h-[40px] rounded-[10px] cursor-pointer`}
               onClick={() => {
                 dispatch(setClientAddModal());
               }}
