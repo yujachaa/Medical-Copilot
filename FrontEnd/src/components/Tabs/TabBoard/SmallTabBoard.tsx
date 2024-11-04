@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import styles from './TabBoard.module.scss';
+import styles from './SmallTabBoard.module.scss';
 import Tab from '../Tab';
 import NewTab from '../NewTab';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';

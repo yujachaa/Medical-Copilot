@@ -16,9 +16,9 @@ type paramsType = {
 export default function Page({ params }: paramsType) {
   console.log(params);
   const [isActive, setIsActive] = useState(false);
-  const [plugin,setPlugin] = useState<PluginType>('default');
+  const [plugin, setPlugin] = useState<PluginType>('default');
   const toggleIcons = () => {
-      setIsActive( (prev) => !prev);
+    setIsActive((prev) => !prev);
   };
   return (
     <div className={styles.container}>
@@ -30,11 +30,39 @@ export default function Page({ params }: paramsType) {
         Please type in the questions you`re curious about.
       </div>
       <div className={`flex justify-center items-center mt-12`}>
-        <div className={`relative w-[60px] h-[60px] mr-4 cursor-pointer ${isActive ? styles.active : ''}`}>
-        <div className={styles.main} onClick={toggleIcons}><SelectTabIcons logoType={plugin} className={"w-[60px] h-[60px]"}/></div>
-        <Logo className={styles.icon1} onClick={()=>{setPlugin('default');setIsActive(false)}}/>
-        <Cxr className={styles.icon2} onClick={()=>{setPlugin('cxr');setIsActive(false)}}/>
-        <CapSule className={styles.icon3} onClick={()=>{setPlugin('capsule');setIsActive(false)}}/>
+        <div
+          className={`relative w-[60px] h-[60px] mr-4 cursor-pointer ${isActive ? styles.active : ''}`}
+        >
+          <div
+            className={styles.main}
+            onClick={toggleIcons}
+          >
+            <SelectTabIcons
+              logoType={plugin}
+              className={'w-[60px] h-[60px]'}
+            />
+          </div>
+          <Logo
+            className={styles.icon1}
+            onClick={() => {
+              setPlugin('default');
+              setIsActive(false);
+            }}
+          />
+          <Cxr
+            className={styles.icon2}
+            onClick={() => {
+              setPlugin('cxr');
+              setIsActive(false);
+            }}
+          />
+          <CapSule
+            className={styles.icon3}
+            onClick={() => {
+              setPlugin('capsule');
+              setIsActive(false);
+            }}
+          />
         </div>
         <Input />
       </div>
