@@ -3,7 +3,7 @@ import styles from './Tab.module.scss';
 import { CgClose } from 'react-icons/cg';
 import SelectTabIcons from './components/SelectTabIcons';
 import { tab } from '@/redux/features/tab/tabSlice';
-
+import Link from 'next/link';
 export type PluginType = 'default' | 'cxr' | 'capsule';
 
 type TabProps = {
@@ -20,16 +20,18 @@ export default function Tab({ HandleDelete, onClick, tab, isActive }: TabProps) 
     HandleDelete(id);
   };
   return (
-    <div
+    <Link
       className={` ${styles.tab} ${isActive === true && styles.active}`}
+      href={`/main/${tab.id}`}
+      prefetch={true}
       onClick={onClick}
     >
-      {SelectTabIcons(type)}
+      <SelectTabIcons logoType={type} className={"w-8 h-8"}/>
       <p>{title}</p>
       <CgClose
         className="w-5 h-5 ml-auto cursor-pointer text-rgb0.5"
         onClick={handleDelete}
       />
-    </div>
+    </Link>
   );
 }
