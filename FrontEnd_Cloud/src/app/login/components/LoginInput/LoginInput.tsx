@@ -18,7 +18,7 @@ export default function LoginInput() {
       <div className={`${styles.btn} flex w-full`}>
         <Link
           href="/main"
-          className={`${styles.signup} w-[422x] h-[64px] flex justify-center items-center`}
+          className={`${styles.signup} w-[422px] h-[64px] flex justify-center items-center`}
         >
           Login
         </Link>
