@@ -18,5 +18,6 @@ const colors = {
   'admin-main': '#6EA7E9',
   'admin-mint': '#A5DCE4',
   'rgb0.5': '#00000080',
+  'gray-msg': '#f2f2f2',
 };
 export default colors;
