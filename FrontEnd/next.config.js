@@ -1,3 +1,5 @@
+import withPWA from '@ducanh2912/next-pwa';
+
 const nextConfig = {
   /* config options here */
   webpack(config) {
@@ -19,4 +21,6 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withPWA({
+  dest: 'public',
+})(nextConfig);
