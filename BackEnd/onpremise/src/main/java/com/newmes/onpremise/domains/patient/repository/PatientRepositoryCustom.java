@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PatientRepositoryCustom {
     List<PatientEntity> searchPatientsByKeyword(String keyword) throws IOException;
-    List<String> autocompletePatients(String prefix) throws IOException;
+    List<PatientEntity> autocompletePatients(String prefix) throws IOException;
 }
