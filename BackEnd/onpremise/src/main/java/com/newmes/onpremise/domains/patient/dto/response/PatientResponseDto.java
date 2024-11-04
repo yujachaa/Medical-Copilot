@@ -1,6 +1,6 @@
 package com.newmes.onpremise.domains.patient.dto.response;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.newmes.onpremise.domains.patient.domain.Patient;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ public class PatientResponseDto {
     private String sex;
     private int age;
     private String modality;
-    private LocalDateTime visitDate;
+    private LocalDate visitDate;
 
     public static PatientResponseDto from(Patient patient, String parsedModality) {
         return new PatientResponseDto(
