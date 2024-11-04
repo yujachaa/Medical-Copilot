@@ -2,7 +2,8 @@ package com.newmes.onpremise.domains.patient.service;
 
 import com.newmes.onpremise.domains.patient.domain.Modality;
 import com.newmes.onpremise.domains.patient.domain.Patient;
-import com.newmes.onpremise.domains.patient.dto.PatientResponseDto;
+import com.newmes.onpremise.domains.patient.dto.request.PatientRequestDto;
+import com.newmes.onpremise.domains.patient.dto.response.PatientResponseDto;
 import com.newmes.onpremise.domains.patient.entity.PatientEntity;
 import com.newmes.onpremise.domains.patient.repository.PatientRepository;
 import com.newmes.onpremise.domains.patient.repository.PatientRepositoryCustom;
@@ -24,6 +25,12 @@ public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final PatientRepositoryCustom patientRepositoryCustom;
+
+    @Override
+    public void registerPatient(PatientRequestDto requestDto) {
+        PatientEntity patientEntity = PatientEntity.fromDto(requestDto);
+        patientRepository.save(patientEntity);
+    }
 
     @Override
     public List<PatientResponseDto> searchPatients(String query) throws IOException {

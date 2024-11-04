@@ -1,4 +1,4 @@
-package com.newmes.onpremise.domains.patient.dto;
+package com.newmes.onpremise.domains.patient.dto.response;
 
 import java.time.LocalDateTime;
 
