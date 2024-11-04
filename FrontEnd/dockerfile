@@ -9,7 +9,7 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-npm run build-storybook
+RUN npm run build-storybook
 
 EXPOSE 3000
 EXPOSE 6006 
