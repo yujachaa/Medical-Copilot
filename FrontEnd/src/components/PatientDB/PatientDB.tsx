@@ -1,17 +1,21 @@
 import styles from './PatientDB.module.scss';
 import { FaDatabase } from 'react-icons/fa6';
 import { FaSortDown } from 'react-icons/fa';
+import { IoMdCloseCircleOutline } from 'react-icons/io';
 // import { FaSortUp } from "react-icons/fa";
 
 export default function PatientDB() {
   return (
     <div className={`${styles.main} fixed w-full h-full flex justify-center items-center`}>
       <div
-        className={`${styles.box} w-[50%] min-w-[490px] h-[60%] min-h-[350px] rounded-[20px] flex flex-col p-6`}
+        className={`${styles.box} w-[50%] min-w-[490px] h-[60%] min-h-[350px] rounded-[20px] flex flex-col p-6 gap-3`}
       >
-        <div className={`${styles.title} flex items-center gap-4`}>
-          <FaDatabase className={styles.dbIcon} />
-          <span>Patient Database</span>
+        <div className={`${styles.title} flex items-center justify-between gap-4 pr-4 pl-4`}>
+          <div className={`flex items-center gap-4`}>
+            <FaDatabase className={styles.dbIcon} />
+            <span>Patient Database</span>
+          </div>
+          <IoMdCloseCircleOutline />
         </div>
         <div className={`${styles.table} justify-centerw-full h-full pl-4 pr-4`}>
           <table className={`w-full`}>
