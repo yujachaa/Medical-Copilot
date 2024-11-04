@@ -1,3 +1,4 @@
+import { TbEdit } from 'react-icons/tb';
 import styles from './ReportData.module.scss';
 
 export default function Summary() {
@@ -9,6 +10,9 @@ export default function Summary() {
       <div className={`${styles.info}`}>
         <div>Brief Summary</div>
         <div className={styles.image}>{summaryText}</div>
+        <div className={styles.editorBtn}>
+          <TbEdit />
+        </div>
       </div>
     </div>
   );
