@@ -1,0 +1,106 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  background-color: rgb(0, 0, 0, 0.25);
+}
+
+.box {
+  background-color: white;
+  box-shadow: 0 2 9 0 rgb(0, 0, 0, 0.25);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.dbIcon {
+  color: $blue-btn;
+}
+
+.table {
+  border-bottom: 2px solid black;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  thead {
+    background-color: $blue-msg;
+  }
+
+  th {
+    position: relative;
+    font-size: 14px;
+    height: 50px;
+    color: white;
+
+    border-top: none;
+    border-bottom: none;
+
+    .down {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 15px;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 0; /* 시작 위치 */
+      height: 70%; /* 선 길이 */
+      width: 1px;
+      background-color: white;
+    }
+
+    &:first-child {
+      border-left: none;
+      &::after {
+        content: '';
+        display: none;
+      }
+    }
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  tbody {
+    tr {
+      &:hover {
+        background-color: $blue-base;
+      }
+    }
+    td {
+      position: relative;
+      text-align: center;
+      height: 70px;
+      border-top: none;
+      border-bottom: 1px solid $tab-bg;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 15%;
+        left: 0; /* 시작 위치 */
+        height: 70%; /* 선 길이 */
+        width: 1px;
+        background-color: $tab-bg;
+      }
+
+      &:first-child {
+        border-left: none;
+        &::after {
+          content: '';
+          display: none;
+        }
+      }
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+  }
+}
