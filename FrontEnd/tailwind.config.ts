@@ -39,6 +39,10 @@ const config: Config = {
         'gray-msg': '#f2f2f2',
       },
     },
+    screens: {
+      'tab-garo': '1024px',
+      'tab-sero': '768px',
+    },
   },
   plugins: [],
 };
