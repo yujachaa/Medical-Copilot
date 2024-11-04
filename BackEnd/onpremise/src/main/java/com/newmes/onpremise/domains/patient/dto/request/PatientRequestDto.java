@@ -7,7 +7,6 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Getter
 public record PatientRequestDto(
         String PID,
         Gender sex,
