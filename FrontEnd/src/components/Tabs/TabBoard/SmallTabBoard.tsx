@@ -1,11 +1,12 @@
 'use client';
 import React from 'react';
 import styles from './TabBoard.module.scss';
-import Tab from './Tab';
-import NewTab from './NewTab';
+import Tab from '../Tab';
+import NewTab from '../NewTab';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { addTab, deleteTab, setSelectedTab } from '@/redux/features/tab/tabSlice';
 import { useRouter } from 'next/navigation';
+
 export default function TabBoard() {
   const { selectedIndex, tablist, increment } = useAppSelector((state) => state.tab);
   const dispatch = useAppDispatch();

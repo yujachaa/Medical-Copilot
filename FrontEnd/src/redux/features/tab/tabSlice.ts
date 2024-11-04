@@ -1,10 +1,12 @@
 import { PluginType } from '@/components/Tabs/Tab';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+type TabType = 'default' | 'chat';
 export type tab = {
   id: number;
   title: string;
   type: PluginType;
+  tabType: TabType;
 };
 
 type tabProps = {
@@ -15,7 +17,7 @@ type tabProps = {
 };
 
 const initialState: tabProps = {
-  tablist: [{ id: 0, title: 'Default Plugin', type: 'default' }],
+  tablist: [{ id: 0, title: 'Default Plugin', type: 'default', tabType: 'default' }],
   selectedTab: 0,
   increment: 0,
   selectedIndex: 0,
@@ -33,11 +35,20 @@ const tabSlices = createSlice({
       state.selectedTab = action.payload;
     },
     addTab: (state) => {
-      const newTab: tab = { id: ++state.increment, title: `New Tab`, type: 'default' };
+      const newTab: tab = {
+        id: ++state.increment,
+        title: `New Tab`,
+        type: 'default',
+        tabType: 'default',
+      };
       state.tablist.push(newTab);
-      state.selectedIndex = state.tablist.length;
+      state.selectedIndex = state.tablist.length - 1;
     },
     deleteTab: (state, action: PayloadAction<number>) => {
+      if (state.tablist.length === 1) {
+        alert('탭은 적어도 1개 이상이어야 합니다');
+        return;
+      }
       const index = state.tablist.findIndex((tab) => tab.id === action.payload);
       if (index !== -1) {
         if (index < state.selectedIndex) {
