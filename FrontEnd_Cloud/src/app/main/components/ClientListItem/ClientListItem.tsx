@@ -2,7 +2,7 @@ import Link from 'next/link';
 import styles from './ClientListItem.module.scss';
 import { FaChevronRight } from 'react-icons/fa';
 
-type dataType = { id: number; clientName: string; usageAi: number; week: number; state: string };
+type dataType = { id: number; comName: string; grade: string; key: string };
 
 export default function ClientListItem({ client }: { client: dataType }) {
   return (
@@ -14,19 +14,18 @@ export default function ClientListItem({ client }: { client: dataType }) {
         <span className={`${styles.clientId}`}>
           No.<span className={`${styles.clientIdNumber}`}>{client.id}</span>
         </span>
-        <span className={`${styles.clientName}`}>{client.clientName}</span>
+        <span className={`${styles.clientName}`}>{client.comName}</span>
         <div className={`${styles.tag} flex gap-6 h-[35px] justify-between`}>
-          <span className={`${styles.usage}`}>{client.usageAi}</span>
-          <span className={`${styles.week}`}>{client.week}weeks</span>
+          <span className={`${styles.usage}`}>1234</span>
+          <span className={`${styles.week}`}>10weeks</span>
           <span
             style={
-              client.state !== 'Error'
-                ? { backgroundColor: '#1F9DFF' }
-                : { backgroundColor: '#FF8090' }
+              'Error' !== 'Error' ? { backgroundColor: '#1F9DFF' } : { backgroundColor: '#FF8090' }
             }
             className={`${styles.state}`}
           >
-            {client.state}
+            {/* {client.state} */}
+            Error
           </span>
         </div>
       </div>
