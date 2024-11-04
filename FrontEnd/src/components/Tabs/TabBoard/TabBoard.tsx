@@ -8,6 +8,7 @@ import { addTab, deleteTab, setSelectedTab } from '@/redux/features/tab/tabSlice
 import { useRouter } from 'next/navigation';
 export default function TabBoard() {
   const { selectedIndex, tablist, increment } = useAppSelector((state) => state.tab);
+
   const dispatch = useAppDispatch();
   const router = useRouter();
   const handleDelete = (id: number) => {

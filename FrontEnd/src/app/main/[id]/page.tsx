@@ -9,7 +9,7 @@ import { PluginType } from '@/components/Tabs/Tab';
 import SelectTabIcons from '@/components/Tabs/components/SelectTabIcons';
 import Header from '@/components/Header/Header';
 type paramsType = {
-  params: {
+  params?: {
     id: string;
   };
 };
