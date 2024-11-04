@@ -1,8 +1,14 @@
+'use client';
 import React from 'react';
 import styles from './page.module.scss';
 import ReadButton from './components/ReadButton';
 import Item from './components/Item';
-export default function page() {
+import { useAppDispatch } from '@/redux/store/hooks/store';
+import { initialIndex } from '@/redux/features/tab/tabSlice';
+export default function Page() {
+  const dispatch = useAppDispatch();
+  dispatch(initialIndex());
+
   return (
     <div className={styles.container}>
       <div className={styles.top}>

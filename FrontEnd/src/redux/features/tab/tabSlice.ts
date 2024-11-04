@@ -59,8 +59,11 @@ const tabSlices = createSlice({
       const temp = state.tablist.filter((tab) => tab.id !== action.payload);
       state.tablist = [...temp];
     },
+    initialIndex: (state) => {
+      state.selectedIndex = -1;
+    },
   },
 });
 
-export const { setSelectedTab, addTab, deleteTab } = tabSlices.actions;
+export const { setSelectedTab, addTab, deleteTab, initialIndex } = tabSlices.actions;
 export default tabSlices;

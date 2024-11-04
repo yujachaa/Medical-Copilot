@@ -7,6 +7,7 @@ import CapSule from '@/assets/images/capsule.svg';
 import Cxr from '@/assets/images/cxr.svg';
 import { PluginType } from '@/components/Tabs/Tab';
 import SelectTabIcons from '@/components/Tabs/components/SelectTabIcons';
+import Header from '@/components/Header/Header';
 type paramsType = {
   params: {
     id: string;
@@ -22,6 +23,7 @@ export default function Page({ params }: paramsType) {
   };
   return (
     <div className={styles.container}>
+      <Header />
       <div className={styles.title}>MEDICAL COPILOT</div>
       <div className="flex justify-center items-center text-[20px] text-2c2c2c mt-4">
         Dr. Bell will tell you anything about medical knowledge!
