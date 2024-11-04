@@ -62,7 +62,7 @@ pipeline {
 				endpoint: 'https://meeting.ssafy.com/hooks/ypu137wxnf8sx8ywhdw95ttn8o', 
                 channel: 's205_git'
                 )
-            } 
+            }
         }
         failure {
         	script {
