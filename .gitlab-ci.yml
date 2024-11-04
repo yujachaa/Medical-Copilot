@@ -1,43 +1,43 @@
-stages:
-  - trigger
+# stages:
+#   - trigger
 
-cloud_backend_webhook_trigger:
-  stage: trigger
-  rules:
-    - changes:
-        - BackEnd/cloud/**  # BackEnd/cloud 폴더 경로 모니터링
-      when: always
-    - if: '$CI_COMMIT_REF_NAME == "develop"'  # 브랜치 조건
-  script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_back"
+# cloud_backend_webhook_trigger:
+#   stage: trigger
+#   rules:
+#     - changes:
+#         - BackEnd/cloud/**  # BackEnd/cloud 폴더 경로 모니터링
+#       when: always
+#     - if: '$CI_COMMIT_REF_NAME == "develop"'  # 브랜치 조건
+#   script:
+#     - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_back"
 
-cloud_frontend_webhook_trigger:
-  stage: trigger
-  rules:
-    - changes:
-        - FrontEnd_Cloud/**  # FrontEnd_Cloud 폴더 경로 모니터링
-      when: always
-    - if: '$CI_COMMIT_REF_NAME == "develop"'  # 브랜치 조건
-  script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_front"
+# cloud_frontend_webhook_trigger:
+#   stage: trigger
+#   rules:
+#     - changes:
+#         - FrontEnd_Cloud/**  # FrontEnd_Cloud 폴더 경로 모니터링
+#       when: always
+#     - if: '$CI_COMMIT_REF_NAME == "develop"'  # 브랜치 조건
+#   script:
+#     - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_front"
 
 
-onpremise_backend_webhook_trigger:
-  stage: trigger
-  rules:
-    - changes:
-        - BackEnd/onpremise/**  # BackEnd/onpremise 폴더 경로 모니터링
-      when: always
-    - if: '$CI_COMMIT_REF_NAME == "develop"'  # 브랜치 조건
-  script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_onpremise_back"
+# onpremise_backend_webhook_trigger:
+#   stage: trigger
+#   rules:
+#     - changes:
+#         - BackEnd/onpremise/**  # BackEnd/onpremise 폴더 경로 모니터링
+#       when: always
+#     - if: '$CI_COMMIT_REF_NAME == "develop"'  # 브랜치 조건
+#   script:
+#     - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_onpremise_back"
 
-onpremise_frontend_webhook_trigger:
-  stage: trigger
-  rules:
-    - changes:
-        - FrontEnd/**  # FrontEnd 폴더 경로 모니터링
-      when: always
-    - if: '$CI_COMMIT_REF_NAME == "develop"'  # 브랜치 조건
-  script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_onpremise_front"
+# onpremise_frontend_webhook_trigger:
+#   stage: trigger
+#   rules:
+#     - changes:
+#         - FrontEnd/**  # FrontEnd 폴더 경로 모니터링
+#       when: always
+#     - if: '$CI_COMMIT_REF_NAME == "develop"'  # 브랜치 조건
+#   script:
+#     - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_onpremise_front"
