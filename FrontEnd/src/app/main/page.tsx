@@ -1,10 +1,10 @@
-import Header from '@/components/Header/Header';
-import styles from './page.module.scss';
-
-export default function Main() {
-  return (
-    <div className={styles.container}>
-      <Header />
-    </div>
-  );
+import React from 'react';
+import CheckIndex from './components/checkIndex';
+type paramsType = {
+  params: {
+    id: string;
+  };
+};
+export default function page({ params }: paramsType) {
+  return <CheckIndex id={params.id} />;
 }

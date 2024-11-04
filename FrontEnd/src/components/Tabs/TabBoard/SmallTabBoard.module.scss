@@ -1,7 +1,7 @@
 @import '@/style/globals_variant.scss';
 
 .container {
-  width: 100vw;
+  width: calc(100vw - 70px);
   height: 50px;
   background-color: $white;
   display: flex;

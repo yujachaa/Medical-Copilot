@@ -7,11 +7,11 @@ type NewTabProps = {
 };
 export default function NewTab({ onPlus }: NewTabProps) {
   return (
-    <div className={` ${styles.tab}`}>
-      <CgMathPlus
-        className="w-5 h-5 cursor-pointer text-rgb0.5"
-        onClick={onPlus}
-      />
+    <div
+      className={` ${styles.tab} cursor-pointer`}
+      onClick={onPlus}
+    >
+      <CgMathPlus className="w-5 h-5 cursor-pointer text-rgb0.5" />
     </div>
   );
 }
