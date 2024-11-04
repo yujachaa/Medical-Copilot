@@ -1,3 +1,5 @@
+import withPWA from '@ducanh2912/next-pwa';
+
 const nextConfig = {
     basePath: '/onpremise',
   /* config options here */
@@ -20,4 +22,6 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withPWA({
+  dest: 'public',
+})(nextConfig);
