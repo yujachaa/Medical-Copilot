@@ -1,4 +1,5 @@
 const nextConfig = {
+    basePath: '/onpremise',
   /* config options here */
   webpack(config) {
     config.module.rules.push({
