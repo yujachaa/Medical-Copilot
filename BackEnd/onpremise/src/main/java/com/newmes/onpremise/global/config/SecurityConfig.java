@@ -2,11 +2,12 @@ package com.newmes.onpremise.global.config;
 
 
 import com.newmes.onpremise.global.redis.service.RedisService;
-import com.newmes.onpremise.global.security.jwt.JwtAuthFilter;
-import com.newmes.onpremise.global.security.jwt.JwtUtil;
 import com.newmes.onpremise.global.security.exception.CustomAccessDeniedHandler;
 import com.newmes.onpremise.global.security.exception.CustomAuthenticationEntryPoint;
+import com.newmes.onpremise.global.security.jwt.JwtAuthFilter;
+import com.newmes.onpremise.global.security.jwt.JwtUtil;
 import com.newmes.onpremise.global.security.userdetails.CustomUserDetailsService;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -16,8 +17,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import lombok.AllArgsConstructor;
 
 @Configuration
 @EnableWebSecurity

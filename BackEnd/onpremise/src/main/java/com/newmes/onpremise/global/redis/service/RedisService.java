@@ -2,8 +2,6 @@ package com.newmes.onpremise.global.redis.service;
 
 import com.newmes.onpremise.global.redis.dto.RedisDto;
 
-import java.util.List;
-
 
 public interface RedisService {
 	void saveRefreshToken(String username, String refreshToken);
