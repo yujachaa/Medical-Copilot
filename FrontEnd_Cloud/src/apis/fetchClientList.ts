@@ -1,6 +1,8 @@
 export async function fetchClientList() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cloud/api/corporate`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cloud/api/corporate`, {
+      cache: 'no-store',
+    });
     if (!response.ok) {
       throw new Error('응답이 없습니다.');
     }
