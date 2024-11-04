@@ -13,7 +13,7 @@
     "build-storybook": "storybook build"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,css,scss}": [
+    "*.{js,ts,tsx,css,scss,json}": [
       "prettier --write"
     ]
   },
@@ -23,6 +23,7 @@
     }
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^10.2.9",
     "@nivo/core": "^0.87.0",
     "@nivo/line": "^0.87.0",
     "@nivo/pie": "^0.87.0",
