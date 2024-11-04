@@ -1,0 +1,59 @@
+@import '@/style/globals_variant.scss';
+
+.container {
+  width: 50%;
+  height: 60px;
+  border: 1px solid #e7e7e7;
+  border-radius: 60px;
+  display: flex;
+  flex-direction: row;
+}
+
+.file {
+  width: 60px;
+  height: 60px;
+  border-right: 1px solid #e7e7e7;
+  border-top-left-radius: 60px;
+  border-bottom-left-radius: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+  position: relative;
+  cursor: pointer;
+}
+.file:hover::before {
+  position: absolute;
+  content: 'Input File';
+  bottom: -22px; /* Position below the element */
+  left: 14px;
+  width: 80px;
+  height: 30px;
+  display: flex;
+  background-color: #ebf4ff;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  z-index: 5;
+}
+.file:hover::after {
+  position: absolute;
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  bottom: -9px;
+  left: 20px;
+  background-color: #ebf4ff;
+  transform: rotate(45deg);
+  z-index: 4;
+}
+
+.input {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 1.25rem;
+  outline: none;
+}

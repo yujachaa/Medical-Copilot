@@ -4,8 +4,13 @@ import { Provider } from 'react-redux';
 import { store } from '@/redux/store/store';
 
 const meta = {
-  title: 'components/TabBoard',
+  title: 'components/SmallTabBoard',
   component: TabBoard,
+  parameters: {
+    nextjs: {
+      appDirectory: true, // 👈 Set this
+    },
+  },
 } satisfies Meta<typeof TabBoard>;
 
 export default meta;

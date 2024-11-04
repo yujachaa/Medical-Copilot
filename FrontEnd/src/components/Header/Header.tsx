@@ -4,31 +4,25 @@ import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 import styles from './Header.module.scss';
-import Tab from '../Tabs/Tab';
 import UserIcon from '@/assets/images/userImg.png';
 import Image from 'next/image';
 import { FaStar } from 'react-icons/fa';
 import { TbLogout, TbSettingsFilled } from 'react-icons/tb';
+import TabBoard from '../Tabs/TabBoard/TabBoard';
 
 export default function Header() {
   const pathname = usePathname(); // 현재 URL 경로를 가져옴
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
-
+  const isMainWithId = /^\/main\/\d+$/.test(pathname);
   const clickUser = () => {
     setIsUserModalOpen(!isUserModalOpen);
   };
 
+  console.log(pathname);
   return (
     <div className={styles.header}>
-      <div className={styles.headerTab}>
-        <Tab
-          HandleDelete={() => {}}
-          onClick={() => {}}
-          tab={{ id: 0, title: 'default', type: 'default' }}
-          isActive={true}
-        />{' '}
-      </div>
-      {pathname === '/main' ? (
+      <TabBoard />
+      {isMainWithId ? (
         <div className={styles.mainHeader}>
           <div className="flex gap-[10] items-center hover:bg-gray-100 p-2 rounded-md">
             <Image
