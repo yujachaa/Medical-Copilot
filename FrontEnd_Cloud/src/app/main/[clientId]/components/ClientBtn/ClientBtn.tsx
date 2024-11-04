@@ -16,7 +16,7 @@ export default function ClientBtn({
         <span>Week</span>
       </div>
       <div
-        className={`${styles.errorlog} flex justify-center items-center w-[200px] h-[40px] gap-3 rounded-[10]`}
+        className={`${styles.errorlog} flex justify-center items-center w-[200px] h-[40px] gap-3 rounded-[10px]`}
         onClick={() => {
           setLogModal((prev) => !prev);
         }}

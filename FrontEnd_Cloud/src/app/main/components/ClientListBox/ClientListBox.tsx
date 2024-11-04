@@ -65,8 +65,8 @@ const data: dataType = [
 
 export default function ClientListBox() {
   return (
-    <div className={`${styles.main} p-3 flex flex-col min-h-[600] gap-3`}>
-      <div className={`flex justify-between w-full h-[30] items-center`}>
+    <div className={`${styles.main} p-3 flex flex-col min-h-[600px] gap-3`}>
+      <div className={`flex justify-between w-full h-[30px] items-center`}>
         <span className={`${styles.title} text-2xl`}>Client List</span>
         <IoSearch className={`${styles.search} text-3xl`} />
       </div>
