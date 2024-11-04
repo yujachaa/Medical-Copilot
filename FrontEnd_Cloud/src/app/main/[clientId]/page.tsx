@@ -1,12 +1,10 @@
-'use client';
-
 import { client } from '@/types/client';
 import ClientBtn from './components/ClientBtn/ClientBtn';
 import ClientGraph from './components/ClientGraph/ClientGraph';
 import ClientInfo from './components/ClientInfo/ClientInfo';
 import styles from './page.module.scss';
-import { useState } from 'react';
-import LogModal from './components/LogModal/LogModal';
+// import { fetchClientDetail } from '@/apis/fetchClientDetail';
+// import LogModal from './components/LogModal/LogModal';
 
 const data: client = {
   id: 1,
@@ -19,17 +17,16 @@ const data: client = {
   totalCount: 0,
 };
 
-export default function ClientDetailPage() {
-  const [logModal, setLogModal] = useState<boolean>(false);
-
+export default async function ClientDetailPage() {
+  // const data = await fetchClientDetail(params.clientId);
   return (
     <div className={`${styles.main} w-screen flex`}>
       <div className={`w-screen flex flex-col p-6`}>
-        <ClientInfo data={data} />
-        <ClientBtn setLogModal={setLogModal} />
+        {data && <ClientInfo data={data} />}
+        <ClientBtn />
         <ClientGraph />
       </div>
-      {logModal ? <LogModal setLogModal={setLogModal} /> : null}
+      {/* <LogModal /> */}
     </div>
   );
 }
