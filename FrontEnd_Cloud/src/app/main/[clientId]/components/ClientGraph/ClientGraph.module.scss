@@ -1,0 +1,19 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    height: 1024px;
+  }
+}
+
+.usage {
+  background-color: $blue-base;
+  box-shadow: 0 2 5 0 rgb(0, 0, 0, 0.25);
+}
+
+.request {
+  background-color: $blue-base;
+  box-shadow: 0 2 5 0 rgb(0, 0, 0, 0.25);
+}

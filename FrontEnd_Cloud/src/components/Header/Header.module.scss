@@ -4,13 +4,29 @@
   background-color: $admin_main;
 }
 
+.logo {
+  &:hover {
+    transform: scale(1.05);
+    transition: transform 0.1s linear;
+  }
+}
+
 .clientRegist {
   background-color: white;
   font-weight: 700;
   font-size: 20px;
+
+  &:hover {
+    transform: scale(1.02);
+    transition: transform 0.1s linear;
+  }
 }
 
 .logout {
   color: white;
   font-size: 40px;
+  &:hover {
+    transform: scale(1.05);
+    transition: transform 0.1s linear;
+  }
 }

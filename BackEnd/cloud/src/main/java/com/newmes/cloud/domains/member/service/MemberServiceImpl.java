@@ -1,6 +1,7 @@
 package com.newmes.cloud.domains.member.service;
 
 import com.newmes.cloud.domains.member.domain.Member;
+import com.newmes.cloud.domains.member.dto.MemberRequestDto;
 import com.newmes.cloud.domains.member.entity.MemberEntity;
 import com.newmes.cloud.domains.member.exception.InvalidPasswordException;
 import com.newmes.cloud.domains.member.exception.MemberNotFoundException;
@@ -16,6 +17,10 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,16 +32,19 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
-    public void login(String name, String password) {
-        MemberEntity entity = memberRepository.findByUsername(name)
-                .orElseThrow(() -> new MemberNotFoundException(name));
+    public void login(MemberRequestDto requestDto) {
+        MemberEntity entity = memberRepository.findByUsername(requestDto.username())
+                .orElseThrow(() -> new MemberNotFoundException(requestDto.username()));
         Member member = Member.fromEntity(entity);
 
-        if (!passwordEncoder.matches(password, member.getPassword())) {
+        if (!passwordEncoder.matches(requestDto.password(), member.getPassword())) {
             throw new InvalidPasswordException();
         }
 
-        Authentication authToken = new UsernamePasswordAuthenticationToken(name, password);
+
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_"+member.getRole().name()));
+        Authentication authToken = new UsernamePasswordAuthenticationToken(requestDto.username(), requestDto.password(), authorities);
+
         Authentication authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
