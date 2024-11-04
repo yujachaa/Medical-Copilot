@@ -11,7 +11,7 @@ export default function ChatInput() {
         className={styles.chatInput}
         placeholder="메시지를 입력하세요..."
       />
-      <Send />
+      <Send className={styles.sendIcon} />
     </div>
   );
 }

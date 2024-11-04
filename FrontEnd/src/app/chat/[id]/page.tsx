@@ -27,16 +27,18 @@ export default function Chat() {
           </div>
 
           <div className={styles.reportContainer}>
-            <div className={styles.reportInfo}>
-              <PluginInfo type="CXR" />
-              <ReportInfo
-                id="R12345678"
-                date={new Date()}
-              />
-              <ReportBtn />
+            <div className={styles.scrollable}>
+              <div className={styles.reportInfo}>
+                <PluginInfo type="CXR" />
+                <ReportInfo
+                  id="R12345678"
+                  date={new Date()}
+                />
+                <ReportBtn />
+              </div>
+              <ReportData />
+              <Summary />
             </div>
-            <ReportData />
-            <Summary />
           </div>
         </div>
       </div>

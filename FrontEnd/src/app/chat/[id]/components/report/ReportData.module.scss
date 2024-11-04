@@ -37,7 +37,7 @@
   padding: 8.655px 10.579px 8.655px 6.732px;
   flex-direction: column;
   align-items: flex-end;
-  gap: 5.77px;
+  gap: 5px;
   border-radius: 4.808px;
   background: #5da6f6;
 
@@ -45,7 +45,7 @@
     width: 100%;
     border: 0;
     border-top: 1px dashed white; // 선 색상 설정
-    margin: 0; // 위아래 여백 설정
+    margin-top: 5px; // 위아래 여백 설정
   }
 }
 
