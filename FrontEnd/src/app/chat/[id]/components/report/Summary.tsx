@@ -7,7 +7,7 @@ export default function Summary() {
 
   return (
     <div className="">
-      <div className={`${styles.info}`}>
+      <div className={`${styles.summary}`}>
         <div>Brief Summary</div>
         <div className={styles.image}>{summaryText}</div>
         <div className={styles.editorBtn}>
