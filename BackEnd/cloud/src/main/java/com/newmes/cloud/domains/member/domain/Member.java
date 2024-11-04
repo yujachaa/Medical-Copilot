@@ -3,7 +3,6 @@ package com.newmes.cloud.domains.member.domain;
 import com.newmes.cloud.domains.member.entity.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 @AllArgsConstructor
