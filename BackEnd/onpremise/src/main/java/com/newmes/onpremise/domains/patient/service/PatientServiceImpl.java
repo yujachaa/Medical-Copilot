@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -29,6 +29,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void registerPatient(PatientRequestDto requestDto) {
         PatientEntity patientEntity = PatientEntity.fromDto(requestDto);
+        patientEntity.updateDate();
         patientRepository.save(patientEntity);
     }
 
@@ -45,7 +46,7 @@ public class PatientServiceImpl implements PatientService {
                 .map(entry -> {
                     String[] keys = entry.getKey().split("_");
                     String pid = keys[0];
-                    LocalDateTime visitDate = LocalDateTime.parse(keys[1]);
+                    LocalDate visitDate = LocalDate.parse(keys[1]);
 
                     List<PatientEntity> patients = entry.getValue();
 
@@ -68,7 +69,9 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<String> autocomplete(String prefix) throws IOException {
-        return patientRepositoryCustom.autocompletePatients(prefix);
+        return patientRepositoryCustom.autocompletePatients(prefix).stream()
+                .map(PatientEntity::getPID) // 각 PatientEntity에서 PID만 추출
+                .collect(Collectors.toList());
     }
 
     @Override
