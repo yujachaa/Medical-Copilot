@@ -15,13 +15,16 @@ import { FaUserLarge } from 'react-icons/fa6';
 export default function SideBar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
-
   const clickUser = () => {
     setIsModalOpen(!isModalOpen);
   };
 
   const goMain = () => {
     router.push('/main');
+  };
+
+  const handleTab = () => {
+    router.push('/alarm');
   };
 
   return (
@@ -35,7 +38,10 @@ export default function SideBar() {
       <div className={`w-[55] h-[890] flex flex-col justify-center items-center gap-8`}>
         <IoSearch className={`${styles.menuBtn}`} />
         <CgMenuGridR className={`${styles.menuBtn}`} />
-        <FaBell className={`${styles.menuBtn} p-0.5`} />
+        <FaBell
+          className={`${styles.menuBtn} p-0.5`}
+          onClick={handleTab}
+        />
         <FaUserLarge className={`${styles.menuBtn} p-1`} />
         <TbSettingsFilled className={`${styles.menuBtn}`} />
       </div>

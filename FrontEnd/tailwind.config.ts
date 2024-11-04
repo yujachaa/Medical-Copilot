@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      rotate: {
+        '135': '135deg',
+      },
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
@@ -31,6 +34,8 @@ const config: Config = {
         'admin-main': '#6EA7E9',
         'admin-mint': '#A5DCE4',
         'rgb0.5': '#00000080',
+        '2c2c2c': '#2C2C2C',
+        clip: '#0D99FF',
         'gray-msg': '#f2f2f2',
       },
     },
