@@ -7,6 +7,15 @@
   align-self: stretch;
   flex-wrap: wrap;
   gap: 10px;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    width: 100%;
+    flex: 1 0 0;
+  }
+
+  @media (max-width: 768px) {
+  }
 }
 
 .info {
@@ -23,6 +32,15 @@
     font-size: 24px;
     font-weight: 700;
     text-align: right;
+  }
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    min-width: 0; // min-width 해제
+    max-width: none;
+  }
+
+  @media (max-width: 768px) {
   }
 }
 
@@ -41,7 +59,7 @@
   }
 }
 
-.image {
+.summaryText {
   display: flex;
   padding: 8px;
   flex-direction: column;
@@ -49,6 +67,30 @@
   align-items: center;
   border-radius: 5.263px;
   border: 1.053px solid #5da6f6;
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5.263px;
+  border: 1.053px solid #5da6f6;
+  width: 250px;
+  height: 250px;
+  padding: 8px; // 패딩을 imgWrapper에 적용
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .imgWrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+  }
 }
 
 .infoBox {
@@ -60,6 +102,7 @@
   gap: 5px;
   border-radius: 4.808px;
   background: #5da6f6;
+  position: relative;
 
   hr {
     width: 100%;
@@ -67,14 +110,17 @@
     border-top: 1px dashed white; // 선 색상 설정
     margin-top: 5px; // 위아래 여백 설정
   }
-}
 
-.infoInput {
-  width: 150px;
-  height: 24px;
-  text-align: center;
-  // font-size: medium;
-  // fon
+  @media (max-width: 1024px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr; // 두 개씩 한 줄에 배치
+    gap: 15px 30px; // 세로와 가로 간격 설정
+
+    hr {
+      margin-top: 0;
+      width: 97%;
+    }
+  }
 }
 
 .oneInfo {
@@ -82,6 +128,27 @@
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
+  width: 100%;
+}
+// .oneInfo {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   align-self: stretch;
+// }
+
+.infoInput {
+  width: 150px;
+  height: 24px;
+  text-align: center;
+
+  @media (max-width: 1024px) {
+    max-width: 100px; // 최소 너비 100px 유지
+  }
+
+  @media (max-width: 768px) {
+    max-width: 150px; // 최소 너비 100px 유지
+  }
 }
 
 .editorBtn {
