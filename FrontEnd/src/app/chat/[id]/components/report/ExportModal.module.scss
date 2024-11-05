@@ -16,7 +16,7 @@
 .modalContent {
   position: relative;
   background-color: white;
-  padding: 15px;
+  padding: 25px 15px 15px 15px;
   border-radius: 8px;
   height: 95vh;
   width: 80vw;
@@ -58,6 +58,10 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 5px;
+
+  @media (max-width: 1024px) {
+    height: 70%;
+  }
 }
 
 .oneInfo {
@@ -77,6 +81,10 @@
 .image {
   width: 65%;
   height: 65%;
+  @media (max-width: 1024px) {
+    height: 80%;
+    width: 80%;
+  }
 }
 
 .analysisBox {
