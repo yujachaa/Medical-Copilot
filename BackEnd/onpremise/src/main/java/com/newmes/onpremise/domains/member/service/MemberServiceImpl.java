@@ -4,6 +4,7 @@ import com.newmes.onpremise.domains.member.domain.Member;
 import com.newmes.onpremise.domains.member.domain.Token;
 import com.newmes.onpremise.domains.member.dto.request.LoginRequestDto;
 import com.newmes.onpremise.domains.member.dto.request.MemberRequestDto;
+import com.newmes.onpremise.domains.member.dto.response.LoginResponseDto;
 import com.newmes.onpremise.domains.member.dto.response.MemberResponseDto;
 import com.newmes.onpremise.domains.member.entity.MemberEntity;
 import com.newmes.onpremise.domains.member.exception.MemberNotFoundException;
@@ -30,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder encoder;
     private final RedisService redisService;
 
-    public Token login(LoginRequestDto request) {
+    public LoginResponseDto login(LoginRequestDto request) {
         MemberEntity member = memberElasticRepository.findByEmail(request.email())
                 .orElseThrow(() -> new MemberNotFoundException("email not found"));
 
@@ -43,7 +44,8 @@ public class MemberServiceImpl implements MemberService {
         String refreshToken = jwtUtil.createRefreshToken(info);
 
         redisService.saveRefreshToken(info.email(), refreshToken);
-        return new Token(accessToken, refreshToken);
+
+        return LoginResponseDto.from(member, accessToken);
     }
 
     public void logout(Token token) {
