@@ -2,6 +2,7 @@ package com.newmes.cloud.domains.corporate.service;
 
 import com.newmes.cloud.domains.corporate.domain.Corporate;
 import com.newmes.cloud.domains.corporate.dto.request.CorporateRequestDto;
+import com.newmes.cloud.domains.corporate.dto.response.CorporateListResponseDto;
 import com.newmes.cloud.domains.corporate.dto.response.CorporateResponseDto;
 import com.newmes.cloud.domains.corporate.entity.CorporateEntity;
 import com.newmes.cloud.domains.corporate.exception.CorporateNotFoundException;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.temporal.IsoFields;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -74,9 +77,61 @@ public class CorporateServiceImpl implements CorporateService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CorporateResponseDto> getAllCorporates() {
-        return corporateRepository.findAll().stream()
-                .map(corporateEntity -> CorporateResponseDto.from(Corporate.fromEntity(corporateEntity)))
+    public List<CorporateListResponseDto> getAllCorporates() {
+        List<UsageEntity> usageEntities = usageRepository.findAll();
+
+        LocalDate today = LocalDate.now();
+
+        return usageEntities.stream()
+                .map(usage -> {
+                    CorporateEntity corporate = usage.getCorporate();
+                    Long totalCount = (long) usage.getAgentCount();
+                    int subscription = today.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
+                            - corporate.getCreateDate().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+
+                    return CorporateListResponseDto.from(
+                            Corporate.fromEntity(corporate),
+                            totalCount,
+                            subscription+1
+                    );
+                })
                 .collect(Collectors.toList());
+    }
+
+
+    @Override
+    @Transactional
+    public boolean suspendCorporateKey(String key) {
+        CorporateEntity entity = corporateRepository.findByKey(key)
+                .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
+
+        entity.limitAvailability();
+        corporateRepository.save(entity);
+        boolean response = entity.isAvailability();
+
+        return response;
+    }
+
+    @Override
+    @Transactional
+    public String reissueCorporateKey(String key) {
+        CorporateEntity entity = corporateRepository.findByKey(key)
+                .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
+
+        String newKey = UUID.randomUUID().toString();
+        entity.updateKey(newKey);
+        CorporateEntity updatedEntity = corporateRepository.save(entity);
+
+        return CorporateResponseDto.from(Corporate.fromEntity(updatedEntity)).getKey();
+    }
+
+    @Override
+    @Transactional
+    public void deleteCorporateKey(String key) {
+        CorporateEntity entity = corporateRepository.findByKey(key)
+                .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
+
+        entity.updateKey("none");
+        corporateRepository.save(entity);
     }
 }
