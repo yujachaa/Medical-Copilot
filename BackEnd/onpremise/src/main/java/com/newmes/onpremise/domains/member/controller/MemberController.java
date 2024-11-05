@@ -46,7 +46,7 @@ public class MemberController {
     }
 
     @PatchMapping("/update-password")
-    public ResponseEntity<Map<String, Object>> updatePassword(@RequestParam String password) {
+    public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody String password) {
         memberService.updatePassword(password);
         return httpResponseUtil.createSuccessResponse("success", HttpStatus.OK);
     }
