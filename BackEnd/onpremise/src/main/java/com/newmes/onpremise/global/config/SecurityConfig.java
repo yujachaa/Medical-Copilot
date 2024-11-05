@@ -46,14 +46,12 @@ public class SecurityConfig {
 						configuration.setAllowedOrigins(Arrays.asList(
 								"https://k11s205.p.ssafy.io",
 								"http://localhost:3000",
-								"http://localhost:3001",
-								"http://localhost:8080",
-								"http://localhost:8081"
+								"http://localhost:3001"
 						));
 						configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 						configuration.setAllowCredentials(true);
 						configuration.setAllowedHeaders(Collections.singletonList("*"));
-						configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
+						configuration.setExposedHeaders(Collections.singletonList("*"));
 						configuration.setMaxAge(3600L);
 						return configuration;
 					}
