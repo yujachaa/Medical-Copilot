@@ -15,6 +15,13 @@ pipeline {
 				  
 				}
 			} 
+			stage('Prepare Environment') {
+            	steps {
+                	// EC2에 있는 .env 파일을 Jenkins 워크스페이스로 복사
+                	sh 'cp /home/ubuntu/medical-copilot/frontend/onpremise/.env ./FrontEnd/.env'
+            	}
+        	}
+        
 			
 			stage('Build image') {
 				steps {
