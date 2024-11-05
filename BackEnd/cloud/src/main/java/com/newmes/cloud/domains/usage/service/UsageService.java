@@ -1,7 +1,14 @@
 package com.newmes.cloud.domains.usage.service;
 
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
 import com.newmes.cloud.domains.usage.dto.request.UsageRequestDto;
 
+import com.newmes.cloud.domains.usage.dto.response.CountResponse;
+import com.newmes.cloud.domains.usage.dto.response.MonthlyResponse;
+import com.newmes.cloud.domains.usage.dto.response.WeeklyResponse;
+import com.newmes.cloud.domains.usage.dto.response.YearlyResponse;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -9,23 +16,24 @@ public interface UsageService {
 
     CompletableFuture<String> processAgentUsage(UsageRequestDto requestDto);
 
-  Map<String, long[]> monthly();
+  MonthlyResponse monthly() throws IOException;
 
-  Map<String, long[]> weekly();
+  WeeklyResponse weekly() throws IOException;
 
-  Map<String, long[]> yearly();
+  YearlyResponse yearly() throws IOException;
 
-  Map<String, Long> total();
+  List<CountResponse> total() throws IOException;
 
-  Map<String,long[]> customerYearly(String key);
+  YearlyResponse customerYearly(String key) throws IOException;
 
-  Map<String,long[]> customerMonthly(String key);
+  MonthlyResponse customerMonthly(String key) throws IOException;
 
-  Map<String,long[]> customerWeekly(String key);
+  WeeklyResponse customerWeekly(String key) throws IOException;
 
-  Map<String, Long> customerYearlyTotal(String key);
+  List<CountResponse> customerYearlyTotal(String key) throws IOException;
 
-  Map<String, Long> customerMonthlyTotal(String key);
+  List<CountResponse> customerMonthlyTotal(String key) throws IOException;
 
-  Map<String, Long> customerWeeklyTotal(String key);
+  List<CountResponse> customerWeeklyTotal(String key) throws IOException;
+
 }

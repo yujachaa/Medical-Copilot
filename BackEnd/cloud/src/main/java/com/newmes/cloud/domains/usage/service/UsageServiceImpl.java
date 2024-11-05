@@ -1,18 +1,27 @@
 package com.newmes.cloud.domains.usage.service;
 
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
+import co.elastic.clients.elasticsearch._types.aggregations.DateHistogramAggregate;
+import co.elastic.clients.elasticsearch._types.aggregations.DateHistogramBucket;
+import co.elastic.clients.elasticsearch._types.aggregations.StringTermsAggregate;
+import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
 import com.newmes.cloud.domains.corporate.domain.Corporate;
 import com.newmes.cloud.domains.corporate.exception.CorporateNotFoundException;
 import com.newmes.cloud.domains.corporate.repository.CorporateRepository;
 import com.newmes.cloud.domains.usage.domain.AgentUsageLog;
 import com.newmes.cloud.domains.usage.dto.request.UsageRequestDto;
-import com.newmes.cloud.domains.usage.dto.response.AgentAggregationResult;
-import com.newmes.cloud.domains.usage.dto.response.AgentCounts;
-import com.newmes.cloud.domains.usage.dto.response.AgentCounts.UsageData;
-import com.newmes.cloud.domains.usage.repositoryES.ElasticUsageRepository;
+import com.newmes.cloud.domains.usage.dto.response.CountResponse;
+import com.newmes.cloud.domains.usage.dto.response.MonthlyResponse;
+import com.newmes.cloud.domains.usage.dto.response.WeeklyResponse;
+import com.newmes.cloud.domains.usage.dto.response.YearlyResponse;
+import com.newmes.cloud.domains.usage.repositoryES.CustomRepository;
 import com.newmes.cloud.global.kafka.producer.UsageProducer;
+import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +36,7 @@ public class UsageServiceImpl implements UsageService{
 
     private final CorporateRepository corporateRepository;
     private final UsageProducer kafkaProducerService;
-    private final ElasticUsageRepository elasticUsageRepository;
+    private final CustomRepository customESRepository;
 
     public CompletableFuture<String> processAgentUsage(UsageRequestDto requestDto) {
         Corporate corporate = Corporate.fromEntity(
@@ -47,171 +56,271 @@ public class UsageServiceImpl implements UsageService{
 
 
     @Override
-    public Map<String, Long> total() {
-        List<AgentAggregationResult> count = elasticUsageRepository.total();
-        Map<String, Long> map = new HashMap<>();
-        for (AgentAggregationResult a : count){
-            String name = a.getKey();
-            long usages = a.getDocCount();
-            map.put(name, usages);
-        }
-        return map;
-    }
-
-    @Override
-    public Map<String, long[]> yearly() {
-        Map<String, long[]> map = new HashMap<>();
-        List<AgentCounts> count = elasticUsageRepository.findYearlyTotal();
-        for (AgentCounts agent : count){
-            String agentName = agent.getKey();
-            List<UsageData> data = agent.getCounts();
-            LocalDate now = LocalDate.now();
-
-            long[] months = new long[12];
-            for (UsageData usageData : data){
-                LocalDate specDate = usageData.getDate();
-                int monthDiff = 11 - (int) Math.abs(ChronoUnit.MONTHS.between(specDate, now));
-                months[monthDiff] = usageData.getDocCount();
+    public List<CountResponse> total() throws IOException {
+        Map<String, Aggregate> aggregations = customESRepository.total();
+        List<CountResponse> list = new ArrayList<>();
+        if (aggregations.isEmpty()){
+            System.out.println("Empty");
+        }else{
+            Aggregate agg = aggregations.get("by_agent");
+            if (agg != null && agg.isSterms()) {
+                StringTermsAggregate termsAgg = agg.sterms();
+                for (StringTermsBucket bucket : termsAgg.buckets().array()) {
+                    list.add(new CountResponse(bucket.key().stringValue(), bucket.docCount()));
+                }
+            } else {
+                System.out.println("No terms aggregation found.");
             }
-            map.put(agentName, months);
         }
-        return map;
+        return list;
     }
 
     @Override
-    public Map<String, long[]> monthly() {
-        Map<String, long[]> map = new HashMap<>();
-        List<AgentCounts> count = elasticUsageRepository.findMonthlyTotal();
-        for (AgentCounts agent : count){
-            String agentName = agent.getKey();
-            List<UsageData> data = agent.getCounts();
-            LocalDate now = LocalDate.now();
-
-            long[] weeks = new long[5];
-            for (UsageData usageData : data){
-                LocalDate specDate = usageData.getDate();
-                int weeksBetween = 4 - (int) Math.abs(ChronoUnit.WEEKS.between(specDate, now));
-                weeks[weeksBetween] = usageData.getDocCount();
+    public YearlyResponse yearly() throws IOException {
+        Map<String, Aggregate> aggregations = customESRepository.findYearlyTotal();
+        YearlyResponse yearlyResponse = new YearlyResponse();
+        LocalDate now = LocalDate.now();
+        if (aggregations.isEmpty()){
+            System.out.println("Empty");
+        }else{
+            Aggregate agg = aggregations.get("by_agent");
+            if (agg != null && agg.isSterms()) {  // 단어 집계(S)인지 확인
+                StringTermsAggregate termsAgg = agg.sterms();
+                for (StringTermsBucket bucket : termsAgg.buckets().array()) {
+                    String agentName = bucket.key().stringValue();
+                    long[] counts = new long[12];
+                    Aggregate dates = bucket.aggregations().get("new_date");
+                    DateHistogramAggregate dateAgg = dates.dateHistogram();
+                    for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
+                        Instant instant = Instant.ofEpochMilli((long) dateBucket.key());
+                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        int monthDiff = 11 - (int) Math.abs(ChronoUnit.MONTHS.between(specDate, now));
+                        counts[monthDiff] = dateBucket.docCount();
+                    }
+                    yearlyResponse.add(agentName, counts);
+                }
+            } else {
+                System.out.println("No terms aggregation found.");
             }
-            map.put(agentName, weeks);
         }
-        return map;
+        return yearlyResponse;
     }
 
     @Override
-    public Map<String, long[]> weekly() {
-        Map<String, long[]> map = new HashMap<>();
-        List<AgentCounts> count = elasticUsageRepository.findWeeklyTotal();
-        for (AgentCounts agent : count){
-            String agentName = agent.getKey();
-            List<UsageData> data = agent.getCounts();
-            LocalDate now = LocalDate.now();
-
-            long[] weeks = new long[7];
-            for (UsageData usageData : data){
-                LocalDate specDate = usageData.getDate();
-                int weeksBetween = 6 - (int) Math.abs(ChronoUnit.DAYS.between(specDate, now));
-                weeks[weeksBetween] = usageData.getDocCount();
+    public MonthlyResponse monthly() throws IOException {
+        Map<String, Aggregate> aggregations = customESRepository.findMonthlyTotal();
+        MonthlyResponse monthlyResponse = new MonthlyResponse();
+        LocalDate now = LocalDate.now();
+        if (aggregations.isEmpty()){
+            System.out.println("Empty");
+        }else{
+            Aggregate agg = aggregations.get("by_agent");
+            if (agg != null && agg.isSterms()) {
+                StringTermsAggregate termsAgg = agg.sterms();
+                for (StringTermsBucket bucket : termsAgg.buckets().array()) {
+                    String agentName = bucket.key().stringValue();
+                    long[] counts = new long[5];
+                    Aggregate dates = bucket.aggregations().get("new_date");
+                    DateHistogramAggregate dateAgg = dates.dateHistogram();
+                    for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
+                        Instant instant = Instant.ofEpochMilli(dateBucket.key());
+                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        int weekDiff = 4 - (int) Math.abs(ChronoUnit.WEEKS.between(specDate, now));
+                        counts[weekDiff] = dateBucket.docCount();
+                    }
+                    monthlyResponse.add(agentName, counts);
+                }
+            } else {
+                System.out.println("No terms aggregation found.");
             }
-            map.put(agentName, weeks);
         }
-        return map;
+        return monthlyResponse;
+
     }
 
     @Override
-    public Map<String, long[]> customerYearly(String key) {
-        Map<String, long[]> map = new HashMap<>();
-        List<AgentCounts> count = elasticUsageRepository.findCustomerYearly(key);
-        for (AgentCounts agent : count){
-            String agentName = agent.getKey();
-            List<UsageData> data = agent.getCounts();
-            LocalDate now = LocalDate.now();
-
-            long[] months = new long[12];
-            for (UsageData usageData : data){
-                LocalDate specDate = usageData.getDate();
-                int monthDiff = 11 - (int) Math.abs(ChronoUnit.MONTHS.between(specDate, now));
-                months[monthDiff] = usageData.getDocCount();
+    public WeeklyResponse weekly() throws IOException {
+        Map<String, Aggregate> aggregations = customESRepository.findWeeklyTotal();
+        WeeklyResponse weeklyResponse = new WeeklyResponse();
+        LocalDate now = LocalDate.now();
+        if (aggregations.isEmpty()){
+            System.out.println("Empty");
+        }else{
+            Aggregate agg = aggregations.get("by_agent");
+            if (agg != null && agg.isSterms()) {
+                StringTermsAggregate termsAgg = agg.sterms();
+                for (StringTermsBucket bucket : termsAgg.buckets().array()) {
+                    String agentName = bucket.key().stringValue();
+                    long[] counts = new long[7];
+                    Aggregate dates = bucket.aggregations().get("new_date");
+                    DateHistogramAggregate dateAgg = dates.dateHistogram();
+                    for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
+                        Instant instant = Instant.ofEpochMilli(dateBucket.key());
+                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        int dayDiff = 6 - (int) Math.abs(ChronoUnit.DAYS.between(specDate, now));
+                        counts[dayDiff] = dateBucket.docCount();
+                    }
+                    weeklyResponse.add(agentName, counts);
+                }
+            } else {
+                System.out.println("No terms aggregation found.");
             }
-            map.put(agentName, months);
         }
-        return map;
+        return weeklyResponse;
     }
 
     @Override
-    public Map<String, long[]> customerMonthly(String key) {
-        Map<String, long[]> map = new HashMap<>();
-        List<AgentCounts> count = elasticUsageRepository.findCustomerMonthly(key);
-        for (AgentCounts agent : count){
-            String agentName = agent.getKey();
-            List<UsageData> data = agent.getCounts();
-            LocalDate now = LocalDate.now();
-
-            long[] weeks = new long[5];
-            for (UsageData usageData : data){
-                LocalDate specDate = usageData.getDate();
-                int weeksBetween = 4 - (int) Math.abs(ChronoUnit.WEEKS.between(specDate, now));
-                weeks[weeksBetween] = usageData.getDocCount();
+    public YearlyResponse customerYearly(String key) throws IOException {
+        Map<String, Aggregate> aggregations = customESRepository.findCustomerYearly(key);
+        YearlyResponse yearlyResponse = new YearlyResponse();
+        LocalDate now = LocalDate.now();
+        if (aggregations.isEmpty()){
+            System.out.println("Empty");
+        }else{
+            Aggregate agg = aggregations.get("by_agent");
+            if (agg != null && agg.isSterms()) {  // 단어 집계(S)인지 확인
+                StringTermsAggregate termsAgg = agg.sterms();
+                for (StringTermsBucket bucket : termsAgg.buckets().array()) {
+                    String agentName = bucket.key().stringValue();
+                    long[] counts = new long[12];
+                    Aggregate dates = bucket.aggregations().get("new_date");
+                    DateHistogramAggregate dateAgg = dates.dateHistogram();
+                    for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
+                        Instant instant = Instant.ofEpochMilli((long) dateBucket.key());
+                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        int monthDiff = 11 - (int) Math.abs(ChronoUnit.MONTHS.between(specDate, now));
+                        counts[monthDiff] = dateBucket.docCount();
+                    }
+                    yearlyResponse.add(agentName, counts);
+                }
+            } else {
+                System.out.println("No terms aggregation found.");
             }
-            map.put(agentName, weeks);
         }
-        return map;
+        return yearlyResponse;
     }
 
     @Override
-    public Map<String, long[]> customerWeekly(String key) {
-        Map<String, long[]> map = new HashMap<>();
-        List<AgentCounts> count = elasticUsageRepository.findCustomerWeekly(key);
-        for (AgentCounts agent : count){
-            String agentName = agent.getKey();
-            List<UsageData> data = agent.getCounts();
-            LocalDate now = LocalDate.now();
-
-            long[] weeks = new long[7];
-            for (UsageData usageData : data){
-                LocalDate specDate = usageData.getDate();
-                int weeksBetween = 6 - (int) Math.abs(ChronoUnit.DAYS.between(specDate, now));
-                weeks[weeksBetween] = usageData.getDocCount();
+    public MonthlyResponse customerMonthly(String key) throws IOException {
+        Map<String, Aggregate> aggregations = customESRepository.findCustomerMonthly(key);
+        MonthlyResponse monthlyResponse = new MonthlyResponse();
+        LocalDate now = LocalDate.now();
+        if (aggregations.isEmpty()){
+            System.out.println("Empty");
+        }else{
+            Aggregate agg = aggregations.get("by_agent");
+            if (agg != null && agg.isSterms()) {
+                StringTermsAggregate termsAgg = agg.sterms();
+                for (StringTermsBucket bucket : termsAgg.buckets().array()) {
+                    String agentName = bucket.key().stringValue();
+                    long[] counts = new long[5];
+                    Aggregate dates = bucket.aggregations().get("new_date");
+                    DateHistogramAggregate dateAgg = dates.dateHistogram();
+                    for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
+                        Instant instant = Instant.ofEpochMilli(dateBucket.key());
+                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        int weekDiff = 4 - (int) Math.abs(ChronoUnit.WEEKS.between(specDate, now));
+                        counts[weekDiff] = dateBucket.docCount();
+                    }
+                    monthlyResponse.add(agentName, counts);
+                }
+            } else {
+                System.out.println("No terms aggregation found.");
             }
-            map.put(agentName, weeks);
         }
-        return map;
+        return monthlyResponse;
     }
 
     @Override
-    public Map<String, Long> customerYearlyTotal(String key) {
-        List<AgentAggregationResult> count = elasticUsageRepository.customerYearlyTotal(key);
-        Map<String, Long> map = new HashMap<>();
-        for (AgentAggregationResult a : count){
-            String name = a.getKey();
-            long usages = a.getDocCount();
-            map.put(name, usages);
+    public WeeklyResponse customerWeekly(String key) throws IOException {
+        Map<String, Aggregate> aggregations = customESRepository.findCustomerWeekly(key);
+        WeeklyResponse weeklyResponse = new WeeklyResponse();
+        LocalDate now = LocalDate.now();
+        if (aggregations.isEmpty()){
+            System.out.println("Empty");
+        }else{
+            Aggregate agg = aggregations.get("by_agent");
+            if (agg != null && agg.isSterms()) {
+                StringTermsAggregate termsAgg = agg.sterms();
+                for (StringTermsBucket bucket : termsAgg.buckets().array()) {
+                    String agentName = bucket.key().stringValue();
+                    long[] counts = new long[7];
+                    Aggregate dates = bucket.aggregations().get("new_date");
+                    DateHistogramAggregate dateAgg = dates.dateHistogram();
+                    for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
+                        Instant instant = Instant.ofEpochMilli(dateBucket.key());
+                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        int dayDiff = 6 - (int) Math.abs(ChronoUnit.DAYS.between(specDate, now));
+                        counts[dayDiff] = dateBucket.docCount();
+                    }
+                    weeklyResponse.add(agentName, counts);
+                }
+            } else {
+                System.out.println("No terms aggregation found.");
+            }
         }
-        return map;
+        return weeklyResponse;
     }
 
     @Override
-    public Map<String, Long> customerMonthlyTotal(String key) {
-        List<AgentAggregationResult> count = elasticUsageRepository.customerMonthlyTotal(key);
-        Map<String, Long> map = new HashMap<>();
-        for (AgentAggregationResult a : count){
-            String name = a.getKey();
-            long usages = a.getDocCount();
-            map.put(name, usages);
+    public List<CountResponse> customerYearlyTotal(String key) throws IOException {
+        Map<String, Aggregate> aggregations = customESRepository.customerYearlyTotal(key);
+        List<CountResponse> list = new ArrayList<>();
+        if (aggregations.isEmpty()){
+            System.out.println("Empty");
+        }else{
+            Aggregate agg = aggregations.get("by_agent");
+            if (agg != null && agg.isSterms()) {
+                StringTermsAggregate termsAgg = agg.sterms();
+                for (StringTermsBucket bucket : termsAgg.buckets().array()) {
+                    list.add(new CountResponse(bucket.key().stringValue(), bucket.docCount()));
+                }
+            } else {
+                System.out.println("No terms aggregation found.");
+            }
         }
-        return map;
+        return list;
     }
 
     @Override
-    public Map<String, Long> customerWeeklyTotal(String key) {
-        List<AgentAggregationResult> count = elasticUsageRepository.customerWeeklyTotal(key);
-        Map<String, Long> map = new HashMap<>();
-        for (AgentAggregationResult a : count){
-            String name = a.getKey();
-            long usages = a.getDocCount();
-            map.put(name, usages);
+    public List<CountResponse> customerMonthlyTotal(String key) throws IOException {
+        Map<String, Aggregate> aggregations = customESRepository.customerMonthlyTotal(key);
+        List<CountResponse> list = new ArrayList<>();
+        if (aggregations.isEmpty()){
+            System.out.println("Empty");
+        }else{
+            Aggregate agg = aggregations.get("by_agent");
+            if (agg != null && agg.isSterms()) {
+                StringTermsAggregate termsAgg = agg.sterms();
+                for (StringTermsBucket bucket : termsAgg.buckets().array()) {
+                    list.add(new CountResponse(bucket.key().stringValue(), bucket.docCount()));
+                }
+            } else {
+                System.out.println("No terms aggregation found.");
+            }
         }
-        return map;
+        return list;
     }
+
+    @Override
+    public List<CountResponse> customerWeeklyTotal(String key) throws IOException {
+        Map<String, Aggregate> aggregations = customESRepository.customerWeeklyTotal(key);
+        List<CountResponse> list = new ArrayList<>();
+        if (aggregations.isEmpty()){
+            System.out.println("Empty");
+        }else{
+            Aggregate agg = aggregations.get("by_agent");
+            if (agg != null && agg.isSterms()) {
+                StringTermsAggregate termsAgg = agg.sterms();
+                for (StringTermsBucket bucket : termsAgg.buckets().array()) {
+                    list.add(new CountResponse(bucket.key().stringValue(), bucket.docCount()));
+                }
+            } else {
+                System.out.println("No terms aggregation found.");
+            }
+        }
+        return list;
+    }
+
 
 }
