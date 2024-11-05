@@ -73,14 +73,14 @@ public class UsageController {
   }
 
   @GetMapping("/total")
-  public ResponseEntity<List<CountResponse>> total(){
-    List<CountResponse> list = null;
+  public ResponseEntity<CountResponse> total(){
+    CountResponse response = null;
     try {
-      list = usageService.total();
+      response = usageService.total();
     } catch (IOException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
-    return ResponseEntity.status(HttpStatus.OK).body(list);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/yearly/{key}")
@@ -117,35 +117,35 @@ public class UsageController {
   }
 
   @GetMapping("/yearlyTotal/{key}")
-  public ResponseEntity<List<CountResponse>> customerYearlyTotal(@PathVariable String key){
-    List<CountResponse> list = null;
+  public ResponseEntity<CountResponse> customerYearlyTotal(@PathVariable String key){
+    CountResponse response = null;
     try {
-      list = usageService.customerYearlyTotal(key);
+      response = usageService.customerYearlyTotal(key);
     } catch (IOException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
-    return ResponseEntity.status(HttpStatus.OK).body(list);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/monthlyTotal/{key}")
-  public ResponseEntity<List<CountResponse>> customerMonthlyTotal(@PathVariable String key){
-    List<CountResponse> list = null;
+  public ResponseEntity<CountResponse> customerMonthlyTotal(@PathVariable String key){
+    CountResponse response = null;
     try {
-      list = usageService.customerMonthlyTotal(key);
+      response = usageService.customerMonthlyTotal(key);
     } catch (IOException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
-    return ResponseEntity.status(HttpStatus.OK).body(list);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/weeklyTotal/{key}")
-  public ResponseEntity<List<CountResponse>> customerWeeklyTotal(@PathVariable String key){
-    List<CountResponse> list = null;
+  public ResponseEntity<CountResponse> customerWeeklyTotal(@PathVariable String key){
+    CountResponse response = null;
     try {
-      list = usageService.customerWeeklyTotal(key);
+      response = usageService.customerWeeklyTotal(key);
     } catch (IOException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
-    return ResponseEntity.status(HttpStatus.OK).body(list);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

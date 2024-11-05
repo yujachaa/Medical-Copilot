@@ -183,7 +183,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         .should(s -> s
             .term(t -> t
                 .field("agent.keyword")
-                .value("MG")
+                .value("MedGuru")
             )
         )
         .should(s -> s
@@ -412,7 +412,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         .should(s -> s
             .term(t -> t
                 .field("agent.keyword")
-                .value("MG")
+                .value("MedGuru")
             )
         )
         .should(s -> s
@@ -464,7 +464,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         .should(s -> s
             .term(t -> t
                 .field("agent.keyword")
-                .value("MG")
+                .value("MedGuru")
             )
         )
         .should(s -> s
@@ -516,7 +516,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         .should(s -> s
             .term(t -> t
                 .field("agent.keyword")
-                .value("MG")
+                .value("MedGuru")
             )
         )
         .should(s -> s

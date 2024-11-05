@@ -56,9 +56,9 @@ public class UsageServiceImpl implements UsageService{
 
 
     @Override
-    public List<CountResponse> total() throws IOException {
+    public CountResponse total() throws IOException {
         Map<String, Aggregate> aggregations = customESRepository.total();
-        List<CountResponse> list = new ArrayList<>();
+        CountResponse response = new CountResponse();
         if (aggregations.isEmpty()){
             System.out.println("Empty");
         }else{
@@ -66,13 +66,13 @@ public class UsageServiceImpl implements UsageService{
             if (agg != null && agg.isSterms()) {
                 StringTermsAggregate termsAgg = agg.sterms();
                 for (StringTermsBucket bucket : termsAgg.buckets().array()) {
-                    list.add(new CountResponse(bucket.key().stringValue(), bucket.docCount()));
+                    response.add(bucket.key().stringValue(), bucket.docCount());
                 }
             } else {
                 System.out.println("No terms aggregation found.");
             }
         }
-        return list;
+        return response;
     }
 
     @Override
@@ -263,9 +263,9 @@ public class UsageServiceImpl implements UsageService{
     }
 
     @Override
-    public List<CountResponse> customerYearlyTotal(String key) throws IOException {
+    public CountResponse customerYearlyTotal(String key) throws IOException {
         Map<String, Aggregate> aggregations = customESRepository.customerYearlyTotal(key);
-        List<CountResponse> list = new ArrayList<>();
+        CountResponse response = new CountResponse();
         if (aggregations.isEmpty()){
             System.out.println("Empty");
         }else{
@@ -273,19 +273,19 @@ public class UsageServiceImpl implements UsageService{
             if (agg != null && agg.isSterms()) {
                 StringTermsAggregate termsAgg = agg.sterms();
                 for (StringTermsBucket bucket : termsAgg.buckets().array()) {
-                    list.add(new CountResponse(bucket.key().stringValue(), bucket.docCount()));
+                    response.add(bucket.key().stringValue(), bucket.docCount());
                 }
             } else {
                 System.out.println("No terms aggregation found.");
             }
         }
-        return list;
+        return response;
     }
 
     @Override
-    public List<CountResponse> customerMonthlyTotal(String key) throws IOException {
+    public CountResponse customerMonthlyTotal(String key) throws IOException {
         Map<String, Aggregate> aggregations = customESRepository.customerMonthlyTotal(key);
-        List<CountResponse> list = new ArrayList<>();
+        CountResponse response = new CountResponse();
         if (aggregations.isEmpty()){
             System.out.println("Empty");
         }else{
@@ -293,19 +293,19 @@ public class UsageServiceImpl implements UsageService{
             if (agg != null && agg.isSterms()) {
                 StringTermsAggregate termsAgg = agg.sterms();
                 for (StringTermsBucket bucket : termsAgg.buckets().array()) {
-                    list.add(new CountResponse(bucket.key().stringValue(), bucket.docCount()));
+                    response.add(bucket.key().stringValue(), bucket.docCount());
                 }
             } else {
                 System.out.println("No terms aggregation found.");
             }
         }
-        return list;
+        return response;
     }
 
     @Override
-    public List<CountResponse> customerWeeklyTotal(String key) throws IOException {
+    public CountResponse customerWeeklyTotal(String key) throws IOException {
         Map<String, Aggregate> aggregations = customESRepository.customerWeeklyTotal(key);
-        List<CountResponse> list = new ArrayList<>();
+        CountResponse response = new CountResponse();
         if (aggregations.isEmpty()){
             System.out.println("Empty");
         }else{
@@ -313,13 +313,13 @@ public class UsageServiceImpl implements UsageService{
             if (agg != null && agg.isSterms()) {
                 StringTermsAggregate termsAgg = agg.sterms();
                 for (StringTermsBucket bucket : termsAgg.buckets().array()) {
-                    list.add(new CountResponse(bucket.key().stringValue(), bucket.docCount()));
+                    response.add(bucket.key().stringValue(), bucket.docCount());
                 }
             } else {
                 System.out.println("No terms aggregation found.");
             }
         }
-        return list;
+        return response;
     }
 
 
