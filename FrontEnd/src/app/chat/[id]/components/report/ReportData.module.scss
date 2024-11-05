@@ -5,6 +5,8 @@
   justify-content: space-between;
   align-items: flex-start;
   align-self: stretch;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .info {
@@ -15,6 +17,22 @@
   justify-content: flex-start;
   gap: 15px;
   max-width: 300px;
+  min-width: 150px;
+
+  & > div:nth-child(1) {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: right;
+  }
+}
+
+.summary {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 15px;
 
   & > div:nth-child(1) {
     font-size: 24px;
@@ -35,7 +53,7 @@
 
 .infoBox {
   display: flex;
-  width: 300px;
+  width: 100%;
   padding: 8.655px 10.579px 8.655px 6.732px;
   flex-direction: column;
   align-items: flex-end;
