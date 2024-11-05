@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDate;
-@ToString
+
 @Builder
 @Getter
 @NoArgsConstructor
