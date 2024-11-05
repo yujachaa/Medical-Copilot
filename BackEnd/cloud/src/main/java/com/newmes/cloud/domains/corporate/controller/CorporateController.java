@@ -1,6 +1,7 @@
 package com.newmes.cloud.domains.corporate.controller;
 
 import com.newmes.cloud.domains.corporate.dto.request.CorporateRequestDto;
+import com.newmes.cloud.domains.corporate.dto.response.CorporateListResponseDto;
 import com.newmes.cloud.domains.corporate.dto.response.CorporateResponseDto;
 import com.newmes.cloud.domains.corporate.service.CorporateService;
 import com.newmes.cloud.global.util.HttpResponseUtil;
@@ -36,13 +37,34 @@ public class CorporateController {
 
     @GetMapping
     public ResponseEntity<?> getAllCorporates() {
-        List<CorporateResponseDto> corporates = corporateService.getAllCorporates();
+        List<CorporateListResponseDto> corporates = corporateService.getAllCorporates();
         return httpResponseUtil.createResponse(corporates);
     }
 
     @GetMapping("/{corporateKey}/init")
     public ResponseEntity<?> initCorporate(@PathVariable("corporateKey") String key) {
         CorporateResponseDto corporate = corporateService.init(key);
-        return httpResponseUtil.createSuccessResponse(corporate, "Corporate init successfully");
+        return httpResponseUtil.createSuccessResponse("success", corporate);
     }
+
+    @PatchMapping("/{corporateKey}/limit")
+    public ResponseEntity<?> suspendCorporateKey(@PathVariable("corporateKey") String key) {
+        boolean response = corporateService.suspendCorporateKey(key);
+        return httpResponseUtil.createSuccessResponse("success", response);
+    }
+
+    @PatchMapping("/{corporateKey}/reissue")
+    public ResponseEntity<?> reissueCorporateKey(@PathVariable("corporateKey") String key) {
+        if(key.equals("none")) httpResponseUtil.createSuccessResponse("fail", "none Key");
+        String response = corporateService.reissueCorporateKey(key);
+        return httpResponseUtil.createSuccessResponse("success", response);
+    }
+
+    @DeleteMapping("/{corporateKey}/deleteKey")
+    public ResponseEntity<?> deleteCorporateKey(@PathVariable("corporateKey") String key) {
+        corporateService.deleteCorporateKey(key);
+        return httpResponseUtil.createSuccessResponse("success", "none");
+    }
+
+
 }
