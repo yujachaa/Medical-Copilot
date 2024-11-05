@@ -1,4 +1,4 @@
-package com.newmes.cloud.global.config;
+package com.newmes.onpremise.global.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
