@@ -4,9 +4,12 @@ import { useState } from 'react';
 import styles from './LoginInput.module.scss';
 import { fetchLogin } from '@/apis/fetchLogin';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/redux/store/hooks/store';
+import { setUserInfo } from '@/redux/features/user/userSlice';
 
 export default function LoginInput() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -15,6 +18,8 @@ export default function LoginInput() {
     const data = await fetchLogin(email, password);
     if (data) {
       setIsLogin(true);
+      dispatch(setUserInfo(data.status));
+      router.push('/main');
     } else {
       setIsLogin(false);
     }
@@ -39,7 +44,7 @@ export default function LoginInput() {
           }}
         />
         {!isLogin ? (
-          <span className={`flex justify-end text-[red] font-[700]`}>
+          <span className={`flex justify-end text-[red] font-[700px]`}>
             Check your email or password
           </span>
         ) : null}
