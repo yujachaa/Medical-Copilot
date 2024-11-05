@@ -33,6 +33,8 @@ public class SecurityConfig {
 		"/swagger-ui/**", "/api/**"};
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+		http.cors(cors -> cors.disable());
 		http.csrf(AbstractHttpConfigurer::disable);
 		http.sessionManagement(sessionManagement -> sessionManagement
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
