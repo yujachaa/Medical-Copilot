@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface UsageService {
 
-    CompletableFuture<String> processAgentUsage(UsageRequestDto requestDto);
+  CompletableFuture<String> processAgentUsage(UsageRequestDto requestDto);
 
   MonthlyResponse monthly() throws IOException;
 
@@ -22,7 +22,7 @@ public interface UsageService {
 
   YearlyResponse yearly() throws IOException;
 
-  List<CountResponse> total() throws IOException;
+  CountResponse total() throws IOException;
 
   YearlyResponse customerYearly(String key) throws IOException;
 
@@ -30,10 +30,10 @@ public interface UsageService {
 
   WeeklyResponse customerWeekly(String key) throws IOException;
 
-  List<CountResponse> customerYearlyTotal(String key) throws IOException;
+  CountResponse customerYearlyTotal(String key) throws IOException;
 
-  List<CountResponse> customerMonthlyTotal(String key) throws IOException;
+  CountResponse customerMonthlyTotal(String key) throws IOException;
 
-  List<CountResponse> customerWeeklyTotal(String key) throws IOException;
+  CountResponse customerWeeklyTotal(String key) throws IOException;
 
 }
