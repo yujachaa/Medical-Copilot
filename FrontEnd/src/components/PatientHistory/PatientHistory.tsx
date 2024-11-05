@@ -3,15 +3,25 @@ import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { FaSortDown } from 'react-icons/fa';
 // import { FaSortUp } from "react-icons/fa";
 
-export default function PatientHistory() {
+type Props = {
+  onClose?: () => void;
+  isAnimate?: boolean;
+};
+
+export default function PatientHistory({ onClose, isAnimate }: Props) {
   return (
-    <div className={`${styles.main} fixed w-full h-full flex justify-center items-center`}>
+    <div
+      className={` ${!isAnimate ? styles.main : styles.mainOut} flex justify-center items-center`}
+    >
       <div
         className={`${styles.box} w-[35%] min-w-[490px] h-[90%] min-h-[400px] rounded-[20px] flex flex-col p-4 gap-3`}
       >
         <div className={`${styles.title} flex items-center justify-between`}>
           <span>Patient History</span>
-          <IoMdCloseCircleOutline />
+          <IoMdCloseCircleOutline
+            onClick={onClose}
+            className="cursor-pointer"
+          />
         </div>
         <div className={`${styles.table} w-full h-full flex flex-col gap-5`}>
           <div
