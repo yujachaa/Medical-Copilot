@@ -1,14 +1,14 @@
 package com.newmes.cloud.domains.usage.controller;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.newmes.cloud.domains.usage.dto.request.UsageRequestDto;
+import com.newmes.cloud.domains.usage.dto.response.CountResponse;
+import com.newmes.cloud.domains.usage.dto.response.MonthlyResponse;
+import com.newmes.cloud.domains.usage.dto.response.WeeklyResponse;
+import com.newmes.cloud.domains.usage.dto.response.YearlyResponse;
 import com.newmes.cloud.domains.usage.service.UsageService;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,73 +40,112 @@ public class UsageController {
     }
 
   @GetMapping("/monthly")
-  public String monthlyTotal(){
-    Map<String, long[]> agentMap = usageService.monthly();
-    String jsonStr = gson.toJson(agentMap);
-    return jsonStr;
+  public ResponseEntity<MonthlyResponse> monthlyTotal(){
+    MonthlyResponse monthlyResponse = null;
+    try {
+      monthlyResponse = usageService.monthly();
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(monthlyResponse);
   }
 
   @GetMapping("/weekly")
-  public String WeeklyTotal(){
-    Map<String, long[]> agentMap = usageService.weekly();
-    String jsonStr = gson.toJson(agentMap);
-    return jsonStr;
+  public ResponseEntity<WeeklyResponse> WeeklyTotal(){
+    WeeklyResponse weeklyResponse = null;
+    try {
+      weeklyResponse = usageService.weekly();
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(weeklyResponse);
   }
 
   @GetMapping("/yearly")
-  public String YearlyTotal(){
-    Map<String, long[]> agentMap = usageService.yearly();
-    String jsonStr = gson.toJson(agentMap);
-    return jsonStr;
+  public ResponseEntity<YearlyResponse> YearlyTotal() {
+    YearlyResponse yearlyResponse = null;
+    try {
+      yearlyResponse = usageService.yearly();
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(yearlyResponse);
   }
 
   @GetMapping("/total")
-  public String total(){
-    Map<String, Long> agentMap = usageService.total();
-    String jsonStr = gson.toJson(agentMap);
-    return jsonStr;
+  public ResponseEntity<List<CountResponse>> total(){
+    List<CountResponse> list = null;
+    try {
+      list = usageService.total();
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(list);
   }
 
   @GetMapping("/yearly/{key}")
-  public String customerYearly(@PathVariable String key){
-    Map<String, long[]> agentMap = usageService.customerYearly(key);
-    String jsonStr = gson.toJson(agentMap);
-    return jsonStr;
+  public ResponseEntity<YearlyResponse> customerYearly(@PathVariable String key){
+    YearlyResponse yearlyResponse = null;
+    try {
+      yearlyResponse = usageService.customerYearly(key);
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(yearlyResponse);
   }
 
   @GetMapping("/monthly/{key}")
-  public String customerMonthly(@PathVariable String key){
-    Map<String, long[]> agentMap = usageService.customerMonthly(key);
-    String jsonStr = gson.toJson(agentMap);
-    return jsonStr;
+  public ResponseEntity<MonthlyResponse> customerMonthly(@PathVariable String key){
+    MonthlyResponse monthlyResponse = null;
+    try {
+      monthlyResponse = usageService.customerMonthly(key);
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(monthlyResponse);
   }
 
   @GetMapping("/weekly/{key}")
-  public String customerWeekly(@PathVariable String key){
-    Map<String, long[]> agentMap = usageService.customerWeekly(key);
-    String jsonStr = gson.toJson(agentMap);
-    return jsonStr;
+  public ResponseEntity<WeeklyResponse> customerWeekly(@PathVariable String key){
+    WeeklyResponse weeklyResponse = null;
+    try {
+      weeklyResponse = usageService.customerWeekly(key);
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(weeklyResponse);
   }
 
   @GetMapping("/yearlyTotal/{key}")
-  public String customerYearlyTotal(@PathVariable String key){
-    Map<String, Long> agentMap = usageService.customerYearlyTotal(key);
-    String jsonStr = gson.toJson(agentMap);
-    return jsonStr;
+  public ResponseEntity<List<CountResponse>> customerYearlyTotal(@PathVariable String key){
+    List<CountResponse> list = null;
+    try {
+      list = usageService.customerYearlyTotal(key);
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(list);
   }
 
   @GetMapping("/monthlyTotal/{key}")
-  public String customerMonthlyTotal(@PathVariable String key){
-    Map<String, Long> agentMap = usageService.customerMonthlyTotal(key);
-    String jsonStr = gson.toJson(agentMap);
-    return jsonStr;
+  public ResponseEntity<List<CountResponse>> customerMonthlyTotal(@PathVariable String key){
+    List<CountResponse> list = null;
+    try {
+      list = usageService.customerMonthlyTotal(key);
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(list);
   }
 
   @GetMapping("/weeklyTotal/{key}")
-  public String customerWeeklyTotal(@PathVariable String key){
-    Map<String, Long> agentMap = usageService.customerWeeklyTotal(key);
-    String jsonStr = gson.toJson(agentMap);
-    return jsonStr;
+  public ResponseEntity<List<CountResponse>> customerWeeklyTotal(@PathVariable String key){
+    List<CountResponse> list = null;
+    try {
+      list = usageService.customerWeeklyTotal(key);
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(list);
   }
-
 }
