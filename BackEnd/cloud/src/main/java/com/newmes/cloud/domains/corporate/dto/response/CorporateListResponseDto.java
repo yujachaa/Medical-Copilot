@@ -9,21 +9,24 @@ import java.time.LocalDate;
 
 @Getter
 @Builder
-public class CorporateResponseDto {
-    
+public class CorporateListResponseDto {
     private Long id;
     private String comName;
     private Grade grade;
     private String key;
     private Boolean availability;
+    private Long totalCount;
+    private int Subscription;
     private LocalDate createDate;
-    public static CorporateResponseDto from(Corporate corporate) {
-        return CorporateResponseDto.builder()
+    public static CorporateListResponseDto from(Corporate corporate, Long totalCount, int Subscription) {
+        return CorporateListResponseDto.builder()
                 .id(corporate.getId())
                 .comName(corporate.getComName())
                 .grade(corporate.getGrade())
                 .key(corporate.getKey())
                 .availability(corporate.isAvailability())
+                .totalCount(totalCount)
+                .Subscription(Subscription)
                 .createDate(corporate.getCreateDate())
                 .build();
     }
