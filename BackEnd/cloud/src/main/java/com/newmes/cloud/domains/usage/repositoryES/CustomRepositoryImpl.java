@@ -228,7 +228,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         )
         .must(m -> m
             .term(t -> t
-                .field("key.keyword")
+                .field("corpKey.keyword")
                 .value(key)
             )
         )
@@ -287,7 +287,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         )
         .must(m -> m
             .term(t -> t
-                .field("key.keyword")
+                .field("corpKey.keyword")
                 .value(key)
             )
         )
@@ -346,7 +346,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         )
         .must(m -> m
             .term(t -> t
-                .field("key.keyword")
+                .field("corpKey.keyword")
                 .value(key)
             )
         )
@@ -405,7 +405,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         )
         .must(m -> m
             .term(t -> t
-                .field("key.keyword")
+                .field("corpKey.keyword")
                 .value(key)
             )
         )
@@ -457,7 +457,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         )
         .must(m -> m
             .term(t -> t
-                .field("key.keyword")
+                .field("corpKey.keyword")
                 .value(key)
             )
         )
@@ -509,7 +509,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         )
         .must(m -> m
             .term(t -> t
-                .field("key.keyword")
+                .field("corpKey.keyword")
                 .value(key)
             )
         )
