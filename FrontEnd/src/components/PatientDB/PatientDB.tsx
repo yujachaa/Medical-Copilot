@@ -4,7 +4,10 @@ import { FaSortDown } from 'react-icons/fa';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
 // import { FaSortUp } from "react-icons/fa";
 
-export default function PatientDB() {
+type Props = {
+  onClose: () => void;
+};
+export default function PatientDB({ onClose }: Props) {
   return (
     <div className={`${styles.main} fixed w-full h-full flex justify-center items-center`}>
       <div
@@ -15,7 +18,10 @@ export default function PatientDB() {
             <FaDatabase className={styles.dbIcon} />
             <span>Patient Database</span>
           </div>
-          <IoMdCloseCircleOutline />
+          <IoMdCloseCircleOutline
+            onClick={onClose}
+            className="cursor-pointer"
+          />
         </div>
         <div className={`${styles.table} justify-centerw-full h-full pl-4 pr-4`}>
           <table className={`w-full`}>
