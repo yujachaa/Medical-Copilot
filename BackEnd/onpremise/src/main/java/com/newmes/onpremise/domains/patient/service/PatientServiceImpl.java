@@ -70,7 +70,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public List<String> autocomplete(String prefix) throws IOException {
         return patientRepositoryCustom.autocompletePatients(prefix).stream()
-                .map(PatientEntity::getPID) // 각 PatientEntity에서 PID만 추출
+                .map(PatientEntity::getPID)
                 .collect(Collectors.toList());
     }
 

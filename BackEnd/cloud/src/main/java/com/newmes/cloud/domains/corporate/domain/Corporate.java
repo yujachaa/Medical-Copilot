@@ -4,6 +4,8 @@ import com.newmes.cloud.domains.corporate.entity.CorporateEntity;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
+@Builder
 @Getter
 public class Corporate {
 
@@ -11,14 +13,8 @@ public class Corporate {
     private final String comName;
     private final Grade grade;
     private final String key;
-
-    @Builder
-    public Corporate(Long id, String comName, Grade grade, String key) {
-        this.id = id;
-        this.comName = comName;
-        this.grade = grade;
-        this.key = key;
-    }
+    private final boolean availability;
+    private final LocalDate createDate;
 
     public static Corporate fromEntity(CorporateEntity entity) {
         return Corporate.builder()
@@ -26,6 +22,8 @@ public class Corporate {
                 .comName(entity.getComName())
                 .grade(entity.getGrade())
                 .key(entity.getKey())
+                .availability(entity.isAvailability())
+                .createDate(entity.getCreateDate())
                 .build();
     }
 

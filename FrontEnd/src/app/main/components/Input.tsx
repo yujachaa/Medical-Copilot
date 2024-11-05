@@ -1,21 +1,24 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import styles from './Input.module.scss';
 import Send from '@/assets/images/send.svg';
 import { FaDatabase } from 'react-icons/fa6';
+import PatientDB from '@/components/PatientDB/PatientDB';
 export default function Input() {
+  const [isPatientModal, setPatientModal] = useState<boolean>(false);
+
+  const CloseModal = () => {
+    setPatientModal(false);
+  };
   return (
     <div className={styles.container}>
-      <label
-        htmlFor="file"
-        className={styles.file}
-      >
-        <FaDatabase className="w-5 h-5 text-clip" />
+      <label className={styles.file}>
+        <FaDatabase
+          className="w-5 h-5 text-clip"
+          onClick={() => setPatientModal(true)}
+        />
       </label>
-      <input
-        id="file"
-        type="file"
-        className="hidden w-0 h-0"
-      />
+      {isPatientModal && <PatientDB onClose={CloseModal} />}
       <input
         className={styles.input}
         type="text"

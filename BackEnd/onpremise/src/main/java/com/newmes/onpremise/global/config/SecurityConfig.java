@@ -1,6 +1,5 @@
 package com.newmes.onpremise.global.config;
 
-
 import com.newmes.onpremise.global.redis.service.RedisService;
 import com.newmes.onpremise.global.security.exception.CustomAccessDeniedHandler;
 import com.newmes.onpremise.global.security.exception.CustomAuthenticationEntryPoint;
@@ -10,13 +9,13 @@ import com.newmes.onpremise.global.security.userdetails.CustomUserDetailsService
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import java.util.*;
 
 @Configuration
 @EnableWebSecurity
@@ -30,30 +29,38 @@ public class SecurityConfig {
 	private final RedisService redisService;
 
 	private static final String[] AUTH_WHITELIST = {
-		"/swagger-ui/**", "/api/**"}; //, "swagger-ui-custom.html"};
+			"/swagger-ui/**", "/**"
+	};
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(AbstractHttpConfigurer::disable);
-		http.cors(Customizer.withDefaults());
-
-		http.sessionManagement(sessionManagement -> sessionManagement
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-		http.formLogin(AbstractHttpConfigurer::disable);
-		http.httpBasic(AbstractHttpConfigurer::disable);
-
-		http.addFilterBefore(new JwtAuthFilter(customUserDetailsService, jwtUtil, redisService),
-			UsernamePasswordAuthenticationFilter.class);
-
-		http.exceptionHandling(exceptionHandling -> exceptionHandling
-				.authenticationEntryPoint(authenticationEntryPoint)
-				.accessDeniedHandler(accessDeniedHandler));
-
-		http.authorizeHttpRequests(authorize -> authorize
-			.requestMatchers(AUTH_WHITELIST).permitAll()
-			.anyRequest().permitAll()//authenticated()
-		);
+		http
+				.cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(Arrays.asList(
+                            "https://k11s205.p.ssafy.io",
+                            "http://localhost:3000",
+                            "http://localhost:3001"
+                    ));
+                    configuration.setAllowedMethods(Arrays.asList("*"));
+                    configuration.setAllowCredentials(true);
+                    configuration.setAllowedHeaders(Collections.singletonList("*"));
+                    configuration.setExposedHeaders(List.of("Authorization", "Set-Cookie"));
+                    configuration.setMaxAge(3600L);
+                    return configuration;
+                }))
+				.csrf(csrf -> csrf.disable())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.formLogin(form -> form.disable())
+				.httpBasic(basic -> basic.disable())
+				.addFilterBefore(new JwtAuthFilter(customUserDetailsService, jwtUtil, redisService),
+						UsernamePasswordAuthenticationFilter.class)
+				.exceptionHandling(exceptionHandling -> exceptionHandling
+						.authenticationEntryPoint(authenticationEntryPoint)
+						.accessDeniedHandler(accessDeniedHandler))
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers(AUTH_WHITELIST).permitAll()
+						.anyRequest().authenticated());
 
 		return http.build();
 	}
