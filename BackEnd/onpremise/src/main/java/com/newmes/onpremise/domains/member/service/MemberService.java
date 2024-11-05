@@ -4,12 +4,13 @@ import com.newmes.onpremise.domains.member.domain.Member;
 import com.newmes.onpremise.domains.member.domain.Token;
 import com.newmes.onpremise.domains.member.dto.request.LoginRequestDto;
 import com.newmes.onpremise.domains.member.dto.request.MemberRequestDto;
+import com.newmes.onpremise.domains.member.dto.response.LoginResponseDto;
 import com.newmes.onpremise.domains.member.dto.response.MemberResponseDto;
 import com.newmes.onpremise.domains.member.entity.MemberEntity;
 
 public interface MemberService {
 
-    Token login(LoginRequestDto request);
+    LoginResponseDto login(LoginRequestDto request);
 
     void logout(Token token);
 
