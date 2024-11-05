@@ -1,7 +1,6 @@
 import withPWA from '@ducanh2912/next-pwa';
 
 const nextConfig = {
-  basePath: '/onpremise',
   /* config options here */
   webpack(config) {
     config.module.rules.push({

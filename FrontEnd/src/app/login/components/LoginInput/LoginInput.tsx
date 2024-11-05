@@ -9,10 +9,15 @@ export default function LoginInput() {
   const router = useRouter();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [isLogin, setIsLogin] = useState<boolean>(true);
 
   const handleLogin = async () => {
     const data = await fetchLogin(email, password);
-    console.log(data);
+    if (data) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
   };
 
   return (
@@ -33,7 +38,11 @@ export default function LoginInput() {
             setPassword(event.target.value);
           }}
         />
-        <span className={`flex justify-end text-[red] font-[700]`}>Check your email password</span>
+        {!isLogin ? (
+          <span className={`flex justify-end text-[red] font-[700]`}>
+            Check your email or password
+          </span>
+        ) : null}
       </div>
       <div className={`${styles.btn} flex justify-between w-full`}>
         <button
