@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN npm install
-
+COPY /home/ubuntu/medical-copilot/frontend/onpremise/.env ./
 COPY . .
 
 RUN npm run build
