@@ -6,8 +6,9 @@ import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.http.HttpHost;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.HttpHeaders;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,10 +21,16 @@ public class ElasticsearchConfig {
     @Bean
     public RestClient restClient(
             @Value("${spring.elasticsearch.uris}") String url,
-            @Value("${spring.elasticsearch.apiKey}") String apiKey) {
+            @Value("${spring.elasticsearch.username}") String username,
+            @Value("${spring.elasticsearch.password}") String password) {
+
+        BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
 
         RestClientBuilder builder = RestClient.builder(HttpHost.create(url))
-                .setDefaultHeaders(new BasicHeader[]{new BasicHeader(HttpHeaders.AUTHORIZATION, "ApiKey " + apiKey)});
+                .setHttpClientConfigCallback(httpClientBuilder ->
+                        httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
+                );
 
         return builder.build();
     }
