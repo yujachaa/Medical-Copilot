@@ -29,7 +29,7 @@ export default function EditModal({ onClose }: EditModalProps) {
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         <CgClose
-          className="absolute right-2 top-2 cursor-pointer text-[rgba(0,0,0,0.5)]"
+          className="absolute right-2 top-2 cursor-pointer text-rgb0.5"
           onClick={onClose}
         />
         <p className="font-black text-2xl">Image Edit</p>
