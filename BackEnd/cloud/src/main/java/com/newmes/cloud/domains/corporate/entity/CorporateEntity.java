@@ -24,10 +24,13 @@ public class CorporateEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Grade grade;
 
+    private boolean availability;
+
     public CorporateEntity(String comName, Grade grade, String key) {
         this.comName = comName;
         this.grade = grade;
         this.key = key;
+        this.availability = true;
     }
 
     public void updateCorporateDetails(String comName) {
@@ -36,5 +39,13 @@ public class CorporateEntity extends BaseTimeEntity {
 
     public void updateCorporateGrade(Grade grade) {
         this.grade = grade;
+    }
+
+    public void limitAvailability() {
+        this.availability = !this.availability;
+    }
+
+    public void updateKey(String newKey) {
+        this.key = newKey;
     }
 }
