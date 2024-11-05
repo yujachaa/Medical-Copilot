@@ -30,13 +30,10 @@ public class SecurityConfig {
 	private final RedisService redisService;
 
 	private static final String[] AUTH_WHITELIST = {
-		"/swagger-ui/**", "/api/**"}; //, "swagger-ui-custom.html"};
-
+		"/swagger-ui/**", "/api/**"};
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable);
-		http.cors(Customizer.withDefaults());
-
 		http.sessionManagement(sessionManagement -> sessionManagement
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

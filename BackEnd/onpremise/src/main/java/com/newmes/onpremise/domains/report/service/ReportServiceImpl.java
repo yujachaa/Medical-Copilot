@@ -5,7 +5,9 @@ import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
 import com.newmes.onpremise.domains.report.dto.request.UpdateSummaryRequestDto;
 import com.newmes.onpremise.domains.report.entity.ReportDocument;
 import com.newmes.onpremise.domains.report.repository.ReportRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ReportServiceImpl implements ReportService{
 
   private final ReportRepository reportRepository;
