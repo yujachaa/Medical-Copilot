@@ -14,6 +14,14 @@ pipeline {
 				  
 				}
 			} 
+
+			stage('Prepare Environment') {
+            	steps {
+					sshagent(['ssh-key']) {
+						sh 'scp ubuntu@k11s205.p.ssafy.io:/home/ubuntu/medical-copilot/frontend/cloud/.env ./FrontEnd_Cloud/.env'	
+					}				
+				}
+        	}
 			
 			stage('Build image') {
 				steps {
@@ -44,7 +52,7 @@ pipeline {
 							docker image prune -f
 							docker login -u jiyoungheo.dev@gmail.com -p $DOCKERHUB_PASSWORD
 							docker pull jiyoungheo/medical-copilot-front-cloud:v1
-							docker run -d -p 3000:3000 -v /home/ubuntu/medical-copilot/frontend/cloud/.env:/app/.env.production --name medical-copilot-front-cloud jiyoungheo/medical-copilot-front-cloud:v1
+							docker run -d -p 3000:3000 -v /home/ubuntu/medical-copilot/frontend/cloud/.env:/app/.env --name medical-copilot-front-cloud jiyoungheo/medical-copilot-front-cloud:v1
 							'
 						"""
 					    }

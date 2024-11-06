@@ -7,6 +7,9 @@ COPY package*.json ./
 
 RUN npm install
 
+# Jenkins에서 복사된 .env 파일을 빌드 컨텍스트에 포함
+COPY .env ./
+
 COPY . .
 
 RUN npm run build
