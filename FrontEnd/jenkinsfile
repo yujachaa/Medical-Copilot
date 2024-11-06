@@ -10,11 +10,17 @@ pipeline {
 		stages {
 			stage('GitHub Repository Clone') { 
 				steps {
-				  
 					git branch: 'develop', credentialsId: 'git-access-token', url: 'https://lab.ssafy.com/s11-final/S11P31S205.git'
-				  
 				}
 			} 
+			stage('Prepare Environment') {
+            	steps {
+					sshagent(['ssh-key']) {
+						sh 'scp ubuntu@k11s205.p.ssafy.io:/home/ubuntu/medical-copilot/frontend/onpremise/.env ./FrontEnd/.env'		
+					}				
+				}
+        	}
+        
 			
 			stage('Build image') {
 				steps {
@@ -45,7 +51,7 @@ pipeline {
 							docker image prune -f
 							docker login -u jiyoungheo.dev@gmail.com -p $DOCKERHUB_PASSWORD
 							docker pull jiyoungheo/medical-copilot-front-onpremise:v1
-							docker run -d -p 3001:3001 -p 6006:6006 -v /home/ubuntu/medical-copilot/frontend/onpremise/.env:/app/.env.production --name medical-copilot-front-onpremise jiyoungheo/medical-copilot-front-onpremise:v1
+							docker run -d -p 3001:3001 -p 6006:6006 -v /home/ubuntu/medical-copilot/frontend/onpremise/.env:/app/.env --name medical-copilot-front-onpremise jiyoungheo/medical-copilot-front-onpremise:v1
 							'
 						"""
 					    }
