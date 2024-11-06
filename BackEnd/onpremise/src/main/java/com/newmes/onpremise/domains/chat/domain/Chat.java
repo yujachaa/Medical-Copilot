@@ -17,7 +17,6 @@ public class Chat {
     private boolean isQuestion;
     private LocalDate createDate;
     private String PID;
-    private String type;
     private String memberId;
 
     public static Chat from(ChatEntity entity) {
@@ -29,7 +28,6 @@ public class Chat {
                 .isQuestion(entity.isQuestion())
                 .createDate(entity.getCreateDate())
                 .PID(entity.getPID())
-                .type(entity.getType())
                 .memberId(entity.getMemberId())
                 .build();
     }
