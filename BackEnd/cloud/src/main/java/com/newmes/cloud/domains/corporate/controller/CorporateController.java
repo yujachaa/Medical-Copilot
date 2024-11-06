@@ -69,7 +69,7 @@ public class CorporateController {
     public ResponseEntity<?> initCorporate(@PathVariable("corporateKey") String key) {
         try {
             corporateService.init(key);
-            return httpResponseUtil.createSuccessResponse("success", HttpStatus.OK);
+            return httpResponseUtil.createSuccessResponse("success", HttpStatus.OK.value());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
