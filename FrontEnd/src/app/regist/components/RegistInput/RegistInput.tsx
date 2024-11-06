@@ -6,6 +6,7 @@ import { useCheckEmail } from '@/hooks/useCheckEmail';
 import { useCheckName } from '@/hooks/useCheckName';
 import { useCheckPassword } from '@/hooks/useCheckPassword';
 import { useCheckCfPassword } from '@/hooks/useCheckCfPassword';
+import { fetchRegist } from '@/apis/fetchRegist';
 
 export default function RegistInput() {
   const router = useRouter();
@@ -13,6 +14,15 @@ export default function RegistInput() {
   const { name, setName, isCorrectName } = useCheckName();
   const { password, setPassword, isCorrectPassword } = useCheckPassword();
   const { cfPassword, setCfPassword, isCorrectCfPassword } = useCheckCfPassword(password);
+
+  const handleRegist = async () => {
+    if (isCorrectEmail && isCorrectName && isCorrectPassword && isCorrectCfPassword) {
+      const data = await fetchRegist(email, password, name);
+      if (data.msg === 'success') {
+        router.push('/login');
+      }
+    }
+  };
 
   return (
     <>
@@ -87,6 +97,9 @@ export default function RegistInput() {
         </button>
         <button
           className={`w-[170px] h-[64px] flex justify-center items-center rounded-[5px] ${styles.confirm}`}
+          onClick={() => {
+            handleRegist();
+          }}
         >
           Confirm
         </button>

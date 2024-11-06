@@ -57,7 +57,7 @@ export default function ExportModal({ onClose }: ExportModalProps) {
                   >
                     <div className={styles.oneInfo}>
                       <div
-                        className={`font-bold w-1/3 ${label === 'Registration No' ? 'tracking-tighter' : ''}`}
+                        className={`font-bold w-1/3 ${label === 'Registration No' ? 'tracking-tighter' : ''} max-1024:text-sm max-1024:w-[42%]`}
                       >
                         {label}
                       </div>

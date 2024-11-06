@@ -40,8 +40,8 @@ const config: Config = {
       },
     },
     screens: {
-      'tab-garo': '1024px',
-      'tab-sero': '768px',
+      'max-1024': { max: '1024px' }, // 1024px 이하
+      'max-768': { max: '768px' }, // 768px 이하
     },
   },
   plugins: [],
