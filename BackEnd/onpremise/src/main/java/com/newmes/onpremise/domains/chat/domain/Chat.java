@@ -1,10 +1,10 @@
 package com.newmes.onpremise.domains.chat.domain;
 
-import java.time.LocalDate;
-
 import com.newmes.onpremise.domains.chat.entity.ChatEntity;
 import lombok.Builder;
 import lombok.Data;
+
+import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -12,10 +12,10 @@ public class Chat {
 
     private String id;
     private String reportId;
-    private int order;
+    private String agent;
     private String comment;
     private boolean isQuestion;
-    private LocalDate createDate;
+    private OffsetDateTime createDate;
     private String PID;
     private String memberId;
 
@@ -23,7 +23,7 @@ public class Chat {
         return Chat.builder()
                 .id(entity.getId())
                 .reportId(entity.getReportId())
-                .order(entity.getOrder())
+                .agent(entity.getAgent())
                 .comment(entity.getComment())
                 .isQuestion(entity.isQuestion())
                 .createDate(entity.getCreateDate())

@@ -22,16 +22,10 @@ public class ChatServiceImpl implements ChatService{
 
   @Override
   public void add(ChatRequestDto chatDto) {
-   // dChatDocument document = ChatDocument.from(chatDto);
-    //chatRepository.save(document);
+    ChatEntity entity = ChatEntity.from(chatDto);
+    chatRepository.save(entity);
   }
 
-  @Override
-  public void link(ReportRequestDto reportDto) {
-      //ChatDocument doc = chatRepository.findById(reportDto.getChatId()).orElse(null);
-      //doc.setReportId(reportDto.getId());
-      //chatRepository.save(doc);
-  }
 
   @Override
   public ChatResponseDto load(String patientId) {

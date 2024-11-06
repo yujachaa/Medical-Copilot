@@ -1,7 +1,5 @@
 package com.newmes.onpremise.domains.chat.dto.request;
 
-import java.time.LocalDateTime;
-
 public record ChatRequestDto (
 
   String reportId,
@@ -10,10 +8,10 @@ public record ChatRequestDto (
 
   boolean isQuestion,
 
-  LocalDateTime createDate,
+  String PID,
 
-  String patientId,
+  String memberId,
 
-  String memberId
+  String agent
 ){
 }

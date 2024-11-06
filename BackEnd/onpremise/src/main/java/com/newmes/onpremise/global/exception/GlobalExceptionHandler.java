@@ -1,5 +1,6 @@
 package com.newmes.onpremise.global.exception;
 
+import com.newmes.onpremise.domains.chat.exception.ChatNotFoundException;
 import com.newmes.onpremise.domains.member.exception.MemberNotFoundException;
 import com.newmes.onpremise.domains.member.exception.ValidateMemberException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ValidateMemberException.class)
     public ResponseEntity<String> handleMemberValidException(ValidateMemberException ex) {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ChatNotFoundException.class)
+    public ResponseEntity<String> handleChatNotFoundException(ChatNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
 }

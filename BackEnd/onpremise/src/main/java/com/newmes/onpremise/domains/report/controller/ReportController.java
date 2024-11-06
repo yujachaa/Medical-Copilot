@@ -15,31 +15,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/report")
 public class ReportController {
-
-  private final ReportService reportService;
-
-  public ReportController(ReportService reportService) {
-    this.reportService = reportService;
-  }
-
-
-  @GetMapping("/{id}")
-  public void getReport(@PathVariable String id){
-      reportService.getReport(id);
-  }
-
-  @PatchMapping("/{id}/comment")
-  public void addComment(@PathVariable String id, @RequestBody CommentRequestDto commentDto){
-      reportService.addComment(commentDto);
-  }
-
-  @PatchMapping("/{id}")
-  public void updateSummary(@PathVariable String id, @RequestBody UpdateSummaryRequestDto updateSummaryDto){
-      reportService.update(updateSummaryDto);
-  }
-
-  @PostMapping("/add")
-  public void postReport(@RequestBody ReportRequestDto reportDto){
-      reportService.addReport(reportDto);
-  }
 }
