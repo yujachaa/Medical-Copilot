@@ -35,141 +35,143 @@ export default function PatientHistory({ onClose, isAnimate }: Props) {
             <span>AGE</span>
             <span>Summary</span>
           </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
-          </div>
-          <div
-            className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-          >
-            <span>1373</span>
-            <span>M</span>
-            <span>58</span>
-            <span>CXR-Pneumonia</span>
+          <div className="flex flex-col gap-5 h-[600px] overflow-y-auto">
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
+            <div
+              className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+            >
+              <span>1373</span>
+              <span>M</span>
+              <span>58</span>
+              <span>CXR-Pneumonia</span>
+            </div>
           </div>
         </div>
       </div>

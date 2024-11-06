@@ -5,20 +5,20 @@
   position: fixed;
   right: 20px;
   top: 0;
-  animation: slideIn 0.5s ease;
+  animation: slideIn 0.8s ease;
 }
 
 .mainOut {
   position: fixed;
   right: 20px;
   top: 0;
-  animation: slideOut 0.7s ease;
+  animation: slideOut 0.8s ease;
 }
 
 /* 오른쪽에서 왼쪽으로 슬라이드하여 나타나는 애니메이션 */
 @keyframes slideIn {
   0% {
-    transform: translateX(100%);
+    transform: translateX(120%);
   }
   100% {
     transform: translateX(0);
