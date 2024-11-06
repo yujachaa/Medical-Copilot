@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import styles from './Header.module.scss';
 import UserIcon from '@/assets/images/userImg.png';
@@ -10,6 +10,9 @@ import { FaStar } from 'react-icons/fa';
 import { TbLogout, TbSettingsFilled } from 'react-icons/tb';
 import TabBoard from '../Tabs/TabBoard/TabBoard';
 import PatientHistory from '../PatientHistory/PatientHistory';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
+import { fetchLogout } from '@/apis/fetchLogout';
+import { setInit } from '@/redux/features/user/userSlice';
 
 export default function Header() {
   const pathname = usePathname(); // 현재 URL 경로를 가져옴
@@ -19,6 +22,15 @@ export default function Header() {
   const isMainWithId = /^\/main\/\d+$/.test(pathname);
   const clickUser = () => {
     setIsUserModalOpen(!isUserModalOpen);
+  };
+  const accessToken = useAppSelector<string>((state) => state.user.accessToken);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = async () => {
+    await fetchLogout(accessToken);
+    dispatch(setInit());
+    router.push('/');
   };
 
   const handleHistoryClose = () => {
@@ -77,7 +89,12 @@ export default function Header() {
               <TbSettingsFilled className="w-[20] h-[20]" />
               <span>Settings</span>
             </li>
-            <li className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2">
+            <li
+              className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2"
+              onClick={() => {
+                handleLogout();
+              }}
+            >
               <TbLogout className="w-[20] h-[20] ml-[2]" />
               <span>Log out</span>
             </li>

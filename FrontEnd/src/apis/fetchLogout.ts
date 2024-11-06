@@ -1,13 +1,12 @@
-export async function fetchLogin(email: string, password: string) {
-  console.log(process.env.NEXT_PUBLIC_SERVER_URL);
+export async function fetchLogout(accessToken: string) {
   try {
-    const response = await fetch(`https://k11s205.p.ssafy.io/onpremise/api/member/login`, {
-      cache: 'no-store',
+    const response = await fetch(`https://k11s205.p.ssafy.io/onpremise/api/member/logout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ accessToken }),
     });
     if (!response.ok) {
       throw new Error('응답이 없습니다.');
