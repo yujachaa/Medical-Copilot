@@ -1,4 +1,5 @@
 export async function fetchLogin(email: string, password: string) {
+  console.log(process.env.NEXT_PUBLIC_SERVER_URL);
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/member/login`, {
       cache: 'no-store',

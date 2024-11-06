@@ -26,7 +26,7 @@ export default function Header() {
     setTimeout(() => {
       setIsHistoryOpen(false);
       setIsAnimating(false);
-    }, 600); // 애니메이션 시간과 동일하게 설정
+    }, 700); // 애니메이션 시간과 동일하게 설정
   };
   console.log(pathname);
   return (
