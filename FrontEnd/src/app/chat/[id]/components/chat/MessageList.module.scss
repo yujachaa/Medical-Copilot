@@ -29,4 +29,9 @@
   &::-webkit-scrollbar-thumb:hover {
     background-color: darken($gray-msg, 20%); // 핸들 호버 시 더 진한 색상
   }
+
+  @media (max-width: 768px) {
+    height: 90%;
+    margin-bottom: 5px;
+  }
 }

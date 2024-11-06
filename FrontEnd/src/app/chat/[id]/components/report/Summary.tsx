@@ -9,7 +9,7 @@ export default function Summary() {
     <div className="">
       <div className={`${styles.summary}`}>
         <div>Brief Summary</div>
-        <div className={styles.image}>{summaryText}</div>
+        <div className={styles.summaryText}>{summaryText}</div>
         <div className={styles.editorBtn}>
           <TbEdit />
         </div>
