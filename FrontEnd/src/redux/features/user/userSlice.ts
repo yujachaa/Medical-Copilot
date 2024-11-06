@@ -33,8 +33,18 @@ const userSlices = createSlice({
       state.serialKey = action.payload.serialKey;
       state.role = action.payload.role;
     },
+
+    setInit(state) {
+      state.createDate = '';
+      state.modifiedDate = '';
+      state.accessToken = '';
+      state.email = '';
+      state.name = '';
+      state.serialKey = '';
+      state.role = '';
+    },
   },
 });
 
-export const { setUserInfo } = userSlices.actions;
+export const { setUserInfo, setInit } = userSlices.actions;
 export default userSlices;
