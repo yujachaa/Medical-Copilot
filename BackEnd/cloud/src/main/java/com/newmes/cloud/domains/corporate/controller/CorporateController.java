@@ -7,6 +7,7 @@ import com.newmes.cloud.domains.corporate.service.CorporateService;
 import com.newmes.cloud.global.util.HttpResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,17 @@ public class CorporateController {
         }
     }
 
+    @GetMapping("{corporateKey}")
+    public ResponseEntity<?> getOneCorporate(
+            @PathVariable("corporateKey") String key) {
+        try {
+            CorporateResponseDto corporate = corporateService.getOneCorporate(key);
+            return httpResponseUtil.createResponse(corporate);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping
     public ResponseEntity<?> getAllCorporates() {
         try {
@@ -56,8 +68,8 @@ public class CorporateController {
     @GetMapping("/{corporateKey}/init")
     public ResponseEntity<?> initCorporate(@PathVariable("corporateKey") String key) {
         try {
-            CorporateResponseDto corporate = corporateService.init(key);
-            return httpResponseUtil.createSuccessResponse("success", corporate);
+            corporateService.init(key);
+            return httpResponseUtil.createSuccessResponse("success", HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -66,13 +66,21 @@ public class CorporateServiceImpl implements CorporateService {
 
     @Override
     @Transactional
-    public CorporateResponseDto init(String key) {
+    public void init(String key) {
+        UsageEntity entity = usageRepository.findByCorporateKey(key)
+                .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
+        entity.initAgentCount();
+
+        usageRepository.save(entity);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CorporateResponseDto getOneCorporate(String key) {
         CorporateEntity entity = corporateRepository.findByKey(key)
                 .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
 
-        CorporateEntity updatedEntity = corporateRepository.save(entity);
-
-        return CorporateResponseDto.from(Corporate.fromEntity(updatedEntity));
+        return CorporateResponseDto.from(Corporate.fromEntity(entity));
     }
 
     @Override
@@ -131,7 +139,7 @@ public class CorporateServiceImpl implements CorporateService {
         CorporateEntity entity = corporateRepository.findByKey(key)
                 .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
 
-        entity.updateKey("none");
+        entity.updateKey(null);
         corporateRepository.save(entity);
     }
 }
