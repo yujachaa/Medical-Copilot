@@ -1,5 +1,6 @@
 package com.newmes.onpremise.domains.patient.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.newmes.onpremise.domains.patient.domain.Gender;
@@ -39,6 +40,7 @@ public class PatientEntity {
     String image;
 
     @Field(type = FieldType.Date)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     LocalDate visitDate;
     public static PatientEntity fromDto(PatientRequestDto dto) {
         PatientEntity patientEntity = PatientEntity.builder()
