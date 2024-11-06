@@ -16,7 +16,7 @@ export default function Home() {
           alt="Logo"
         />
         <div
-          className={`flex flex-col text-6xl w-[365] h-[150] justify-center ${styles.text} gap-2`}
+          className={`flex flex-col text-6xl w-[365px] h-[150px] justify-center ${styles.text} gap-2`}
         >
           <span
             ref={medicalRef}
