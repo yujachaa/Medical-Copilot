@@ -1,6 +1,8 @@
 package com.newmes.onpremise.domains.chat.entity;
 
 import java.time.OffsetDateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.newmes.onpremise.domains.chat.dto.request.ChatRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +16,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @AllArgsConstructor
 @Data
 @Document(indexName = "chats")
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
 public class ChatEntity {
 
