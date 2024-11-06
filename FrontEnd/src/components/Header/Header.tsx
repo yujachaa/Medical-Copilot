@@ -52,7 +52,7 @@ export default function Header() {
       <TabBoard />
       {isMainWithId ? (
         <div className={styles.mainHeader}>
-          <div className="flex gap-[10] items-center hover:bg-gray-100 p-2 rounded-md">
+          <div className="flex gap-[10px] items-center hover:bg-gray-100 p-2 rounded-md">
             <Image
               src={UserIcon}
               alt="유저아이콘"
@@ -78,15 +78,15 @@ export default function Header() {
       ) : null}
       {isUserModalOpen && (
         <div
-          className={`absolute top-[102] left-4 w-40 bg-white shadow-md rounded-md p-2 text-blue-btn border-solid border border-black/20 ${styles.modal}`}
+          className={`absolute top-[102px] left-4 w-40 bg-white shadow-md rounded-md p-2 text-blue-btn border-solid border border-black/20 ${styles.modal}`}
         >
           <ul className="flex flex-col gap-2 font-bold">
             <li className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2">
-              <FaStar className="w-[20] h-[20]" />
+              <FaStar className="w-[20px] h-[20px]" />
               <span>My Plan</span>
             </li>
             <li className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2">
-              <TbSettingsFilled className="w-[20] h-[20]" />
+              <TbSettingsFilled className="w-[20px] h-[20px]" />
               <span>Settings</span>
             </li>
             <li
@@ -95,7 +95,7 @@ export default function Header() {
                 handleLogout();
               }}
             >
-              <TbLogout className="w-[20] h-[20] ml-[2]" />
+              <TbLogout className="w-[20px] h-[20px] ml-[2px]" />
               <span>Log out</span>
             </li>
           </ul>
