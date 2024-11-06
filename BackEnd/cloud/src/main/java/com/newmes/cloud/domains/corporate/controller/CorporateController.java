@@ -23,47 +23,76 @@ public class CorporateController {
 
     @PostMapping
     public ResponseEntity<?> registerCorporate(@RequestBody CorporateRequestDto corporate) {
-        CorporateResponseDto createdCorporate = corporateService.registerCorporate(corporate);
-        return httpResponseUtil.createSuccessResponse(createdCorporate, "Corporate registered successfully");
+        try {
+            CorporateResponseDto createdCorporate = corporateService.registerCorporate(corporate);
+            return httpResponseUtil.createSuccessResponse(createdCorporate, "Corporate registered successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("{corporateKey}")
     public ResponseEntity<?> updateCorporate(
             @PathVariable("corporateKey") String key,
             @RequestBody CorporateRequestDto corporate) {
-        CorporateResponseDto updatedCorporate = corporateService.updateCorporate(key, corporate);
-        return httpResponseUtil.createResponse(updatedCorporate);
+        try {
+            CorporateResponseDto updatedCorporate = corporateService.updateCorporate(key, corporate);
+            return httpResponseUtil.createResponse(updatedCorporate);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping
     public ResponseEntity<?> getAllCorporates() {
-        List<CorporateListResponseDto> corporates = corporateService.getAllCorporates();
-        return httpResponseUtil.createResponse(corporates);
+        try {
+            List<CorporateListResponseDto> corporates = corporateService.getAllCorporates();
+            return httpResponseUtil.createResponse(corporates);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{corporateKey}/init")
     public ResponseEntity<?> initCorporate(@PathVariable("corporateKey") String key) {
-        CorporateResponseDto corporate = corporateService.init(key);
-        return httpResponseUtil.createSuccessResponse("success", corporate);
+        try {
+            CorporateResponseDto corporate = corporateService.init(key);
+            return httpResponseUtil.createSuccessResponse("success", corporate);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PatchMapping("/{corporateKey}/limit")
     public ResponseEntity<?> suspendCorporateKey(@PathVariable("corporateKey") String key) {
-        boolean response = corporateService.suspendCorporateKey(key);
-        return httpResponseUtil.createSuccessResponse("success", response);
+        try {
+            boolean response = corporateService.suspendCorporateKey(key);
+            return httpResponseUtil.createSuccessResponse("success", response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PatchMapping("/{corporateKey}/reissue")
     public ResponseEntity<?> reissueCorporateKey(@PathVariable("corporateKey") String key) {
-        if(key.equals("none")) httpResponseUtil.createSuccessResponse("fail", "none Key");
-        String response = corporateService.reissueCorporateKey(key);
-        return httpResponseUtil.createSuccessResponse("success", response);
+        try {
+            if (key.equals("none")) httpResponseUtil.createSuccessResponse("fail", "none Key");
+            String response = corporateService.reissueCorporateKey(key);
+            return httpResponseUtil.createSuccessResponse("success", response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{corporateKey}/deleteKey")
     public ResponseEntity<?> deleteCorporateKey(@PathVariable("corporateKey") String key) {
-        corporateService.deleteCorporateKey(key);
-        return httpResponseUtil.createSuccessResponse("success", "none");
+        try {
+            corporateService.deleteCorporateKey(key);
+            return httpResponseUtil.createSuccessResponse("success", "none");
+        } catch (
+                Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 

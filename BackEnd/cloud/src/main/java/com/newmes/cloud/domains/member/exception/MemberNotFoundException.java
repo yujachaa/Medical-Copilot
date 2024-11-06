@@ -10,6 +10,11 @@ public class MemberNotFoundException extends RuntimeException {
 
     public MemberNotFoundException(String name) {
         this.status = HttpStatus.NOT_FOUND;
-        this.msg = " 해당 멤버를 찾을 수 없습니다. name: "+name;
+        this.msg = " 해당 멤버를 찾을 수 없습니다. member: " + name;
+    }
+
+    @Override
+    public String getMessage() {
+        return this.msg;
     }
 }
