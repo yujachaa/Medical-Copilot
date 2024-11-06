@@ -12,11 +12,11 @@ export default function Input() {
   };
   return (
     <div className={styles.container}>
-      <label className={styles.file}>
-        <FaDatabase
-          className="w-5 h-5 text-clip"
-          onClick={() => setPatientModal(true)}
-        />
+      <label
+        className={styles.file}
+        onClick={() => setPatientModal(true)}
+      >
+        <FaDatabase className="w-5 h-5 text-clip" />
       </label>
       {isPatientModal && <PatientDB onClose={CloseModal} />}
       <input
