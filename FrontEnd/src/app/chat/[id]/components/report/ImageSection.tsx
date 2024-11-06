@@ -17,12 +17,14 @@ export default function ImageSection() {
     <div className={`${styles.info}`}>
       <div>Image</div>
       <div className={styles.image}>
-        <Image
-          src={XrayImg}
-          alt="이미지"
-          width={250}
-          height={250}
-        />
+        <div className={styles.imgWrapper}>
+          <Image
+            src={XrayImg}
+            alt="이미지"
+            fill // fill 속성 사용
+            style={{ objectFit: 'cover' }} // 이미지를 부모 컨테이너에 맞추기 위한 스타일
+          />
+        </div>
       </div>
       <div
         className={styles.editorBtn}
