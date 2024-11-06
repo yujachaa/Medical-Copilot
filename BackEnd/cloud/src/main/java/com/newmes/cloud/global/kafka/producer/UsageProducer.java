@@ -1,5 +1,6 @@
 package com.newmes.cloud.global.kafka.producer;
 
+import com.google.gson.Gson;
 import com.newmes.cloud.domains.usage.domain.AgentUsageLog;
 import com.newmes.cloud.global.kafka.dto.UsageResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class UsageProducer {
 
+    final Gson gson = new Gson();
     private final KafkaTemplate<String, AgentUsageLog> kafkaTemplate;
     private final ConcurrentHashMap<String, CompletableFuture<String>> futureMap = new ConcurrentHashMap<>();
 
@@ -34,7 +36,8 @@ public class UsageProducer {
     public void completeFuture(String uniqueId, UsageResponseDto usageResponseDto) {
         CompletableFuture<String> future = futureMap.remove(uniqueId);
         if (future != null) {
-            future.complete(String.valueOf(usageResponseDto));
+            String usageResponseJson = gson.toJson(usageResponseDto);
+            future.complete(usageResponseJson);
         }
     }
 }
