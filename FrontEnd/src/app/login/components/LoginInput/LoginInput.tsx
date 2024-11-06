@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { KeyboardEvent, useState } from 'react';
 import styles from './LoginInput.module.scss';
 import { fetchLogin } from '@/apis/fetchLogin';
 import { useRouter } from 'next/navigation';
@@ -25,6 +25,15 @@ export default function LoginInput() {
     }
   };
 
+  const handleKeyUp = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      const button = document.getElementById('Login');
+      if (button) {
+        button.click();
+      }
+    }
+  };
+
   return (
     <div className={`${styles.main} flex flex-col items-center gap-10`}>
       <div className={`flex flex-col gap-[7px]`}>
@@ -34,6 +43,9 @@ export default function LoginInput() {
           onChange={(event) => {
             setEmail(event.target.value);
           }}
+          onKeyUp={(event: KeyboardEvent) => {
+            handleKeyUp(event);
+          }}
         />
         <input
           className={`${styles.PW} w-[422px] h-[70px]`}
@@ -41,6 +53,9 @@ export default function LoginInput() {
           type="password"
           onChange={(event) => {
             setPassword(event.target.value);
+          }}
+          onKeyUp={(event: KeyboardEvent) => {
+            handleKeyUp(event);
           }}
         />
         {!isLogin ? (
@@ -59,6 +74,7 @@ export default function LoginInput() {
           Sign up
         </button>
         <button
+          id="Login"
           className={`${styles.login} w-[190px] h-[64px] flex justify-center items-center`}
           onClick={() => {
             handleLogin();

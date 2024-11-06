@@ -1,7 +1,11 @@
 export async function fetchLogout(accessToken: string) {
   try {
     const response = await fetch(`https://k11s205.p.ssafy.io/onpremise/api/member/logout`, {
-      method: 'GET',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
       body: JSON.stringify({ accessToken }),
     });
     if (!response.ok) {
