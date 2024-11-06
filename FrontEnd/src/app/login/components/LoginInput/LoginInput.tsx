@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { KeyboardEvent, useState } from 'react';
 import styles from './LoginInput.module.scss';
 import { fetchLogin } from '@/apis/fetchLogin';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/redux/store/hooks/store';
+import { setUserInfo } from '@/redux/features/user/userSlice';
 
 export default function LoginInput() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -15,8 +18,19 @@ export default function LoginInput() {
     const data = await fetchLogin(email, password);
     if (data) {
       setIsLogin(true);
+      dispatch(setUserInfo(data.status));
+      router.push('/main');
     } else {
       setIsLogin(false);
+    }
+  };
+
+  const handleKeyUp = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      const button = document.getElementById('Login');
+      if (button) {
+        button.click();
+      }
     }
   };
 
@@ -29,6 +43,9 @@ export default function LoginInput() {
           onChange={(event) => {
             setEmail(event.target.value);
           }}
+          onKeyUp={(event: KeyboardEvent) => {
+            handleKeyUp(event);
+          }}
         />
         <input
           className={`${styles.PW} w-[422px] h-[70px]`}
@@ -37,9 +54,12 @@ export default function LoginInput() {
           onChange={(event) => {
             setPassword(event.target.value);
           }}
+          onKeyUp={(event: KeyboardEvent) => {
+            handleKeyUp(event);
+          }}
         />
         {!isLogin ? (
-          <span className={`flex justify-end text-[red] font-[700]`}>
+          <span className={`flex justify-end text-[red] font-[700px]`}>
             Check your email or password
           </span>
         ) : null}
@@ -54,6 +74,7 @@ export default function LoginInput() {
           Sign up
         </button>
         <button
+          id="Login"
           className={`${styles.login} w-[190px] h-[64px] flex justify-center items-center`}
           onClick={() => {
             handleLogin();
