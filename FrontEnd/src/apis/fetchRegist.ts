@@ -1,11 +1,17 @@
-export async function fetchLogin(email: string, password: string) {
+export async function fetchRegist(email: string, password: string, name: string) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/member/login`, {
+    const response = await fetch(`https://k11s205.p.ssafy.io/onpremise/api/member/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        name: name,
+        serialKey: '',
+        role: 'ADMIN',
+      }),
     });
     if (!response.ok) {
       throw new Error('응답이 없습니다.');
