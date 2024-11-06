@@ -1,6 +1,7 @@
 package com.newmes.cloud.global.kafka.consumer;
 
 import com.newmes.cloud.domains.usage.domain.AgentUsageLog;
+import com.newmes.cloud.global.kafka.dto.UsageResponseDto;
 import com.newmes.cloud.global.kafka.producer.UsageProducer;
 import com.newmes.cloud.global.kafka.service.KafkaService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,9 @@ public class UsageConsumer {
         try {
             kafkaService.processUsageMessage(agentUsageLog);
 
-            kafkaUsageProducer.completeFuture(uniqueId, "Usage processed successfully for corporate id: " + agentUsageLog.getId());
+            kafkaUsageProducer.completeFuture(uniqueId, new UsageResponseDto("Usage processed successfully for corporate id: " + agentUsageLog.getId(), Boolean.TRUE) );
         } catch (Exception e) {
-            kafkaUsageProducer.completeFuture(uniqueId, "Error processing usage: " + e.getMessage());
+            kafkaUsageProducer.completeFuture(uniqueId, new UsageResponseDto( "Error processing usage: " + e.getMessage(), Boolean.FALSE));
         }
     }
 

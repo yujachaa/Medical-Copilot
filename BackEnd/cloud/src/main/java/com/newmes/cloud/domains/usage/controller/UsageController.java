@@ -40,111 +40,111 @@ public class UsageController {
     }
 
   @GetMapping("/monthly")
-  public ResponseEntity<MonthlyResponse> monthlyTotal(){
+  public ResponseEntity<?> monthlyTotal(){
     MonthlyResponse monthlyResponse = null;
     try {
       monthlyResponse = usageService.monthly();
     } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     return ResponseEntity.status(HttpStatus.OK).body(monthlyResponse);
   }
 
   @GetMapping("/weekly")
-  public ResponseEntity<WeeklyResponse> WeeklyTotal(){
+  public ResponseEntity<?> WeeklyTotal(){
     WeeklyResponse weeklyResponse = null;
     try {
       weeklyResponse = usageService.weekly();
     } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     return ResponseEntity.status(HttpStatus.OK).body(weeklyResponse);
   }
 
   @GetMapping("/yearly")
-  public ResponseEntity<YearlyResponse> YearlyTotal() {
+  public ResponseEntity<?> YearlyTotal() {
     YearlyResponse yearlyResponse = null;
     try {
       yearlyResponse = usageService.yearly();
     } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     return ResponseEntity.status(HttpStatus.OK).body(yearlyResponse);
   }
 
   @GetMapping("/total")
-  public ResponseEntity<CountResponse> total(){
+  public ResponseEntity<?> total(){
     CountResponse response = null;
     try {
       response = usageService.total();
     } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/yearly/{key}")
-  public ResponseEntity<YearlyResponse> customerYearly(@PathVariable String key){
+  public ResponseEntity<?> customerYearly(@PathVariable String key){
     YearlyResponse yearlyResponse = null;
     try {
       yearlyResponse = usageService.customerYearly(key);
     } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     return ResponseEntity.status(HttpStatus.OK).body(yearlyResponse);
   }
 
   @GetMapping("/monthly/{key}")
-  public ResponseEntity<MonthlyResponse> customerMonthly(@PathVariable String key){
+  public ResponseEntity<?> customerMonthly(@PathVariable String key){
     MonthlyResponse monthlyResponse = null;
     try {
       monthlyResponse = usageService.customerMonthly(key);
     } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     return ResponseEntity.status(HttpStatus.OK).body(monthlyResponse);
   }
 
   @GetMapping("/weekly/{key}")
-  public ResponseEntity<WeeklyResponse> customerWeekly(@PathVariable String key){
+  public ResponseEntity<?> customerWeekly(@PathVariable String key){
     WeeklyResponse weeklyResponse = null;
     try {
       weeklyResponse = usageService.customerWeekly(key);
     } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     return ResponseEntity.status(HttpStatus.OK).body(weeklyResponse);
   }
 
   @GetMapping("/yearlyTotal/{key}")
-  public ResponseEntity<CountResponse> customerYearlyTotal(@PathVariable String key){
+  public ResponseEntity<?> customerYearlyTotal(@PathVariable String key){
     CountResponse response = null;
     try {
       response = usageService.customerYearlyTotal(key);
     } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/monthlyTotal/{key}")
-  public ResponseEntity<CountResponse> customerMonthlyTotal(@PathVariable String key){
+  public ResponseEntity<?> customerMonthlyTotal(@PathVariable String key){
     CountResponse response = null;
     try {
       response = usageService.customerMonthlyTotal(key);
     } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/weeklyTotal/{key}")
-  public ResponseEntity<CountResponse> customerWeeklyTotal(@PathVariable String key){
+  public ResponseEntity<?> customerWeeklyTotal(@PathVariable String key){
     CountResponse response = null;
     try {
       response = usageService.customerWeeklyTotal(key);
     } catch (IOException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
