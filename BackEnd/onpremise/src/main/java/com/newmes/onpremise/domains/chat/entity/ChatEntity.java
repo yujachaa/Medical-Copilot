@@ -53,7 +53,6 @@ public class ChatEntity {
                 .isQuestion(domain.isQuestion())
                 .createDate(domain.getCreateDate())
                 .PID(domain.getPID())
-                .type(domain.getType())
                 .memberId(domain.getMemberId())
                 .build();
     }

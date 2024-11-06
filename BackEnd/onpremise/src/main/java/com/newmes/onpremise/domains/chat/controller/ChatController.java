@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("chat")
 @RequiredArgsConstructor
 public class ChatController {
 
@@ -27,8 +27,8 @@ public class ChatController {
     chatService.link(reportDto);
   }
 
-  @GetMapping("{patientId}")
-  public ResponseEntity<?> loadAll(@PathVariable("patientId") String patientId){
+  @GetMapping("{pid}")
+  public ResponseEntity<?> loadAll(@PathVariable("pid") String patientId){
     ChatResponseDto chats = chatService.load(patientId);
     return responseUtil.createResponse(chats);
   }
