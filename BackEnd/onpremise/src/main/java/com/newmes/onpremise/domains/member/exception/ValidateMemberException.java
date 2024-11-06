@@ -8,7 +8,7 @@ public class ValidateMemberException extends RuntimeException {
 
     public ValidateMemberException(String email) {
         super("Member not found");
-        this.status = HttpStatus.NOT_FOUND;
-        this.msg = " 해당 멤버를 찾을 수 없습니다. email: "+email;
+        this.status = HttpStatus.NO_CONTENT;
+        this.msg = " 비밀번호가 다릅니다: "+email;
     }
 }

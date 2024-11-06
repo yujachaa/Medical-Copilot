@@ -1,26 +1,19 @@
 package com.newmes.onpremise.domains.chat.dto.request;
 
-import java.util.Date;
-import lombok.Data;
+import java.time.LocalDateTime;
 
-@Data
-public class ChatRequestDto {
+public record ChatRequestDto (
 
-  String id;
+  String reportId,
 
-  String reportId;
+  String comment,
 
-  int order;
+  boolean isQuestion,
 
-  String comment;
+  LocalDateTime createDate,
 
-  boolean isQuestion;
+  String patientId,
 
-  Date regdate;
-
-  String patientId;
-
-  String type;
-
-  String memberId;
+  String memberId
+){
 }
