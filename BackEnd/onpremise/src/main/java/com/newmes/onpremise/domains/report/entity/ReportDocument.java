@@ -16,7 +16,7 @@ public class ReportDocument {
   @Id
   String id;
 
-  String patientId;
+  String PID;
 
   String imageUrl;
 
@@ -32,16 +32,4 @@ public class ReportDocument {
 
   String memberId;
 
-  public static ReportDocument from(ReportRequestDto dto){
-    return ReportDocument.builder().id(dto.getId())
-        .patientId(dto.getPatientId())
-        .imageUrl(dto.getImageUrl())
-        .summary(dto.getSummary())
-        .comment(dto.getComment())
-        .createDate(dto.getCreateDate())
-        .modifiedDate(dto.getModifiedDate())
-        .chatId(dto.getChatId())
-        .memberId(dto.getMemberId())
-        .build();
-  }
 }

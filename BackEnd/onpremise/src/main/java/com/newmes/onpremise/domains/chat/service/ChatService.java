@@ -8,7 +8,5 @@ public interface ChatService {
 
   void add(ChatRequestDto chatDto);
 
-  void link(ReportRequestDto reportDto);
-
   ChatResponseDto load(String patientId);
 }

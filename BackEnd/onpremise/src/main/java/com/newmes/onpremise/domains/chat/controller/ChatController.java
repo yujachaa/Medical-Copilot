@@ -22,11 +22,6 @@ public class ChatController {
       chatService.add(chatDto);
   }
 
-  @PatchMapping("/linkReport")
-  public void linkReport(@RequestBody ReportRequestDto reportDto){
-    chatService.link(reportDto);
-  }
-
   @GetMapping("{pid}")
   public ResponseEntity<?> loadAll(@PathVariable("pid") String patientId){
     ChatResponseDto chats = chatService.load(patientId);

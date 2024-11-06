@@ -10,36 +10,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReportServiceImpl implements ReportService{
 
-  private final ReportRepository reportRepository;
 
-  public ReportServiceImpl(ReportRepository reportRepository) {
-    this.reportRepository = reportRepository;
-  }
-
-  @Override
-  public void getReport(String id) {
-      ReportDocument reportDto = reportRepository.findById(id).orElse(null);
-  }
-
-  @Override
-  public void addComment(CommentRequestDto commentDto) {
-    ReportDocument reportDto = reportRepository.findById(commentDto.getReportId()).orElse(null);
-      if (reportDto == null){
-       return;
-      }
-      reportDto.setComment(commentDto.getComment());
-      reportRepository.save(reportDto);
-  }
-
-  @Override
-  public void update(UpdateSummaryRequestDto updateSummaryDto) {
-    ReportDocument reportDto = reportRepository.findById(updateSummaryDto.getReportId()).orElse(null);
-    reportRepository.save(reportDto);
-  }
-
-  @Override
-  public void addReport(ReportRequestDto reportRequestDto) {
-      ReportDocument newDoc = ReportDocument.from(reportRequestDto);
-      reportRepository.save(newDoc);
-  }
 }
