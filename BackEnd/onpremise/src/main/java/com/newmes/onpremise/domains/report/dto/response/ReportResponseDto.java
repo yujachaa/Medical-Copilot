@@ -1,6 +1,7 @@
 package com.newmes.onpremise.domains.report.dto.response;
 
 import com.newmes.onpremise.domains.patient.domain.Gender;
+import com.newmes.onpremise.domains.report.domain.Detection;
 import com.newmes.onpremise.domains.report.entity.ReportEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,12 +31,14 @@ public class ReportResponseDto {
     private String size;
     private String symptoms;
     private String summary;
+    private Detection detection;
+
 
     public static ReportResponseDto from(ReportEntity entity) {
         return ReportResponseDto.builder()
                 .id(entity.getId())
                 .PID(entity.getPID())
-                .imageUrl(entity.getImageUrl())
+                .imageUrl(entity.getImage())
                 .createDate(entity.getCreateDate())
                 .modifiedDate(entity.getModifiedDate())
                 .chatId(entity.getChatId())
@@ -47,6 +51,7 @@ public class ReportResponseDto {
                 .size(entity.getSize())
                 .symptoms(entity.getSymptoms())
                 .summary(entity.getSummary())
+                .detection(entity.getDetection())
                 .build();
     }
 }

@@ -8,7 +8,6 @@ import com.newmes.onpremise.domains.report.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.OffsetDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -17,9 +16,9 @@ public class ReportServiceImpl implements ReportService {
     private final ReportRepository reportRepository;
 
     @Override
-    public void register(ReportRequestDto reportDto) {
+    public String register(ReportRequestDto reportDto) {
         ReportEntity reportEntity = ReportEntity.from(reportDto);
-        reportRepository.save(reportEntity);
+        return reportRepository.save(reportEntity).getId();
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
 import com.newmes.onpremise.domains.report.dto.response.ReportResponseDto;
 
 public interface ReportService {
-    void register(ReportRequestDto reportDto);
+    String register(ReportRequestDto reportDto);
     ReportResponseDto readById(String id);
     void updateReport(String id, ReportRequestDto updateRequest);
 }

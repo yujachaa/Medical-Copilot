@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.newmes.onpremise.domains.chat.dto.request.ChatRequestDto;
+import com.newmes.onpremise.domains.patient.domain.Modality;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,7 +40,7 @@ public class ChatEntity {
     private String PID;
 
     @Field(type = FieldType.Keyword)
-    private String agent;
+    private Modality agent;
 
     @Field(type = FieldType.Keyword)
     private String memberId;
