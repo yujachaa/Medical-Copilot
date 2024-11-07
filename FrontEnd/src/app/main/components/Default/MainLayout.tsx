@@ -1,21 +1,15 @@
 'use client';
 import React, { useState } from 'react';
-import styles from './page.module.scss';
-import Input from '../components/Input';
+import styles from './Main.module.scss';
+
 import Logo from '@/assets/images/logo.svg';
 import CapSule from '@/assets/images/capsule.svg';
 import Cxr from '@/assets/images/cxr.svg';
 import { PluginType } from '@/components/Tabs/Tab';
 import SelectTabIcons from '@/components/Tabs/components/SelectTabIcons';
-import Header from '@/components/Header/Header';
-type paramsType = {
-  params?: {
-    id: string;
-  };
-};
+import Input from './Input';
 
-export default function Page({ params }: paramsType) {
-  console.log(params);
+export default function Main() {
   const [isActive, setIsActive] = useState(false);
   const [plugin, setPlugin] = useState<PluginType>('default');
   const toggleIcons = () => {
@@ -23,7 +17,6 @@ export default function Page({ params }: paramsType) {
   };
   return (
     <div className={styles.container}>
-      <Header />
       <div className={styles.title}>MEDICAL COPILOT</div>
       <div className="flex justify-center items-center text-[20px] text-2c2c2c mt-4">
         Dr. Bell will tell you anything about medical knowledge!
