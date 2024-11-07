@@ -13,24 +13,26 @@ import java.time.OffsetDateTime;
 public class Report {
     private String id;
     private String PID;
-    private String imageUrl;
+    private String image;
     private String summary;
     private String comment;
     private OffsetDateTime createDate;
     private OffsetDateTime modifiedDate;
     private String chatId;
     private String memberId;
+    private Detection detection;
 
     public static Report from(ReportEntity reportDocument) {
         return Report.builder()
                 .id(reportDocument.getId())
                 .PID(reportDocument.getPID())
-                .imageUrl(reportDocument.getImageUrl())
+                .image(reportDocument.getImage())
                 .summary(reportDocument.getSummary())
                 .createDate(reportDocument.getCreateDate())
                 .modifiedDate(reportDocument.getModifiedDate())
                 .chatId(reportDocument.getChatId())
                 .memberId(reportDocument.getMemberId())
+                .detection(reportDocument.getDetection())
                 .build();
     }
 }

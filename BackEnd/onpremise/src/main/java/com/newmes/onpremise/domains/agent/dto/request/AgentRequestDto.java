@@ -12,7 +12,7 @@ public record AgentRequestDto(
         LocalDate shootingDate,
         Gender sex,
         int age,
-        String question,
+        String comment,
         String key,
         Modality agent
 ) {

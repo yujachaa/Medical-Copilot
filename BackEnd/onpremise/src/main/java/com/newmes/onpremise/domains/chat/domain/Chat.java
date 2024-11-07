@@ -1,6 +1,7 @@
 package com.newmes.onpremise.domains.chat.domain;
 
 import com.newmes.onpremise.domains.chat.entity.ChatEntity;
+import com.newmes.onpremise.domains.patient.domain.Modality;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ public class Chat {
 
     private String id;
     private String reportId;
-    private String agent;
+    private Modality agent;
     private String comment;
     private boolean isQuestion;
     private OffsetDateTime createDate;
