@@ -8,7 +8,7 @@ import UserIcon from '@/assets/images/userImg.png';
 import Image from 'next/image';
 import { FaStar } from 'react-icons/fa';
 import { TbLogout, TbSettingsFilled } from 'react-icons/tb';
-import TabBoard from '../Tabs/TabBoard/TabBoard';
+import TabBoard from '../Tabs/TabBoard/SmallTabBoard';
 import PatientHistory from '../PatientHistory/PatientHistory';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { fetchLogout } from '@/apis/fetchLogout';
