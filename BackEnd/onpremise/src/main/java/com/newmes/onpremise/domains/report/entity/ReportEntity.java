@@ -3,10 +3,10 @@ package com.newmes.onpremise.domains.report.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.newmes.onpremise.domains.patient.domain.Gender;
+import com.newmes.onpremise.domains.report.domain.Detection;
 import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
@@ -26,7 +26,7 @@ public class ReportEntity {
     @Id
     private String id;
     private String PID;
-    private String imageUrl;
+    private String image;
 
     @Field(type = FieldType.Date, format = DateFormat.date_time)
     private OffsetDateTime createDate;
@@ -36,9 +36,11 @@ public class ReportEntity {
 
     private String chatId;
     private String memberId;
+
     @Field(type = FieldType.Date)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate shootingDate;
+
     private Gender sex;
     private int age;
     private String disease;
@@ -46,10 +48,14 @@ public class ReportEntity {
     private String size;
     private String symptoms;
     private String summary;
+
+    @Field(type = FieldType.Object)
+    private Detection detection;
+
     public static ReportEntity from(ReportRequestDto dto) {
         return ReportEntity.builder()
                 .PID(dto.PID())
-                .imageUrl(dto.imageUrl())
+                .image(dto.image())
                 .chatId(dto.chatId())
                 .memberId(dto.memberId())
                 .shootingDate(dto.shootingDate())
@@ -62,6 +68,7 @@ public class ReportEntity {
                 .summary(dto.summary())
                 .createDate(OffsetDateTime.now())
                 .modifiedDate(OffsetDateTime.now())
+                .detection(dto.detection())
                 .build();
     }
 
@@ -81,7 +88,6 @@ public class ReportEntity {
         if (updateRequest.summary() != null) {
             this.summary = updateRequest.summary();
         }
-
         this.modifiedDate = OffsetDateTime.now();
     }
 }

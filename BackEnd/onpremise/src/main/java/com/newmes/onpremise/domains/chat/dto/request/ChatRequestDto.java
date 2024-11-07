@@ -1,5 +1,9 @@
 package com.newmes.onpremise.domains.chat.dto.request;
 
+import com.newmes.onpremise.domains.patient.domain.Modality;
+import lombok.Builder;
+
+@Builder
 public record ChatRequestDto (
 
   String reportId,
@@ -12,6 +16,6 @@ public record ChatRequestDto (
 
   String memberId,
 
-  String agent
+  Modality agent
 ){
 }
