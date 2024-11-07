@@ -1,0 +1,29 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  background-color: $blue-base;
+
+  .title {
+    font-weight: 700;
+    color: $blue-btn;
+  }
+  .info {
+    font-weight: 700;
+    font-size: 16px;
+  }
+}
+
+.planInfo {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  width: calc((100% - 72px) / 4);
+  border: 2px solid $tab-bg;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.planTitle {
+  font-size: 24px;
+  font-weight: 700;
+}

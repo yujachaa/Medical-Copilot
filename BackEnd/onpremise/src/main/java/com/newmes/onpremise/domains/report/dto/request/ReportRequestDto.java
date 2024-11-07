@@ -1,7 +1,7 @@
 package com.newmes.onpremise.domains.report.dto.request;
 
 import com.newmes.onpremise.domains.patient.domain.Gender;
-import com.newmes.onpremise.domains.report.entity.ReportEntity;
+import com.newmes.onpremise.domains.report.domain.Detection;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Builder
 public record ReportRequestDto(
         String PID,
-        String imageUrl,
+        String image,
         String chatId,
         String memberId,
         LocalDate shootingDate,
@@ -19,6 +19,7 @@ public record ReportRequestDto(
         String location,
         String size,
         String symptoms,
-        String summary
+        String summary,
+        Detection detection  // Detection 필드 추가
 ) {
 }
