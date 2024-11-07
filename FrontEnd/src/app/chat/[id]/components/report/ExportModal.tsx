@@ -1,11 +1,11 @@
 import { CgClose } from 'react-icons/cg';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from './ExportModal.module.scss';
 import Image from 'next/image';
 import XrayImg from '@/assets/images/xrayImg.jpg';
+import { fetchPDF } from '@/apis/fetchPDF';
 
 const fieldOptions = ['Finding', 'Impression', 'Plan'];
-
 type ExportModalProps = {
   onClose: () => void;
 };
@@ -13,6 +13,11 @@ type ExportModalProps = {
 export default function ExportModal({ onClose }: ExportModalProps) {
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const pdfRef = useRef<HTMLDivElement | null>(null);
+
+  const handleDownloadPDF = async () => {
+    fetchPDF();
+  };
 
   const plan = `Imaging : Perform a chest CT to futher evaluate the extent and cause of atelectasis,
                 identifying any obstructive or compressive factors. Monitoring : Repeat chest
@@ -44,7 +49,10 @@ export default function ExportModal({ onClose }: ExportModalProps) {
           onClick={onClose}
         />
         {/* pdf 내보내기 리포트 영역 */}
-        <div className={styles.report}>
+        <div
+          ref={pdfRef}
+          className={styles.report}
+        >
           <div className="font-bold text-3xl w-full">Medical Report</div>
           <div className={styles.infoArea}>
             <div className={`${styles.info}`}>
@@ -177,7 +185,12 @@ export default function ExportModal({ onClose }: ExportModalProps) {
           <button className="outline outline-blue-btn text-blue-btn px-3 py-2 rounded-md hover:text-white hover:bg-blue-btn">
             Save
           </button>
-          <button className="outline outline-[#ff484a] text-[#ff484a] px-3 py-2 rounded-md hover:text-white hover:bg-[#ff484a]">
+          <button
+            className="outline outline-[#ff484a] text-[#ff484a] px-3 py-2 rounded-md hover:text-white hover:bg-[#ff484a]"
+            onClick={() => {
+              handleDownloadPDF();
+            }}
+          >
             Export PDF
           </button>
           <button className="outline outline-gray-400 text-gray-400 px-3 py-2 rounded-md hover:text-white hover:bg-gray-400">
