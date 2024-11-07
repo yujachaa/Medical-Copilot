@@ -8,7 +8,7 @@ import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchPatient } from '@/apis/main';
 import { useAppDispatch } from '@/redux/store/hooks/store';
-import { moveTab } from '@/redux/features/tab/tabSlice';
+import { setPatient } from '@/redux/features/main/mainSlice';
 // import { FaSortUp } from "react-icons/fa";
 
 type Props = {
@@ -19,15 +19,12 @@ type Patient = {
   age: number;
   visitDate: string;
   pid: string;
-};
-
-export type PatientData = Patient & {
   modality: string;
 };
 
 export default function PatientDB({ onClose }: Props) {
   const loader = useRef<HTMLDivElement | null>(null);
-  const [patientList, setPatientList] = useState<PatientData[]>([]);
+  const [patientList, setPatientList] = useState<Patient[]>([]);
   const [size] = useState<number>(8);
   const [page, setPage] = useState(0);
   const dispatch = useAppDispatch();
@@ -48,8 +45,9 @@ export default function PatientDB({ onClose }: Props) {
     getPatient();
   }, [page, size]);
 
-  const handlePatientMove = (data: PatientData) => {
-    dispatch(moveTab(data));
+  const handleSetPatient = (data: Patient) => {
+    dispatch(setPatient(data));
+    onClose();
   };
 
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
@@ -104,7 +102,7 @@ export default function PatientDB({ onClose }: Props) {
               {patientList.map((patient, index) => (
                 <tr
                   key={index}
-                  onClick={() => handlePatientMove(patient)}
+                  onClick={() => handleSetPatient(patient)}
                 >
                   <td>{patient.pid}</td>
                   <td>{patient.sex}</td>
