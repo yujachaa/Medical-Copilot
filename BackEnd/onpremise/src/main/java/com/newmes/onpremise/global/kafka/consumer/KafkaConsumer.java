@@ -2,6 +2,8 @@ package com.newmes.onpremise.global.kafka.consumer;
 
 import com.newmes.onpremise.domains.chat.dto.request.ChatRequestDto;
 import com.newmes.onpremise.domains.chat.service.ChatService;
+import com.newmes.onpremise.domains.history.entity.HistoryEntity;
+import com.newmes.onpremise.domains.history.service.HistoryService;
 import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
 import com.newmes.onpremise.domains.report.service.ReportService;
 import com.newmes.onpremise.global.kafka.dto.AiResponseDto;
@@ -10,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+
+import java.time.OffsetDateTime;
+
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -17,6 +22,7 @@ public class KafkaConsumer {
 
     private final ChatService chatService;
     private final ReportService reportService;
+    private final HistoryService historyService;
 
     @KafkaListener(topics = "chat", groupId = "ai-group")
     public void chat(ConsumerRecord<String, ChatRequestDto> record) {
@@ -69,6 +75,16 @@ public class KafkaConsumer {
 
         chatService.add(userQuestion);
         chatService.add(aiAnswer);
+
+        HistoryEntity historyEntity = HistoryEntity.builder()
+                .recentDate(OffsetDateTime.now())
+                .memberId(aiResponse.memberId())
+                .age(aiResponse.age())
+                .PID(aiResponse.PID())
+                .sex(aiResponse.sex())
+                .disease(aiResponse.classification() != null ? aiResponse.classification().predictedClass() : null)
+                .build();
+        historyService.register(historyEntity);
     }
 
 }

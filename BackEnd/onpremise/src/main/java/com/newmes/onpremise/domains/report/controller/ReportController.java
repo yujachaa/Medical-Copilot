@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,5 +36,11 @@ public class ReportController {
     public ResponseEntity<Map<String, Object>> updateReport(@PathVariable("reportId") String id, @RequestBody ReportRequestDto updateRequest) {
         reportService.updateReport(id, updateRequest);
         return responseUtil.createSuccessResponse("Report successfully updated", HttpStatus.OK.value());
+    }
+
+    @GetMapping("/member")
+    public ResponseEntity<Map<String, Object>> getReportByMember() {
+        List<ReportResponseDto> reports = reportService.readBymemberId() ;
+        return responseUtil.createResponse(reports);
     }
 }
