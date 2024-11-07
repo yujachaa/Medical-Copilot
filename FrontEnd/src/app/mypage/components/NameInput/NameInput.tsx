@@ -3,7 +3,7 @@ import styles from './NameInput.module.scss';
 export default function NameInput({ isNameInput }: { isNameInput: boolean }) {
   return (
     <div
-      className={`${styles.main} grid grid-cols-[1fr_2fr_0.5fr_0.5fr] h-[${isNameInput ? '40px' : '0px'}] items-start`}
+      className={`${styles.main} grid grid-cols-[1fr_2fr_0.5fr_0.5fr] h-[${isNameInput ? '40px' : '0px'}] items-start transition-all`}
     >
       <span></span>
       <input
