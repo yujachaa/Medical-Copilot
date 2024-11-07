@@ -29,8 +29,8 @@ public class KafkaService {
         }
         usageEntity.incrementAgentCount();
         usageRepository.save(usageEntity);
-        logger.info("Business Log: Usage update successful for id {}, grade {}, totalCount: {}, agent: {}",
-                usageEntity.getId(), agentUsageLog.getGrade(), usageEntity.getAgentCount(), agentUsageLog.getAgent().toString());
+        logger.info("Business Log: Usage update successful for corpKey {}, grade {}, totalCount: {}, agent: {}",
+                usageEntity.getKey(), agentUsageLog.getGrade(), usageEntity.getAgentCount(), agentUsageLog.getAgent().toString());
 
     }
 
