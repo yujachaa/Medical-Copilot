@@ -36,6 +36,10 @@ export default function PatientDB({ onClose }: Props) {
       try {
         const response = await fetchPatient(page, size);
         console.log(response);
+        if (response.content === undefined) {
+          new Error('Response 데이터가 이상합니다');
+          return;
+        }
         setPatientList((prev) => [...prev, ...response.content]);
       } catch (err: unknown) {
         console.log(err);
