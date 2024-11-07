@@ -7,7 +7,8 @@ import { FaSortUp } from 'react-icons/fa';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchPatient } from '@/apis/main';
-import { TransferData } from './utils';
+import { useAppDispatch } from '@/redux/store/hooks/store';
+import { moveTab } from '@/redux/features/tab/tabSlice';
 // import { FaSortUp } from "react-icons/fa";
 
 type Props = {
@@ -20,11 +21,8 @@ type Patient = {
   pid: string;
 };
 
-export type PatientResponse = Patient & {
-  modality: string;
-};
 export type PatientData = Patient & {
-  modality: string[];
+  modality: string;
 };
 
 export default function PatientDB({ onClose }: Props) {
@@ -32,18 +30,23 @@ export default function PatientDB({ onClose }: Props) {
   const [patientList, setPatientList] = useState<PatientData[]>([]);
   const [size] = useState<number>(8);
   const [page, setPage] = useState(0);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const getPatient = async () => {
       try {
         const response = await fetchPatient(page, size);
         console.log(response);
-        setPatientList((prev) => [...prev, ...TransferData(response.content)]);
+        setPatientList((prev) => [...prev, ...response.content]);
       } catch (err: unknown) {
         console.log(err);
       }
     };
     getPatient();
   }, [page, size]);
+
+  const handlePatientMove = (data: PatientData) => {
+    dispatch(moveTab(data));
+  };
 
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
     const target = entries[0];
@@ -95,11 +98,14 @@ export default function PatientDB({ onClose }: Props) {
             </thead>
             <tbody>
               {patientList.map((patient, index) => (
-                <tr key={index}>
+                <tr
+                  key={index}
+                  onClick={() => handlePatientMove(patient)}
+                >
                   <td>{patient.pid}</td>
                   <td>{patient.sex}</td>
                   <td>{patient.age}</td>
-                  <td>{patient.modality.join(',')}</td>
+                  <td>{patient.modality}</td>
                   <td>{patient.visitDate}</td>
                 </tr>
               ))}

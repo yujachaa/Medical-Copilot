@@ -1,3 +1,4 @@
+import { PatientData } from '@/components/PatientDB/PatientDB';
 import { PluginType } from '@/components/Tabs/Tab';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
@@ -7,6 +8,7 @@ export type tab = {
   title: string;
   type: PluginType;
   tabType: TabType;
+  pid: number;
 };
 
 type tabProps = {
@@ -18,8 +20,8 @@ type tabProps = {
 
 const initialState: tabProps = {
   tablist: [
-    { id: 0, title: 'Default Plugin', type: 'default', tabType: 'default' },
-    { id: 1, title: 'Chat Plugin', type: 'default', tabType: 'chat' },
+    { id: 0, title: 'Default Plugin', type: 'default', tabType: 'default', pid: -1 },
+    { id: 1, title: '1 Dignosis', type: 'default', tabType: 'chat', pid: 1 },
   ],
   selectedTab: 0,
   increment: 1,
@@ -43,6 +45,7 @@ const tabSlices = createSlice({
         title: `New Tab`,
         type: 'default',
         tabType: 'default',
+        pid: -1,
       };
       state.tablist.push(newTab);
       state.selectedIndex = state.tablist.length - 1;
@@ -65,8 +68,31 @@ const tabSlices = createSlice({
     initialIndex: (state) => {
       state.selectedIndex = -1;
     },
+    //환자DB선택했을때 탭이동
+    moveTab: (state, action: PayloadAction<PatientData>) => {
+      //환자탭이 존재할때 : 기존탭에서 찾고 이동
+      const index = state.tablist.findIndex((tab) => tab.pid === Number(action.payload.pid));
+
+      //환자탭이 없을때 : 새탭을 만들고 이동
+      if (index === -1) {
+        const newTab: tab = {
+          id: ++state.increment,
+          title: `${action.payload.pid} Diagnosis`,
+          type: `${action.payload.modality === '' ? 'default' : 'cxr'}`,
+          tabType: 'chat',
+          pid: Number(action.payload.pid),
+        };
+        state.tablist.push(newTab);
+        state.selectedIndex = state.tablist.length - 1;
+      } else {
+        if (action.payload.modality === '') {
+          state.tablist[index].type = 'default';
+        } else state.tablist[index].type = 'cxr';
+        state.selectedIndex = index;
+      }
+    },
   },
 });
 
-export const { setSelectedTab, addTab, deleteTab, initialIndex } = tabSlices.actions;
+export const { setSelectedTab, addTab, deleteTab, initialIndex, moveTab } = tabSlices.actions;
 export default tabSlices;
