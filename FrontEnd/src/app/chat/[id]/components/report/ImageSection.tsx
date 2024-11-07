@@ -34,7 +34,7 @@ export default function ImageSection() {
             fill
             style={{ objectFit: 'cover' }}
             placeholder="blur"
-            onLoadingComplete={handleImageLoad} // 이미지 로드 완료 시 호출
+            onLoad={handleImageLoad} // 이미지 로드 완료 시 호출
           />
           {isImageLoaded && <RectangleOverlay imgWrapperRef={imgWrapperRef} />}
         </div>
