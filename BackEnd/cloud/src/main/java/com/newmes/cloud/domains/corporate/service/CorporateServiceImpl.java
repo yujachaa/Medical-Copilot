@@ -95,7 +95,7 @@ public class CorporateServiceImpl implements CorporateService {
                     CorporateEntity corporate = usage.getCorporate();
                     Long totalCount = (long) usage.getAgentCount();
                     int subscription = today.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
-                            - corporate.getCreateDate().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+                            - corporate.getModifiedDate().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 
                     return CorporateListResponseDto.from(
                             Corporate.fromEntity(corporate),
