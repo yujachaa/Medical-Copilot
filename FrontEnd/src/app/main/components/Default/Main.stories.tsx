@@ -1,26 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Page from './page';
+import Main from './MainLayout';
 import { Provider } from 'react-redux';
 import { store } from '@/redux/store/store';
 
 const meta = {
-  title: 'Pages/Main',
-  component: Page,
+  title: 'components/Main',
+  component: Main,
   parameters: {
     nextjs: {
       appDirectory: true, // 👈 Set this
     },
   },
-} satisfies Meta<typeof Page>;
+} satisfies Meta<typeof Main>;
 
 export default meta;
 
-type Story = StoryObj<typeof Page>;
+type Story = StoryObj<typeof Main>;
 
-export const Main: Story = {
+export const main: Story = {
   render: () => (
     <Provider store={store}>
-      <Page />
+      <Main />
     </Provider>
   ),
 };
