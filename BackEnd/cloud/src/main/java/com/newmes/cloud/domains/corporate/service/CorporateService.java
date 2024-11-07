@@ -11,7 +11,9 @@ public interface CorporateService {
 
     CorporateResponseDto updateCorporate(String key, CorporateRequestDto corporateRequestDto);
 
-    CorporateResponseDto init(String key);
+    void init(String key);
+
+    CorporateResponseDto getOneCorporate(String key);
 
     List<CorporateListResponseDto> getAllCorporates();
 
