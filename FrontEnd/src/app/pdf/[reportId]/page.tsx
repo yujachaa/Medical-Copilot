@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import XrayImg from '@/assets/images/xrayImg.jpg';
 import styles from './page.module.scss';
 import Image from 'next/image';
-import RectangleOverlay from '@/app/chat/[id]/components/report/RectangleOverlay';
+import RectangleOverlay from '@/app/main/components/Diagnosis/components/report/RectangleOverlay';
 
 export default function PDFPage() {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
