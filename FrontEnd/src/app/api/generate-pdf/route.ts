@@ -21,12 +21,6 @@ export async function POST(request: NextRequest) {
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
-      margin: {
-        top: '10mm',
-        right: '15mm',
-        bottom: '10mm',
-        left: '15mm',
-      },
     });
 
     // 브라우저 닫기

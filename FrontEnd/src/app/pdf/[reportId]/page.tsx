@@ -1,12 +1,19 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import XrayImg from '@/assets/images/xrayImg.jpg';
 import styles from './page.module.scss';
 import Image from 'next/image';
+import RectangleOverlay from '@/app/chat/[id]/components/report/RectangleOverlay';
 
 export default function PDFPage() {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const imgWrapperRef = useRef<HTMLDivElement | null>(null);
   const pdfRef = useRef<HTMLDivElement | null>(null);
+
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
 
   const plan = `Imaging : Perform a chest CT to futher evaluate the extent and cause of atelectasis,
                 identifying any obstructive or compressive factors. Monitoring : Repeat chest
@@ -37,13 +44,13 @@ export default function PDFPage() {
               >
                 <div className={styles.oneInfo}>
                   <div
-                    className={`font-bold w-1/3 ${label === 'Registration No' ? 'tracking-tighter' : ''} max-1024:text-sm max-1024:w-[42%]`}
+                    className={`font-bold w-1/2 ${label === 'Registration No' ? 'tracking-tighter' : ''} max-1024:text-sm max-1024:w-1/2`}
                   >
                     {label}
                   </div>
                   <div className="flex gap-[2px]">
                     <div className="">:</div>
-                    <div className="">123456789</div>
+                    <div className="max-1024:text-sm">123456789</div>
                   </div>
                 </div>
               </div>
@@ -59,10 +66,10 @@ export default function PDFPage() {
                 className="w-full"
               >
                 <div className={styles.oneInfo}>
-                  <div className={`font-bold w-1/3`}>{label}</div>
+                  <div className={`font-bold w-1/3 max-1024:text-sm max-1024:w-1/2`}>{label}</div>
                   <div className="flex gap-[2px]">
                     <div className="">:</div>
-                    <div className="">123456789</div>
+                    <div className="max-1024:text-sm">123456789</div>
                   </div>
                 </div>
               </div>
@@ -70,13 +77,18 @@ export default function PDFPage() {
           </div>
         </div>
 
-        <div className={styles.image}>
+        <div
+          className={styles.image}
+          ref={imgWrapperRef}
+        >
           <Image
             src={XrayImg}
             alt="이미지"
             width={250}
             height={250}
+            onLoad={handleImageLoad} // 이미지 로드 완료 시 호출
           />
+          {isImageLoaded && <RectangleOverlay imgWrapperRef={imgWrapperRef} />}
         </div>
       </div>
 
