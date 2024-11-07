@@ -5,19 +5,16 @@ import Tab from '../Tab';
 import NewTab from '../NewTab';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { addTab, deleteTab, setSelectedTab } from '@/redux/features/tab/tabSlice';
-import { useRouter } from 'next/navigation';
 export default function TabBoard() {
-  const { selectedIndex, tablist, increment } = useAppSelector((state) => state.tab);
-
+  const { selectedIndex, tablist } = useAppSelector((state) => state.tab);
   const dispatch = useAppDispatch();
-  const router = useRouter();
+
   const handleDelete = (id: number) => {
     dispatch(deleteTab(id));
   };
 
-  const handleCreateTab = async () => {
-    await dispatch(addTab());
-    router.push(`/main/${increment + 1}`);
+  const handleCreateTab = () => {
+    dispatch(addTab());
   };
   return (
     <div className={styles.container}>
