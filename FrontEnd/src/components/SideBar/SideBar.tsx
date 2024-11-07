@@ -15,15 +15,11 @@ import PatientHistory from '../PatientHistory/PatientHistory';
 import { setInit } from '@/redux/features/user/userSlice';
 import { fetchLogout } from '@/apis/fetchLogout';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import { fetchLogout } from '@/apis/fetchLogout';
-import { setInit } from '@/redux/features/user/userSlice';
 
 export default function SideBar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const accessToken = useAppSelector<string>((state) => state.user.accessToken);
   const router = useRouter();
 
   const accessToken = useAppSelector<string>((state) => state.user.accessToken);
@@ -34,8 +30,6 @@ export default function SideBar() {
     dispatch(setInit());
     router.push('/');
   };
-
-  const dispatch = useAppDispatch();
 
   const clickUser = () => {
     setIsModalOpen(!isModalOpen);
@@ -60,12 +54,6 @@ export default function SideBar() {
   const handleHistory = () => {
     if (!isHistoryOpen) setIsHistoryOpen(true);
     else handleHistoryClose();
-  };
-
-  const handleLogout = async () => {
-    await fetchLogout(accessToken);
-    dispatch(setInit());
-    router.push('/');
   };
 
   return (
@@ -129,9 +117,6 @@ export default function SideBar() {
               <li
                 className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2"
                 onClick={handleLogout}
-                onClick={() => {
-                  handleLogout();
-                }}
               >
                 <TbLogout className="w-[20px] h-[20px] ml-[2px]" />
                 <span>Log out</span>
