@@ -1,0 +1,26 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  transition: all 0.3s linear;
+  overflow: hidden;
+}
+
+.setting1 {
+  border: 1px solid black;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    background-color: $blue-btn;
+    border: 1px solid $blue-btn;
+  }
+}
+
+.setting2 {
+  border: 1px solid black;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $tab-bg;
+  }
+}
