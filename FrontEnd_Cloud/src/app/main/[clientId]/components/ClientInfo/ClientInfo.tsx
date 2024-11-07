@@ -22,7 +22,7 @@ export default function ClientInfo({ data }: { data: clientDetail }) {
 
 const checkGrade = (grade: string) => {
   if (grade === 'DEFAULT') return 50;
-  if (grade === 'SIVER') return 100;
+  if (grade === 'SILVER') return 100;
   if (grade === 'GOLD') return 200;
   if (grade === 'PLATINUM') return 500;
 };

@@ -1,3 +1,5 @@
+'use client';
+
 import Request from '../Request/Request';
 import TotalUsage from '../TotalUsage/TotalUsage';
 import UsageByModule from '../UsageByModule/UsageByModule';
