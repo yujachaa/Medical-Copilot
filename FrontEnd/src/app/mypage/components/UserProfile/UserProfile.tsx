@@ -30,7 +30,7 @@ export default function UserProfile() {
             설정
           </span>
         </div>
-        <NameInput isNameInput={isNameInput} />
+        {isNameInput && <NameInput isNameInput={isNameInput} />}
         <div className={`grid grid-cols-[1fr_2fr_1fr]  h-[40px] items-center`}>
           <span>Password</span>
           <span>**********</span>
@@ -43,7 +43,7 @@ export default function UserProfile() {
             설정
           </span>
         </div>
-        <PWInput isPWInput={isPWInput} />
+        {isPWInput && <PWInput isPWInput={isPWInput} />}
       </div>
     </div>
   );
