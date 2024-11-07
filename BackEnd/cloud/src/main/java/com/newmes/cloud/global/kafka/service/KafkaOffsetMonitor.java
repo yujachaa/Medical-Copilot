@@ -3,11 +3,13 @@ package com.newmes.cloud.global.kafka.service;
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.TopicPartitionInfo;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-
+@Component
 public class KafkaOffsetMonitor {
+
     private final AdminClient adminClient;
 
     public KafkaOffsetMonitor(AdminClient adminClient) {
