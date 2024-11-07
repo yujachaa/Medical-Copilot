@@ -123,14 +123,16 @@ public class CorporateServiceImpl implements CorporateService {
     @Override
     @Transactional
     public String reissueCorporateKey(String key) {
-        CorporateEntity entity = corporateRepository.findByKey(key)
-                .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
+        UsageEntity entity = usageRepository.findByCorporateKey(key).orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
 
         String newKey = UUID.randomUUID().toString();
-        entity.updateKey(newKey);
-        CorporateEntity updatedEntity = corporateRepository.save(entity);
 
-        return CorporateResponseDto.from(Corporate.fromEntity(updatedEntity)).getKey();
+        entity.updateKey(newKey);
+        entity.getCorporate().updateKey(newKey);
+
+        UsageEntity updatedEntity = usageRepository.save(entity);
+
+        return CorporateResponseDto.from(Corporate.fromEntity(updatedEntity.getCorporate())).getKey();
     }
 
     @Override
