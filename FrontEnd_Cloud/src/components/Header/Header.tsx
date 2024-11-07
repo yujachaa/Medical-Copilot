@@ -7,10 +7,18 @@ import Logo from '@/assets/images/logo.svg';
 import { useAppDispatch } from '@/redux/store/hooks/store';
 import { setClientAddModal } from '@/redux/features/modal/modalSlice';
 import { useRouter } from 'next/navigation';
+import { fetchLogout } from '@/apis/fetchLogout';
 
 export default function Header() {
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  const handleLogout = async () => {
+    const data = await fetchLogout();
+    if (data) {
+      router.replace('/');
+    }
+  };
   return (
     <div
       className={`${styles.main} w-screen h-[70px] flex justify-between items-center pl-6 pr-6 relative`}
@@ -33,7 +41,7 @@ export default function Header() {
         <PiPowerFill
           className={`${styles.logout} cursor-pointer`}
           onClick={() => {
-            router.push('/');
+            handleLogout();
           }}
         />
       </div>
