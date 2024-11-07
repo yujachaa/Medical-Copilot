@@ -7,6 +7,14 @@
   border-radius: 60px;
   display: flex;
   flex-direction: row;
+  position: relative;
+}
+.pid {
+  position: absolute;
+  top: -30px;
+  left: 70px;
+  font-size: 0.9rem;
+  text-decoration: underline;
 }
 
 .file {

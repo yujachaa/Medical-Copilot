@@ -1,6 +1,6 @@
-import { PatientData } from '@/components/PatientDB/PatientDB';
 import { PluginType } from '@/components/Tabs/Tab';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Patient } from '../main/mainSlice';
 
 type TabType = 'default' | 'chat';
 export type tab = {
@@ -69,21 +69,17 @@ const tabSlices = createSlice({
       state.selectedIndex = -1;
     },
     //환자DB선택했을때 탭이동
-    moveTab: (state, action: PayloadAction<PatientData>) => {
+    moveTab: (state, action: PayloadAction<Patient>) => {
       //환자탭이 존재할때 : 기존탭에서 찾고 이동
       const index = state.tablist.findIndex((tab) => tab.pid === Number(action.payload.pid));
 
-      //환자탭이 없을때 : 새탭을 만들고 이동
+      //환자탭이 없을때 : 새탭을 만들지 말고 현재 탭에 대입하는게 맞지
       if (index === -1) {
-        const newTab: tab = {
-          id: ++state.increment,
-          title: `${action.payload.pid} Diagnosis`,
-          type: `${action.payload.modality === '' ? 'default' : 'cxr'}`,
-          tabType: 'chat',
-          pid: Number(action.payload.pid),
-        };
-        state.tablist.push(newTab);
-        state.selectedIndex = state.tablist.length - 1;
+        state.tablist[state.selectedIndex].title = `${action.payload.pid} Diagnosis`;
+        state.tablist[state.selectedIndex].type =
+          `${action.payload.modality === '' ? 'default' : 'cxr'}`;
+        state.tablist[state.selectedIndex].tabType = 'chat';
+        state.tablist[state.selectedIndex].pid = Number(action.payload.pid);
       } else {
         if (action.payload.modality === '') {
           state.tablist[index].type = 'default';
