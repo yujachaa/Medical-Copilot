@@ -75,6 +75,7 @@
     tr {
       &:hover {
         background-color: $blue-base;
+        cursor: pointer;
       }
     }
     td {
