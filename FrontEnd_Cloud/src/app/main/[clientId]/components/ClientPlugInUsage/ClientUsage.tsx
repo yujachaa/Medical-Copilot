@@ -1,10 +1,19 @@
 'use client';
 
-import { useTotalUsage } from '@/hooks/useTotalUsage';
+import { useClientUsage } from '@/hooks/useClientUsage';
 import { ResponsivePie } from '@nivo/pie';
 
-export default function TotalUsageGraph() {
-  const { list } = useTotalUsage();
+export default function ClientUsage({
+  standard,
+  serialKey,
+}: {
+  standard: number;
+  serialKey: string;
+}) {
+  const { list } = useClientUsage(standard, serialKey);
+  if (list.every((object) => object.value === 0)) {
+    return null;
+  }
   return (
     <ResponsivePie
       data={list}
@@ -27,26 +36,6 @@ export default function TotalUsageGraph() {
         from: 'color',
         modifiers: [['darker', 2]],
       }}
-      defs={[
-        {
-          id: 'dots',
-          type: 'patternDots',
-          background: 'inherit',
-          color: 'rgba(255, 255, 255, 0.3)',
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: 'lines',
-          type: 'patternLines',
-          background: 'inherit',
-          color: 'rgba(255, 255, 255, 0.3)',
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
     />
   );
 }
