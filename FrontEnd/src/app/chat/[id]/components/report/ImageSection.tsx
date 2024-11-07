@@ -1,29 +1,42 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styles from './ReportData.module.scss';
 import XrayImg from '@/assets/images/xrayImg.jpg';
 import { MdOutlineDraw } from 'react-icons/md';
 import EditModal from './EditModal';
+import RectangleOverlay from './RectangleOverlay';
 
 export default function ImageSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const imgWrapperRef = useRef<HTMLDivElement | null>(null);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
 
   return (
     <div className={`${styles.info}`}>
       <div>Image</div>
       <div className={styles.image}>
-        <div className={styles.imgWrapper}>
+        <div
+          className={styles.imgWrapper}
+          ref={imgWrapperRef}
+        >
           <Image
             src={XrayImg}
             alt="이미지"
-            fill // fill 속성 사용
-            style={{ objectFit: 'cover' }} // 이미지를 부모 컨테이너에 맞추기 위한 스타일
+            fill
+            style={{ objectFit: 'cover' }}
+            placeholder="blur"
+            onLoadingComplete={handleImageLoad} // 이미지 로드 완료 시 호출
           />
+          {isImageLoaded && <RectangleOverlay imgWrapperRef={imgWrapperRef} />}
         </div>
       </div>
       <div
