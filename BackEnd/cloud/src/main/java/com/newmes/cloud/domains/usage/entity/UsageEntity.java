@@ -48,4 +48,8 @@ public class UsageEntity extends BaseTimeEntity {
     public void initAgentCount(){
         this.agentCount = 0;
     }
+
+    public void updateKey(String newKey) {
+        this.key = newKey;
+    }
 }
