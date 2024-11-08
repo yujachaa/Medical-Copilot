@@ -1,27 +1,27 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import styles from './ClientAdd.module.scss';
+import { useAppDispatch } from '@/redux/store/hooks/store';
+import styles from './ClientModify.module.scss';
 import { IoCloseOutline } from 'react-icons/io5';
-import { setClientAddModal } from '@/redux/features/modal/modalSlice';
-import { useState } from 'react';
-import { fetchAddClient } from '@/apis/fetchAddClient';
+import { setClientModifyModal } from '@/redux/features/modal/modalSlice';
+import { useCallback, useState } from 'react';
+import { clientDetail } from '@/types/client';
+import { fetchClientModify } from '@/apis/fetchClientModify';
 
-export default function ClientAdd() {
-  const isOpenModal = useAppSelector((state) => state.modal.clientAdd);
+export default function ClientModify({ clientDetail }: { clientDetail: clientDetail }) {
   const dispatch = useAppDispatch();
-  const [comName, setComName] = useState<string>('');
-  const [grade, setGrade] = useState<string>('DEFAULT');
+  const [comName, setComName] = useState<string>(clientDetail.comName);
+  const [grade, setGrade] = useState<string>(clientDetail.grade);
 
-  const handleAddClient = async () => {
-    const data = await fetchAddClient(comName, grade);
+  const handleModifyClient = useCallback(async () => {
+    const data = await fetchClientModify(clientDetail.key, comName, grade);
     if (data) {
-      dispatch(setClientAddModal());
-      window.location.reload();
+      dispatch(setClientModifyModal());
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     }
-  };
-
-  if (!isOpenModal) return null;
+  }, [clientDetail.key, comName, grade, dispatch]);
 
   return (
     <div className={`${styles.main} fixed w-full h-full flex justify-center items-center`}>
@@ -31,11 +31,11 @@ export default function ClientAdd() {
         <div
           className={`${styles.title} flex h-[80px] justify-between items-center pl-6 pr-6 rounded-se-[20px] rounded-ss-[20px]`}
         >
-          <span>Add Client</span>
+          <span>Modify Client</span>
           <IoCloseOutline
             className={`cursor-pointer`}
             onClick={() => {
-              dispatch(setClientAddModal());
+              dispatch(setClientModifyModal());
             }}
           />
         </div>
@@ -46,6 +46,7 @@ export default function ClientAdd() {
               className={`${styles.name} h-[50px] rounded-[10px] pl-4`}
               placeholder="Client Name"
               type="text"
+              value={comName}
               onChange={(event) => {
                 setComName(event.target.value);
               }}
@@ -59,6 +60,12 @@ export default function ClientAdd() {
                 setGrade(event.target.value);
               }}
             >
+              <option
+                value={'DEFAULT'}
+                selected
+              >
+                선택해주세요
+              </option>
               <option value={'DEFAULT'}>default - 50tokens</option>
               <option value={'SILVER'}>silber - 100tokens</option>
               <option value={'GOLD'}>gold - 200tokens</option>
@@ -71,15 +78,15 @@ export default function ClientAdd() {
             <button
               className={`${styles.add} flex justify-center items-center w-[80px] h-[40px] rounded-[10px] cursor-pointer`}
               onClick={() => {
-                handleAddClient();
+                handleModifyClient();
               }}
             >
-              Add
+              Modify
             </button>
             <button
               className={`${styles.cancel} flex justify-center items-center w-[80px] h-[40px] rounded-[10px] cursor-pointer`}
               onClick={() => {
-                dispatch(setClientAddModal());
+                dispatch(setClientModifyModal());
               }}
             >
               Cancel
