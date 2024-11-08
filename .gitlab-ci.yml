@@ -8,7 +8,7 @@ cloud_backend_webhook_trigger:
       changes:
         - BackEnd/cloud/**  # BackEnd/cloud 폴더 경로 모니터링
   script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_back?token=cloud_back"
+    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_back?token=$cloud_back"
 
 cloud_frontend_webhook_trigger:
   stage: trigger
@@ -17,7 +17,7 @@ cloud_frontend_webhook_trigger:
       changes:
         - FrontEnd_Cloud/**  # FrontEnd_Cloud 폴더 경로 모니터링
   script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_front?token=cloud_front"
+    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_front?token=$cloud_front"
 
 onpremise_backend_webhook_trigger:
   stage: trigger
@@ -26,7 +26,7 @@ onpremise_backend_webhook_trigger:
       changes:
         - BackEnd/onpremise/**  # BackEnd/onpremise 폴더 경로 모니터링
   script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_onpremise_back?token=onpremise_back"
+    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_onpremise_back?token=$onpremise_back"
 
 onpremise_frontend_webhook_trigger:
   stage: trigger
@@ -35,4 +35,4 @@ onpremise_frontend_webhook_trigger:
       changes:
         - FrontEnd/**  # FrontEnd 폴더 경로 모니터링
   script:
-    - curl -X POST "https://medical-copilot.net/jenkins/project/newmes_onpremise_front?token=onpremise_front"
+    - curl -X POST "https://medical-copilot.net/jenkins/project/newmes_onpremise_front?token=$onpremise_front"
