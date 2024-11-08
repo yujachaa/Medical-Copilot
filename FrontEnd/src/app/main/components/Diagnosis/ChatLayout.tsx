@@ -15,7 +15,11 @@ import { BiMessageRoundedDots } from 'react-icons/bi';
 import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
 import { CgClose } from 'react-icons/cg';
 
-export default function Chat() {
+type ChatProps = {
+  pid: number;
+};
+export default function Chat({ pid }: ChatProps) {
+  console.log('pid :' + pid);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
 
