@@ -34,6 +34,14 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public String getImage(String pid, Modality agent) {
+        return patientRepository.findFirstByPIDAndModalityOrderByVisitDateDesc(pid, agent)
+                .map(PatientEntity::getImage)
+                .orElseThrow(() -> new PatientNotFoundException(pid, agent));
+    }
+
+
+    @Override
     public List<PatientResponseDto> searchPatients(String query) throws IOException {
         return patientRepositoryCustom.searchPatientsByKeyword(query)
                 .stream()

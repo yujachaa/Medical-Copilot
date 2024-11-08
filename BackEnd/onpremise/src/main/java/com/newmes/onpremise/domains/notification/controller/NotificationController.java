@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Slf4j
 @RestController
@@ -39,10 +40,10 @@ public class NotificationController {
   }
 
   @GetMapping(value = "/emitter", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public ResponseEntity<?> addEmitter(){
+  public ResponseEntity<SseEmitter> addEmitter(){
       String id = MemberInfo.getMemberId();
-      sseEmitters.addEmitter(id);
-      return ResponseEntity.status(HttpStatus.OK).body(null);
+      SseEmitter emitter = sseEmitters.addEmitter(id);
+      return ResponseEntity.status(HttpStatus.OK).body(emitter);
   }
 
 //  @GetMapping("/otp")
