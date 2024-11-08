@@ -17,7 +17,7 @@ pipeline {
             	steps {
 					sshagent(['ssh-key']) {
 						sh 'ssh-keyscan -H medical-copilot.net >> ~/.ssh/known_hosts'
-						sh 'scp -v ubuntu@medical-copilot.net:/home/ubuntu/medical-copilot/frontend/onpremise/.env ./FrontEnd/.env'
+						sh 'scp ubuntu@medical-copilot.net:/home/ubuntu/medical-copilot/frontend/onpremise/.env ./FrontEnd/.env'
 					}				
 				}
         	}
