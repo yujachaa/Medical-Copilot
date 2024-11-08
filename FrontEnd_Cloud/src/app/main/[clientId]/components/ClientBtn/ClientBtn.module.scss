@@ -1,8 +1,5 @@
 @import '@/style/globals_variant.scss';
 
-.main {
-}
-
 .standard {
   font-weight: 700;
   color: #c4c4c4;
@@ -14,6 +11,12 @@
     background-color: $blue-base;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $admin-main;
+      color: white;
+    }
   }
 }
 
@@ -26,4 +29,9 @@
   @media screen and (max-width: 768px) {
     transform: scale(0.9);
   }
+}
+
+.active {
+  background-color: $admin-main !important;
+  color: white;
 }
