@@ -45,7 +45,7 @@ export default function SideBar() {
     setTimeout(() => {
       setIsHistoryOpen(false);
       setIsAnimating(false);
-    }, 700); // 애니메이션 시간과 동일하게 설정
+    }, 700);
   };
 
   const handleHistory = () => {
