@@ -1,45 +1,41 @@
 package com.newmes.onpremise.domains.report.service;
 
-import com.newmes.onpremise.domains.report.dto.request.CommentRequestDto;
 import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
-import com.newmes.onpremise.domains.report.dto.request.UpdateSummaryRequestDto;
-import com.newmes.onpremise.domains.report.entity.ReportDocument;
+import com.newmes.onpremise.domains.report.dto.response.ReportResponseDto;
+import com.newmes.onpremise.domains.report.entity.ReportEntity;
+import com.newmes.onpremise.domains.report.exception.ReportNotFoundException;
 import com.newmes.onpremise.domains.report.repository.ReportRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ReportServiceImpl implements ReportService{
+@RequiredArgsConstructor
+public class ReportServiceImpl implements ReportService {
 
-  private final ReportRepository reportRepository;
+    private final ReportRepository reportRepository;
 
-  public ReportServiceImpl(ReportRepository reportRepository) {
-    this.reportRepository = reportRepository;
-  }
+    @Override
+    public String register(ReportRequestDto reportDto) {
+        ReportEntity reportEntity = ReportEntity.from(reportDto);
+        return reportRepository.save(reportEntity).getId();
+    }
 
-  @Override
-  public void getReport(String id) {
-      ReportDocument reportDto = reportRepository.findById(id).orElse(null);
-  }
+    @Override
+    @Transactional(readOnly = true)
+    public ReportResponseDto readById(String id) {
+        ReportEntity reportEntity = reportRepository.findById(id)
+                .orElseThrow(() -> new ReportNotFoundException("Report not found"));
+        return ReportResponseDto.from(reportEntity);
+    }
 
-  @Override
-  public void addComment(CommentRequestDto commentDto) {
-    ReportDocument reportDto = reportRepository.findById(commentDto.getReportId()).orElse(null);
-      if (reportDto == null){
-       return;
-      }
-      reportDto.setComment(commentDto.getComment());
-      reportRepository.save(reportDto);
-  }
+    @Override
+    @Transactional
+    public void updateReport(String id, ReportRequestDto updateRequest) {
+        ReportEntity reportEntity = reportRepository.findById(id)
+                .orElseThrow(() -> new ReportNotFoundException("Report not found"));
 
-  @Override
-  public void update(UpdateSummaryRequestDto updateSummaryDto) {
-    ReportDocument reportDto = reportRepository.findById(updateSummaryDto.getReportId()).orElse(null);
-    reportRepository.save(reportDto);
-  }
-
-  @Override
-  public void addReport(ReportRequestDto reportRequestDto) {
-      ReportDocument newDoc = ReportDocument.from(reportRequestDto);
-      reportRepository.save(newDoc);
-  }
+        reportEntity.updateFields(updateRequest);
+        reportRepository.save(reportEntity);
+    }
 }

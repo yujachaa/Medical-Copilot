@@ -1,16 +1,10 @@
 package com.newmes.onpremise.domains.report.service;
 
-import com.newmes.onpremise.domains.report.dto.request.CommentRequestDto;
 import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
-import com.newmes.onpremise.domains.report.dto.request.UpdateSummaryRequestDto;
+import com.newmes.onpremise.domains.report.dto.response.ReportResponseDto;
 
 public interface ReportService {
-
-  void getReport(String id);
-
-  void addComment(CommentRequestDto commentDto);
-
-  void update(UpdateSummaryRequestDto updateSummaryDto);
-
-  void addReport(ReportRequestDto reportDto);
+    String register(ReportRequestDto reportDto);
+    ReportResponseDto readById(String id);
+    void updateReport(String id, ReportRequestDto updateRequest);
 }

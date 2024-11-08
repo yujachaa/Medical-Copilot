@@ -3,8 +3,17 @@ export type client = {
   comName: string;
   grade: string;
   key: string;
-  cxrCount: number;
-  capsuleCount: number;
-  medGuruCount: number;
+  availability: boolean;
   totalCount: number;
+  createDate: string;
+  subscription: number;
+};
+
+export type clientDetail = {
+  id: number;
+  comName: string;
+  grade: string;
+  key: string;
+  availability: boolean;
+  createDate: string;
 };

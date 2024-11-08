@@ -66,13 +66,21 @@ public class CorporateServiceImpl implements CorporateService {
 
     @Override
     @Transactional
-    public CorporateResponseDto init(String key) {
+    public void init(String key) {
+        UsageEntity entity = usageRepository.findByCorporateKey(key)
+                .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
+        entity.initAgentCount();
+
+        usageRepository.save(entity);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CorporateResponseDto getOneCorporate(String key) {
         CorporateEntity entity = corporateRepository.findByKey(key)
                 .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
 
-        CorporateEntity updatedEntity = corporateRepository.save(entity);
-
-        return CorporateResponseDto.from(Corporate.fromEntity(updatedEntity));
+        return CorporateResponseDto.from(Corporate.fromEntity(entity));
     }
 
     @Override
@@ -87,7 +95,7 @@ public class CorporateServiceImpl implements CorporateService {
                     CorporateEntity corporate = usage.getCorporate();
                     Long totalCount = (long) usage.getAgentCount();
                     int subscription = today.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
-                            - corporate.getCreateDate().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+                            - corporate.getModifiedDate().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 
                     return CorporateListResponseDto.from(
                             Corporate.fromEntity(corporate),
@@ -115,14 +123,16 @@ public class CorporateServiceImpl implements CorporateService {
     @Override
     @Transactional
     public String reissueCorporateKey(String key) {
-        CorporateEntity entity = corporateRepository.findByKey(key)
-                .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
+        UsageEntity entity = usageRepository.findByCorporateKey(key).orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
 
         String newKey = UUID.randomUUID().toString();
-        entity.updateKey(newKey);
-        CorporateEntity updatedEntity = corporateRepository.save(entity);
 
-        return CorporateResponseDto.from(Corporate.fromEntity(updatedEntity)).getKey();
+        entity.updateKey(newKey);
+        entity.getCorporate().updateKey(newKey);
+
+        UsageEntity updatedEntity = usageRepository.save(entity);
+
+        return CorporateResponseDto.from(Corporate.fromEntity(updatedEntity.getCorporate())).getKey();
     }
 
     @Override
@@ -131,7 +141,7 @@ public class CorporateServiceImpl implements CorporateService {
         CorporateEntity entity = corporateRepository.findByKey(key)
                 .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
 
-        entity.updateKey("none");
+        entity.updateKey(null);
         corporateRepository.save(entity);
     }
 }
