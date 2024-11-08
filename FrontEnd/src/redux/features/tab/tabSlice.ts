@@ -21,7 +21,7 @@ type tabProps = {
 const initialState: tabProps = {
   tablist: [
     { id: 0, title: 'Default Plugin', type: 'default', tabType: 'default', pid: -1 },
-    { id: 1, title: '1 Dignosis', type: 'default', tabType: 'chat', pid: 1 },
+    { id: 1, title: '1 Dignosis', type: 'cxr', tabType: 'chat', pid: 1 },
   ],
   selectedTab: 0,
   increment: 1,
