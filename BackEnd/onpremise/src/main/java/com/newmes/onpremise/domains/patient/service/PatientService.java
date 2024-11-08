@@ -12,4 +12,5 @@ public interface PatientService {
     List<String> autocomplete(String prefix) throws IOException;
     Page<PatientResponseDto> getRecentPatients(int page, int size);
     void registerPatient(PatientRequestDto requestDto);
+
 }
