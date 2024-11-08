@@ -35,4 +35,4 @@ onpremise_frontend_webhook_trigger:
       changes:
         - FrontEnd/**  # FrontEnd 폴더 경로 모니터링
   script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_onpremise_front"
+    - curl -X POST "https://medical-copilot.net/jenkins/project/newmes_onpremise_front"
