@@ -4,6 +4,8 @@ import com.newmes.onpremise.domains.chat.dto.request.ChatRequestDto;
 import com.newmes.onpremise.domains.chat.service.ChatService;
 import com.newmes.onpremise.domains.history.entity.HistoryEntity;
 import com.newmes.onpremise.domains.history.service.HistoryService;
+import com.newmes.onpremise.domains.notification.dto.request.NotificationRequestDto;
+import com.newmes.onpremise.domains.notification.service.NotificationService;
 import com.newmes.onpremise.domains.quota.entity.QuotaEntity;
 import com.newmes.onpremise.domains.quota.service.QuotaService;
 import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
@@ -15,6 +17,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Slf4j
@@ -26,6 +29,7 @@ public class KafkaConsumer {
     private final ReportService reportService;
     private final HistoryService historyService;
     private final QuotaService quotaService;
+    private final NotificationService notificationService;
 
     @KafkaListener(topics = "ai", groupId = "ai-group")
     public void processAiTopic(ConsumerRecord<String, AiResponseDto> record) {
@@ -83,6 +87,17 @@ public class KafkaConsumer {
                 .modality(aiResponse.agent())
                 .build();
         quotaService.createQuota(quota);
+
+        NotificationRequestDto noti = NotificationRequestDto.builder()
+                .read(false)
+                .createdDate(LocalDateTime.now())
+                .readDate(null)
+                .PID(aiResponse.PID())
+                .memberId(aiResponse.memberId())
+                .modality(aiResponse.agent())
+                .reportId(reportId)
+                .build();
+        notificationService.createAndSend(noti);
     }
 
 }
