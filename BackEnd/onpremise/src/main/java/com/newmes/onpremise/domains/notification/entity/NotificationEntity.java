@@ -18,17 +18,18 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "notification")
 public class NotificationEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   private String reportId;
 
   private String memberId;
 
-  private String patientId;
+  private String PID;
 
   private Modality modality;
 
@@ -46,7 +47,7 @@ public class NotificationEntity {
         .id(notificationDto.getId())
         .reportId(notificationDto.getReportId())
         .memberId(notificationDto.getMemberId())
-        .patientId(notificationDto.getPatientId())
+        .PID(notificationDto.getPID())
         .modality(notificationDto.getModality())
         .read(notificationDto.isRead())
         .createdDate(notificationDto.getCreatedDate())
