@@ -2,7 +2,6 @@ package com.newmes.onpremise.domains.notification.dto.request;
 
 import com.newmes.onpremise.domains.notification.entity.NotificationEntity;
 import com.newmes.onpremise.domains.patient.domain.Modality;
-import com.newmes.onpremise.domains.report.entity.ReportEntity;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +20,7 @@ public class NotificationRequestDto {
 
   private String memberId;
 
-  private String patientId;
+  private String PID;
 
   private Modality modality;
 
@@ -36,7 +35,7 @@ public class NotificationRequestDto {
         .id(entity.getId())
         .reportId(entity.getReportId())
         .memberId(entity.getMemberId())
-        .patientId(entity.getPatientId())
+        .PID(entity.getPID())
         .modality(entity.getModality())
         .read(entity.isRead())
         .createdDate(entity.getCreatedDate())

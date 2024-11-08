@@ -32,7 +32,7 @@ public class NotificationResponseDto {
         .id(entity.getId())
         .reportId(entity.getReportId())
         .memberId(entity.getMemberId())
-        .patientId(entity.getPatientId())
+        .patientId(entity.getPID())
         .modality(entity.getModality())
         .createdDate(entity.getCreatedDate())
         .build();
