@@ -73,4 +73,5 @@ public class PatientController {
         } catch (Exception e) {
             return httpResponseUtil.errorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to search patients");
         }
+    }
 }
