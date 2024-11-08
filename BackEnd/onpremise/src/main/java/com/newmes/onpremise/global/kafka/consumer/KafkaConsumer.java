@@ -24,15 +24,6 @@ public class KafkaConsumer {
     private final ReportService reportService;
     private final HistoryService historyService;
 
-    @KafkaListener(topics = "chat", groupId = "ai-group")
-    public void chat(ConsumerRecord<String, ChatRequestDto> record) {
-
-        ChatRequestDto chatMessage = record.value();
-        log.info("Received message from Kafka topic: {}", chatMessage);
-
-        chatService.add(chatMessage);
-    }
-
     @KafkaListener(topics = "ai", groupId = "ai-group")
     public void processAiTopic(ConsumerRecord<String, AiResponseDto> record) {
         AiResponseDto aiResponse = record.value();

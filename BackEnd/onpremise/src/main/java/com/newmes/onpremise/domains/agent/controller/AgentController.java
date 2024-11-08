@@ -2,6 +2,7 @@ package com.newmes.onpremise.domains.agent.controller;
 
 import com.newmes.onpremise.domains.agent.dto.request.AgentRequestDto;
 import com.newmes.onpremise.global.kafka.producer.KafkaProducer;
+import com.newmes.onpremise.global.util.MemberInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,8 @@ public class AgentController {
 
     @PostMapping
     public ResponseEntity<?> processAgentRequest(@RequestBody AgentRequestDto agentRequestDto) {
+        agentRequestDto = agentRequestDto.withMemberId(MemberInfo.getMemberId());
+
         ResponseEntity<Map> responseEntity;
         try {
             responseEntity = restTemplate.postForEntity(externalServerUrl, agentRequestDto, Map.class);
