@@ -16,7 +16,7 @@ export default function Input() {
     setPatientModal(false);
   };
 
-  const handleSend = (data: Patient) => {
+  const handleSend = async (data: Patient) => {
     //여기에 AI에게 명령을 보내는 코드를 작성
     //ex ) modality === '' ? 'default' : 'cxr'
     //환자가 선택이 안되면 그 채팅 모아두는 곳으로 전송 -> 이게 mainSlice의 initial값으로 사용될듯!
