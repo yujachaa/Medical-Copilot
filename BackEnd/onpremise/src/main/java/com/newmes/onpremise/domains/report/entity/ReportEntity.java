@@ -2,8 +2,12 @@ package com.newmes.onpremise.domains.report.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.newmes.onpremise.domains.notification.entity.NotificationEntity;
 import com.newmes.onpremise.domains.patient.domain.Gender;
 import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
+import jakarta.persistence.Column;
+import jakarta.persistence.OneToOne;
+import javax.management.Notification;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

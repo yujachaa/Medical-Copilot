@@ -33,8 +33,6 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'co.elastic.clients:elasticsearch-java:8.13.4'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
-// https://mvnrepository.com/artifact/com.google.code.gson/gson
-	implementation 'com.google.code.gson:gson:2.11.0'
 	implementation 'org.springframework.data:spring-data-elasticsearch:5.3.3'
 	compileOnly 'org.projectlombok:lombok:1.18.26'
 	annotationProcessor 'org.projectlombok:lombok:1.18.26'
