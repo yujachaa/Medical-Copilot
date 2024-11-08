@@ -4,6 +4,8 @@ import com.newmes.onpremise.domains.chat.dto.request.ChatRequestDto;
 import com.newmes.onpremise.domains.chat.service.ChatService;
 import com.newmes.onpremise.domains.history.entity.HistoryEntity;
 import com.newmes.onpremise.domains.history.service.HistoryService;
+import com.newmes.onpremise.domains.quota.entity.QuotaEntity;
+import com.newmes.onpremise.domains.quota.service.QuotaService;
 import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
 import com.newmes.onpremise.domains.report.service.ReportService;
 import com.newmes.onpremise.global.kafka.dto.AiResponseDto;
@@ -23,6 +25,7 @@ public class KafkaConsumer {
     private final ChatService chatService;
     private final ReportService reportService;
     private final HistoryService historyService;
+    private final QuotaService quotaService;
 
     @KafkaListener(topics = "ai", groupId = "ai-group")
     public void processAiTopic(ConsumerRecord<String, AiResponseDto> record) {
@@ -76,6 +79,10 @@ public class KafkaConsumer {
                 .disease(aiResponse.classification() != null ? aiResponse.classification().predictedClass() : null)
                 .build();
         historyService.register(historyEntity);
+        QuotaEntity quota = QuotaEntity.builder()
+                .modality(aiResponse.agent())
+                .build();
+        quotaService.createQuota(quota);
     }
 
 }

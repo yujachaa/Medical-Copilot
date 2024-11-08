@@ -36,18 +36,17 @@ public class AgentController {
         }
 
         Map<String, Object> responseBody = responseEntity.getBody();
+
         if (responseBody != null && Boolean.TRUE.equals(responseBody.get("isSuccess"))) {
             try {
                 kafkaProducer.chatSave(agentRequestDto);
-                return ResponseEntity.ok(Map.of("message", "Request processed and sent to Kafka."));
+                return ResponseEntity.ok(responseBody);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body(Map.of("message", "Failed to send to Kafka", "error", e.getMessage()));
             }
         } else {
-            String errorMessage = (String) responseBody.get("message");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("message", "Request failed", "error", errorMessage));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
     }
 }
