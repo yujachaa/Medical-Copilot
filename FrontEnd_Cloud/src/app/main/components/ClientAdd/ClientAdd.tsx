@@ -4,10 +4,23 @@ import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import styles from './ClientAdd.module.scss';
 import { IoCloseOutline } from 'react-icons/io5';
 import { setClientAddModal } from '@/redux/features/modal/modalSlice';
+import { useState } from 'react';
+import { fetchAddClient } from '@/apis/fetchAddClient';
 
 export default function ClientAdd() {
   const isOpenModal = useAppSelector((state) => state.modal.clientAdd);
   const dispatch = useAppDispatch();
+  const [comName, setComName] = useState<string>('');
+  const [grade, setGrade] = useState<string>('DEFAULT');
+
+  const handleAddClient = async () => {
+    const data = await fetchAddClient(comName, grade);
+    if (data) {
+      dispatch(setClientAddModal());
+      window.location.reload();
+    }
+  };
+
   if (!isOpenModal) return null;
 
   return (
@@ -33,15 +46,23 @@ export default function ClientAdd() {
               className={`${styles.name} h-[50px] rounded-[10px] pl-4`}
               placeholder="Client Name"
               type="text"
+              onChange={(event) => {
+                setComName(event.target.value);
+              }}
             />
           </div>
           <div className={`${styles.input} flex flex-col`}>
             <span className={`${styles.inputTitle}`}>Plan</span>
-            <select className={`${styles.plan} h-[50px] pl-4 rounded-[10px]`}>
-              <option>default - 50tokens</option>
-              <option>silber - 100tokens</option>
-              <option>gold - 200tokens</option>
-              <option>platinum - 500tokens</option>
+            <select
+              className={`${styles.plan} h-[50px] pl-4 rounded-[10px]`}
+              onChange={(event) => {
+                setGrade(event.target.value);
+              }}
+            >
+              <option value={'DEFAULT'}>default - 50tokens</option>
+              <option value={'SILVER'}>silber - 100tokens</option>
+              <option value={'GOLD'}>gold - 200tokens</option>
+              <option value={'PLATINUM'}>platinum - 500tokens</option>
             </select>
           </div>
           <div
@@ -49,6 +70,9 @@ export default function ClientAdd() {
           >
             <button
               className={`${styles.add} flex justify-center items-center w-[80px] h-[40px] rounded-[10px] cursor-pointer`}
+              onClick={() => {
+                handleAddClient();
+              }}
             >
               Add
             </button>
