@@ -20,6 +20,7 @@ const nextConfig = {
       },
     },
   },
+  // productionBrowserSourceMaps: true,
 };
 
 export default withPWA({

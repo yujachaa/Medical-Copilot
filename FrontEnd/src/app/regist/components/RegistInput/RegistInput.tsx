@@ -19,6 +19,7 @@ export default function RegistInput() {
     if (isCorrectEmail && isCorrectName && isCorrectPassword && isCorrectCfPassword) {
       const data = await fetchRegist(email, password, name);
       if (data.msg === 'success') {
+        alert('회원가입이 완료되었습니다!');
         router.push('/login');
       }
     }
