@@ -44,10 +44,7 @@ export default function Chat() {
     <div className={styles.container}>
       <SideBar />
       <div className={styles.main}>
-        <div className="w-full">
-          <Header />
-        </div>
-
+        <Header />
         <div className={styles.content}>
           <div
             className={`${styles.chatContainer} ${
