@@ -47,6 +47,11 @@
       height: 30px;
       margin-bottom: 15px;
     }
+    .up {
+      width: 30px;
+      height: 30px;
+      margin-top: 15px;
+    }
 
     &::after {
       content: '';
@@ -75,6 +80,7 @@
     tr {
       &:hover {
         background-color: $blue-base;
+        cursor: pointer;
       }
     }
     td {
