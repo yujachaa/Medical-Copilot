@@ -19,11 +19,13 @@ public class CorporateEntity extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     private String key;
 
+    @Column(nullable = false)
     private String comName;
 
     @Enumerated(EnumType.STRING)
     private Grade grade;
 
+    @Column(nullable = false)
     private boolean availability;
 
     public CorporateEntity(String comName, Grade grade, String key) {

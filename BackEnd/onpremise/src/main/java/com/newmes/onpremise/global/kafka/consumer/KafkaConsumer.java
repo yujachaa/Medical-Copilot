@@ -2,6 +2,12 @@ package com.newmes.onpremise.global.kafka.consumer;
 
 import com.newmes.onpremise.domains.chat.dto.request.ChatRequestDto;
 import com.newmes.onpremise.domains.chat.service.ChatService;
+import com.newmes.onpremise.domains.history.entity.HistoryEntity;
+import com.newmes.onpremise.domains.history.service.HistoryService;
+import com.newmes.onpremise.domains.notification.dto.request.NotificationRequestDto;
+import com.newmes.onpremise.domains.notification.service.NotificationService;
+import com.newmes.onpremise.domains.quota.entity.QuotaEntity;
+import com.newmes.onpremise.domains.quota.service.QuotaService;
 import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
 import com.newmes.onpremise.domains.report.service.ReportService;
 import com.newmes.onpremise.global.kafka.dto.AiResponseDto;
@@ -10,6 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -17,15 +27,9 @@ public class KafkaConsumer {
 
     private final ChatService chatService;
     private final ReportService reportService;
-
-    @KafkaListener(topics = "chat", groupId = "ai-group")
-    public void chat(ConsumerRecord<String, ChatRequestDto> record) {
-
-        ChatRequestDto chatMessage = record.value();
-        log.info("Received message from Kafka topic: {}", chatMessage);
-
-        chatService.add(chatMessage);
-    }
+    private final HistoryService historyService;
+    private final QuotaService quotaService;
+    private final NotificationService notificationService;
 
     @KafkaListener(topics = "ai", groupId = "ai-group")
     public void processAiTopic(ConsumerRecord<String, AiResponseDto> record) {
@@ -69,6 +73,31 @@ public class KafkaConsumer {
 
         chatService.add(userQuestion);
         chatService.add(aiAnswer);
+
+        HistoryEntity historyEntity = HistoryEntity.builder()
+                .recentDate(OffsetDateTime.now())
+                .memberId(aiResponse.memberId())
+                .age(aiResponse.age())
+                .PID(aiResponse.PID())
+                .sex(aiResponse.sex())
+                .disease(aiResponse.classification() != null ? aiResponse.classification().predictedClass() : null)
+                .build();
+        historyService.register(historyEntity);
+        QuotaEntity quota = QuotaEntity.builder()
+                .modality(aiResponse.agent())
+                .build();
+        quotaService.createQuota(quota);
+
+        NotificationRequestDto noti = NotificationRequestDto.builder()
+                .read(false)
+                .createdDate(LocalDateTime.now())
+                .readDate(null)
+                .PID(aiResponse.PID())
+                .memberId(aiResponse.memberId())
+                .modality(aiResponse.agent())
+                .reportId(reportId)
+                .build();
+        notificationService.createAndSend(noti);
     }
 
 }

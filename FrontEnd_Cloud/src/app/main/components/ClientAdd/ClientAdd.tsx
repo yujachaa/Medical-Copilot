@@ -26,7 +26,7 @@ export default function ClientAdd() {
   return (
     <div className={`${styles.main} fixed w-full h-full flex justify-center items-center`}>
       <div
-        className={`${styles.addBox} flex flex-col w-[400px] h-[50%] min-h-[300px] max-h-[400px] rounded-[20px]`}
+        className={`${styles.addBox} flex flex-col w-[400px] h-[50%] min-h-[400px] max-h-[500px] rounded-[20px]`}
       >
         <div
           className={`${styles.title} flex h-[80px] justify-between items-center pl-6 pr-6 rounded-se-[20px] rounded-ss-[20px]`}
