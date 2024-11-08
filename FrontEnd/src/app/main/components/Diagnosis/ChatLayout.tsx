@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { BiMessageRoundedDots } from 'react-icons/bi';
 import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
 import { CgClose } from 'react-icons/cg';
-import { fetchPatientChat } from '@/apis/Patient';
+import { fetchPatientChat } from '@/apis/patient';
 
 type ChatProps = {
   pid: number;
@@ -29,7 +29,7 @@ export default function Chat({ pid }: ChatProps) {
 
   useEffect(() => {
     const fetchPatient = async () => {
-      const response = await fetchPatientChat(String(pid));
+      const response = await fetchPatientChat('12345');
       console.log(response);
     };
     fetchPatient();

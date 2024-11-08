@@ -6,6 +6,7 @@ import { fetchLogin } from '@/apis/fetchLogin';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/redux/store/hooks/store';
 import { setUserInfo } from '@/redux/features/user/userSlice';
+// import { getOTP } from '@/redux/features/alarm/alarmSlice';
 
 export default function LoginInput() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function LoginInput() {
     if (data) {
       setIsLogin(true);
       dispatch(setUserInfo(data.status));
+      // dispatch(getOTP());
       router.push('/main');
     } else {
       setIsLogin(false);

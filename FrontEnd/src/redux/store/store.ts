@@ -8,6 +8,7 @@ import storage from 'redux-persist/lib/storage';
 import { persistStore } from 'redux-persist';
 import userSlices from '../features/user/userSlice';
 import mainSlices from '../features/main/mainSlice';
+import AlarmSlices from '../features/alarm/alarmSlice';
 
 const persistConfig = {
   key: 'persist',
@@ -17,6 +18,7 @@ const persistConfig = {
 };
 
 const reducer = combineReducers({
+  alarm: AlarmSlices.reducer,
   test: testSlices.reducer,
   tab: tabSlices.reducer,
   user: userSlices.reducer,
