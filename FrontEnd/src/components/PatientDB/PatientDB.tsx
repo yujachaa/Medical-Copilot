@@ -9,7 +9,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchPatient } from '@/apis/main';
 import { useAppDispatch } from '@/redux/store/hooks/store';
 import { setPatient } from '@/redux/features/main/mainSlice';
-// import { FaSortUp } from "react-icons/fa";
 
 type Props = {
   onClose: () => void;
@@ -25,9 +24,12 @@ type Patient = {
 export default function PatientDB({ onClose }: Props) {
   const loader = useRef<HTMLDivElement | null>(null);
   const [patientList, setPatientList] = useState<Patient[]>([]);
+  const [pidSort, setPidSort] = useState<boolean>(false); //false 기본값이 오름차순이 오도록 back에서 진행해줘야함
+  const [visitedDateSort, setvisitedDate] = useState<boolean>(false); //false 기본값이 오름차순이 오도록 back에서 진행해줘야함
   const [size] = useState<number>(8);
   const [page, setPage] = useState(0);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     const getPatient = async () => {
       try {
@@ -48,6 +50,30 @@ export default function PatientDB({ onClose }: Props) {
   const handleSetPatient = (data: Patient) => {
     dispatch(setPatient(data));
     onClose();
+  };
+  const handlePidSort = () => {
+    setPidSort((prev) => !prev);
+    sortPatientsByPid(!pidSort);
+  };
+  const handleVisitedSort = () => {
+    setvisitedDate((prev) => !prev);
+    sortPatientsByVisitedDate(!visitedDateSort);
+  };
+
+  const sortPatientsByPid = (ascending: boolean) => {
+    const sortedList = [...patientList].sort((a, b) => {
+      return !ascending ? Number(a.pid) - Number(b.pid) : Number(b.pid) - Number(a.pid);
+    });
+    setPatientList(sortedList);
+  };
+
+  const sortPatientsByVisitedDate = (ascending: boolean) => {
+    const sortedList = [...patientList].sort((a, b) => {
+      return !ascending
+        ? new Date(a.visitDate).getTime() - new Date(b.visitDate).getTime()
+        : new Date(b.visitDate).getTime() - new Date(a.visitDate).getTime();
+    });
+    setPatientList(sortedList);
   };
 
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
@@ -86,15 +112,35 @@ export default function PatientDB({ onClose }: Props) {
               <tr>
                 <th className="flex justify-center items-center w-[100%] h-full gap-1">
                   <span>PID</span>
-                  <FaSortUp />
-                  <FaSortDown className={`${styles.down} flex justify-center items-center`} />
+                  {!pidSort ? (
+                    <FaSortUp
+                      className={`${styles.up} flex justify-center items-center`}
+                      onClick={handlePidSort}
+                    />
+                  ) : (
+                    <FaSortDown
+                      className={`${styles.down} flex justify-center items-center`}
+                      onClick={handlePidSort}
+                    />
+                  )}
                 </th>
                 <th className="w-[12.5%]">SEX</th>
                 <th className="w-[12.5%]">AGE</th>
                 <th className="w-[30%]">Modality</th>
                 <th className="flex justify-center items-center w-[100%] h-full gap-1">
                   <span>Visit Date</span>
-                  <FaSortDown className={`${styles.down} flex justify-center items-center`} />
+
+                  {!visitedDateSort ? (
+                    <FaSortUp
+                      className={`${styles.up} flex justify-center items-center`}
+                      onClick={handleVisitedSort}
+                    />
+                  ) : (
+                    <FaSortDown
+                      className={`${styles.down} flex justify-center items-center`}
+                      onClick={handleVisitedSort}
+                    />
+                  )}
                 </th>
               </tr>
             </thead>

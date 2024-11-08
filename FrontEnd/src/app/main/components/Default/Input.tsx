@@ -39,7 +39,7 @@ export default function Input() {
         placeholder="Enter your search query"
       />
       <Send
-        className={'w-7 text-clip blue-logo ml-auto mr-5'}
+        className={'w-7 text-clip blue-logo ml-auto mr-5 cursor-pointer'}
         onClick={() => handleSend(Patient)}
       />
     </div>
