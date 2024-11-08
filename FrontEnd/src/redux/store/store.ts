@@ -7,6 +7,7 @@ import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } fro
 import storage from 'redux-persist/lib/storage';
 import { persistStore } from 'redux-persist';
 import userSlices from '../features/user/userSlice';
+import mainSlices from '../features/main/mainSlice';
 
 const persistConfig = {
   key: 'persist',
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   test: testSlices.reducer,
   tab: tabSlices.reducer,
   user: userSlices.reducer,
+  main: mainSlices.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
