@@ -7,6 +7,7 @@ import com.newmes.onpremise.global.redis.dto.RedisDto;
 import com.newmes.onpremise.global.redis.service.RedisService;
 import com.newmes.onpremise.global.util.MemberInfo;
 import com.newmes.onpremise.global.util.SseEmitters;
+import jakarta.servlet.http.HttpSession;
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
@@ -35,24 +36,22 @@ public class NotificationController {
   }
 
   @GetMapping(value = "/emitter/{otp}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public void addEmitter(@PathVariable String otp){
-    RedisDto temp = RedisDto.builder()
-        .key(otp)
-        .build();
-    String id = redisService.getValue(temp);
-    redisService.deleteValue(temp);
-    sseEmitters.addEmitter(id);
+  public ResponseEntity<?> addEmitter(@PathVariable String otp, HttpSession session){
+    String storedOtp = (String) session.getAttribute("otp");
+    if (otp.equals(storedOtp)){
+      String id = (String) session.getAttribute("id");
+      sseEmitters.addEmitter(id);
+      return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
   }
 
   @GetMapping("/otp")
-  public ResponseEntity<OtpResponseDto> getOTP() {
+  public ResponseEntity<OtpResponseDto> getOTP(HttpSession session) {
     String id = MemberInfo.getMemberId();
-    String otp = "otp-" + UUID.randomUUID();
-    redisService.setValueWithTimeout(RedisDto.builder()
-        .key(otp)
-        .value(id)
-        .duration(Duration.ofSeconds(30))
-        .build());
+    String otp = UUID.randomUUID().toString();
+    session.setAttribute("otp", otp);
+    session.setAttribute("id", id);
     OtpResponseDto otpDto = new OtpResponseDto(otp);
     return ResponseEntity.status(HttpStatus.OK).body(otpDto);
   }
