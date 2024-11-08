@@ -15,43 +15,62 @@ import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.client.ClientConfiguration;
+import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
 @EnableElasticsearchRepositories
-public class ElasticSearchConfig {
+public class ElasticSearchConfig extends ElasticsearchConfiguration {
 
-  @Bean
-  public ObjectMapper objectMapper() {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
-    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    return mapper;
-  }
+  @Value("${spring.elasticsearch.url}")
+  String url;
 
-  @Bean
-  public JacksonJsonpMapper jacksonJsonpMapper(ObjectMapper objectMapper) {
-    return new JacksonJsonpMapper(objectMapper);
-  }
+  @Value("${spring.elasticsearch.username}")
+  private String username;
 
-  @Bean
-  public RestClient restClient(@Value("${spring.elasticsearch.username}") String username,
-                               @Value("${spring.elasticsearch.password}") String password,
-                               @Value("${spring.elasticsearch.uris}") String url) {
-    CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-    credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+  @Value("${spring.elasticsearch.password}")
+  private String password;
 
-    return RestClient.builder(
-                    new HttpHost(url, 9200)
-            )
-            .setHttpClientConfigCallback(httpClientBuilder ->
-                    httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider))
-            .build();
-  }
+//  @Bean
+//  public ObjectMapper objectMapper() {
+//    ObjectMapper mapper = new ObjectMapper();
+//    mapper.registerModule(new JavaTimeModule());
+//    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+//    return mapper;
+//  }
+//
+//  @Bean
+//  public JacksonJsonpMapper jacksonJsonpMapper(ObjectMapper objectMapper) {
+//    return new JacksonJsonpMapper(objectMapper);
+//  }
+//
+//  @Bean
+//  public RestClient restClient(@Value("${spring.elasticsearch.username}") String username,
+//                               @Value("${spring.elasticsearch.password}") String password,
+//                               @Value("${spring.elasticsearch.uris}") String url) {
+//    CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+//    credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+//
+//    return RestClient.builder(
+//                    new HttpHost(url, 9200)
+//            )
+//            .setHttpClientConfigCallback(httpClientBuilder ->
+//                    httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider))
+//            .build();
+//  }
+//
+//  @Bean
+//  public ElasticsearchClient elasticsearchClient(RestClient restClient, JacksonJsonpMapper jacksonJsonpMapper) {
+//    RestClientTransport transport = new RestClientTransport(restClient, jacksonJsonpMapper);
+//    return new ElasticsearchClient(transport);
+//  }
 
-  @Bean
-  public ElasticsearchClient elasticsearchClient(RestClient restClient, JacksonJsonpMapper jacksonJsonpMapper) {
-    RestClientTransport transport = new RestClientTransport(restClient, jacksonJsonpMapper);
-    return new ElasticsearchClient(transport);
+  @Override
+  public ClientConfiguration clientConfiguration() {
+    return ClientConfiguration.builder()
+        .connectedTo(url)
+        .withBasicAuth(username, password)
+        .build();
   }
 }
