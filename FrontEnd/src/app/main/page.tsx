@@ -21,7 +21,7 @@ export default function Page() {
           </div>
         </div>
       )}
-      {tablist[selectedIndex].tabType === 'chat' && <ChatLayout />}
+      {tablist[selectedIndex].tabType === 'chat' && <ChatLayout pid={tablist[selectedIndex].pid} />}
     </>
   );
 }
