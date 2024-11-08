@@ -52,7 +52,7 @@ pipeline {
 							docker image prune -f
 							docker login -u jiyoungheo.dev@gmail.com -p $DOCKERHUB_PASSWORD
 							docker pull jiyoungheo/medical-copilot-front-onpremise:v1
-							docker run -d -p 3000:3000 -p 6006:6006 -v /home/ubuntu/medical-copilot/frontend/onpremise/.env:/app/.env --name medical-copilot-front-onpremise jiyoungheo/medical-copilot-front-onpremise:v1
+							docker run -d -p 3001:3001 -p 6006:6006 -v /home/ubuntu/medical-copilot/frontend/onpremise/.env:/app/.env --name medical-copilot-front-onpremise jiyoungheo/medical-copilot-front-onpremise:v1
 							'
 						"""
 					    }

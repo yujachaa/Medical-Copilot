@@ -14,10 +14,10 @@ COPY . .
 RUN npm run build
 RUN npm run build-storybook
 
-EXPOSE 3000
+EXPOSE 3001
 EXPOSE 6006 
 
-ENV PORT 3000
+ENV PORT 3001
 ENV STORYBOOK_PORT 6006
 
 RUN npm install -g concurrently
