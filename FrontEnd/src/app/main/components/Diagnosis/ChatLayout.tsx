@@ -14,18 +14,26 @@ import { useEffect, useState } from 'react';
 import { BiMessageRoundedDots } from 'react-icons/bi';
 import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
 import { CgClose } from 'react-icons/cg';
+import { fetchPatientChat } from '@/apis/Patient';
 
 type ChatProps = {
   pid: number;
 };
 export default function Chat({ pid }: ChatProps) {
-  console.log('pid :' + pid);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
+
+  useEffect(() => {
+    const fetchPatient = async () => {
+      const response = await fetchPatientChat(String(pid));
+      console.log(response);
+    };
+    fetchPatient();
+  }, [pid]);
 
   const minimizeChat = () => {
     setIsChatMinimized(!isChatMinimized);
