@@ -6,9 +6,9 @@ export async function fetchRegist(email: string, password: string, name: string)
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: email,
-        password: password,
-        name: name,
+        email: email.trim(),
+        password: password.trim(),
+        name: name.trim(),
         serialKey: '',
         role: 'ADMIN',
       }),
