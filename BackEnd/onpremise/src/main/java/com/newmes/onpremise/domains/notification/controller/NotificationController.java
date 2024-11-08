@@ -35,26 +35,22 @@ public class NotificationController {
     this.redisService = redisService;
   }
 
-  @GetMapping(value = "/emitter/{otp}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public ResponseEntity<?> addEmitter(@PathVariable String otp, HttpSession session){
-    String storedOtp = (String) session.getAttribute("otp");
-    if (otp.equals(storedOtp)){
-      String id = (String) session.getAttribute("id");
+  @GetMapping(value = "/emitter", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+  public ResponseEntity<?> addEmitter(){
+      String id = MemberInfo.getMemberId();
       sseEmitters.addEmitter(id);
       return ResponseEntity.status(HttpStatus.OK).body(null);
-    }
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
   }
 
-  @GetMapping("/otp")
-  public ResponseEntity<OtpResponseDto> getOTP(HttpSession session) {
-    String id = MemberInfo.getMemberId();
-    String otp = UUID.randomUUID().toString();
-    session.setAttribute("otp", otp);
-    session.setAttribute("id", id);
-    OtpResponseDto otpDto = new OtpResponseDto(otp);
-    return ResponseEntity.status(HttpStatus.OK).body(otpDto);
-  }
+//  @GetMapping("/otp")
+//  public ResponseEntity<OtpResponseDto> getOTP(HttpSession session) {
+//    String id = MemberInfo.getMemberId();
+//    String otp = UUID.randomUUID().toString();
+//    session.setAttribute("otp", otp);
+//    session.setAttribute("id", id);
+//    OtpResponseDto otpDto = new OtpResponseDto(otp);
+//    return ResponseEntity.status(HttpStatus.OK).body(otpDto);
+//  }
 
   @PatchMapping("/{notificationId}")
   public ResponseEntity<?> readNotification(@PathVariable int notificationId){
