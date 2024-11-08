@@ -1,5 +1,6 @@
 package com.newmes.onpremise.domains.patient.controller;
 
+import com.newmes.onpremise.domains.patient.domain.Modality;
 import com.newmes.onpremise.domains.patient.dto.request.PatientRequestDto;
 import com.newmes.onpremise.domains.patient.dto.response.PatientResponseDto;
 import com.newmes.onpremise.domains.patient.service.PatientService;
@@ -63,4 +64,13 @@ public class PatientController {
             return httpResponseUtil.errorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve recent patients");
         }
     }
+
+    @GetMapping("/{PID}/{agent}")
+    public ResponseEntity<?> searchPatientImage(@PathVariable("PID") String PID, @PathVariable("agent") Modality agent) {
+        try {
+            String image = patientService.getImage(PID, agent);
+            return httpResponseUtil.createResponse(image);
+        } catch (Exception e) {
+            return httpResponseUtil.errorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to search patients");
+        }
 }
