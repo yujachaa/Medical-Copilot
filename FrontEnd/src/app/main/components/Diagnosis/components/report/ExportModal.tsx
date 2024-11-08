@@ -1,11 +1,12 @@
 import { CgClose } from 'react-icons/cg';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from './ExportModal.module.scss';
 import Image from 'next/image';
 import XrayImg from '@/assets/images/xrayImg.jpg';
+import { fetchPDF } from '@/apis/fetchPDF';
+import RectangleOverlay from './RectangleOverlay';
 
 const fieldOptions = ['Finding', 'Impression', 'Plan'];
-
 type ExportModalProps = {
   onClose: () => void;
 };
@@ -13,6 +14,17 @@ type ExportModalProps = {
 export default function ExportModal({ onClose }: ExportModalProps) {
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const imgWrapperRef = useRef<HTMLDivElement | null>(null);
+  const pdfRef = useRef<HTMLDivElement | null>(null);
+
+  const handleDownloadPDF = async () => {
+    fetchPDF();
+  };
+
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
 
   const plan = `Imaging : Perform a chest CT to futher evaluate the extent and cause of atelectasis,
                 identifying any obstructive or compressive factors. Monitoring : Repeat chest
@@ -44,7 +56,10 @@ export default function ExportModal({ onClose }: ExportModalProps) {
           onClick={onClose}
         />
         {/* pdf 내보내기 리포트 영역 */}
-        <div className={styles.report}>
+        <div
+          ref={pdfRef}
+          className={styles.report}
+        >
           <div className="font-bold text-3xl w-full">Medical Report</div>
           <div className={styles.infoArea}>
             <div className={`${styles.info}`}>
@@ -57,13 +72,13 @@ export default function ExportModal({ onClose }: ExportModalProps) {
                   >
                     <div className={styles.oneInfo}>
                       <div
-                        className={`font-bold w-1/3 ${label === 'Registration No' ? 'tracking-tighter' : ''} max-1024:text-sm max-1024:w-[42%]`}
+                        className={`font-bold w-1/2 ${label === 'Registration No' ? 'tracking-tighter max-1024:tracking-[-.13em]' : ''} max-1024:text-sm max-1024:w-1/2`}
                       >
                         {label}
                       </div>
                       <div className="flex gap-[2px]">
                         <div className="">:</div>
-                        <div className="">123456789</div>
+                        <div className="max-1024:text-sm">123456789</div>
                       </div>
                     </div>
                   </div>
@@ -79,10 +94,12 @@ export default function ExportModal({ onClose }: ExportModalProps) {
                     className="w-full"
                   >
                     <div className={styles.oneInfo}>
-                      <div className={`font-bold w-1/3`}>{label}</div>
+                      <div className={`font-bold w-1/3 max-1024:text-sm max-1024:w-1/2`}>
+                        {label}
+                      </div>
                       <div className="flex gap-[2px]">
                         <div className="">:</div>
-                        <div className="">123456789</div>
+                        <div className="max-1024:text-sm">123456789</div>
                       </div>
                     </div>
                   </div>
@@ -90,13 +107,18 @@ export default function ExportModal({ onClose }: ExportModalProps) {
               </div>
             </div>
 
-            <div className={styles.image}>
+            <div
+              className={styles.image}
+              ref={imgWrapperRef}
+            >
               <Image
                 src={XrayImg}
                 alt="이미지"
                 width={250}
                 height={250}
+                onLoad={handleImageLoad} // 이미지 로드 완료 시 호출
               />
+              {isImageLoaded && <RectangleOverlay imgWrapperRef={imgWrapperRef} />}
             </div>
           </div>
 
@@ -177,10 +199,18 @@ export default function ExportModal({ onClose }: ExportModalProps) {
           <button className="outline outline-blue-btn text-blue-btn px-3 py-2 rounded-md hover:text-white hover:bg-blue-btn">
             Save
           </button>
-          <button className="outline outline-[#ff484a] text-[#ff484a] px-3 py-2 rounded-md hover:text-white hover:bg-[#ff484a]">
+          <button
+            className="outline outline-[#ff484a] text-[#ff484a] px-3 py-2 rounded-md hover:text-white hover:bg-[#ff484a]"
+            onClick={() => {
+              handleDownloadPDF();
+            }}
+          >
             Export PDF
           </button>
-          <button className="outline outline-gray-400 text-gray-400 px-3 py-2 rounded-md hover:text-white hover:bg-gray-400">
+          <button
+            className="outline outline-gray-400 text-gray-400 px-3 py-2 rounded-md hover:text-white hover:bg-gray-400"
+            onClick={onClose}
+          >
             Cancel
           </button>
         </div>

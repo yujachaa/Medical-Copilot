@@ -2,6 +2,16 @@
 
 .main {
   background-color: $sidebar-bg;
+  z-index: 2;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 55px;
+    flex-direction: row;
+    padding: 0 0.5rem 0 0.5rem;
+  }
 }
 
 .menuBtn {

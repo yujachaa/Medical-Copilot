@@ -1,6 +1,7 @@
 package com.newmes.cloud.domains.member.controller;
 
 import com.newmes.cloud.domains.member.dto.MemberRequestDto;
+import com.newmes.cloud.domains.member.exception.MemberNotFoundException;
 import com.newmes.cloud.domains.member.service.MemberService;
 import com.newmes.cloud.global.util.HttpResponseUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,19 +23,31 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody MemberRequestDto requestDto) {
-        memberService.login(requestDto);
-        return responseUtil.createSuccessResponse(200, "login success");
+        try {
+            memberService.login(requestDto);
+            return responseUtil.createSuccessResponse(200, "login success");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
-        memberService.logout(request);
-        return responseUtil.createSuccessResponse(200, "logout success");
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        try {
+            memberService.logout(request);
+            return responseUtil.createSuccessResponse(200, "logout success");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody MemberRequestDto requestDto) {
-        memberService.signup(requestDto.username(), passwordEncoder.encode(requestDto.password()));
-        return responseUtil.createSuccessResponse(200, "signup success");
+        try {
+            memberService.signup(requestDto.username(), passwordEncoder.encode(requestDto.password()));
+            return responseUtil.createSuccessResponse(200, "signup success");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

@@ -1,26 +1,21 @@
 package com.newmes.onpremise.domains.chat.dto.request;
 
-import java.util.Date;
-import lombok.Data;
+import com.newmes.onpremise.domains.patient.domain.Modality;
+import lombok.Builder;
 
-@Data
-public class ChatRequestDto {
+@Builder
+public record ChatRequestDto (
 
-  String id;
+  String reportId,
 
-  String reportId;
+  String comment,
 
-  int order;
+  boolean isQuestion,
 
-  String comment;
+  String PID,
 
-  boolean isQuestion;
+  String memberId,
 
-  Date regdate;
-
-  String patientId;
-
-  String type;
-
-  String memberId;
+  Modality agent
+){
 }

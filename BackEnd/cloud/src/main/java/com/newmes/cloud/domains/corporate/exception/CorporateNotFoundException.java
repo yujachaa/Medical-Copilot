@@ -11,4 +11,8 @@ public class CorporateNotFoundException extends RuntimeException {
         this.status = HttpStatus.NOT_FOUND;
         this.msg = "해당 회사를 찾을 수 없습니다. 회사명: " + comName;
     }
+    @Override
+    public String getMessage() {
+        return this.msg;
+    }
 }

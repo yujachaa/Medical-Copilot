@@ -1,0 +1,12 @@
+@import '@/style/globals_variant.scss';
+
+.remainbar {
+  position: relative;
+  background-color: $tab-bg;
+
+  .bludremainbar {
+    width: 0px;
+    background: #1f9dff;
+    transition: width 0.5s linear;
+  }
+}

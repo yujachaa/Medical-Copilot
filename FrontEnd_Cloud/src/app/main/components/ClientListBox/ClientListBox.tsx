@@ -3,7 +3,16 @@ import ClientListItem from '../ClientListItem/ClientListItem';
 import styles from './ClientListBox.module.scss';
 import { IoSearch } from 'react-icons/io5';
 
-type dataType = { id: number; comName: string; grade: string; key: string }[];
+type dataType = {
+  id: number;
+  comName: string;
+  grade: string;
+  key: string;
+  availability: boolean;
+  totalCount: number;
+  createDate: string;
+  subscription: number;
+}[];
 
 export default async function ClientListBox() {
   const data: dataType = await fetchClientList();

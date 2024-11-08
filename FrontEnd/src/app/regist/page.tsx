@@ -5,7 +5,7 @@ import styles from './page.module.scss';
 export default function RegistPage() {
   return (
     <div
-      className={`${styles.main} w-screen h-screen overflow-x-hidden flex flex-col items-center pt-[75] gap-5`}
+      className={`${styles.main} w-screen h-screen overflow-x-hidden flex flex-col items-center pt-[75px] gap-5`}
     >
       <RegistTitle />
       <RegistInput />

@@ -1,0 +1,21 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  border-bottom: 1px solid $tab-bg;
+}
+
+.tab {
+  font-weight: 700;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 3px 0 0 $tab-bg;
+  }
+}
+
+.active {
+  box-shadow: 0 3px 0 0 $blue-btn;
+
+  &:hover {
+    box-shadow: 0 3px 0 0 $blue-btn;
+  }
+}

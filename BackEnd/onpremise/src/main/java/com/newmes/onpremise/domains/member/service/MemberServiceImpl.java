@@ -10,6 +10,7 @@ import com.newmes.onpremise.domains.member.entity.MemberEntity;
 import com.newmes.onpremise.domains.member.exception.MemberNotFoundException;
 import com.newmes.onpremise.domains.member.exception.ValidateMemberException;
 import com.newmes.onpremise.domains.member.repository.MemberRepository;
+import com.newmes.onpremise.global.redis.dto.RedisDto;
 import com.newmes.onpremise.global.redis.service.RedisService;
 import com.newmes.onpremise.global.security.jwt.JwtUtil;
 import com.newmes.onpremise.global.security.userdetails.CustomUserInfo;
@@ -42,9 +43,9 @@ public class MemberServiceImpl implements MemberService {
         CustomUserInfo info = CustomUserInfo.from(member);
         String accessToken = jwtUtil.createAccessToken(info);
         String refreshToken = jwtUtil.createRefreshToken(info);
-
+        log.info("info {}",info.email());
         redisService.saveRefreshToken(info.email(), refreshToken);
-
+        log.info("redis {}",redisService.getValue(RedisDto.builder().key(info.email()).build()));
         return LoginResponseDto.from(member, accessToken);
     }
 
@@ -52,6 +53,7 @@ public class MemberServiceImpl implements MemberService {
         String email = getMember().getEmail();
         String refreshToken = redisService.getRefreshToken(email);
         long remainingTime = jwtUtil.getRemainingTime(refreshToken);
+        log.info("{redis: }",redisService.getValue(RedisDto.builder().key(email).build()));
         redisService.addTokenToBlacklist(token.accessToken(), 1800000);
         redisService.addTokenToBlacklist(refreshToken, remainingTime);
         redisService.deleteRefreshToken(email);

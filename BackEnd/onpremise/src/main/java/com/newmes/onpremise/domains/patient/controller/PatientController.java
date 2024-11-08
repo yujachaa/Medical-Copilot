@@ -59,6 +59,7 @@ public class PatientController {
             Page<PatientResponseDto> results = patientService.getRecentPatients(page, size);
             return httpResponseUtil.createResponse(results);
         } catch (Exception e) {
+            e.printStackTrace();
             return httpResponseUtil.errorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve recent patients");
         }
     }
