@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpSession;
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/notification")
 public class NotificationController {
@@ -38,6 +41,7 @@ public class NotificationController {
   @GetMapping(value = "/emitter/{otp}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public ResponseEntity<?> addEmitter(@PathVariable String otp, HttpSession session){
     String storedOtp = (String) session.getAttribute("otp");
+    log.info("SSE Request by Session: {}, StoredOtp: {}, otp: {}", session.getId(), storedOtp, otp);
     if (otp.equals(storedOtp)){
       String id = (String) session.getAttribute("id");
       sseEmitters.addEmitter(id);
@@ -52,6 +56,7 @@ public class NotificationController {
     String otp = UUID.randomUUID().toString();
     session.setAttribute("otp", otp);
     session.setAttribute("id", id);
+    log.info("OTP Stored -> Session: {}, otp: {}", session.getId(), otp);
     OtpResponseDto otpDto = new OtpResponseDto(otp);
     return ResponseEntity.status(HttpStatus.OK).body(otpDto);
   }
