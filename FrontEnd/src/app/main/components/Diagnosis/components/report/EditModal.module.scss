@@ -20,7 +20,7 @@
   border-radius: 8px;
   max-height: 90vh;
   height: fit-content;
-  min-width: 36vw;
+  min-width: 40vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,17 +36,29 @@
   @media (max-width: 768px) {
     max-height: 95vh;
     height: fit-content;
-    min-width: 90vw;
+    min-width: 80vw;
   }
 }
 
 .image {
   position: relative; // `relative`로 설정하여 fill 속성 사용 가능
   width: 100%;
-  max-width: 700px;
+  max-width: 535px;
   height: auto;
   max-height: 80%;
   aspect-ratio: 1 / 1;
+
+  // width: 100%;
+  // height: 100%;
+  // position: relative;
+  box-sizing: border-box;
+
+  .imgWrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+  }
 }
 
 .closeBtn {
@@ -58,8 +70,8 @@
 
 .buttonArea {
   display: flex;
-  // padding: 12px;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 20px;
   align-items: center;
   align-self: stretch;
 }
@@ -88,5 +100,12 @@
     & svg {
       color: white;
     }
+  }
+}
+
+.selected {
+  background-color: $blue-btn;
+  & svg {
+    color: white;
   }
 }
