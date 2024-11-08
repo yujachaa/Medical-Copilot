@@ -10,7 +10,7 @@ public class MemberNotFoundException extends RuntimeException {
 
     public MemberNotFoundException(String email) {
         super("Member not found");
-        this.status = HttpStatus.NO_CONTENT;
+        this.status = HttpStatus.NOT_FOUND;
         this.msg = " 해당 멤버를 찾을 수 없습니다. email: "+email;
     }
 }

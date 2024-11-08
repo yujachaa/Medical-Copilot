@@ -15,13 +15,14 @@ import PatientHistory from '../PatientHistory/PatientHistory';
 import { setInit } from '@/redux/features/user/userSlice';
 import { fetchLogout } from '@/apis/fetchLogout';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
+import AlarmModal from '../Alarm/AlarmModal';
 
 export default function SideBar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isNotification, setNotification] = useState(false);
   const router = useRouter();
-
   const accessToken = useAppSelector<string>((state) => state.user.accessToken);
   const dispatch = useAppDispatch();
 
@@ -47,10 +48,6 @@ export default function SideBar() {
     router.push('/mypage?t=plan');
   };
 
-  // const handleTab = () => {
-  //   router.push('/alarm');
-  // };
-
   const handleHistoryClose = () => {
     setIsAnimating(true);
     setTimeout(() => {
@@ -72,6 +69,7 @@ export default function SideBar() {
           onClose={handleHistoryClose}
         />
       )}
+      {isNotification && <AlarmModal onClose={() => setNotification(false)} />}
       <div className={`w-[55px] h-screen flex flex-col justify-between pt-2 pb-2 ${styles.main}`}>
         <div
           className={`w-[55px] h-[67px] flex justify-center items-center max-768:w-[67px] max-768:h-[55px]`}
@@ -88,7 +86,7 @@ export default function SideBar() {
           <CgMenuGridR className={`${styles.menuBtn}`} />
           <FaBell
             className={`${styles.menuBtn} p-0.5`}
-            // onClick={handleTab}
+            onClick={() => setNotification((prev) => !prev)}
           />
           <FaUserLarge
             className={`${styles.menuBtn} p-1`}
