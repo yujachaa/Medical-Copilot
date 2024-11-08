@@ -1,30 +1,38 @@
-import { client } from '@/types/client';
+'use client';
+
+import { clientDetail } from '@/types/client';
 import ClientBtn from './components/ClientBtn/ClientBtn';
 import ClientGraph from './components/ClientGraph/ClientGraph';
 import ClientInfo from './components/ClientInfo/ClientInfo';
 import styles from './page.module.scss';
-// import { fetchClientDetail } from '@/apis/fetchClientDetail';
+import { fetchClientDetail } from '@/apis/fetchClientDetail';
+import { useEffect, useState } from 'react';
 // import LogModal from './components/LogModal/LogModal';
 
-const data: client = {
-  id: 1,
-  comName: 'Newmes111',
-  grade: 'DEFAULT',
-  key: '2a197cf4-de8a-4fb4-b768-70bba6c9b3a4',
-  cxrCount: 0,
-  capsuleCount: 0,
-  medGuruCount: 0,
-  totalCount: 0,
-};
-
-export default async function ClientDetailPage() {
-  // const data = await fetchClientDetail(params.clientId);
+export default function ClientDetailPage({ params }: { params: { clientId: string } }) {
+  const [clientDetail, setClientDetail] = useState<clientDetail>();
+  const [standard, setStandard] = useState<number>(0);
+  useEffect(() => {
+    const fetchDetail = async () => {
+      const data = await fetchClientDetail(params.clientId);
+      if (data) {
+        setClientDetail(data);
+      }
+    };
+    fetchDetail();
+  }, [params.clientId]);
   return (
     <div className={`${styles.main} w-screen flex`}>
       <div className={`w-screen flex flex-col p-6`}>
-        {data && <ClientInfo data={data} />}
-        <ClientBtn />
-        <ClientGraph />
+        {clientDetail && <ClientInfo data={clientDetail} />}
+        <ClientBtn
+          standard={standard}
+          setStandard={setStandard}
+        />
+        <ClientGraph
+          standard={standard}
+          serialKey={params.clientId}
+        />
       </div>
       {/* <LogModal /> */}
     </div>
