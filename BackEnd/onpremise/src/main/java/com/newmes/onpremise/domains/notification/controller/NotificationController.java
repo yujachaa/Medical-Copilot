@@ -40,7 +40,7 @@ public class NotificationController {
   }
 
   @GetMapping(value = "/emitter", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public ResponseEntity<?> addEmitter(){
+  public ResponseEntity<SseEmitter> addEmitter(){
       String id = MemberInfo.getMemberId();
       SseEmitter emitter = sseEmitters.addEmitter(id);
       return ResponseEntity.status(HttpStatus.OK).body(emitter);
