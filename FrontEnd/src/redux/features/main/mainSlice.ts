@@ -27,8 +27,11 @@ const mainSlices = createSlice({
       state.visitDate = action.payload.visitDate;
       state.pid = action.payload.pid;
     },
+    setModality: (state, action: PayloadAction<string>) => {
+      state.modality = action.payload;
+    },
   },
 });
 
-export const { setPatient } = mainSlices.actions;
+export const { setPatient, setModality } = mainSlices.actions;
 export default mainSlices;
