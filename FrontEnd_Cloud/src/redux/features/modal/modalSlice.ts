@@ -2,12 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 type modalProps = {
   clientAdd: boolean;
-  errorLog: boolean;
+  warning: boolean;
+  clientModify: boolean;
 };
 
 const initialState: modalProps = {
   clientAdd: false,
-  errorLog: false,
+  warning: false,
+  clientModify: false,
 };
 
 // action: PayloadAction<number>
@@ -19,11 +21,14 @@ const modalSlices = createSlice({
     setClientAddModal(state) {
       state.clientAdd = !state.clientAdd;
     },
-    setErrorLogModal(state) {
-      state.errorLog = !state.errorLog;
+    setWarningModal(state) {
+      state.warning = !state.warning;
+    },
+    setClientModifyModal(state) {
+      state.clientModify = !state.clientModify;
     },
   },
 });
 
-export const { setClientAddModal } = modalSlices.actions;
+export const { setClientAddModal, setWarningModal, setClientModifyModal } = modalSlices.actions;
 export default modalSlices;
