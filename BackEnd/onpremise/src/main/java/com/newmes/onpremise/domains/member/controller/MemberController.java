@@ -3,6 +3,7 @@ package com.newmes.onpremise.domains.member.controller;
 import com.newmes.onpremise.domains.member.domain.Token;
 import com.newmes.onpremise.domains.member.dto.request.LoginRequestDto;
 import com.newmes.onpremise.domains.member.dto.request.MemberRequestDto;
+import com.newmes.onpremise.domains.member.dto.request.PasswordRequestDto;
 import com.newmes.onpremise.domains.member.dto.response.LoginResponseDto;
 import com.newmes.onpremise.domains.member.dto.response.MemberResponseDto;
 import com.newmes.onpremise.domains.member.service.MemberService;
@@ -47,8 +48,8 @@ public class MemberController {
     }
 
     @PatchMapping("/update-password")
-    public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody String password) {
-        memberService.updatePassword(password);
+    public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody PasswordRequestDto passwordRequestDto) {
+        memberService.updatePassword(passwordRequestDto);
         return httpResponseUtil.createSuccessResponse("success", HttpStatus.OK);
     }
 }

@@ -5,6 +5,7 @@ import com.newmes.onpremise.domains.member.domain.RoleType;
 import com.newmes.onpremise.domains.member.domain.Token;
 import com.newmes.onpremise.domains.member.dto.request.LoginRequestDto;
 import com.newmes.onpremise.domains.member.dto.request.MemberRequestDto;
+import com.newmes.onpremise.domains.member.dto.request.PasswordRequestDto;
 import com.newmes.onpremise.domains.member.dto.response.LoginResponseDto;
 import com.newmes.onpremise.domains.member.dto.response.MemberResponseDto;
 import com.newmes.onpremise.domains.member.entity.MemberEntity;
@@ -88,12 +89,16 @@ public class MemberServiceImpl implements MemberService {
         return MemberResponseDto.from(updatedEntity);
     }
 
-    public void updatePassword(String password) {
+    public void updatePassword(PasswordRequestDto passwordRequestDto) {
         String memberId = MemberInfo.getMemberId();
         MemberEntity entity = memberElasticRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("Member not found"));
+        if (!encoder.matches(passwordRequestDto.currentPw(), entity.getPassword())) {
+            throw new BadCredentialsException("password not match");
+        }
 
-        String newPassword = encoder.encode(password);
+
+        String newPassword = encoder.encode(passwordRequestDto.password());
         entity.updatePassword(newPassword);
 
         memberElasticRepository.save(entity);
