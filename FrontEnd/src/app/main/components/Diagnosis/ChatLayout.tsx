@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { BiMessageRoundedDots } from 'react-icons/bi';
 import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
 import { CgClose } from 'react-icons/cg';
-import { fetchPatientChat } from '@/apis/patient';
+import { fetchPatientChat } from '@/apis/Patient';
 
 type ChatProps = {
   pid: number;
