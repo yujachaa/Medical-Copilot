@@ -9,7 +9,6 @@ import TabBoard from '@/components/Tabs/TabBoard/SmallTabBoard';
 // import SideBar from '@/components/SideBar/SideBar';
 
 export default function Page() {
-  console.log('랜더링');
   const { selectedIndex, tablist } = useAppSelector((state) => state.tab);
   return (
     <>

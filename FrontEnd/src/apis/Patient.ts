@@ -21,7 +21,7 @@ export async function fetchPatient(page: number, size: number) {
   }
 }
 
-export async function fetchPatientChat(pid: string) {
+export async function fetchPatientChat(pid: number) {
   try {
     const response = await fetch(`${BaseURL}chat/${pid}`, {
       cache: 'no-store',
