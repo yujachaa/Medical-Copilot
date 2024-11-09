@@ -42,6 +42,7 @@ export default function NameInput({ isNameInput }: { isNameInput: boolean }) {
       </span>
       <span
         className={`${styles.setting2} w-[50px] h-[30px] flex justify-center items-center rounded-[10px]`}
+        onClick={() => setName('')}
       >
         취소
       </span>
