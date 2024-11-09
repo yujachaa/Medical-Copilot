@@ -3,7 +3,6 @@ package com.newmes.onpremise.domains.chat.controller;
 import com.newmes.onpremise.domains.chat.dto.response.ChatResponseDto;
 import com.newmes.onpremise.domains.chat.service.ChatService;
 import com.newmes.onpremise.domains.chat.dto.request.ChatRequestDto;
-import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
 import com.newmes.onpremise.global.util.HttpResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +26,4 @@ public class ChatController {
     ChatResponseDto chats = chatService.load(patientId);
     return responseUtil.createResponse(chats);
   }
-
 }

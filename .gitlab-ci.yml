@@ -8,7 +8,8 @@ cloud_backend_webhook_trigger:
       changes:
         - BackEnd/cloud/**  # BackEnd/cloud 폴더 경로 모니터링
   script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_back"
+    - |
+      curl -X POST "https://k11s205.p.ssafy.io/jenkins/job/newmes_cloud_back/build?token=$cloud_back" --header "Jenkins-Crumb: $k11s205_crumb"
 
 cloud_frontend_webhook_trigger:
   stage: trigger
@@ -17,7 +18,8 @@ cloud_frontend_webhook_trigger:
       changes:
         - FrontEnd_Cloud/**  # FrontEnd_Cloud 폴더 경로 모니터링
   script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_cloud_front"
+    - |
+      curl -X POST "https://k11s205.p.ssafy.io/jenkins/job/newmes_cloud_front/build?token=$cloud_front" --header "Jenkins-Crumb: $k11s205_crumb"
 
 onpremise_backend_webhook_trigger:
   stage: trigger
@@ -26,7 +28,8 @@ onpremise_backend_webhook_trigger:
       changes:
         - BackEnd/onpremise/**  # BackEnd/onpremise 폴더 경로 모니터링
   script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_onpremise_back"
+    - |
+      curl -X POST "https://k11s205.p.ssafy.io/jenkins/job/newmes_onpremise_back/build?token=$onpremise_back"  --header "Jenkins-Crumb: $k11s205_crumb"
 
 onpremise_frontend_webhook_trigger:
   stage: trigger
@@ -35,4 +38,5 @@ onpremise_frontend_webhook_trigger:
       changes:
         - FrontEnd/**  # FrontEnd 폴더 경로 모니터링
   script:
-    - curl -X POST "https://k11s205.p.ssafy.io/jenkins/project/newmes_onpremise_front"
+    - |
+      curl -X POST "https://medical-copilot.net/jenkins/job/newmes_onpremise_front/build?token=$onpremise_front" --header "Jenkins-Crumb: $medical_copilot_crumb"

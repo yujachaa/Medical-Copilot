@@ -20,7 +20,7 @@ pipeline {
 					dockerimage = docker.build("jiyoungheo/medical-copilot-back-cloud:v1", "./BackEnd/cloud")
 				}
 			}
-		}
+		} 
 		
 		stage('Push image') {
 			steps {

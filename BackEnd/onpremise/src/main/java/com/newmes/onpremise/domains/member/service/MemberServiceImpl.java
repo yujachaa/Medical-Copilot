@@ -1,9 +1,11 @@
 package com.newmes.onpremise.domains.member.service;
 
 import com.newmes.onpremise.domains.member.domain.Member;
+import com.newmes.onpremise.domains.member.domain.RoleType;
 import com.newmes.onpremise.domains.member.domain.Token;
 import com.newmes.onpremise.domains.member.dto.request.LoginRequestDto;
 import com.newmes.onpremise.domains.member.dto.request.MemberRequestDto;
+import com.newmes.onpremise.domains.member.dto.request.PasswordRequestDto;
 import com.newmes.onpremise.domains.member.dto.response.LoginResponseDto;
 import com.newmes.onpremise.domains.member.dto.response.MemberResponseDto;
 import com.newmes.onpremise.domains.member.entity.MemberEntity;
@@ -74,29 +76,34 @@ public class MemberServiceImpl implements MemberService {
     public MemberResponseDto update(MemberRequestDto request) {
         String memberId = MemberInfo.getMemberId();
         MemberEntity entity = memberElasticRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("email not found"));
+                .orElseThrow(() -> new MemberNotFoundException("Member not found"));
 
-        Member member = entity.toDomain();
-        String newName = Optional.ofNullable(request.name()).orElse(member.getName());
-        String newEmail = Optional.ofNullable(request.email()).orElse(member.getEmail());
-        member.update(newName, newEmail);
-        MemberEntity updatedEntity = member.toEntity();
-        memberElasticRepository.deleteById(memberId);
-        return MemberResponseDto.from(memberElasticRepository.save(updatedEntity));
+        if (request.name() != null) {
+            entity.updateName(request.name());
+        }
+        if (request.email() != null) {
+            entity.updateEmail(request.email());
+        }
+
+        MemberEntity updatedEntity = memberElasticRepository.save(entity);
+        return MemberResponseDto.from(updatedEntity);
     }
 
-    public void updatePassword(String password) {
+    public void updatePassword(PasswordRequestDto passwordRequestDto) {
         String memberId = MemberInfo.getMemberId();
         MemberEntity entity = memberElasticRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException("email not found"));
+                .orElseThrow(() -> new MemberNotFoundException("Member not found"));
+        if (!encoder.matches(passwordRequestDto.currentPw(), entity.getPassword())) {
+            throw new BadCredentialsException("password not match");
+        }
 
-        String newPassword =  encoder.encode(password);
-        Member member = entity.toDomain();
-        member.updatePassword(newPassword);
-        MemberEntity updatedEntity = member.toEntity();
-        memberElasticRepository.deleteById(memberId);
-        memberElasticRepository.save(updatedEntity);
+
+        String newPassword = encoder.encode(passwordRequestDto.password());
+        entity.updatePassword(newPassword);
+
+        memberElasticRepository.save(entity);
     }
+
 
     public MemberEntity getMember() {
         String memberId = MemberInfo.getMemberId();
