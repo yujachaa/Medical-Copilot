@@ -16,6 +16,7 @@ import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
 import { CgClose } from 'react-icons/cg';
 import { fetchPatientChat } from '@/apis/Patient';
 import { useAppSelector } from '@/redux/store/hooks/store';
+import { fetchReport } from '@/apis/report';
 
 type ChatProps = {
   pid: number;
@@ -35,6 +36,7 @@ export default function Chat({ pid }: ChatProps) {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
+  const [isSelectedReport, setReport] = useState<string>('');
   const { patient } = useAppSelector((state) => state.main);
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
@@ -43,13 +45,26 @@ export default function Chat({ pid }: ChatProps) {
   useEffect(() => {
     const fetchPatient = async () => {
       const response = await fetchPatientChat(pid);
+      console.log(response);
       setMessages(response.chatList);
     };
     fetchPatient();
   }, [pid]);
 
+  useEffect(() => {
+    const getReport = async () => {
+      const response = await fetchReport(isSelectedReport);
+      console.log(response);
+    };
+    getReport();
+  }, [isSelectedReport]);
+
   const minimizeChat = () => {
     setIsChatMinimized(!isChatMinimized);
+  };
+
+  const selectReport = (reportId: string) => {
+    setReport(reportId);
   };
 
   // 화면 크기 변화에 따른 채팅창 상태 업데이트
@@ -84,7 +99,10 @@ export default function Chat({ pid }: ChatProps) {
                 <CgClose size={25} />
               </button>
             </div>
-            <MessaageList messagelist={messages} />
+            <MessaageList
+              messagelist={messages}
+              selectReport={selectReport}
+            />
             <ChatInput />
           </div>
 

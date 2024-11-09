@@ -4,8 +4,9 @@ import { MessageType } from '../../ChatLayout';
 
 type Props = {
   messagelist: MessageType[];
+  selectReport: (reportId: string) => void;
 };
-export default function MessageList({ messagelist }: Props) {
+export default function MessageList({ messagelist, selectReport }: Props) {
   return (
     <div className={styles.msgList}>
       {messagelist.map((message, index) => (
@@ -13,6 +14,8 @@ export default function MessageList({ messagelist }: Props) {
           key={index}
           sender={message.question ? 'user' : 'bot'}
           message={message.comment}
+          data={message}
+          selectReport={selectReport}
         />
       ))}
       {/* <Message
