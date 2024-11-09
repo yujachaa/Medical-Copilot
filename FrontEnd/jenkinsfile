@@ -16,7 +16,7 @@ pipeline {
 			stage('Prepare Environment') {
             	steps {
 					sshagent(['ssh-key']) {
-						sh 'ssh-keyscan -H medical-copilot.net >> ~/.ssh/known_hosts'
+            			sh 'ssh-keyscan -H k11s205.p.ssafy.io >> ~/.ssh/known_hosts'
 						sh 'scp ubuntu@medical-copilot.net:/home/ubuntu/medical-copilot/frontend/onpremise/.env ./FrontEnd/.env'
 					}		
 				}
