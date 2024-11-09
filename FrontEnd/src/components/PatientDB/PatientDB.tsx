@@ -6,7 +6,7 @@ import { FaSortDown } from 'react-icons/fa';
 import { FaSortUp } from 'react-icons/fa';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { fetchPatient } from '@/apis/patient';
+import { fetchPatient } from '@/apis/Patient';
 import { useAppDispatch } from '@/redux/store/hooks/store';
 import { setPatient } from '@/redux/features/main/mainSlice';
 
