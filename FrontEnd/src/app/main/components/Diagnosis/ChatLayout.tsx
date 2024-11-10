@@ -106,10 +106,6 @@ export default function Chat({ pid }: ChatProps) {
             <ChatInput />
           </div>
 
-          {/* 이부분이 랜더링이 되야한다 
-             1. 채팅의 버튼을 클릭하는데, reportId가 있는 채팅만 클릭이 가능하게한다.
-             2. 그러면 여기서 선택된 리포트를 관리하는것 그리고 그것을 리포트정보에 넣어주는것
-          */}
           <div className={styles.reportContainer}>
             <div className={styles.scrollable}>
               <div className={styles.reportInfo}>

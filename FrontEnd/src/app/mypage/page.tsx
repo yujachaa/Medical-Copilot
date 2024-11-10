@@ -1,5 +1,7 @@
-import MyPageInfo from './components/MyPageInfo/MyPageInfo';
-import MyPageTitle from './components/MyPageTitle/MyPageTitle';
+import dynamic from 'next/dynamic';
+
+const MyPageInfo = dynamic(() => import('./components/MyPageInfo/MyPageInfo'));
+const MyPageTitle = dynamic(() => import('./components/MyPageTitle/MyPageTitle'));
 
 export default function MypagePage() {
   return (
