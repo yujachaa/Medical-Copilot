@@ -1,6 +1,6 @@
 import styles from './Modality.module.scss';
 import React, { useState } from 'react';
-import { IoMdCloseCircleOutline } from 'react-icons/io';
+import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircleOutline';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { setModality } from '@/redux/features/main/mainSlice';
 

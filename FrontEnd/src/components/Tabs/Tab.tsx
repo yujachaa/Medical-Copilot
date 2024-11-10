@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Tab.module.scss';
-import { CgClose } from 'react-icons/cg';
+import { CgClose } from '@react-icons/all-files/cg/CgClose';
 import SelectTabIcons from './components/SelectTabIcons';
 import { tab } from '@/redux/features/tab/tabSlice';
 export type PluginType = 'default' | 'cxr' | 'capsule';

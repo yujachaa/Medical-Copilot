@@ -24,6 +24,9 @@ export default function SEEHandler() {
         console.log(event);
         console.log(event.data);
       };
+      eventSourceRef.current!.addEventListener('notification', (e: Event) => {
+        console.log(e);
+      });
 
       eventSourceRef.current!.onerror = (error: unknown) => {
         console.error('EventSource failed:', error);

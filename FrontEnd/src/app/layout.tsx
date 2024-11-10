@@ -1,13 +1,17 @@
 import ClientLayout from '@/redux/ClientLayout';
 import localFont from 'next/font/local';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import '../style/globals.scss';
 
 export const metadata: Metadata = {
   title: 'NEWMES',
   description: 'MEDICAL COPILOT',
-  themeColor: '#8936FF',
   manifest: '/manifest.json',
+};
+
+// 뷰포트는 따로 객체를 만들어서 export 해줘야한다고한다 -> 공식문서
+export const viewport: Viewport = {
+  themeColor: '#8936FF',
 };
 
 const myFont = localFont({
@@ -37,6 +41,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="manifest"
+          href="/manifest.json"
+        />
+        <meta
+          name="theme-color"
+          content="#8936FF"
+        />
+      </head>
       <body className={myFont.className}>
         <ClientLayout>{children}</ClientLayout>
       </body>
