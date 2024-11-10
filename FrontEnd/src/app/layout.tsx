@@ -9,7 +9,6 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
 };
 
-// 뷰포트는 따로 객체를 만들어서 export 해줘야한다고한다 -> 공식문서
 export const viewport: Viewport = {
   themeColor: '#8936FF',
 };
