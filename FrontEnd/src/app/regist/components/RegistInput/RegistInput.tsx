@@ -15,13 +15,50 @@ export default function RegistInput() {
   const { password, setPassword, isCorrectPassword } = useCheckPassword();
   const { cfPassword, setCfPassword, isCorrectCfPassword } = useCheckCfPassword(password);
 
+  type RegistError = {
+    message: string;
+    status: number;
+  };
+
+  // 타입 가드 함수
+  function isRegistError(error: unknown): error is RegistError {
+    return (
+      typeof error === 'object' &&
+      error !== null &&
+      'status' in error &&
+      typeof error.status === 'number' &&
+      'message' in error &&
+      typeof error.message === 'string'
+    );
+  }
+
   const handleRegist = async () => {
     if (isCorrectEmail && isCorrectName && isCorrectPassword && isCorrectCfPassword) {
-      const data = await fetchRegist(email, password, name);
-      if (data.msg === 'success') {
-        alert('회원가입이 완료되었습니다!');
-        router.push('/login');
+      try {
+        const data = await fetchRegist(email, password, name);
+        if (data?.msg === 'success') {
+          alert('회원가입이 완료되었습니다!');
+          router.push('/login');
+        }
+      } catch (error: unknown) {
+        // error를 unknown으로 지정
+        if (isRegistError(error)) {
+          // 타입 가드로 에러 타입 확인
+          if (error.status === 400) {
+            alert('잘못된 요청입니다. 입력값을 다시 확인해주세요.');
+          } else if (error.status === 406) {
+            alert('이미 사용 중인 이메일입니다.');
+          } else {
+            alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+          }
+          console.error(`Error Code: ${error.status}`, error.message);
+        } else {
+          console.error('알 수 없는 오류가 발생했습니다.', error);
+          alert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
+        }
       }
+    } else {
+      alert('입력값을 다시 확인해주세요.');
     }
   };
 

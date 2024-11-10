@@ -17,7 +17,7 @@ export default function UserProfile() {
       className={`${styles.main} rounded-[20px] w-[50%] min-w-[490px] p-6 flex flex-col gap-4 h-fit`}
     >
       <span className={`${styles.title} text-[32px]`}>User Profile</span>
-      <div className={`${styles.info}  h-full flex flex-col gap-4`}>
+      <div className={`${styles.info}  h-fit flex flex-col gap-4`}>
         <div className={`grid grid-cols-[1fr_2fr_1fr]  h-[40px] items-center`}>
           <span>Email</span>
           <span>{email}</span>
