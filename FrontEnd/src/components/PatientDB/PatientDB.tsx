@@ -1,10 +1,10 @@
 'use client';
 
 import styles from './PatientDB.module.scss';
-import { FaDatabase } from 'react-icons/fa6';
-import { FaSortDown } from 'react-icons/fa';
-import { FaSortUp } from 'react-icons/fa';
-import { IoMdCloseCircleOutline } from 'react-icons/io';
+import { FaDatabase } from '@react-icons/all-files/fa/FaDatabase';
+import { FaSortDown } from '@react-icons/all-files/fa/FaSortDown';
+import { FaSortUp } from '@react-icons/all-files/fa/FaSortUp';
+import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircleOutline';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchPatient } from '@/apis/Patient';
 import { useAppDispatch } from '@/redux/store/hooks/store';

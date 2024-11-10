@@ -28,6 +28,7 @@
     "@nivo/core": "^0.87.0",
     "@nivo/line": "^0.87.0",
     "@nivo/pie": "^0.87.0",
+    "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^2.3.0",
     "event-source-polyfill": "^1.0.31",
     "html2pdf.js": "^0.10.2",
