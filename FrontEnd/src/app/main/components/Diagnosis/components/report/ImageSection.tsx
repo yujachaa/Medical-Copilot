@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState, useRef } from 'react';
 import styles from './ReportData.module.scss';
-import XrayImg from '@/assets/images/xrayImg.webp';
+import XrayImg from '@/assets/images/xrayImg.jpg';
 import { MdOutlineDraw } from 'react-icons/md';
 import EditModal from './EditModal';
 import RectangleOverlay from './RectangleOverlay';
@@ -31,7 +31,6 @@ export default function ImageSection() {
           <Image
             src={XrayImg}
             alt="이미지"
-            priority={true}
             fill={true}
             style={{ objectFit: 'cover' }}
             placeholder="blur"
