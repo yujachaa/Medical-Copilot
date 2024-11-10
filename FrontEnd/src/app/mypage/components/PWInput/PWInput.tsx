@@ -81,12 +81,12 @@ export default function PWInput({ isPWInput }: { isPWInput: boolean }) {
         {/* 비밀번호 경고메세지 표시 부분 */}
         {password !== '' &&
           (!isCorrectPassword ? (
-            <span className={`flex justify-end ${styles.text}`}>
+            <span className={`flex justify-end w-[80%] ${styles.text}`}>
               Please use 8 to 15 characters of English case letters, numbers, and special characters
               for the password.
             </span>
           ) : currentPW === password ? (
-            <span className={`flex justify-end ${styles.text}`}>
+            <span className={`flex justify-end w-[80%] ${styles.text}`}>
               Please choose a password different from your current one.
             </span>
           ) : null)}
