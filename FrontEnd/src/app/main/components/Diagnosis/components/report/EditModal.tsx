@@ -13,6 +13,7 @@ import {
 } from 'react-icons/io5';
 import { BsCheckCircle, BsCheckCircleFill } from 'react-icons/bs';
 import RectangleOverlay from './RectangleOverlay';
+import { updateDrawing } from '@/apis/report';
 
 interface CoordinatesGroup {
   points: { x: number; y: number }[];
@@ -31,6 +32,8 @@ export default function EditModal({ onClose, onSaveCoordinates }: EditModalProps
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [coordinatesGroups, setCoordinatesGroups] = useState<CoordinatesGroup[]>([]);
+  const [undoStack, setUndoStack] = useState<CoordinatesGroup[][]>([]);
+  const [redoStack, setRedoStack] = useState<CoordinatesGroup[][]>([]);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
@@ -38,60 +41,201 @@ export default function EditModal({ onClose, onSaveCoordinates }: EditModalProps
     if (imgWrapperRef.current) {
       const { offsetWidth, offsetHeight } = imgWrapperRef.current;
       setImageSize({ width: offsetWidth, height: offsetHeight });
-      console.log('현재 이미지 표시 크기:', { offsetWidth, offsetHeight });
     }
   }, [imgWrapperRef]);
+
+  const saveSnapshot = () => {
+    setUndoStack((prev) => {
+      const updatedStack = [...prev, JSON.parse(JSON.stringify(coordinatesGroups))];
+      return updatedStack.length > 20 ? updatedStack.slice(1) : updatedStack; // 최대 20개까지 저장
+    });
+    setRedoStack([]); // 새로운 변경이 생기면 redoStack을 초기화
+  };
 
   const handleButtonClick = (buttonName: string) => {
     setSelectedButton(buttonName === selectedButton ? null : buttonName);
   };
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current;
-    if (!canvas || !imgWrapperRef.current) return;
+    if (!canvasRef.current || !imgWrapperRef.current) return;
 
-    const rect = imgWrapperRef.current.getBoundingClientRect();
-    const x = parseFloat(((e.clientX - rect.left) / rect.width).toFixed(3)); // x 좌표 비율 (0 ~ 1) 소수점 3자리
-    const y = parseFloat(((e.clientY - rect.top) / rect.height).toFixed(3)); // y 좌표 비율 (0 ~ 1) 소수점 3자리
+    if (selectedButton === 'pencil' || selectedButton === 'eraser') {
+      setIsDrawing(true);
+      saveSnapshot(); // 그리기 시작할 때 스냅샷 저장
+    }
 
-    setIsDrawing(true);
-    // 새로운 그룹을 시작하고 첫 좌표 추가 (비율로 저장)
-    setCoordinatesGroups((prev) => [...prev, { points: [{ x, y }] }]);
+    if (selectedButton === 'pencil') {
+      const rect = imgWrapperRef.current.getBoundingClientRect();
+      const x = parseFloat(((e.clientX - rect.left) / rect.width).toFixed(3));
+      const y = parseFloat(((e.clientY - rect.top) / rect.height).toFixed(3));
 
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.beginPath();
-      ctx.moveTo(x * rect.width, y * rect.height); // 화면 크기에 맞춰 그림
+      setCoordinatesGroups((prev) => [...prev, { points: [{ x, y }] }]);
+
+      const ctx = canvasRef.current.getContext('2d');
+      if (ctx) {
+        ctx.beginPath();
+        ctx.moveTo(x * rect.width, y * rect.height);
+      }
     }
   };
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawing) return;
-
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
     if (!ctx || !imgWrapperRef.current) return;
 
     const rect = imgWrapperRef.current.getBoundingClientRect();
-    const x = parseFloat(((e.clientX - rect.left) / rect.width).toFixed(3)); // x 좌표 비율 (0 ~ 1) 소수점 3자리
-    const y = parseFloat(((e.clientY - rect.top) / rect.height).toFixed(3)); // y 좌표 비율 (0 ~ 1) 소수점 3자리
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    ctx.lineTo(x * rect.width, y * rect.height); // 화면 크기에 맞춰 그림
-    ctx.stroke();
+    if (isDrawing && selectedButton === 'eraser') {
+      const eraserSize = 20;
+      setCoordinatesGroups((prev) => {
+        const updatedGroups: CoordinatesGroup[] = [];
+        prev.forEach((group) => {
+          const isInEraserArea = group.points.some((point) => {
+            const pointX = point.x * rect.width;
+            const pointY = point.y * rect.height;
+            return (
+              pointX >= x - eraserSize / 2 &&
+              pointX <= x + eraserSize / 2 &&
+              pointY >= y - eraserSize / 2 &&
+              pointY <= y + eraserSize / 2
+            );
+          });
 
-    // 현재 그룹에 비율 좌표 추가
-    setCoordinatesGroups((prev) => {
-      const updatedGroups = [...prev];
-      const currentGroup = updatedGroups[updatedGroups.length - 1];
-      currentGroup.points.push({ x, y });
-      return updatedGroups;
-    });
+          if (!isInEraserArea) {
+            updatedGroups.push(group);
+          }
+        });
+
+        if (canvas) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          updatedGroups.forEach((group) => {
+            ctx.beginPath();
+            group.points.forEach((point, index) => {
+              const drawX = point.x * canvas.width;
+              const drawY = point.y * canvas.height;
+              if (index === 0) {
+                ctx.moveTo(drawX, drawY);
+              } else {
+                ctx.lineTo(drawX, drawY);
+              }
+            });
+            ctx.stroke();
+          });
+        }
+        return updatedGroups;
+      });
+    } else if (isDrawing && selectedButton === 'pencil') {
+      ctx.lineTo(x, y);
+      ctx.stroke();
+
+      const relX = parseFloat((x / rect.width).toFixed(3));
+      const relY = parseFloat((y / rect.height).toFixed(3));
+      setCoordinatesGroups((prev) => {
+        const updatedGroups = [...prev];
+        const currentGroup = updatedGroups[updatedGroups.length - 1];
+        currentGroup.points.push({ x: relX, y: relY });
+        return updatedGroups;
+      });
+    }
   };
 
-  const stopDrawing = () => {
-    setIsDrawing(false);
-    console.log(coordinatesGroups);
-    onSaveCoordinates(coordinatesGroups, imageSize); // 좌표 그룹과 이미지 크기 전달
+  const stopDrawing = () => setIsDrawing(false);
+
+  const handleUndo = () => {
+    if (undoStack.length === 0) return;
+
+    setRedoStack((prev) => [coordinatesGroups, ...prev]);
+    const previousState = undoStack[undoStack.length - 1];
+    setUndoStack((prev) => prev.slice(0, -1));
+    setCoordinatesGroups(previousState);
+
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        previousState.forEach((group) => {
+          ctx.beginPath();
+          group.points.forEach((point, index) => {
+            const x = point.x * canvas.width;
+            const y = point.y * canvas.height;
+            if (index === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          });
+          ctx.stroke();
+        });
+      }
+    }
+  };
+
+  const handleRedo = () => {
+    if (redoStack.length === 0) return;
+
+    setUndoStack((prev) => [...prev, coordinatesGroups]);
+    const nextState = redoStack[0];
+    setRedoStack((prev) => prev.slice(1));
+    setCoordinatesGroups(nextState);
+
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        nextState.forEach((group) => {
+          ctx.beginPath();
+          group.points.forEach((point, index) => {
+            const x = point.x * canvas.width;
+            const y = point.y * canvas.height;
+            if (index === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          });
+          ctx.stroke();
+        });
+      }
+    }
+  };
+
+  const handleTrash = () => {
+    if (confirm('모든 좌표를 지우겠습니까? 복구할 수 없습니다.')) {
+      setCoordinatesGroups([]);
+      setUndoStack([]);
+      setRedoStack([]);
+
+      if (canvasRef.current) {
+        const ctx = canvasRef.current.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        }
+      }
+    }
+  };
+
+  const handleCheck = async () => {
+    onSaveCoordinates(coordinatesGroups, imageSize);
+    console.log('좌표', coordinatesGroups);
+    const data = await updateDrawing('nfk7GpMBgCMDeDfK288f', coordinatesGroups);
+    console.log('업데이트 후 응답!!!!!!!!!!:', data);
+  };
+
+  const handleClose = () => {
+    if (
+      coordinatesGroups.length > 0 &&
+      confirm('저장하지 않은 정보는 사라집니다. 나가시겠습니까?')
+    ) {
+      setCoordinatesGroups([]);
+      onClose();
+    } else {
+      onClose();
+    }
   };
 
   useEffect(() => {
@@ -112,7 +256,7 @@ export default function EditModal({ onClose, onSaveCoordinates }: EditModalProps
       <div className={styles.modalContent}>
         <CgClose
           className="absolute right-2 top-2 cursor-pointer text-rgb0.5"
-          onClick={onClose}
+          onClick={handleClose}
         />
         <p className="font-black text-2xl">Image Edit</p>
         <div className={styles.image}>
@@ -152,25 +296,25 @@ export default function EditModal({ onClose, onSaveCoordinates }: EditModalProps
           </div>
           <div
             className={`${styles.btn} ${selectedButton === 'undo' ? styles.selected : ''}`}
-            onClick={() => handleButtonClick('undo')}
+            onClick={handleUndo}
           >
             {selectedButton === 'undo' ? <IoArrowUndo /> : <IoArrowUndoOutline />}
           </div>
           <div
             className={`${styles.btn} ${selectedButton === 'redo' ? styles.selected : ''}`}
-            onClick={() => handleButtonClick('redo')}
+            onClick={handleRedo}
           >
             {selectedButton === 'redo' ? <IoArrowRedoSharp /> : <IoArrowRedoOutline />}
           </div>
           <div
             className={`${styles.btn} ${selectedButton === 'trash' ? styles.selected : ''}`}
-            onClick={() => handleButtonClick('trash')}
+            onClick={handleTrash}
           >
             {selectedButton === 'trash' ? <HiTrash /> : <HiOutlineTrash />}
           </div>
           <div
             className={`${styles.btn} ${selectedButton === 'check' ? styles.selected : ''}`}
-            onClick={() => handleButtonClick('check')}
+            onClick={handleCheck}
           >
             {selectedButton === 'check' ? <BsCheckCircleFill /> : <BsCheckCircle />}
           </div>
