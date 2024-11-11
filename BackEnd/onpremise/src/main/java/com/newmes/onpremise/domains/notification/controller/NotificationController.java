@@ -44,6 +44,7 @@ public class NotificationController {
       log.info("emitter join---");
       try{
         String id = MemberInfo.getMemberId();
+        log.info("member id---"+id);
         SseEmitter emitter = sseEmitters.addEmitter(id);
         return ResponseEntity.status(HttpStatus.OK).body(emitter);
       }  catch (Exception e) {
