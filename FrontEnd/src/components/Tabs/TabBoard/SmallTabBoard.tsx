@@ -16,6 +16,11 @@ export default function TabBoard() {
   const handleCreateTab = () => {
     dispatch(addTab());
   };
+
+  const hadnleClick = (id: number) => {
+    dispatch(setSelectedTab(id));
+    //탭으로 이동할때 chat방이면 pid를 통해 fetch를 한번 더
+  };
   return (
     <div className={styles.container}>
       {tablist.map((tab, index) => (
@@ -23,7 +28,7 @@ export default function TabBoard() {
           key={tab.id}
           tab={tab}
           isActive={index === selectedIndex ? true : false}
-          onClick={() => dispatch(setSelectedTab(tab.id))}
+          onClick={() => hadnleClick(tab.id)}
           HandleDelete={handleDelete}
         />
       ))}

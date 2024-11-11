@@ -6,6 +6,7 @@
     "eqeqeq": "error", // 일치 연산자 사용 필수
     "dot-notation": "error", // 가능하다면 dot notation 사용
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "error"
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
