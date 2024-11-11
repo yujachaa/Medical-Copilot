@@ -14,6 +14,7 @@ public class SseEmitters {
   ConcurrentHashMap<String, SseEmitter> emitters = new ConcurrentHashMap<>();
 
   public SseEmitter addEmitter(String id){
+    log.error("Adding emitter :id ={}, emitters : {}" ,id, emitters.toString());
     SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
     emitters.put(id, emitter);
     try{
@@ -43,6 +44,7 @@ public class SseEmitters {
 
   public void sendNotification(NotificationResponseDto responseDto){
     String id = responseDto.getMemberId();
+    log.info("send SSE : member id= {}, id= {}",responseDto.getMemberId(), responseDto.getId());
     try{
       SseEmitter emitter = emitters.getOrDefault(id, null);
       if (null == emitter){
