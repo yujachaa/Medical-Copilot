@@ -6,9 +6,10 @@ import { FaSortDown } from 'react-icons/fa';
 import { FaSortUp } from 'react-icons/fa';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { fetchPatient } from '@/apis/main';
+import { fetchPatient } from '@/apis/Patient';
 import { useAppDispatch } from '@/redux/store/hooks/store';
 import { setPatient } from '@/redux/features/main/mainSlice';
+import Modality from './Modality';
 
 type Props = {
   onClose: () => void;
@@ -28,6 +29,7 @@ export default function PatientDB({ onClose }: Props) {
   const [visitedDateSort, setvisitedDate] = useState<boolean>(false); //false 기본값이 오름차순이 오도록 back에서 진행해줘야함
   const [size] = useState<number>(8);
   const [page, setPage] = useState(0);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -49,7 +51,11 @@ export default function PatientDB({ onClose }: Props) {
 
   const handleSetPatient = (data: Patient) => {
     dispatch(setPatient(data));
-    onClose();
+    setIsOpen(true);
+  };
+
+  const hadnleModalityClose = () => {
+    setIsOpen(false);
   };
   const handlePidSort = () => {
     setPidSort((prev) => !prev);
@@ -159,6 +165,12 @@ export default function PatientDB({ onClose }: Props) {
               ))}
             </tbody>
           </table>
+          {isOpen && (
+            <Modality
+              onClose={hadnleModalityClose}
+              onPatientClose={onClose}
+            />
+          )}
           <div
             className="w-4 h-4"
             ref={loader}
