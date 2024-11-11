@@ -40,7 +40,6 @@ public class PatientServiceImpl implements PatientService {
                 .orElseThrow(() -> new PatientNotFoundException(pid, agent));
     }
 
-
     @Override
     public List<PatientResponseDto> searchPatients(String query) throws IOException {
         return patientRepositoryCustom.searchPatientsByKeyword(query)
@@ -50,7 +49,6 @@ public class PatientServiceImpl implements PatientService {
                         Collectors.toList()
                 ))
                 .entrySet().stream()
-                .filter(entry -> !entry.getValue().isEmpty())
                 .map(entry -> {
                     String[] keys = entry.getKey().split("_");
                     String pid = keys[0];
@@ -75,13 +73,13 @@ public class PatientServiceImpl implements PatientService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public List<String> autocomplete(String prefix) throws IOException {
         return patientRepositoryCustom.autocompletePatients(prefix).stream()
                 .map(PatientEntity::getPID)
                 .collect(Collectors.toList());
     }
-
     @Override
     public Page<PatientResponseDto> getRecentPatients(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("visitDate").descending());
@@ -93,7 +91,6 @@ public class PatientServiceImpl implements PatientService {
                         Collectors.toList()
                 ))
                 .entrySet().stream()
-                .filter(entry -> !entry.getValue().isEmpty())
                 .map(entry -> {
                     String[] keys = entry.getKey().split("_");
                     String pid = keys[0];
@@ -120,15 +117,18 @@ public class PatientServiceImpl implements PatientService {
         return new PageImpl<>(recentPatients, pageRequest, recentPatients.size());
     }
 
+
     private String parseModality(List<Modality> modalities) {
         if (modalities == null || modalities.isEmpty()) {
             return "No image data";
         }
         return modalities.stream()
                 .filter(Objects::nonNull)
+                .filter(modality -> !"MG".equals(modality.toString())) // 'MG' 필터링
                 .distinct()
                 .sorted()
                 .map(Modality::toString)
                 .collect(Collectors.joining(", "));
     }
+
 }
