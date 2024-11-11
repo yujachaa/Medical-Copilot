@@ -8,6 +8,7 @@ import { useUsageByModule } from '@/hooks/useUsageByModule';
 export default function UsageByModule() {
   const [standard, setStandard] = useState<number>(0);
   const { list } = useUsageByModule(standard);
+  console.log(list);
   return (
     <div className={`${styles.main} w-full box-border p-3 flex flex-col`}>
       <div className={`flex justify-between h-[40px] items-center`}>
