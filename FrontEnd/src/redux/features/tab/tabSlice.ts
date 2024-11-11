@@ -20,8 +20,8 @@ type tabProps = {
 
 const initialState: tabProps = {
   tablist: [
-    { id: 0, title: 'Default Plugin', type: 'default', tabType: 'default', pid: -1 },
-    { id: 1, title: '1 Dignosis', type: 'cxr', tabType: 'chat', pid: 1 },
+    { id: 0, title: 'Default Plugin', type: 'MG', tabType: 'default', pid: -1 },
+    { id: 1, title: '1 Dignosis', type: 'CXR', tabType: 'chat', pid: 1 },
   ],
   selectedTab: 0,
   increment: 1,
@@ -43,7 +43,7 @@ const tabSlices = createSlice({
       const newTab: tab = {
         id: ++state.increment,
         title: `New Tab`,
-        type: 'default',
+        type: 'MG',
         tabType: 'default',
         pid: -1,
       };
@@ -77,13 +77,13 @@ const tabSlices = createSlice({
       if (index === -1) {
         state.tablist[state.selectedIndex].title = `${action.payload.pid} Diagnosis`;
         state.tablist[state.selectedIndex].type =
-          `${action.payload.modality === '' ? 'default' : 'cxr'}`;
+          `${action.payload.modality === '' ? 'MG' : 'CXR'}`;
         state.tablist[state.selectedIndex].tabType = 'chat';
         state.tablist[state.selectedIndex].pid = Number(action.payload.pid);
       } else {
         if (action.payload.modality === '') {
-          state.tablist[index].type = 'default';
-        } else state.tablist[index].type = 'cxr';
+          state.tablist[index].type = 'MG';
+        } else state.tablist[index].type = 'CXR';
         state.selectedIndex = index;
       }
     },

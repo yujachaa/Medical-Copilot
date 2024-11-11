@@ -10,6 +10,7 @@ import { fetchPatient } from '@/apis/Patient';
 import { useAppDispatch } from '@/redux/store/hooks/store';
 import { setPatient } from '@/redux/features/main/mainSlice';
 import Modality from './Modality';
+import { CheckModality } from './CheckModality';
 
 type Props = {
   onClose: () => void;
@@ -159,7 +160,7 @@ export default function PatientDB({ onClose }: Props) {
                   <td>{patient.pid}</td>
                   <td>{patient.sex}</td>
                   <td>{patient.age}</td>
-                  <td>{patient.modality}</td>
+                  <td>{CheckModality(patient.modality) === '' ? 'NO DATA' : patient.modality}</td>
                   <td>{patient.visitDate}</td>
                 </tr>
               ))}

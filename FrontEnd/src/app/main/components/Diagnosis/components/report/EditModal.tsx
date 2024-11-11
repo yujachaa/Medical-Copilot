@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 import styles from './EditModal.module.scss';
-import XrayImg from '@/assets/images/xrayImg.jpg';
+import XrayImg from '@/assets/images/xrayImg.webp';
 import { CgClose } from '@react-icons/all-files/cg/CgClose';
 import { IoArrowRedoOutline } from '@react-icons/all-files/io5/IoArrowRedoOutline';
 import { IoArrowRedoSharp } from '@react-icons/all-files/io5/IoArrowRedoSharp';
@@ -41,7 +41,8 @@ export default function EditModal({ onClose }: EditModalProps) {
             <Image
               src={XrayImg}
               alt="이미지"
-              fill
+              width={535} // 실제로 필요한 크기
+              height={535}
               // sizes="(max-width: 600px) 100vw, 50vw"
               style={{ objectFit: 'cover' }}
             />

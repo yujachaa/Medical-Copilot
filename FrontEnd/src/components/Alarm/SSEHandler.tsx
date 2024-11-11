@@ -3,15 +3,17 @@ import { BaseURL } from '@/apis/core';
 import { useAppSelector } from '@/redux/store/hooks/store';
 import React, { useEffect, useRef } from 'react';
 
-export default function SEEHandler() {
+export default function SSEHandler() {
   const { accessToken } = useAppSelector((state) => state.user);
   const eventSourceRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
     const connectSSE = () => {
+      console.log(accessToken);
       const EventSourcePolyfill = (window as any).EventSourcePolyfill || EventSource;
-      eventSourceRef.current = new EventSourcePolyfill(`${BaseURL}notification/emitter`, {
+      eventSourceRef.current = new EventSourcePolyfill(`${BaseURL}notification/emitter/1`, {
         headers: {
+          'Content-Type': 'text/event-stream',
           Authorization: `Bearer ${accessToken}`,
         },
       });
