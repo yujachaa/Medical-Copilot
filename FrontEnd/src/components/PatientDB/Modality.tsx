@@ -24,7 +24,6 @@ export default function Modality({ onClose, onPatientClose }: Props) {
   };
 
   const handleSetPatient = () => {
-    //여기에 이미지를 불러오는 API를 추가할 예정입니다.
     dispatch(setModality(selectedModality));
     onClose();
     onPatientClose();

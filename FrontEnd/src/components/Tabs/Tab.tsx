@@ -3,7 +3,7 @@ import styles from './Tab.module.scss';
 import { CgClose } from '@react-icons/all-files/cg/CgClose';
 import SelectTabIcons from './components/SelectTabIcons';
 import { tab } from '@/redux/features/tab/tabSlice';
-export type PluginType = 'default' | 'cxr' | 'capsule';
+export type PluginType = 'MG' | 'CXR' | 'CT';
 
 type TabProps = {
   HandleDelete: (id: number) => void;
@@ -13,7 +13,7 @@ type TabProps = {
 };
 
 export default function Tab({ HandleDelete, onClick, tab, isActive }: TabProps) {
-  const { id, type = 'default', title } = tab;
+  const { id, type = 'MG', title } = tab;
   const handleDelete = (e: React.MouseEvent<SVGElement>) => {
     e.stopPropagation();
     HandleDelete(id);
