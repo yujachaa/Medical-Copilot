@@ -40,7 +40,8 @@ public class SecurityConfig {
                     configuration.setAllowedOrigins(Arrays.asList(
                             "https://k11s205.p.ssafy.io",
                             "http://localhost:3000",
-                            "http://localhost:3001"
+                            "http://localhost:3001",
+							"https://medical-copilot.net"
                     ));
                     configuration.setAllowedMethods(Arrays.asList("*"));
                     configuration.setAllowCredentials(true);
