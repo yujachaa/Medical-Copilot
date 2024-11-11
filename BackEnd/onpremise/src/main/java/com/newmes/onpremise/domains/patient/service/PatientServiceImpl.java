@@ -72,8 +72,12 @@ public class PatientServiceImpl implements PatientService {
                             .visitDate(visitDate)
                             .build();
                 })
+                .sorted((p1, p2) -> p2.getVisitDate().compareTo(p1.getVisitDate()))
                 .collect(Collectors.toList());
     }
+
+
+
 
     @Override
     public List<String> autocomplete(String prefix) throws IOException {
@@ -115,6 +119,7 @@ public class PatientServiceImpl implements PatientService {
                             .visitDate(visitDate)
                             .build();
                 })
+                .sorted((p1, p2) -> p2.getVisitDate().compareTo(p1.getVisitDate()))
                 .collect(Collectors.toList());
 
         return new PageImpl<>(recentPatients, pageRequest, recentPatients.size());
