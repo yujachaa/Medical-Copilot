@@ -34,6 +34,7 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
 		http
 				.cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
@@ -56,6 +57,7 @@ public class SecurityConfig {
 				.httpBasic(basic -> basic.disable())
 				.addFilterBefore(new JwtAuthFilter(customUserDetailsService, jwtUtil, redisService),
 						UsernamePasswordAuthenticationFilter.class)
+				.securityContext(securityContext -> securityContext.requireExplicitSave(true))
 				.exceptionHandling(exceptionHandling -> exceptionHandling
 						.authenticationEntryPoint(authenticationEntryPoint)
 						.accessDeniedHandler(accessDeniedHandler))

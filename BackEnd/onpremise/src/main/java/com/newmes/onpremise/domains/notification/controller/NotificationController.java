@@ -1,21 +1,27 @@
 package com.newmes.onpremise.domains.notification.controller;
 
+import com.newmes.onpremise.domains.member.domain.Member;
 import com.newmes.onpremise.domains.notification.dto.OtpResponseDto;
 import com.newmes.onpremise.domains.notification.dto.response.NotificationResponseDto;
 import com.newmes.onpremise.domains.notification.service.NotificationService;
 import com.newmes.onpremise.global.redis.dto.RedisDto;
 import com.newmes.onpremise.global.redis.service.RedisService;
+import com.newmes.onpremise.global.security.jwt.JwtUtil;
 import com.newmes.onpremise.global.util.MemberInfo;
 import com.newmes.onpremise.global.util.SseEmitters;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,32 +32,64 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Slf4j
 @RestController
 @RequestMapping("/notification")
+@RequiredArgsConstructor
 public class NotificationController {
 
   private final NotificationService notificationService;
   private final SseEmitters sseEmitters;
   private final RedisService redisService;
+  private final JwtUtil jwtUtil;
 
-  public NotificationController(NotificationService notificationService, SseEmitters sseEmitters,
-      RedisService redisService) {
-    this.notificationService = notificationService;
-    this.sseEmitters = sseEmitters;
-    this.redisService = redisService;
-  }
 
-  @GetMapping(value = "/emitter", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public ResponseEntity<SseEmitter> addEmitter(){
-      log.info("emitter join---");
-      try{
-        String id = MemberInfo.getMemberId();
-        log.info("member id---"+id);
-        SseEmitter emitter = sseEmitters.addEmitter(id);
-        return ResponseEntity.status(HttpStatus.OK).body(emitter);
-      }  catch (Exception e) {
-        e.printStackTrace();
+  @GetMapping(value = "/emitter/{memberId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+  public ResponseEntity<SseEmitter> addEmitter(@PathVariable String memberId, HttpServletRequest request) {
+    log.info("emitter join---");
+
+    String id = null;
+
+    try {
+      // 1. SecurityContext에서 사용자 ID 가져오기
+      id = MemberInfo.getMemberId();
+      if (id == null || "anonymousUser".equals(id)) {
+        log.warn("Anonymous user detected from SecurityContext. Attempting manual context setup.");
+
+        // 2. 수동으로 SecurityContext 설정
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+          token = token.replace("Bearer ", "");
+          try {
+            id = jwtUtil.getUsernameFromToken(token);
+            log.info("User ID extracted from JWT token: " + id);
+
+            // SecurityContext에 수동으로 사용자 설정
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(id, null, List.of());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+          } catch (Exception e) {
+            log.error("Error extracting user ID from JWT token: ", e);
+          }
+        } else {
+          log.warn("Authorization header missing or invalid.");
+        }
       }
-      return null;
+
+      // 3. JWT 토큰에서 사용자 ID가 없거나 Anonymous라면, PathVariable의 memberId 사용
+      if (id == null || "anonymousUser".equals(id)) {
+        log.warn("User ID still anonymous. Using PathVariable memberId: " + memberId);
+        id = memberId;
+      }
+
+      log.info("Final user ID used for SSE: " + id);
+
+      // 4. SSE Emitter 생성 및 반환
+      SseEmitter emitter = sseEmitters.addEmitter(id);
+      return ResponseEntity.ok(emitter);
+    } catch (Exception e) {
+      log.error("Error in addEmitter: ", e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
   }
+
 
 //  @GetMapping("/otp")
 //  public ResponseEntity<OtpResponseDto> getOTP(HttpSession session) {
