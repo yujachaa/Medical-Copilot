@@ -6,19 +6,21 @@ export async function fetchRegist(email: string, password: string, name: string)
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: email,
-        password: password,
-        name: name,
+        email: email.trim(),
+        password: password.trim(),
+        name: name.trim(),
         serialKey: '',
         role: 'ADMIN',
       }),
     });
     if (!response.ok) {
-      throw new Error('응답이 없습니다.');
+      const errorText = await response.text();
+      throw { message: errorText, status: response.status }; // 에러 코드 포함
     }
     const data = await response.json();
     return data.data;
   } catch (error) {
     console.log(error);
+    throw error; // 에러를 다시 던짐
   }
 }

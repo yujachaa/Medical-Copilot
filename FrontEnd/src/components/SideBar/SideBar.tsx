@@ -40,12 +40,20 @@ export default function SideBar() {
     router.push('/main');
   };
 
+  const goSettings = () => {
+    router.push('/mypage?t=profile');
+  };
+
+  const goPlan = () => {
+    router.push('/mypage?t=plan');
+  };
+
   const handleHistoryClose = () => {
     setIsAnimating(true);
     setTimeout(() => {
       setIsHistoryOpen(false);
       setIsAnimating(false);
-    }, 700); // 애니메이션 시간과 동일하게 설정
+    }, 700);
   };
 
   const handleHistory = () => {
@@ -104,11 +112,17 @@ export default function SideBar() {
             className={`absolute bottom-[10px] left-[60px] w-40 bg-white shadow-md rounded-md p-2 text-blue-btn border-solid border border-black/20 max-768:bottom-[60px] max-768:left-[unset] max-768:right-[10px] ${styles.modal}`}
           >
             <ul className="flex flex-col gap-2 font-bold">
-              <li className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2">
+              <li
+                className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2"
+                onClick={goPlan}
+              >
                 <FaStar className="w-[20px] h-[20px]" />
                 <span>My Plan</span>
               </li>
-              <li className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2">
+              <li
+                className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2"
+                onClick={goSettings}
+              >
                 <TbSettingsFilled className="w-[20px] h-[20px]" />
                 <span>Settings</span>
               </li>
