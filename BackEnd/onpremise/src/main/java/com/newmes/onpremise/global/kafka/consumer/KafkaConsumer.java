@@ -33,6 +33,7 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "ai", groupId = "ai-group")
     public void processAiTopic(ConsumerRecord<String, AiResponseDto> record) {
+        log.info("ai로부터 온 메시지 : {}",record.toString());
         AiResponseDto aiResponse = record.value();
 
         ReportRequestDto reportRequestDto = ReportRequestDto.builder()
