@@ -20,8 +20,10 @@ const nextConfig = {
       },
     },
   },
+  // productionBrowserSourceMaps: true,
 };
 
 export default withPWA({
   dest: 'public',
+  buildExcludes: [/middleware-manifest.json$/], // middleware 관련 파일 제외
 })(nextConfig);
