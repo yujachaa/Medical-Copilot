@@ -1,4 +1,7 @@
 import { fetchUsageByModule } from '@/apis/fetchUsageByModule';
+import { getSpecificDay } from '@/utils/getDay';
+import { getMonthFromIndex } from '@/utils/getMonth';
+import { getWeekRange } from '@/utils/getWeek';
 import { useEffect, useState } from 'react';
 
 type data = {
@@ -10,7 +13,7 @@ type data = {
 type result = {
   id: string;
   color: string;
-  data: { x: number; y: number }[];
+  data: { x: string; y: number }[];
 }[];
 
 export function useUsageByModule(standard: number) {
@@ -24,7 +27,12 @@ export function useUsageByModule(standard: number) {
           id: key,
           color: 'hsl(166, 70%, 50%)',
           data: value.map((data1, index) => ({
-            x: index + 1,
+            x:
+              standard === 0
+                ? getMonthFromIndex(index + 1)
+                : standard === 2
+                  ? getSpecificDay(index + 1)
+                  : getWeekRange(index + 1),
             y: data1,
           })),
         }));
