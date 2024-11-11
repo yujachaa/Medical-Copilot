@@ -6,12 +6,15 @@ import com.newmes.onpremise.global.security.exception.CustomAuthenticationEntryP
 import com.newmes.onpremise.global.security.jwt.JwtAuthFilter;
 import com.newmes.onpremise.global.security.jwt.JwtUtil;
 import com.newmes.onpremise.global.security.userdetails.CustomUserDetailsService;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -67,4 +70,10 @@ public class SecurityConfig {
 
 		return http.build();
 	}
+	@PostConstruct
+	public void init() {
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+	}
+
+
 }

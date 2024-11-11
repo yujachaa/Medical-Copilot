@@ -1,6 +1,7 @@
 package com.newmes.onpremise.domains.notification.controller;
 
 import com.newmes.onpremise.domains.member.domain.Member;
+import com.newmes.onpremise.domains.member.domain.Token;
 import com.newmes.onpremise.domains.notification.dto.OtpResponseDto;
 import com.newmes.onpremise.domains.notification.dto.response.NotificationResponseDto;
 import com.newmes.onpremise.domains.notification.service.NotificationService;
@@ -22,11 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Slf4j
@@ -42,46 +39,18 @@ public class NotificationController {
 
 
   @GetMapping(value = "/emitter/{memberId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public ResponseEntity<SseEmitter> addEmitter(@PathVariable String memberId, HttpServletRequest request) {
-    log.info("emitter join---");
-
-    String id = null;
-
+  public ResponseEntity<SseEmitter> addEmitter(@PathVariable("memberId") String memberId) {
+    log.info("emitter join---, id: {}",MemberInfo.getMemberId());
+  String  id = MemberInfo.getMemberId();
     try {
       // 1. SecurityContext에서 사용자 ID 가져오기
-      id = MemberInfo.getMemberId();
       if (id == null || "anonymousUser".equals(id)) {
-        log.warn("Anonymous user detected from SecurityContext. Attempting manual context setup.");
 
-        // 2. 수동으로 SecurityContext 설정
-        String token = request.getHeader("Authorization");
-        if (token != null && token.startsWith("Bearer ")) {
-          token = token.replace("Bearer ", "");
-          try {
-            id = jwtUtil.getUsernameFromToken(token);
-            log.info("User ID extracted from JWT token: " + id);
-
-            // SecurityContext에 수동으로 사용자 설정
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(id, null, List.of());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-          } catch (Exception e) {
-            log.error("Error extracting user ID from JWT token: ", e);
-          }
-        } else {
-          log.warn("Authorization header missing or invalid.");
-        }
+        log.info("security token id: " + id);
+        id =memberId;
       }
-
-      // 3. JWT 토큰에서 사용자 ID가 없거나 Anonymous라면, PathVariable의 memberId 사용
-      if (id == null || "anonymousUser".equals(id)) {
-        log.warn("User ID still anonymous. Using PathVariable memberId: " + memberId);
-        id = memberId;
-      }
-
-      log.info("Final user ID used for SSE: " + id);
-
       // 4. SSE Emitter 생성 및 반환
+
       SseEmitter emitter = sseEmitters.addEmitter(id);
       return ResponseEntity.ok(emitter);
     } catch (Exception e) {
