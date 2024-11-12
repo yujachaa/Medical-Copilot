@@ -8,6 +8,7 @@ import EditModal from './EditModal';
 import RectangleOverlay from './RectangleOverlay';
 import CanvasOverlay from './CanvasOverlay';
 import { useAppSelector } from '@/redux/store/hooks/store';
+import xrayDefault from '@/assets/images/xray-default.webp';
 
 export default function ImageSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,7 +40,7 @@ export default function ImageSection() {
           ref={imgWrapperRef}
         >
           <Image
-            src={reportData?.imageUrl || '/src/assets/images/xray-default'} // 기본 이미지 URL 설정
+            src={reportData?.imageUrl || xrayDefault} // 기본 이미지 URL 설정
             alt="이미지"
             fill
             style={{ objectFit: 'cover' }}
