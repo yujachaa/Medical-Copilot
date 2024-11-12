@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaProducer {
 
-    private final KafkaTemplate<String, AgentRequestDto> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void chatSave(AgentRequestDto agentRequestDto) {
         Message<AgentRequestDto> message = MessageBuilder
@@ -20,7 +20,8 @@ public class KafkaProducer {
                 .setHeader("spring.json.type.id", AgentRequestDto.class.getName())
                 .build();
 
-        kafkaTemplate.send("chat", message.getPayload());
+        // Message 객체를 직접 전송
+        kafkaTemplate.send("chat", message);
     }
 
 }
