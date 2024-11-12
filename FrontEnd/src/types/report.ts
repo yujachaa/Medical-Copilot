@@ -4,6 +4,7 @@ export interface CoordinatesGroup {
 
 export interface ReportDataType {
   id: string;
+  pid: string;
   imageUrl: string;
   createDate: string;
   modifiedDate: string;

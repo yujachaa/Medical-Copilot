@@ -178,6 +178,15 @@
       color: white;
     }
   }
+
+  // 클릭 시 호버 상태 스타일 적용
+  &.active {
+    background-color: $blue-btn;
+
+    & svg {
+      color: white;
+    }
+  }
 }
 
 // .patientInfo {
