@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './EditModal.module.scss';
-import XrayImg from '@/assets/images/xrayImg.jpg';
+import xrayDefault from '@/assets/images/xray-default.webp';
 import { CgClose } from 'react-icons/cg';
 import { HiOutlinePencil, HiOutlineTrash, HiPencil, HiTrash } from 'react-icons/hi2';
 import { PiEraser, PiEraserFill } from 'react-icons/pi';
@@ -37,6 +37,7 @@ export default function EditModal({ onClose }: EditModalProps) {
   const [coordinatesGroups, setCoordinatesGroups] = useState<CoordinatesGroup[]>([]);
   // Redux에서 coordinates 상태를 가져옴
   const coordinatesFromRedux = useAppSelector((state) => state.coordinate.coordinates);
+  const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
 
   const [undoStack, setUndoStack] = useState<CoordinatesGroup[][]>([]);
@@ -92,6 +93,7 @@ export default function EditModal({ onClose }: EditModalProps) {
   };
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
     if (!ctx || !imgWrapperRef.current) return;
@@ -99,8 +101,9 @@ export default function EditModal({ onClose }: EditModalProps) {
     const rect = imgWrapperRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
+    // console.log(x, y);
     if (isDrawing && selectedButton === 'eraser') {
+      // console.log('지우개!!!!!!!!!!!!!!!');
       const eraserSize = 20;
       setCoordinatesGroups((prev) => {
         const updatedGroups: CoordinatesGroup[] = [];
@@ -140,11 +143,13 @@ export default function EditModal({ onClose }: EditModalProps) {
         return updatedGroups;
       });
     } else if (isDrawing && selectedButton === 'pencil') {
+      // console.log('드로우!!!!!!!!!!!!!!!');
       ctx.lineTo(x, y);
       ctx.stroke();
 
       const relX = parseFloat((x / rect.width).toFixed(3));
       const relY = parseFloat((y / rect.height).toFixed(3));
+      // console.log(relX, relY);
       setCoordinatesGroups((prev) => {
         const updatedGroups = [...prev];
         const currentGroup = updatedGroups[updatedGroups.length - 1];
@@ -266,25 +271,25 @@ export default function EditModal({ onClose }: EditModalProps) {
     ctx.strokeStyle = 'yellow';
     ctx.lineWidth = 2;
 
-    if (coordinatesFromRedux.length > 0) {
-      // 좌표 그룹을 반복하여 그리기
+    // 처음에만 좌표 그룹을 그리도록 설정
+    if (coordinatesFromRedux.length > 0 && !isDrawing) {
       coordinatesFromRedux.forEach((group) => {
         if (group.points.length > 0) {
           ctx.beginPath();
           group.points.forEach((point, index) => {
-            const x = point.x * canvas.width; // 비율 좌표를 실제 크기로 변환
-            const y = point.y * canvas.height; // 비율 좌표를 실제 크기로 변환
+            const x = point.x * canvas.width;
+            const y = point.y * canvas.height;
             if (index === 0) {
-              ctx.moveTo(x, y); // 시작점 설정
+              ctx.moveTo(x, y);
             } else {
-              ctx.lineTo(x, y); // 좌표 연결
+              ctx.lineTo(x, y);
             }
           });
           ctx.stroke();
         }
       });
     }
-  });
+  }, [coordinatesFromRedux]);
 
   return (
     <div className={styles.modalOverlay}>
@@ -300,7 +305,7 @@ export default function EditModal({ onClose }: EditModalProps) {
             ref={imgWrapperRef}
           >
             <Image
-              src={XrayImg}
+              src={reportData?.imageUrl || xrayDefault} // 기본 이미지 URL 설정
               alt="이미지"
               fill
               style={{ objectFit: 'cover' }}
