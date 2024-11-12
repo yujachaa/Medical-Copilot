@@ -5,7 +5,6 @@ import com.newmes.onpremise.domains.patient.domain.Gender;
 import com.newmes.onpremise.domains.patient.domain.Modality;
 
 import java.time.LocalDate;
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
 public record AgentRequestDto(
         String PID,
         String image,
