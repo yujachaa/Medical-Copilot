@@ -32,7 +32,7 @@ public class SecurityConfig {
 	private final RedisService redisService;
 
 	private static final String[] AUTH_WHITELIST = {
-			"/swagger-ui/**", "/**", "/notification/emitter/**"
+			"/swagger-ui/**", "/**"
 	};
 
 	@Bean
