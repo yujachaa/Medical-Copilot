@@ -9,8 +9,10 @@ import com.newmes.onpremise.global.util.SseEmitters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class NofiticationServiceImpl implements NotificationService{
 
@@ -25,9 +27,11 @@ public class NofiticationServiceImpl implements NotificationService{
 
   @Override
   public void createAndSend(NotificationRequestDto requestDto) {
+    log.info("create and send");
     NotificationEntity notificationEntity = NotificationEntity.from(requestDto);
     notificationRepository.save(notificationEntity);
     NotificationResponseDto responseDto = NotificationResponseDto.of(notificationEntity);
+    log.info("before sending");
     sseEmitters.sendNotification(responseDto);
   }
 
