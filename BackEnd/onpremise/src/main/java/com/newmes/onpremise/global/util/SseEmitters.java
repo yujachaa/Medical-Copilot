@@ -49,6 +49,7 @@ public class SseEmitters {
 
 
   public void sendNotification(NotificationResponseDto responseDto){
+    log.info("send notification");
     String id = responseDto.getMemberId();
     log.info("send SSE : member id= {}, id= {}",responseDto.getMemberId(), responseDto.getId());
     try{
