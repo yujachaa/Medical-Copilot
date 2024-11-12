@@ -20,6 +20,9 @@ const nextConfig = {
       },
     },
   },
+  images: {
+    domains: ['newmes.s3.ap-northeast-2.amazonaws.com'],
+  },
   // productionBrowserSourceMaps: true,
 };
 

@@ -1,8 +1,5 @@
 import { BaseURL } from './core';
-
-interface CoordinatesGroup {
-  points: { x: number; y: number }[];
-}
+import { CoordinatesGroup } from '@/types/report';
 
 export async function fetchReport(reportId: string) {
   try {
@@ -56,7 +53,7 @@ export async function fetchDrawing(reportId: string) {
       throw new Error('응답이 없습니다.');
     }
     const data = await response.json();
-    return data.data;
+    return data;
   } catch (error) {
     console.log(error);
   }
