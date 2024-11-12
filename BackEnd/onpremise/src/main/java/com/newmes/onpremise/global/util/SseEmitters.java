@@ -57,11 +57,8 @@ public class SseEmitters {
       if (null == emitter){
         log.error("SSE does not exist for id : {}", id);
       } else {
-//        emitter.send(SseEmitter.event().name("message").data(responseDto));
-        emitter.send(SseEmitter.event().name("message").data("response for event"));
+        emitter.send(SseEmitter.event().name("message").data(responseDto));
         log.info("send event");
-        emitter.send("response for plain send");
-        log.info("plain send");
       }
     } catch (IOException e){
       log.error("Error occurred sending notification: {}", e.getMessage());
