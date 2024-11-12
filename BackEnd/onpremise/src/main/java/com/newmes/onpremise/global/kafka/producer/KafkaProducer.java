@@ -15,12 +15,8 @@ public class KafkaProducer {
     private final KafkaTemplate<String, AgentRequestDto> kafkaTemplate;
 
     public void chatSave(AgentRequestDto agentRequestDto) {
-        Message<AgentRequestDto> message = MessageBuilder
-                .withPayload(agentRequestDto)
-                .setHeader("spring.json.type.id", AgentRequestDto.class.getName())
-                .build();
 
-        kafkaTemplate.send("chat", message.getPayload());
+        kafkaTemplate.send("chat", agentRequestDto);
     }
 
 }
