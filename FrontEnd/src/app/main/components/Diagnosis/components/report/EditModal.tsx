@@ -13,7 +13,9 @@ import {
 } from 'react-icons/io5';
 import { BsCheckCircle, BsCheckCircleFill } from 'react-icons/bs';
 import RectangleOverlay from './RectangleOverlay';
-import { updateDrawing } from '@/apis/report';
+// import { updateDrawing } from '@/apis/report';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
+import { setCoordinates } from '@/redux/features/report/coordinateSlice';
 
 interface CoordinatesGroup {
   points: { x: number; y: number }[];
@@ -21,28 +23,38 @@ interface CoordinatesGroup {
 
 type EditModalProps = {
   onClose: () => void;
-  onSaveCoordinates: (
-    groups: CoordinatesGroup[],
-    imageSize: { width: number; height: number },
-  ) => void;
+  // onSaveCoordinates: (
+  //   groups: CoordinatesGroup[],
+  //   // imageSize: { width: number; height: number },
+  // ) => void;
+  // reportId?: string;
 };
 
-export default function EditModal({ onClose, onSaveCoordinates }: EditModalProps) {
+export default function EditModal({ onClose }: EditModalProps) {
   const imgWrapperRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [coordinatesGroups, setCoordinatesGroups] = useState<CoordinatesGroup[]>([]);
+  // Redux에서 coordinates 상태를 가져옴
+  const coordinatesFromRedux = useAppSelector((state) => state.coordinate.coordinates);
+  const dispatch = useAppDispatch();
+
   const [undoStack, setUndoStack] = useState<CoordinatesGroup[][]>([]);
   const [redoStack, setRedoStack] = useState<CoordinatesGroup[][]>([]);
-  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+  // const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
+  // 컴포넌트 마운트 시 Redux 상태를 로컬 상태의 초기값으로 설정
   useEffect(() => {
-    if (imgWrapperRef.current) {
-      const { offsetWidth, offsetHeight } = imgWrapperRef.current;
-      setImageSize({ width: offsetWidth, height: offsetHeight });
-    }
-  }, [imgWrapperRef]);
+    setCoordinatesGroups(coordinatesFromRedux);
+  }, [coordinatesFromRedux]);
+
+  // useEffect(() => {
+  //   if (imgWrapperRef.current) {
+  //     const { offsetWidth, offsetHeight } = imgWrapperRef.current;
+  //     // setImageSize({ width: offsetWidth, height: offsetHeight });
+  //   }
+  // }, [imgWrapperRef]);
 
   const saveSnapshot = () => {
     setUndoStack((prev) => {
@@ -220,10 +232,14 @@ export default function EditModal({ onClose, onSaveCoordinates }: EditModalProps
   };
 
   const handleCheck = async () => {
-    onSaveCoordinates(coordinatesGroups, imageSize);
+    // onSaveCoordinates(coordinatesGroups, imageSize);
+    // onSaveCoordinates(coordinatesGroups);
+    dispatch(setCoordinates(coordinatesGroups));
     console.log('좌표', coordinatesGroups);
-    const data = await updateDrawing('nfk7GpMBgCMDeDfK288f', coordinatesGroups);
-    console.log('업데이트 후 응답!!!!!!!!!!:', data);
+    // if (reportId) {
+    //   const data = await updateDrawing(reportId, coordinatesGroups);
+    //   console.log('업데이트 후 응답!!!!!!!!!!:', data);
+    // }
   };
 
   const handleClose = () => {
@@ -240,16 +256,35 @@ export default function EditModal({ onClose, onSaveCoordinates }: EditModalProps
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (canvas) {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.strokeStyle = 'yellow';
-        ctx.lineWidth = 2;
-      }
+    if (!canvas) return;
+
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.strokeStyle = 'yellow';
+    ctx.lineWidth = 2;
+
+    if (coordinatesFromRedux.length > 0) {
+      // 좌표 그룹을 반복하여 그리기
+      coordinatesFromRedux.forEach((group) => {
+        if (group.points.length > 0) {
+          ctx.beginPath();
+          group.points.forEach((point, index) => {
+            const x = point.x * canvas.width; // 비율 좌표를 실제 크기로 변환
+            const y = point.y * canvas.height; // 비율 좌표를 실제 크기로 변환
+            if (index === 0) {
+              ctx.moveTo(x, y); // 시작점 설정
+            } else {
+              ctx.lineTo(x, y); // 좌표 연결
+            }
+          });
+          ctx.stroke();
+        }
+      });
     }
-  }, []);
+  });
 
   return (
     <div className={styles.modalOverlay}>
