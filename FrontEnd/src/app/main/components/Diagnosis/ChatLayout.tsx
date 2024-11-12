@@ -17,7 +17,6 @@ import { CgClose } from 'react-icons/cg';
 import { fetchPatientChat } from '@/apis/Patient';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { fetchDrawing, fetchReport } from '@/apis/report';
-// import { CoordinatesGroup, ReportDataType } from '@/types/report';
 import { setReportData } from '@/redux/features/report/reportSlice';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
 
@@ -45,9 +44,6 @@ export default function Chat({ pid }: ChatProps) {
   const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
 
-  // const [drawingCoordinates, setDrawingCoodinates] = useState<CoordinatesGroup[]>([]);
-  // const [reportData, setReportData] = useState<ReportDataType>();
-
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
@@ -63,7 +59,7 @@ export default function Chat({ pid }: ChatProps) {
   useEffect(() => {
     const fetchPatient = async () => {
       const response = await fetchPatientChat(pid);
-      console.log(response);
+      console.log('페이션트:', response);
       setMessages(response.chatList);
       //가장 마지막 리포트를 저장
       setReportId(response.chatList[response.chatList.length - 1].reportId);
@@ -74,9 +70,8 @@ export default function Chat({ pid }: ChatProps) {
   useEffect(() => {
     const getReport = async () => {
       const response = await fetchReport(selectedReportId);
-      console.log(response);
+      console.log('리포트:', response);
       if (response) dispatch(setReportData(response)); //리포트 데이터 저장
-      // setReportData(response);
     };
     if (selectedReportId !== '') getReport();
   }, [selectedReportId, dispatch]);
