@@ -12,16 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaProducer {
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, AgentRequestDto> kafkaTemplate;
 
     public void chatSave(AgentRequestDto agentRequestDto) {
-        Message<AgentRequestDto> message = MessageBuilder
-                .withPayload(agentRequestDto)
-                .setHeader("spring.json.type.id", AgentRequestDto.class.getName())
-                .build();
 
-        // Message 객체를 직접 전송
-        kafkaTemplate.send("chat", message);
+        kafkaTemplate.send("chat", agentRequestDto);
     }
 
 }
