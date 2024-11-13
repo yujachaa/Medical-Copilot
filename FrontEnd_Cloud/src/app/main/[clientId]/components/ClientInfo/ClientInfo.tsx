@@ -1,12 +1,23 @@
 import { clientDetail } from '@/types/client';
 import styles from './ClientInfo.module.scss';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { fetchLimit } from '@/apis/fetchLimit';
 import { useAppDispatch } from '@/redux/store/hooks/store';
 import { setClientModifyModal, setWarningModal } from '@/redux/features/modal/modalSlice';
+import { fetchClientWeekUsage } from '@/apis/fetchClientWeekUsage';
 
 export default function ClientInfo({ data }: { data: clientDetail }) {
   const dispatch = useAppDispatch();
+  const [usage, setUsage] = useState<number>(0);
+  useEffect(() => {
+    async function getUsage() {
+      const fetchedUsage = await fetchClientWeekUsage(data);
+      if (fetchedUsage) {
+        setUsage(fetchedUsage); // fetchedUsage의 형태에 따라 적절히 값 처리
+      }
+    }
+    getUsage();
+  }, [data]);
   const handleLimit = useCallback(async () => {
     const data1 = await fetchLimit(data.key);
     if (data1 && data1.msg === 'success') {
@@ -46,7 +57,8 @@ export default function ClientInfo({ data }: { data: clientDetail }) {
         Serial key : {data.key}
       </span>
       <p className={`${styles.usage} mt-3 pl-1`}>
-        Week Usage <span className={`${styles.medGuruCount}`}></span>/50
+        Week Usage <span className={`${styles.medGuruCount}`}>{usage}</span>/
+        {checkGrade(data.grade)}
       </p>
     </div>
   );
