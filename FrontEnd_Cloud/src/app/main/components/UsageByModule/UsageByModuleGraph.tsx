@@ -5,7 +5,7 @@ import { ResponsiveLine } from '@nivo/line';
 export default function UsageByModuleGraph({
   list,
 }: {
-  list: { id: string; color: string; data: { x: number; y: number }[] }[];
+  list: { id: string; color: string; data: { x: string; y: number }[] }[];
 }) {
   return (
     <>
@@ -16,12 +16,10 @@ export default function UsageByModuleGraph({
           xScale={{ type: 'point' }}
           yScale={{
             type: 'linear',
-            min: 'auto',
-            max: 'auto',
-            stacked: true,
+            stacked: false,
             reverse: false,
           }}
-          yFormat=" >-.2f"
+          yFormat=" >-.0f"
           axisTop={null}
           axisRight={null}
           axisBottom={{
@@ -62,7 +60,7 @@ export default function UsageByModuleGraph({
               itemHeight: 20,
               itemOpacity: 0.75,
               symbolSize: 12,
-              symbolShape: 'circle',
+              symbolShape: 'diamond',
               symbolBorderColor: 'rgba(0, 0, 0, .5)',
               effects: [
                 {
