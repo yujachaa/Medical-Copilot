@@ -76,7 +76,7 @@ export default function SideBar() {
           className={`w-[55px] h-[67px] flex justify-center items-center max-768:w-[67px] max-768:h-[55px]`}
         >
           <Logo
-            className={`w-[35px] cursor-pointer`}
+            className={`w-[35px] cursor-pointer ${styles.logo}`}
             onClick={goMain}
           />
         </div>
@@ -104,7 +104,7 @@ export default function SideBar() {
             width={30}
             height={30}
             onClick={clickUser}
-            className="cursor-pointer"
+            className={styles.userIcon}
           />
         </div>
 

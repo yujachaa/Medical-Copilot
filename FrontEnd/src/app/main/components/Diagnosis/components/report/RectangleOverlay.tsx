@@ -1,5 +1,6 @@
 'use client';
 
+import { useAppSelector } from '@/redux/store/hooks/store';
 import { useEffect, useState } from 'react';
 
 type RectangleOverlayProps = {
@@ -8,6 +9,7 @@ type RectangleOverlayProps = {
 
 export default function RectangleOverlay({ imgWrapperRef }: RectangleOverlayProps) {
   const [rectPosition, setRectPosition] = useState({ top: 0, left: 0, width: 0, height: 0 });
+  const { reportData } = useAppSelector((state) => state.report);
 
   useEffect(() => {
     // console.log(
@@ -59,6 +61,22 @@ export default function RectangleOverlay({ imgWrapperRef }: RectangleOverlayProp
         border: '2px solid red',
         pointerEvents: 'none',
       }}
-    />
+    >
+      <span
+        style={{
+          position: 'absolute',
+          top: '-16px',
+          left: '-2px',
+          // backgroundColor: 'rgba(255, 255, 255, 0.7)',
+          // padding: '2px 4px',
+          fontSize: '10px',
+          color: 'red',
+          whiteSpace: 'nowrap', // 줄바꿈 방지
+          overflow: 'visible', // div 밖으로 나와도 보이도록 설정
+        }}
+      >
+        {reportData?.disease}
+      </span>
+    </div>
   );
 }
