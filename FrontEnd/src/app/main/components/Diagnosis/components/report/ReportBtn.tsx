@@ -4,9 +4,10 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { useAppSelector } from '@/redux/store/hooks/store';
 import { updateDrawing, updateReport } from '@/apis/report';
+import { MessageType } from '../../ChatLayout';
 const ExportModal = dynamic(() => import('./ExportModal'));
 
-export default function ReportBtn() {
+export default function ReportBtn({ messagelist }: { messagelist: MessageType[] }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
@@ -61,7 +62,12 @@ export default function ReportBtn() {
         </button>
       </div>
 
-      {isModalOpen && <ExportModal onClose={closeModal} />}
+      {isModalOpen && (
+        <ExportModal
+          messagelist={messagelist}
+          onClose={closeModal}
+        />
+      )}
     </>
   );
 }
