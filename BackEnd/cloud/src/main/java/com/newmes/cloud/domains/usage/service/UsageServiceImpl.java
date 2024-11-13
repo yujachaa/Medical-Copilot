@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,7 @@ public class UsageServiceImpl implements UsageService{
     public YearlyResponse yearly() throws IOException {
         Map<String, Aggregate> aggregations = customESRepository.findYearlyTotal();
         YearlyResponse yearlyResponse = new YearlyResponse();
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now(ZoneOffset.UTC);
         if (aggregations.isEmpty()){
             System.out.println("Empty");
         }else{
@@ -93,7 +94,7 @@ public class UsageServiceImpl implements UsageService{
                     DateHistogramAggregate dateAgg = dates.dateHistogram();
                     for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
                         Instant instant = Instant.ofEpochMilli((long) dateBucket.key());
-                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        LocalDate specDate = instant.atZone(ZoneId.of("UTC")).toLocalDate();
                         int monthDiff = 11 - (int) Math.abs(ChronoUnit.MONTHS.between(specDate, now));
                         counts[monthDiff] = dateBucket.docCount();
                     }
@@ -110,7 +111,7 @@ public class UsageServiceImpl implements UsageService{
     public MonthlyResponse monthly() throws IOException {
         Map<String, Aggregate> aggregations = customESRepository.findMonthlyTotal();
         MonthlyResponse monthlyResponse = new MonthlyResponse();
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now(ZoneOffset.UTC);
         if (aggregations.isEmpty()){
             System.out.println("Empty");
         }else{
@@ -124,7 +125,7 @@ public class UsageServiceImpl implements UsageService{
                     DateHistogramAggregate dateAgg = dates.dateHistogram();
                     for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
                         Instant instant = Instant.ofEpochMilli(dateBucket.key());
-                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        LocalDate specDate = instant.atZone(ZoneId.of("UTC")).toLocalDate();
                         int weekDiff = 4 - (int) Math.abs(ChronoUnit.WEEKS.between(specDate, now));
                         counts[weekDiff] = dateBucket.docCount();
                     }
@@ -142,7 +143,7 @@ public class UsageServiceImpl implements UsageService{
     public WeeklyResponse weekly() throws IOException {
         Map<String, Aggregate> aggregations = customESRepository.findWeeklyTotal();
         WeeklyResponse weeklyResponse = new WeeklyResponse();
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now(ZoneOffset.UTC);
         if (aggregations.isEmpty()){
             System.out.println("Empty");
         }else{
@@ -156,7 +157,7 @@ public class UsageServiceImpl implements UsageService{
                     DateHistogramAggregate dateAgg = dates.dateHistogram();
                     for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
                         Instant instant = Instant.ofEpochMilli(dateBucket.key());
-                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        LocalDate specDate = instant.atZone(ZoneId.of("UTC")).toLocalDate();
                         int dayDiff = 6 - (int) Math.abs(ChronoUnit.DAYS.between(specDate, now));
                         counts[dayDiff] = dateBucket.docCount();
                     }
@@ -173,7 +174,7 @@ public class UsageServiceImpl implements UsageService{
     public YearlyResponse customerYearly(String key) throws IOException {
         Map<String, Aggregate> aggregations = customESRepository.findCustomerYearly(key);
         YearlyResponse yearlyResponse = new YearlyResponse();
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now(ZoneOffset.UTC);
         if (aggregations.isEmpty()){
             System.out.println("Empty");
         }else{
@@ -187,7 +188,7 @@ public class UsageServiceImpl implements UsageService{
                     DateHistogramAggregate dateAgg = dates.dateHistogram();
                     for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
                         Instant instant = Instant.ofEpochMilli((long) dateBucket.key());
-                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        LocalDate specDate = instant.atZone(ZoneId.of("UTC")).toLocalDate();
                         int monthDiff = 11 - (int) Math.abs(ChronoUnit.MONTHS.between(specDate, now));
                         counts[monthDiff] = dateBucket.docCount();
                     }
@@ -204,7 +205,7 @@ public class UsageServiceImpl implements UsageService{
     public MonthlyResponse customerMonthly(String key) throws IOException {
         Map<String, Aggregate> aggregations = customESRepository.findCustomerMonthly(key);
         MonthlyResponse monthlyResponse = new MonthlyResponse();
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now(ZoneOffset.UTC);
         if (aggregations.isEmpty()){
             System.out.println("Empty");
         }else{
@@ -218,7 +219,7 @@ public class UsageServiceImpl implements UsageService{
                     DateHistogramAggregate dateAgg = dates.dateHistogram();
                     for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
                         Instant instant = Instant.ofEpochMilli(dateBucket.key());
-                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        LocalDate specDate = instant.atZone(ZoneId.of("UTC")).toLocalDate();
                         int weekDiff = 4 - (int) Math.abs(ChronoUnit.WEEKS.between(specDate, now));
                         counts[weekDiff] = dateBucket.docCount();
                     }
@@ -235,7 +236,7 @@ public class UsageServiceImpl implements UsageService{
     public WeeklyResponse customerWeekly(String key) throws IOException {
         Map<String, Aggregate> aggregations = customESRepository.findCustomerWeekly(key);
         WeeklyResponse weeklyResponse = new WeeklyResponse();
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now(ZoneOffset.UTC);
         if (aggregations.isEmpty()){
             System.out.println("Empty");
         }else{
@@ -249,7 +250,7 @@ public class UsageServiceImpl implements UsageService{
                     DateHistogramAggregate dateAgg = dates.dateHistogram();
                     for (DateHistogramBucket dateBucket : dateAgg.buckets().array()) {
                         Instant instant = Instant.ofEpochMilli(dateBucket.key());
-                        LocalDate specDate = instant.atZone(ZoneId.of("GMT")).toLocalDate();
+                        LocalDate specDate = instant.atZone(ZoneId.of("UTC")).toLocalDate();
                         int dayDiff = 6 - (int) Math.abs(ChronoUnit.DAYS.between(specDate, now));
                         counts[dayDiff] = dateBucket.docCount();
                     }
