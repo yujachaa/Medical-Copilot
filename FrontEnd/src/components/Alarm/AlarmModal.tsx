@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './AlarmModal.module.scss';
 import Item from '@/components/Alarm/components/Item';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
-// import { fetchAllAlarm, readAllAlarm } from '@/apis/alarm';
-import { fetchAllAlarm } from '@/apis/alarm';
+import { fetchAllAlarm, readAllAlarm } from '@/apis/alarm';
 
 // 알람 데이터 타입 정의
 type Alarm = {
@@ -39,11 +38,11 @@ export default function AlarmModal({ onClose }: Props) {
   }, []);
 
   const clickReadAll = async () => {
-    //(예정) 모든 알람 읽기 api 연결할 것
-    // const data = await readAllAlarm();
-    // if (data) {
-    //   console.log('알람 모두 읽기', data);
-    // }
+    if (alarms.length === 0) return;
+    const data = await readAllAlarm();
+    if (data) {
+      console.log('알람 모두 읽기', data);
+    }
   };
 
   return (
@@ -63,16 +62,19 @@ export default function AlarmModal({ onClose }: Props) {
             className={`${styles.close} cursor-pointer ml-auto`}
           />
         </div>
-
-        <div className={styles.item_box}>
-          {alarms.map((alarm) => (
-            <Item
-              key={alarm.id}
-              alarmId={alarm.id}
-              alarmData={alarm}
-            />
-          ))}
-        </div>
+        {alarms.length > 0 ? (
+          <div className={styles.item_box}>
+            {alarms.map((alarm) => (
+              <Item
+                key={alarm.id}
+                alarmId={alarm.id}
+                alarmData={alarm}
+              />
+            ))}
+          </div>
+        ) : (
+          <div>There are no notifications.</div>
+        )}
       </div>
     </div>
   );
