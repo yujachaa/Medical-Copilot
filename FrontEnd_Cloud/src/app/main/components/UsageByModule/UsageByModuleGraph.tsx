@@ -39,6 +39,7 @@ export default function UsageByModuleGraph({
             legendPosition: 'middle',
             truncateTickAt: 0,
           }}
+          colors={['#a2d2ff', '#ffafcc', '#457b9d']}
           pointSize={10}
           pointColor={{ theme: 'background' }}
           pointBorderWidth={2}
