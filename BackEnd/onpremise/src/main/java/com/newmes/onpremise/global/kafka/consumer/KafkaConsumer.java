@@ -2,6 +2,9 @@ package com.newmes.onpremise.global.kafka.consumer;
 
 import com.newmes.onpremise.domains.chat.dto.request.ChatRequestDto;
 import com.newmes.onpremise.domains.chat.service.ChatService;
+import com.newmes.onpremise.domains.drawing.domain.CoordinatesGroup;
+import com.newmes.onpremise.domains.drawing.dto.DrawingRequestDto;
+import com.newmes.onpremise.domains.drawing.service.DrawingService;
 import com.newmes.onpremise.domains.history.entity.HistoryEntity;
 import com.newmes.onpremise.domains.history.service.HistoryService;
 import com.newmes.onpremise.domains.notification.dto.request.NotificationRequestDto;
@@ -16,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import java.util.*;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -30,6 +34,8 @@ public class KafkaConsumer {
     private final HistoryService historyService;
     private final QuotaService quotaService;
     private final NotificationService notificationService;
+    private final DrawingService drawingService;
+
     @KafkaListener(topics = "ai", groupId = "ai-group")
     public void processAiTopic(ConsumerRecord<String, AiResponseDto> record) {
         log.info("ai로부터 온 메시지 : {}", record.toString());
@@ -55,6 +61,12 @@ public class KafkaConsumer {
                 .build();
 
         String reportId = reportService.register(reportRequestDto);
+        List<CoordinatesGroup> emptyList = new ArrayList<>();
+        DrawingRequestDto drawingRequestDto = DrawingRequestDto.builder()
+                .coordinatesGroups(emptyList)
+                .build();
+
+        drawingService.saveDrawing(reportId, drawingRequestDto);
 
         ChatRequestDto userQuestion = ChatRequestDto.builder()
                 .agent(aiResponse.getAgent())
@@ -93,7 +105,7 @@ public class KafkaConsumer {
         quotaService.createQuota(quota);
 
         NotificationRequestDto noti = NotificationRequestDto.builder()
-                .read(false)
+                .isRead(false)
                 .createdDate(LocalDateTime.now())
                 .readDate(null)
                 .PID(aiResponse.getPID())
