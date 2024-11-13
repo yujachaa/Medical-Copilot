@@ -79,7 +79,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         .must(m -> m
             .range(r -> r
                 .field("@timestamp")
-                .gte(JsonData.of("now-5w/w"))
+                .gte(JsonData.of("now-4w/w"))
                 .lte(JsonData.of("now/w"))
             )
         )
@@ -131,7 +131,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         .must(m -> m
             .range(r -> r
                 .field("@timestamp")
-                .gte(JsonData.of("now-7d/d"))
+                .gte(JsonData.of("now-6d/d"))
                 .lte(JsonData.of("now/d"))
             )
         )
@@ -281,7 +281,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         .must(m -> m
             .range(r -> r
                 .field("@timestamp")
-                .gte(JsonData.of("now-5w/w"))
+                .gte(JsonData.of("now-4w/w"))
                 .lte(JsonData.of("now/w"))
             )
         )
@@ -340,7 +340,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         .must(m -> m
             .range(r -> r
                 .field("@timestamp")
-                .gte(JsonData.of("now-7d/d"))
+                .gte(JsonData.of("now-6d/d"))
                 .lte(JsonData.of("now/d"))
             )
         )
@@ -399,7 +399,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         .must(m -> m
             .range(r -> r
                 .field("@timestamp")
-                .gte(JsonData.of("now-365d/d"))
+                .gte(JsonData.of("now-364d/d"))
                 .lte(JsonData.of("now/d"))
             )
         )
@@ -503,7 +503,7 @@ public class CustomRepositoryImpl implements CustomRepository{
         .must(m -> m
             .range(r -> r
                 .field("@timestamp")
-                .gte(JsonData.of("now-7d/d"))
+                .gte(JsonData.of("now-6d/d"))
                 .lte(JsonData.of("now/d"))
             )
         )

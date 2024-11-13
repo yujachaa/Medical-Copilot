@@ -1,5 +1,6 @@
 package com.newmes.onpremise.global.kafka.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.newmes.onpremise.domains.patient.domain.Gender;
 import com.newmes.onpremise.domains.patient.domain.Modality;
 import com.newmes.onpremise.domains.report.domain.Detection;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AiResponseDto {
+    @JsonProperty("PID")
     private String PID;
     private String image;
     private String memberId;
