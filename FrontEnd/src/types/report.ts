@@ -19,14 +19,14 @@ export interface ReportDataType {
   symptoms: string;
   summary: string;
   detection: {
-    boxX1: number;
-    boxY1: number;
-    boxX2: number;
-    boxY2: number;
-    width: number;
-    height: number;
-    centerX: number;
-    centerY: number;
-    confidence: number;
+    Box_X1: number;
+    Box_X2: number;
+    Box_Y1: number;
+    Box_Y2: number;
+    Width: number;
+    Height: number;
+    Center_x: number;
+    Center_y: number;
+    Confidence: number;
   };
 }
