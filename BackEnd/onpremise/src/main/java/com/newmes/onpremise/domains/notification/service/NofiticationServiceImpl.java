@@ -83,7 +83,7 @@ public class NofiticationServiceImpl implements NotificationService{
 
   @Override
   public List<NotificationResponseDto> listAllNotifications(String id){
-    List<NotificationEntity> entities = notificationRepository.findAllByMemberIdAndReadOrderByCreatedDateAsc(id, false);
+    List<NotificationEntity> entities = notificationRepository.findAllByMemberIdAndIsReadOrderByCreatedDateAsc(id, false);
     List<NotificationResponseDto> res = new ArrayList<>();
     entities.forEach(x -> res.add(NotificationResponseDto.of(x)));
     return res;
