@@ -1,5 +1,5 @@
-import Header from '@/components/Header/Header';
 import SideBar from '@/components/SideBar/SideBar';
+import TabBoard from '@/components/Tabs/TabBoard/SmallTabBoard';
 import { ReactNode } from 'react';
 
 export default function MyPageLayout({ children }: { children: ReactNode }) {
@@ -7,7 +7,7 @@ export default function MyPageLayout({ children }: { children: ReactNode }) {
     <div className={`flex w-screen h-screen overflow-y-hidden`}>
       <SideBar />
       <div className={`flex flex-col w-full h-full overflow-y-hidden`}>
-        <Header />
+        <TabBoard />
         {children}
       </div>
     </div>

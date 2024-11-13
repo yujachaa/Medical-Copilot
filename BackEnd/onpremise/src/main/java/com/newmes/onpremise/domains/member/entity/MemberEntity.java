@@ -40,14 +40,14 @@ public class MemberEntity {
     @Field(type = FieldType.Date)
     private LocalDate modifiedDate;
 
-    public MemberEntity update(String name, String password, RoleType role) {
+    public MemberEntity update(String name, String password) {
         return MemberEntity.builder()
                 .id(this.id)
                 .email(this.email)
                 .password(password)
                 .name(name)
                 .serialKey(this.serialKey)
-                .role(role)
+                .role(this.role)
                 .createDate(this.createDate)
                 .modifiedDate(LocalDate.now())
                 .build();
@@ -62,4 +62,16 @@ public class MemberEntity {
                 .modifiedDate(this.modifiedDate)
                 .build();
     }
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
 }

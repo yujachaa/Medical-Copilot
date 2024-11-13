@@ -2,6 +2,7 @@ package com.newmes.onpremise.domains.agent.controller;
 
 import com.newmes.onpremise.domains.agent.dto.request.AgentRequestDto;
 import com.newmes.onpremise.global.kafka.producer.KafkaProducer;
+import com.newmes.onpremise.global.util.MemberInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,8 @@ public class AgentController {
 
     @PostMapping
     public ResponseEntity<?> processAgentRequest(@RequestBody AgentRequestDto agentRequestDto) {
+        agentRequestDto.setMemberId(MemberInfo.getMemberId());
+
         ResponseEntity<Map> responseEntity;
         try {
             responseEntity = restTemplate.postForEntity(externalServerUrl, agentRequestDto, Map.class);
@@ -33,18 +36,17 @@ public class AgentController {
         }
 
         Map<String, Object> responseBody = responseEntity.getBody();
+
         if (responseBody != null && Boolean.TRUE.equals(responseBody.get("isSuccess"))) {
             try {
                 kafkaProducer.chatSave(agentRequestDto);
-                return ResponseEntity.ok(Map.of("message", "Request processed and sent to Kafka."));
+                return ResponseEntity.ok(responseBody);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body(Map.of("message", "Failed to send to Kafka", "error", e.getMessage()));
             }
         } else {
-            String errorMessage = (String) responseBody.get("message");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("message", "Request failed", "error", errorMessage));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
     }
 }
