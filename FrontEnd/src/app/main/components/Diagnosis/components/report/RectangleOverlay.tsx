@@ -1,5 +1,6 @@
 'use client';
 
+import { useAppSelector } from '@/redux/store/hooks/store';
 import { useEffect, useState } from 'react';
 
 type RectangleOverlayProps = {
@@ -7,15 +8,17 @@ type RectangleOverlayProps = {
 };
 
 export default function RectangleOverlay({ imgWrapperRef }: RectangleOverlayProps) {
-  const [rectPosition, setRectPosition] = useState({ top: 0, left: 0, width: 0, height: 0 });
+  const { reportData } = useAppSelector((state) => state.report);
+  const [rectPosition, setRectPosition] = useState({
+    top: 0,
+    left: 0,
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
-    // console.log(
-    //   'useEffect',
-    //   imgWrapperRef.current ? imgWrapperRef.current.getBoundingClientRect().width : null,
-    // );
     const updateRectanglePosition = () => {
-      if (imgWrapperRef.current) {
+      if (imgWrapperRef.current && reportData) {
         const wrapperRect = imgWrapperRef.current.getBoundingClientRect();
 
         // 원본 이미지 크기 및 비율 계산
@@ -25,10 +28,10 @@ export default function RectangleOverlay({ imgWrapperRef }: RectangleOverlayProp
         const scaleY = wrapperRect.height / originalHeight;
 
         // 좌표를 현재 이미지 비율로 변환
-        const Box_X1 = 355.113037109375;
-        const Box_Y1 = 634.580810546875;
-        const Width = 80.572998046875;
-        const Height = 92.102783203125;
+        const Box_X1 = reportData.detection.Box_X1;
+        const Box_Y1 = reportData.detection.Box_Y1;
+        const Width = reportData.detection.Width;
+        const Height = reportData.detection.Height;
 
         const rect = {
           top: Box_Y1 * scaleY,
@@ -37,6 +40,7 @@ export default function RectangleOverlay({ imgWrapperRef }: RectangleOverlayProp
           height: Height * scaleY,
         };
         setRectPosition(rect);
+        console.log('bbox 좌표', rect);
       }
     };
 
@@ -46,7 +50,7 @@ export default function RectangleOverlay({ imgWrapperRef }: RectangleOverlayProp
     return () => {
       window.removeEventListener('resize', updateRectanglePosition);
     };
-  }, [imgWrapperRef]);
+  }, [imgWrapperRef, reportData]);
 
   return (
     <div
@@ -59,6 +63,22 @@ export default function RectangleOverlay({ imgWrapperRef }: RectangleOverlayProp
         border: '2px solid red',
         pointerEvents: 'none',
       }}
-    />
+    >
+      <span
+        style={{
+          position: 'absolute',
+          top: '-16px',
+          left: '-2px',
+          // backgroundColor: 'rgba(255, 255, 255, 0.7)',
+          // padding: '2px 4px',
+          fontSize: '10px',
+          color: 'red',
+          whiteSpace: 'nowrap', // 줄바꿈 방지
+          overflow: 'visible', // div 밖으로 나와도 보이도록 설정
+        }}
+      >
+        {reportData?.disease}
+      </span>
+    </div>
   );
 }
