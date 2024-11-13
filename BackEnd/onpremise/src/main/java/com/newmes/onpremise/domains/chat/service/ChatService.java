@@ -11,6 +11,6 @@ public interface ChatService {
 
   ChatResponseDto load(String patientId);
 
-  Page<ChatResponseDto> getRecentChats(int page, int size);
+  Page<ChatResponseDto> getRecentChats(String pid, int page, int size);
 
 }

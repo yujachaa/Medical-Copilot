@@ -30,12 +30,13 @@ public class ChatController {
     return responseUtil.createResponse(chats);
   }
 
-  @GetMapping("/recent/{page}/{size}")
+  @GetMapping("/{pid}/{page}/{size}")
   public ResponseEntity<?> getRecentChats(
+          @PathVariable("pid") String pid,
           @PathVariable("page") int page,
           @PathVariable("size") int size) {
     try {
-      Page<ChatResponseDto> results = chatService.getRecentChats(page, size);
+      Page<ChatResponseDto> results = chatService.getRecentChats(pid, page, size);
       return responseUtil.createResponse(results);
     } catch (Exception e) {
       e.printStackTrace();
