@@ -2,21 +2,33 @@
 import { BaseURL } from '@/apis/core';
 import { useAppSelector } from '@/redux/store/hooks/store';
 import React, { useEffect, useRef } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
+type Token = {
+  email: string;
+  exp: number;
+  iat: number;
+  id: string;
+  role: string;
+  sub: string;
+};
 export default function SSEHandler() {
   const { accessToken } = useAppSelector((state) => state.user);
   const eventSourceRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
+    const decode: Token = jwtDecode(accessToken);
     const connectSSE = () => {
-      console.log(accessToken);
       const EventSourcePolyfill = (window as any).EventSourcePolyfill || EventSource;
-      eventSourceRef.current = new EventSourcePolyfill(`${BaseURL}notification/emitter/1`, {
-        headers: {
-          'Content-Type': 'text/event-stream',
-          Authorization: `Bearer ${accessToken}`,
+      eventSourceRef.current = new EventSourcePolyfill(
+        `${BaseURL}notification/emitter/${decode.id}`,
+        {
+          headers: {
+            'Content-Type': 'text/event-stream',
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
 
       eventSourceRef.current!.onopen = () => {
         console.log('EventSource connection opened successfully.');

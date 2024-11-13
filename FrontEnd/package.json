@@ -32,6 +32,7 @@
     "@reduxjs/toolkit": "^2.3.0",
     "event-source-polyfill": "^1.0.31",
     "html2pdf.js": "^0.10.2",
+    "jwt-decode": "^4.0.0",
     "lint-staged": "^15.2.10",
     "lodash": "^4.17.21",
     "next": "^14.2.16",
