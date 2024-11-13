@@ -1,6 +1,5 @@
 package com.newmes.cloud.domains.usage.controller;
 
-import com.google.gson.Gson;
 import com.newmes.cloud.domains.usage.dto.request.UsageRequestDto;
 import com.newmes.cloud.domains.usage.dto.response.CountResponse;
 import com.newmes.cloud.domains.usage.dto.response.MonthlyResponse;
@@ -23,8 +22,6 @@ import java.util.concurrent.TimeoutException;
 public class UsageController {
 
     private final UsageService usageService;
-
-    final Gson gson = new Gson();
 
     @PostMapping
     public CompletableFuture<ResponseEntity<String>> registerUsageTest(@RequestBody UsageRequestDto requestDto) {

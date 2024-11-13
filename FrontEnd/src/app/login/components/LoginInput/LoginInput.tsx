@@ -1,9 +1,9 @@
 'use client';
 
-import { KeyboardEvent, useState } from 'react';
+import { KeyboardEvent, useEffect, useState } from 'react';
 import styles from './LoginInput.module.scss';
 import { fetchLogin } from '@/apis/fetchLogin';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch } from '@/redux/store/hooks/store';
 import { setUserInfo } from '@/redux/features/user/userSlice';
 // import { getOTP } from '@/redux/features/alarm/alarmSlice';
@@ -14,6 +14,14 @@ export default function LoginInput() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLogin, setIsLogin] = useState<boolean>(true);
+  const searchParams = useSearchParams();
+  const message = searchParams.get('message');
+
+  useEffect(() => {
+    if (message === 'login_required') {
+      alert('로그인이 필요합니다.');
+    }
+  }, [message]);
 
   const handleLogin = async () => {
     const data = await fetchLogin(email, password);

@@ -17,5 +17,6 @@ public record ChatRequestDto (
   String memberId,
 
   Modality agent
+
 ){
 }

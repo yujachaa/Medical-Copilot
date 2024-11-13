@@ -40,7 +40,7 @@ export default function LoginInput() {
       </div>
       <div className={`${styles.btn} flex w-full`}>
         <div
-          className={`${styles.signup} w-[422px] h-[64px] flex justify-center items-center`}
+          className={`${styles.signup} w-[422px] h-[64px] flex justify-center items-center cursor-pointer`}
           onClick={() => {
             handleLogin();
           }}

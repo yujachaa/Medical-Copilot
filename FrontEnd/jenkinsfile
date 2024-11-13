@@ -4,7 +4,7 @@ pipeline {
 		environment { 
 			dockerImage = ''
 		}
-		
+	
 		agent any 
 		
 		stages {
@@ -16,12 +16,13 @@ pipeline {
 			stage('Prepare Environment') {
             	steps {
 					sshagent(['ssh-key']) {
-						sh 'scp ubuntu@k11s205.p.ssafy.io:/home/ubuntu/medical-copilot/frontend/onpremise/.env ./FrontEnd/.env'		
-					}				
+            			sh 'ssh-keyscan -H k11s205.p.ssafy.io >> ~/.ssh/known_hosts'
+						sh 'scp ubuntu@medical-copilot.net:/home/ubuntu/medical-copilot/frontend/onpremise/.env ./FrontEnd/.env'
+					}		
 				}
         	}
         
-			
+			 
 			stage('Build image') {
 				steps {
 					script {
@@ -45,7 +46,7 @@ pipeline {
 					sshagent(['ssh-key']) {
 					    withCredentials([string(credentialsId: 'dockerhub-password', variable: 'DOCKERHUB_PASSWORD')]) {
 						sh """
-							ssh -o StrictHostKeyChecking=no ubuntu@k11s205.p.ssafy.io '
+							ssh -o StrictHostKeyChecking=no ubuntu@medical-copilot.net '
 							docker stop medical-copilot-front-onpremise
 							docker rm medical-copilot-front-onpremise
 							docker image prune -f

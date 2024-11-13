@@ -33,7 +33,6 @@ const userSlices = createSlice({
       state.serialKey = action.payload.serialKey;
       state.role = action.payload.role;
     },
-
     setInit(state) {
       state.createDate = '';
       state.modifiedDate = '';
@@ -43,8 +42,11 @@ const userSlices = createSlice({
       state.serialKey = '';
       state.role = '';
     },
+    setUserName(state, action: PayloadAction<string>) {
+      state.name = action.payload; // name 값만 업데이트
+    },
   },
 });
 
-export const { setUserInfo, setInit } = userSlices.actions;
+export const { setUserInfo, setInit, setUserName } = userSlices.actions;
 export default userSlices;

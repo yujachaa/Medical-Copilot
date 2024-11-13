@@ -36,6 +36,7 @@ export default function Chat({ pid }: ChatProps) {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
+  //어떤리포트를 처음에 띄워줄건가? 이걸 내가 한번 필터를 해야하나?
   const [isSelectedReport, setReport] = useState<string>('');
   const { patient } = useAppSelector((state) => state.main);
   const toggleChat = () => {
@@ -47,6 +48,8 @@ export default function Chat({ pid }: ChatProps) {
       const response = await fetchPatientChat(pid);
       console.log(response);
       setMessages(response.chatList);
+      //가장 마지막 리포트를 저장
+      setReport(response.chatList[response.chatList.length - 1].reportId);
     };
     fetchPatient();
   }, [pid]);
@@ -56,7 +59,7 @@ export default function Chat({ pid }: ChatProps) {
       const response = await fetchReport(isSelectedReport);
       console.log(response);
     };
-    getReport();
+    if (isSelectedReport !== '') getReport();
   }, [isSelectedReport]);
 
   const minimizeChat = () => {

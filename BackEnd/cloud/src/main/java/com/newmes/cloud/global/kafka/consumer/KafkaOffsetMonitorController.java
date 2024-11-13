@@ -19,7 +19,7 @@ public class KafkaOffsetMonitorController {
     @GetMapping("/topics/{topic}")
     public ResponseEntity<?> getMessageCount(@PathVariable String topic) {
         try {
-            Map<TopicPartition, Long> messageCount = kafkaOffsetMonitor.getMessageCount(topic);
+            Map<TopicPartition, Long> messageCount = kafkaOffsetMonitor.getLag(topic,"agent_usage_group");
             return ResponseEntity.ok(messageCount);
         } catch (Exception e) {
             Map<String, String> errorResponse = new HashMap<>();
