@@ -1,5 +1,6 @@
 package com.newmes.onpremise.domains.agent.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.newmes.onpremise.domains.patient.domain.Gender;
 import com.newmes.onpremise.domains.patient.domain.Modality;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgentRequestDto{
+        @JsonProperty("PID")
         String PID;
         String image;
         String memberId;
