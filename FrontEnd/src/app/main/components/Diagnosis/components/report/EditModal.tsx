@@ -1,14 +1,12 @@
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 import styles from './EditModal.module.scss';
-import XrayImg from '@/assets/images/xrayImg.jpg';
-import { CgClose } from 'react-icons/cg';
-import {
-  IoArrowRedoOutline,
-  IoArrowRedoSharp,
-  IoArrowUndo,
-  IoArrowUndoOutline,
-} from 'react-icons/io5';
+import XrayImg from '@/assets/images/xrayImg.webp';
+import { CgClose } from '@react-icons/all-files/cg/CgClose';
+import { IoArrowRedoOutline } from '@react-icons/all-files/io5/IoArrowRedoOutline';
+import { IoArrowRedoSharp } from '@react-icons/all-files/io5/IoArrowRedoSharp';
+import { IoArrowUndo } from '@react-icons/all-files/io5/IoArrowUndo';
+import { IoArrowUndoOutline } from '@react-icons/all-files/io5/IoArrowUndoOutline';
 import { HiOutlinePencil, HiOutlineTrash, HiPencil, HiTrash } from 'react-icons/hi2';
 import { BsCheckCircle, BsCheckCircleFill } from 'react-icons/bs';
 import RectangleOverlay from './RectangleOverlay';
@@ -43,7 +41,8 @@ export default function EditModal({ onClose }: EditModalProps) {
             <Image
               src={XrayImg}
               alt="이미지"
-              fill
+              width={535} // 실제로 필요한 크기
+              height={535}
               // sizes="(max-width: 600px) 100vw, 50vw"
               style={{ objectFit: 'cover' }}
             />

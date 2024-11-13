@@ -1,4 +1,4 @@
-import { CgClose } from 'react-icons/cg';
+import { CgClose } from '@react-icons/all-files/cg/CgClose';
 import { useRef, useState } from 'react';
 import styles from './ExportModal.module.scss';
 import Image from 'next/image';
