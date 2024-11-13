@@ -36,4 +36,5 @@ public interface UsageService {
 
   CountResponse customerWeeklyTotal(String key) throws IOException;
 
+  long weeklyTokenCount(String key) throws IOException;
 }

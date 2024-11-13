@@ -145,4 +145,14 @@ public class UsageController {
     }
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
+
+  @GetMapping("/token/{key}")
+  public ResponseEntity<?> weeklyTokenUsage(@PathVariable String key){
+    try {
+      long response = usageService.weeklyTokenCount(key);
+      return ResponseEntity.status(HttpStatus.OK).body(response);
+    } catch (IOException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  }
 }
