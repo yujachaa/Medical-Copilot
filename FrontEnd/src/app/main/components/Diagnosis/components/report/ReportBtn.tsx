@@ -16,6 +16,9 @@ export default function ReportBtn() {
   const { coordinates } = useAppSelector((state) => state.coordinate);
 
   const saveEdit = async () => {
+    let isReportUpdated = false;
+    let isDrawingUpdated = false;
+
     if (reportData) {
       try {
         // updateReport 호출 시 Redux 상태의 값을 전달
@@ -27,6 +30,7 @@ export default function ReportBtn() {
           summary: reportData.summary,
         });
         console.log('리포트 업데이트 성공:', response);
+        isReportUpdated = true;
       } catch (error) {
         console.log('리포트 업데이트 실패:', error);
       }
@@ -35,10 +39,17 @@ export default function ReportBtn() {
           // updateReport 호출 시 Redux 상태의 값을 전달
           const response = await updateDrawing(reportData.id, coordinates);
           console.log('그림 업데이트 성공:', response);
+          isDrawingUpdated = true;
         } catch (error) {
           console.log('그림 업데이트 실패:', error);
         }
       }
+    }
+
+    if (isReportUpdated && isDrawingUpdated) {
+      alert('리포트가 수정되었습니다.');
+    } else {
+      alert('리포트 수정에 실패했습니다. 다시 시도해주세요.');
     }
   };
 

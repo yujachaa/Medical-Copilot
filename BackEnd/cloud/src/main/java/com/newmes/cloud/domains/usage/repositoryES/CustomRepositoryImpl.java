@@ -5,10 +5,13 @@ import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.CalendarInterval;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch.core.CountRequest;
+import co.elastic.clients.elasticsearch.core.CountResponse;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.json.JsonData;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -549,5 +552,42 @@ public class CustomRepositoryImpl implements CustomRepository{
     return aggregations;
   }
 
+  public long weeklyTokenCount(String key) throws IOException {
+    Query query = BoolQuery.of(b -> b
+        .must(m -> m
+            .range(r -> r
+                .field("@timestamp")
+                .gte(JsonData.of("now/w"))
+            )
+        )
+        .must(m -> m
+            .term(t -> t
+                .field("corpKey.keyword")
+                .value(key)
+            )
+        )
+        .should(s -> s
+            .term(t -> t
+                .field("agent.keyword")
+                .value("MedGuru")
+            )
+        )
+        .should(s -> s
+            .term(t -> t
+                .field("agent.keyword")
+                .value("CXR")
+            )
+        )
+        .should(s -> s
+            .term(t -> t
+                .field("agent.keyword")
+                .value("Capsule")
+            )
+        )
+    )._toQuery();
+
+    CountResponse response = elasticsearchClient.count(s -> s.index("newmes-cloud-*").query(query));
+    return response.count();
+  }
 
 }

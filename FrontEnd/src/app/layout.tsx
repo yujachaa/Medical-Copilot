@@ -4,7 +4,7 @@ import type { Metadata, Viewport } from 'next';
 import '../style/globals.scss';
 
 export const metadata: Metadata = {
-  title: 'NEWMES',
+  title: 'Medical Copilot',
   description: 'MEDICAL COPILOT',
   manifest: '/manifest.json',
 };

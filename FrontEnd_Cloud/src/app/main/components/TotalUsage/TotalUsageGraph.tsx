@@ -27,6 +27,7 @@ export default function TotalUsageGraph() {
         from: 'color',
         modifiers: [['darker', 2]],
       }}
+      colors={['#a2d2ff', '#ffafcc', '#457b9d']}
       defs={[
         {
           id: 'dots',
