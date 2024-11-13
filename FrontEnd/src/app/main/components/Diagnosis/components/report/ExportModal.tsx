@@ -4,7 +4,7 @@ import { CgClose } from 'react-icons/cg';
 import { useRef, useState } from 'react';
 import styles from './ExportModal.module.scss';
 import Image from 'next/image';
-import XrayImg from '@/assets/images/xrayImg.jpg';
+import xrayDefault from '@/assets/images/xray-default.webp';
 import { fetchPDF } from '@/apis/fetchPDF';
 import RectangleOverlay from './RectangleOverlay';
 import CanvasOverlay from './CanvasOverlay';
@@ -22,6 +22,7 @@ export default function ExportModal({ onClose }: ExportModalProps) {
   const imgWrapperRef = useRef<HTMLDivElement | null>(null);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const coordinatesFromRedux = useAppSelector((state) => state.coordinate.coordinates);
+  const { reportData } = useAppSelector((state) => state.report);
 
   const pdfRef = useRef<HTMLDivElement | null>(null);
 
@@ -78,45 +79,67 @@ export default function ExportModal({ onClose }: ExportModalProps) {
             <div className={`${styles.info}`}>
               <div className="font-bold text-lg">Patient Information</div>
               <div className={styles.infoBox}>
-                {['Patient ID', 'Sex', 'Age', 'Registration No'].map((label, index) => (
-                  <div
-                    key={index}
-                    className="w-full"
-                  >
-                    <div className={styles.oneInfo}>
-                      <div
-                        className={`font-bold w-1/2 ${label === 'Registration No' ? 'tracking-tighter max-1024:tracking-[-.13em]' : ''} max-1024:text-sm max-1024:w-1/2`}
-                      >
-                        {label}
-                      </div>
-                      <div className="flex gap-[2px]">
-                        <div className="">:</div>
-                        <div className="max-1024:text-sm">123456789</div>
+                {['Patient ID', 'Sex', 'Age', 'Visit Date'].map((label, index) => {
+                  let value = ''; // 기본값 설정
+                  if (reportData) {
+                    // reportData가 있을 때 각 label에 맞는 값을 설정
+                    if (label === 'Patient ID') value = reportData.pid;
+                    else if (label === 'Sex') value = reportData.sex || '';
+                    else if (label === 'Age') value = reportData.age.toString();
+                    else if (label === 'Visit Date') value = reportData.shootingDate;
+                  }
+
+                  return (
+                    <div
+                      key={index}
+                      className="w-full"
+                    >
+                      <div className={styles.oneInfo}>
+                        <div
+                          // className={`font-bold w-1/2 ${label === 'Visit Date' ? 'tracking-tighter max-1024:tracking-[-.13em]' : ''} max-1024:text-sm max-1024:w-1/2`}
+                          className={`font-bold w-[40%] max-1024:text-sm`}
+                        >
+                          {label}
+                        </div>
+                        <div className="flex gap-[2px]">
+                          <div className="">:</div>
+                          <div className="max-1024:text-sm">{value}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
             <div className={`${styles.info}`}>
               <div className="font-bold text-lg">Diagnosis</div>
               <div className={styles.infoBox}>
-                {['Disease', 'Location', 'Size'].map((label, index) => (
-                  <div
-                    key={index}
-                    className="w-full"
-                  >
-                    <div className={styles.oneInfo}>
-                      <div className={`font-bold w-1/3 max-1024:text-sm max-1024:w-1/2`}>
-                        {label}
-                      </div>
-                      <div className="flex gap-[2px]">
-                        <div className="">:</div>
-                        <div className="max-1024:text-sm">123456789</div>
+                {['Disease', 'Location', 'Size'].map((label, index) => {
+                  let value = ''; // 기본값 설정
+                  if (reportData) {
+                    // reportData가 있을 때 각 label에 맞는 값을 설정
+                    if (label === 'Disease') value = reportData.disease || '';
+                    else if (label === 'Location') value = reportData.location || '';
+                    else if (label === 'Size') value = reportData.size;
+                  }
+
+                  return (
+                    <div
+                      key={index}
+                      className="w-full"
+                    >
+                      <div className={styles.oneInfo}>
+                        <div className={`font-bold w-1/3 max-1024:text-sm max-1024:w-1/2`}>
+                          {label}
+                        </div>
+                        <div className="flex gap-[2px]">
+                          <div className="">:</div>
+                          <div className="max-1024:text-sm">{value}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -125,11 +148,12 @@ export default function ExportModal({ onClose }: ExportModalProps) {
               ref={imgWrapperRef}
             >
               <Image
-                src={XrayImg}
+                src={reportData?.imageUrl || xrayDefault} // 기본 이미지 URL 설정
                 alt="이미지"
                 width={250}
                 height={250}
                 onLoad={handleImageLoad} // 이미지 로드 완료 시 호출
+                priority
               />
               {isImageLoaded && <RectangleOverlay imgWrapperRef={imgWrapperRef} />}
               {isImageLoaded && (

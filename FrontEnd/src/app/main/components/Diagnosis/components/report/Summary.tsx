@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { TbEdit } from 'react-icons/tb';
 import { useAppSelector, useAppDispatch } from '@/redux/store/hooks/store';
 import { updateReportData } from '@/redux/features/report/reportSlice';
@@ -6,15 +6,15 @@ import styles from './ReportData.module.scss';
 
 export default function Summary() {
   const dispatch = useAppDispatch();
-  const { reportData } = useAppSelector((state) => state.report); // Redux에서 summary 가져오기
-  const [isEditable, setIsEditable] = useState(false); // 편집 가능 여부 상태
-  const [localSummary, setLocalSummary] = useState(reportData?.summary || ''); // 로컬 상태로 summary 저장
+  const { reportData } = useAppSelector((state) => state.report);
+  const [isEditable, setIsEditable] = useState(false);
+  const [localSummary, setLocalSummary] = useState(reportData?.summary);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // 편집 모드 토글
   const toggleEditMode = () => {
     setIsEditable(!isEditable);
     if (isEditable) {
-      // 편집이 완료되면 Redux 상태 업데이트
       dispatch(updateReportData({ summary: localSummary }));
     }
   };
@@ -24,16 +24,33 @@ export default function Summary() {
     setLocalSummary(e.target.value);
   };
 
+  // 높이를 자동으로 조절하는 함수
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'; // 높이를 초기화
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 스크롤 높이만큼 설정
+    }
+  };
+
+  useEffect(() => {
+    adjustTextareaHeight(); // 초기 로드 시 높이 조절
+  }, [localSummary]);
+
   return (
     <div className="w-full">
       <div className={`${styles.summary} ${isEditable ? styles.active : ''}`}>
         <div>Brief Summary</div>
         <div className={styles.summaryText}>
           <textarea
-            className={`${styles.summaryTextArea} ${isEditable ? styles.active : ''}`} // active 클래스 적용
+            ref={textareaRef}
+            className={`${styles.summaryTextArea} ${isEditable ? styles.active : ''}`}
             value={localSummary}
-            onChange={handleChange}
-            readOnly={!isEditable} // isEditable 상태에 따라 읽기 전용/편집 가능 설정
+            onChange={(e) => {
+              handleChange(e);
+              adjustTextareaHeight(); // 높이 조절 함수 호출
+            }}
+            readOnly={!isEditable}
+            style={{ overflow: 'hidden' }} // 스크롤 숨기기
           />
         </div>
         <div

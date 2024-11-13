@@ -34,6 +34,7 @@ export default function EditModal({ onClose }: EditModalProps) {
   const imgWrapperRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const [coordinatesGroups, setCoordinatesGroups] = useState<CoordinatesGroup[]>([]);
   // Redux에서 coordinates 상태를 가져옴
   const coordinatesFromRedux = useAppSelector((state) => state.coordinate.coordinates);
@@ -241,6 +242,7 @@ export default function EditModal({ onClose }: EditModalProps) {
     // onSaveCoordinates(coordinatesGroups);
     dispatch(setCoordinates(coordinatesGroups));
     console.log('좌표', coordinatesGroups);
+    setIsChecked(true);
     // if (reportId) {
     //   const data = await updateDrawing(reportId, coordinatesGroups);
     //   console.log('업데이트 후 응답!!!!!!!!!!:', data);
@@ -250,9 +252,10 @@ export default function EditModal({ onClose }: EditModalProps) {
   const handleClose = () => {
     if (
       coordinatesGroups.length > 0 &&
+      !isChecked &&
       confirm('저장하지 않은 정보는 사라집니다. 나가시겠습니까?')
     ) {
-      setCoordinatesGroups([]);
+      setCoordinatesGroups(coordinatesFromRedux || []);
       onClose();
     } else {
       onClose();

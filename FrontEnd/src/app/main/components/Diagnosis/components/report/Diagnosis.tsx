@@ -38,10 +38,10 @@ export default function Diagnosis() {
     <div className={`${styles.info}`}>
       <div>Diagnosis</div>
       <div className={styles.infoBox}>
-        {/* Labels 필드 */}
+        {/* Disease 필드 */}
         <div className="w-full">
           <div className={styles.oneInfo}>
-            <div className="text-white flex-grow max-1024:text-sm">• Labels</div>
+            <div className="text-white flex-grow max-1024:text-sm">• Disease</div>
             <div className="flex gap-[2px]">
               <div className="text-white">|</div>
               <input
@@ -52,7 +52,7 @@ export default function Diagnosis() {
               />
             </div>
           </div>
-          {isSmallScreen && <hr className="absolute top-1/2" />}
+          {isSmallScreen ? <hr className="absolute top-1/2" /> : <hr />}
         </div>
 
         {/* Location 필드 */}
@@ -69,7 +69,7 @@ export default function Diagnosis() {
               />
             </div>
           </div>
-          {isSmallScreen && <hr className="absolute top-1/2" />}
+          {isSmallScreen ? null : <hr />}
         </div>
 
         {/* Size 필드 */}
@@ -86,7 +86,7 @@ export default function Diagnosis() {
               />
             </div>
           </div>
-          {isSmallScreen && <hr className="absolute top-1/2" />}
+          {isSmallScreen ? null : <hr />}
         </div>
 
         {/* Symptoms 필드 */}
@@ -103,7 +103,6 @@ export default function Diagnosis() {
               />
             </div>
           </div>
-          {isSmallScreen && <hr className="absolute top-1/2" />}
         </div>
       </div>
 
