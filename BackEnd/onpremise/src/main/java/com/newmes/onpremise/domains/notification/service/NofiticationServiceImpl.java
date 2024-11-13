@@ -37,6 +37,15 @@ public class NofiticationServiceImpl implements NotificationService{
   }
 
   @Override
+  public void readAll(String memberId) {
+    List<NotificationEntity> unreads = notificationRepository.findAllByMemberId(memberId);
+    if (null != unreads && !unreads.isEmpty()) {
+      unreads.forEach(n -> n.updateRead());
+      notificationRepository.saveAll(unreads);
+    }
+  }
+
+  @Override
   public void createAndSend(NotificationRequestDto requestDto) {
     log.info("create and send");
     NotificationEntity notificationEntity = NotificationEntity.from(requestDto);
@@ -51,11 +60,16 @@ public class NofiticationServiceImpl implements NotificationService{
   }
 
   @Override
-  public void readNotification(int id) {
+  public String readNotification(int id) {
     Optional<NotificationEntity> optionalEntity = notificationRepository.findById(id);
     if (optionalEntity.isPresent()){
-      optionalEntity.get().updateRead();
+//      log.info("notification present: " + optionalEntity.get());
+      NotificationEntity entity = optionalEntity.get();
+      entity.updateRead();
+      notificationRepository.save(entity);
+      return "SUCCESS";
     }
+    return null;
   }
 
   @Override
