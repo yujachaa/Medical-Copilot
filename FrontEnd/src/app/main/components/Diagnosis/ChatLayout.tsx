@@ -15,8 +15,10 @@ import { BiMessageRoundedDots } from '@react-icons/all-files/bi/BiMessageRounded
 import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
 import { CgClose } from '@react-icons/all-files/cg/CgClose';
 import { fetchPatientChat } from '@/apis/Patient';
-import { useAppSelector } from '@/redux/store/hooks/store';
-import { fetchReport } from '@/apis/report';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
+import { fetchDrawing, fetchReport } from '@/apis/report';
+import { setReportData } from '@/redux/features/report/reportSlice';
+import { setCoordinates } from '@/redux/features/report/coordinateSlice';
 
 type ChatProps = {
   pid: number;
@@ -37,38 +39,52 @@ export default function Chat({ pid }: ChatProps) {
   const [isChatMinimized, setIsChatMinimized] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
   //어떤리포트를 처음에 띄워줄건가? 이걸 내가 한번 필터를 해야하나?
-  const [isSelectedReport, setReport] = useState<string>('');
+  const [selectedReportId, setReportId] = useState<string>('');
   const { patient } = useAppSelector((state) => state.main);
+  const { reportData } = useAppSelector((state) => state.report);
+  const dispatch = useAppDispatch();
+
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
-
-  useEffect(() => {
-    const fetchPatient = async () => {
-      const response = await fetchPatientChat(pid);
-      console.log(response);
-      setMessages(response.chatList);
-      //가장 마지막 리포트를 저장
-      setReport(response.chatList[response.chatList.length - 1].reportId);
-    };
-    fetchPatient();
-  }, [pid]);
-
-  useEffect(() => {
-    const getReport = async () => {
-      const response = await fetchReport(isSelectedReport);
-      console.log(response);
-    };
-    if (isSelectedReport !== '') getReport();
-  }, [isSelectedReport]);
 
   const minimizeChat = () => {
     setIsChatMinimized(!isChatMinimized);
   };
 
   const selectReport = (reportId: string) => {
-    setReport(reportId);
+    setReportId(reportId);
   };
+
+  useEffect(() => {
+    const fetchPatient = async () => {
+      const response = await fetchPatientChat(pid);
+      console.log('페이션트:', response);
+      setMessages(response.chatList);
+      //가장 마지막 리포트를 저장
+      setReportId(response.chatList[response.chatList.length - 1].reportId);
+    };
+    fetchPatient();
+  }, [pid]);
+
+  useEffect(() => {
+    const getReport = async () => {
+      const response = await fetchReport(selectedReportId);
+      console.log('리포트:', response);
+      if (response) dispatch(setReportData(response)); //리포트 데이터 저장
+    };
+    if (selectedReportId !== '') getReport();
+  }, [selectedReportId, dispatch]);
+
+  useEffect(() => {
+    const getDrawing = async () => {
+      const response = await fetchDrawing(selectedReportId);
+      console.log('그림 좌표', response);
+      if (response) dispatch(setCoordinates(response.coordinatesGroups));
+      // setDrawingCoodinates(response.coordinatesGroups);
+    };
+    if (selectedReportId !== '') getDrawing();
+  }, [selectedReportId, dispatch]);
 
   // 화면 크기 변화에 따른 채팅창 상태 업데이트
   useEffect(() => {
@@ -109,20 +125,35 @@ export default function Chat({ pid }: ChatProps) {
             <ChatInput />
           </div>
 
-          <div className={styles.reportContainer}>
-            <div className={styles.scrollable}>
-              <div className={styles.reportInfo}>
-                <PluginInfo type={patient.modality} />
-                <ReportInfo
-                  id="R12345678"
-                  date={new Date()}
-                />
-                <ReportBtn />
+          {/* 이부분이 랜더링이 되야한다 
+             1. 채팅의 버튼을 클릭하는데, reportId가 있는 채팅만 클릭이 가능하게한다.
+             2. 그러면 여기서 선택된 리포트를 관리하는것 그리고 그것을 리포트정보에 넣어주는것
+          */}
+
+          {selectedReportId !== '' ? (
+            <div className={styles.reportContainer}>
+              <div className={styles.scrollable}>
+                <div className={styles.reportInfo}>
+                  <PluginInfo type={patient.modality} />
+                  <ReportInfo
+                    id={selectedReportId}
+                    date={reportData ? new Date(reportData.createDate) : undefined}
+                  />
+                  <ReportBtn />
+                </div>
+                <ReportData />
+                <Summary />
               </div>
-              <ReportData />
-              <Summary />
             </div>
-          </div>
+          ) : (
+            <div className={styles.reportContainer}>
+              <div className={styles.scrollable}>
+                <div className={styles.reportInfo}>
+                  <PluginInfo type={patient.modality} />
+                </div>
+              </div>
+            </div>
+          )}
 
           <div
             className={`${styles.messageButton} ${isChatOpen ? styles.active : ''}`}
