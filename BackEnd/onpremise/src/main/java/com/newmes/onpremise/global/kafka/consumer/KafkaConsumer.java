@@ -105,7 +105,7 @@ public class KafkaConsumer {
         quotaService.createQuota(quota);
 
         NotificationRequestDto noti = NotificationRequestDto.builder()
-                .read(false)
+                .isRead(false)
                 .createdDate(LocalDateTime.now())
                 .readDate(null)
                 .PID(aiResponse.getPID())
