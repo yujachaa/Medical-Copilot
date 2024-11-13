@@ -40,38 +40,20 @@ public class ChatServiceImpl implements ChatService{
   }
 
   @Override
-  public Page<ChatResponseDto> getRecentChats(int page, int size) {
+  public Page<ChatResponseDto> getRecentChats(String pid, int page, int size) {
     PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createDate").descending());
-    return null;
-//    List<ChatResponseDto> recentPatients = chatRepository.findAll(pageRequest)
-//            .stream()
-//            .collect(Collectors.groupingBy(
-//                    chat -> chat.getPID() + "_" + chat.getCreateDate(),
-//                    Collectors.toList()
-//            ))
-//            .entrySet().stream()
-//            .map(entry -> {
-//              String[] keys = entry.getKey().split("_");
-//              String pid = keys[0];
-//              LocalDate visitDate = LocalDate.parse(keys[1]);
-//
-//              List<ChatEntity> chats = entry.getValue();
-//
-//              String parsedModality = parseModality(
-//                      chats.stream().map(PatientEntity::getModality).collect(Collectors.toList())
-//              );
-//
-//              return PatientResponseDto.builder()
-//                      .PID(pid)
-//                      .sex(sex)
-//                      .age(age)
-//                      .modality(parsedModality)
-//                      .visitDate(visitDate)
-//                      .build();
-//            })
-//            .sorted((p1, p2) -> p2.getVisitDate().compareTo(p1.getVisitDate()))
-//            .collect(Collectors.toList());
-//
-//    return new PageImpl<>(recentPatients, pageRequest, recentPatients.size());
+
+    Page<ChatEntity> chatEntityPage = chatRepository.findByPID(pid, pageRequest);
+
+    Page<ChatResponseDto> chatResponsePage = chatEntityPage.map(chatEntity -> {
+      List<Chat> chatList = List.of(Chat.from(chatEntity));
+      return ChatResponseDto.builder()
+              .PID(pid)
+              .chatList(chatList)
+              .build();
+    });
+
+    return chatResponsePage;
   }
+
 }
