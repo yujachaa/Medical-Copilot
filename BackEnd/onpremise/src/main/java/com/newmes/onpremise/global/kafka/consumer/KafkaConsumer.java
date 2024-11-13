@@ -42,11 +42,11 @@ public class KafkaConsumer {
                 .age(aiResponse.getAge())
                 .disease(aiResponse.getClassification() != null ? aiResponse.getClassification().getPredictedClass() : "Unknown Disease")
                 .summary(aiResponse.getSummary() != null ? aiResponse.getSummary() : "No summary available")
-                .location("Unknown Location")
+                .location(aiResponse.getLocation())
                 .size(aiResponse.getDetection() != null ? aiResponse.getDetection().getWidth() + " x " + aiResponse.getDetection().getHeight() : "Unknown Size")
                 .memberId(aiResponse.getMemberId())
                 .shootingDate(aiResponse.getShootingDate())
-                .symptoms("No symptoms")
+                .symptoms("")
                 .detection(aiResponse.getDetection())
                 .build();
 
