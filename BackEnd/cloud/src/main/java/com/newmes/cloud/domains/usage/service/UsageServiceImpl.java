@@ -22,8 +22,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -323,5 +321,9 @@ public class UsageServiceImpl implements UsageService{
         return response;
     }
 
+    @Override
+    public long weeklyTokenCount(String key) throws IOException {
+        return customESRepository.weeklyTokenCount(key);
+    }
 
 }
