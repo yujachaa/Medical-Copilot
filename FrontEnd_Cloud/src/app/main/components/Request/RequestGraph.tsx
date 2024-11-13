@@ -1,283 +1,74 @@
 'use client';
 
+const data = [
+  {
+    id: 'queue',
+    color: 'hsl(100, 70%, 50%)',
+    data: [
+      {
+        x: 1,
+        y: 0,
+      },
+      {
+        x: 2,
+        y: 0,
+      },
+      {
+        x: 3,
+        y: 0,
+      },
+      {
+        x: 4,
+        y: 0,
+      },
+      {
+        x: 5,
+        y: 0,
+      },
+      {
+        x: 6,
+        y: 0,
+      },
+      {
+        x: 7,
+        y: 0,
+      },
+      {
+        x: 8,
+        y: 0,
+      },
+      {
+        x: 9,
+        y: 0,
+      },
+      {
+        x: 10,
+        y: 0,
+      },
+      {
+        x: 11,
+        y: 0,
+      },
+      {
+        x: 12,
+        y: 0,
+      },
+    ],
+  },
+];
+
+import { useTotalQueue } from '@/hooks/useTotalQueue';
 import { ResponsiveLine } from '@nivo/line';
+import { useState } from 'react';
+
+type queueList = { id: string; color: string; data: { x: number; y: number }[] }[];
 
 export default function RequestGraph() {
-  const data = [
-    {
-      id: 'japan',
-      color: 'hsl(100, 70%, 50%)',
-      data: [
-        {
-          x: 'plane',
-          y: 222,
-        },
-        {
-          x: 'helicopter',
-          y: 74,
-        },
-        {
-          x: 'boat',
-          y: 235,
-        },
-        {
-          x: 'train',
-          y: 273,
-        },
-        {
-          x: 'subway',
-          y: 177,
-        },
-        {
-          x: 'bus',
-          y: 109,
-        },
-        {
-          x: 'car',
-          y: 176,
-        },
-        {
-          x: 'moto',
-          y: 32,
-        },
-        {
-          x: 'bicycle',
-          y: 103,
-        },
-        {
-          x: 'horse',
-          y: 248,
-        },
-        {
-          x: 'skateboard',
-          y: 2,
-        },
-        {
-          x: 'others',
-          y: 192,
-        },
-      ],
-    },
-    {
-      id: 'france',
-      color: 'hsl(302, 70%, 50%)',
-      data: [
-        {
-          x: 'plane',
-          y: 242,
-        },
-        {
-          x: 'helicopter',
-          y: 94,
-        },
-        {
-          x: 'boat',
-          y: 282,
-        },
-        {
-          x: 'train',
-          y: 169,
-        },
-        {
-          x: 'subway',
-          y: 226,
-        },
-        {
-          x: 'bus',
-          y: 34,
-        },
-        {
-          x: 'car',
-          y: 0,
-        },
-        {
-          x: 'moto',
-          y: 173,
-        },
-        {
-          x: 'bicycle',
-          y: 265,
-        },
-        {
-          x: 'horse',
-          y: 297,
-        },
-        {
-          x: 'skateboard',
-          y: 15,
-        },
-        {
-          x: 'others',
-          y: 205,
-        },
-      ],
-    },
-    {
-      id: 'us',
-      color: 'hsl(184, 70%, 50%)',
-      data: [
-        {
-          x: 'plane',
-          y: 251,
-        },
-        {
-          x: 'helicopter',
-          y: 134,
-        },
-        {
-          x: 'boat',
-          y: 278,
-        },
-        {
-          x: 'train',
-          y: 117,
-        },
-        {
-          x: 'subway',
-          y: 66,
-        },
-        {
-          x: 'bus',
-          y: 92,
-        },
-        {
-          x: 'car',
-          y: 280,
-        },
-        {
-          x: 'moto',
-          y: 208,
-        },
-        {
-          x: 'bicycle',
-          y: 127,
-        },
-        {
-          x: 'horse',
-          y: 231,
-        },
-        {
-          x: 'skateboard',
-          y: 165,
-        },
-        {
-          x: 'others',
-          y: 75,
-        },
-      ],
-    },
-    {
-      id: 'germany',
-      color: 'hsl(267, 70%, 50%)',
-      data: [
-        {
-          x: 'plane',
-          y: 151,
-        },
-        {
-          x: 'helicopter',
-          y: 279,
-        },
-        {
-          x: 'boat',
-          y: 145,
-        },
-        {
-          x: 'train',
-          y: 261,
-        },
-        {
-          x: 'subway',
-          y: 266,
-        },
-        {
-          x: 'bus',
-          y: 37,
-        },
-        {
-          x: 'car',
-          y: 238,
-        },
-        {
-          x: 'moto',
-          y: 47,
-        },
-        {
-          x: 'bicycle',
-          y: 48,
-        },
-        {
-          x: 'horse',
-          y: 82,
-        },
-        {
-          x: 'skateboard',
-          y: 291,
-        },
-        {
-          x: 'others',
-          y: 195,
-        },
-      ],
-    },
-    {
-      id: 'norway',
-      color: 'hsl(301, 70%, 50%)',
-      data: [
-        {
-          x: 'plane',
-          y: 3,
-        },
-        {
-          x: 'helicopter',
-          y: 187,
-        },
-        {
-          x: 'boat',
-          y: 43,
-        },
-        {
-          x: 'train',
-          y: 215,
-        },
-        {
-          x: 'subway',
-          y: 240,
-        },
-        {
-          x: 'bus',
-          y: 214,
-        },
-        {
-          x: 'car',
-          y: 58,
-        },
-        {
-          x: 'moto',
-          y: 80,
-        },
-        {
-          x: 'bicycle',
-          y: 17,
-        },
-        {
-          x: 'horse',
-          y: 61,
-        },
-        {
-          x: 'skateboard',
-          y: 285,
-        },
-        {
-          x: 'others',
-          y: 130,
-        },
-      ],
-    },
-  ];
+  const [list, setList] = useState<queueList>(data);
+  useTotalQueue(setList);
   return (
     <ResponsiveLine
-      data={data}
+      data={list}
       margin={{ top: 20, right: 90, bottom: 50, left: 60 }}
       xScale={{ type: 'point' }}
       yScale={{
@@ -307,6 +98,7 @@ export default function RequestGraph() {
         legendPosition: 'middle',
         truncateTickAt: 0,
       }}
+      colors={['#a2d2ff']}
       pointSize={10}
       pointColor={{ theme: 'background' }}
       pointBorderWidth={2}
