@@ -3,10 +3,12 @@ package com.newmes.onpremise.domains.history.service;
 import com.newmes.onpremise.domains.history.dto.History;
 import com.newmes.onpremise.domains.history.entity.HistoryEntity;
 import com.newmes.onpremise.domains.history.repository.HistoryRepository;
+import com.newmes.onpremise.domains.patient.domain.Gender;
 import com.newmes.onpremise.global.util.MemberInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.*;
 
 @Service
@@ -37,7 +39,10 @@ public class HistoryServiceImpl implements HistoryService {
 
         historyEntities.stream()
                 .filter(Objects::nonNull)
-                .sorted(Comparator.comparing(HistoryEntity::getRecentDate, Comparator.nullsLast(Date::compareTo)).reversed())
+                .sorted(Comparator.comparing(
+                        HistoryEntity::getRecentDate,
+                        Comparator.nullsLast(OffsetDateTime::compareTo)
+                ).reversed())
                 .forEach(entity -> {
                     String pid = Optional.ofNullable(entity.getPID()).orElse("");
                     if (pid.isEmpty()) return;
@@ -72,13 +77,14 @@ public class HistoryServiceImpl implements HistoryService {
 
                         recentHistoryMap.put(pid, currentHistory);
                     } else {
+
                         String agent = Optional.ofNullable(entity.getAgent()).orElse("none");
                         String disease = Optional.ofNullable(entity.getDisease()).orElse("none");
                         String summary = agent + " : " + disease;
 
                         History history = new History(
                                 Optional.ofNullable(entity.getPID()).orElse(""),
-                                Optional.ofNullable(entity.getSex()).orElse("unknown"),
+                                Optional.ofNullable(entity.getSex()).orElse(Gender.MALE),
                                 entity.getAge(),
                                 summary,
                                 Optional.ofNullable(entity.getMemberId()).orElse("unknown"),
