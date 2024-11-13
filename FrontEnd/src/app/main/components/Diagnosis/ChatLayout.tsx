@@ -139,7 +139,7 @@ export default function Chat({ pid }: ChatProps) {
                     id={selectedReportId}
                     date={reportData ? new Date(reportData.createDate) : undefined}
                   />
-                  <ReportBtn />
+                  <ReportBtn messagelist={messages} />
                 </div>
                 <ReportData />
                 <Summary />
