@@ -24,5 +24,5 @@ export function useTotalQueue(setList: Dispatch<SetStateAction<queueList>>) {
 
     const intervalId = setInterval(fetchData, 1000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [setList]);
 }
