@@ -1,8 +1,9 @@
 'use client';
+import dynamic from 'next/dynamic';
 
 import { useSearchParams } from 'next/navigation';
-import MyPageInfo from './components/MyPageInfo/MyPageInfo';
-import MyPageTitle from './components/MyPageTitle/MyPageTitle';
+const MyPageInfo = dynamic(() => import('./components/MyPageInfo/MyPageInfo'));
+const MyPageTitle = dynamic(() => import('./components/MyPageTitle/MyPageTitle'));
 
 export default function MypagePage() {
   const params = useSearchParams();

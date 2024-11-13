@@ -1,6 +1,6 @@
 import styles from './PatientHistory.module.scss';
-import { IoMdCloseCircleOutline } from 'react-icons/io';
-import { FaSortDown } from 'react-icons/fa';
+import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircleOutline';
+import { FaSortDown } from '@react-icons/all-files/fa/FaSortDown';
 // import { FaSortUp } from "react-icons/fa";
 
 type Props = {

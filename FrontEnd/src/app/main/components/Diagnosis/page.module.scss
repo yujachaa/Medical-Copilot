@@ -47,7 +47,7 @@
   }
 
   &.hidden {
-    display: none; // `hidden` 상태에서 숨기도록 설정
+    visibility: hidden;
   }
 
   @media (max-width: 1024px) {

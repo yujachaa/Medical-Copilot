@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './ChatInput.module.scss';
-import { FaDatabase } from 'react-icons/fa6';
+import { FaDatabase } from '@react-icons/all-files/fa/FaDatabase';
 import Send from '@/assets/images/send.svg';
 import { useState } from 'react';
 import PatientDB from '@/components/PatientDB/PatientDB';

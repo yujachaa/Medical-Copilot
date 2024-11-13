@@ -2,15 +2,13 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './EditModal.module.scss';
 import xrayDefault from '@/assets/images/xray-default.webp';
-import { CgClose } from 'react-icons/cg';
+import { CgClose } from '@react-icons/all-files/cg/CgClose';
+import { IoArrowRedoOutline } from '@react-icons/all-files/io5/IoArrowRedoOutline';
+import { IoArrowRedoSharp } from '@react-icons/all-files/io5/IoArrowRedoSharp';
+import { IoArrowUndo } from '@react-icons/all-files/io5/IoArrowUndo';
+import { IoArrowUndoOutline } from '@react-icons/all-files/io5/IoArrowUndoOutline';
 import { HiOutlinePencil, HiOutlineTrash, HiPencil, HiTrash } from 'react-icons/hi2';
 import { PiEraser, PiEraserFill } from 'react-icons/pi';
-import {
-  IoArrowUndoOutline,
-  IoArrowRedoOutline,
-  IoArrowUndo,
-  IoArrowRedoSharp,
-} from 'react-icons/io5';
 import { BsCheckCircle, BsCheckCircleFill } from 'react-icons/bs';
 import RectangleOverlay from './RectangleOverlay';
 // import { updateDrawing } from '@/apis/report';
