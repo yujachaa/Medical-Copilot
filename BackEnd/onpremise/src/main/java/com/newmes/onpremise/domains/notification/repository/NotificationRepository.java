@@ -10,5 +10,5 @@ public interface NotificationRepository extends JpaRepository<NotificationEntity
 
   List<NotificationEntity> findAllByMemberId(String id);
 
-  List<NotificationEntity> findAllByMemberIdAndReadOrderByCreatedDateAsc(String id, boolean b);
+  List<NotificationEntity> findAllByMemberIdAndIsReadOrderByCreatedDateAsc(String id, boolean b);
 }

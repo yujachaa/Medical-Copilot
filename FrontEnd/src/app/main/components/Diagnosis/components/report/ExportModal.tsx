@@ -7,13 +7,18 @@ import { fetchPDF } from '@/apis/fetchPDF';
 import RectangleOverlay from './RectangleOverlay';
 import CanvasOverlay from './CanvasOverlay';
 import { useAppSelector } from '@/redux/store/hooks/store';
+import { MessageType } from '../../ChatLayout';
+import { find } from '@/apis/find';
 
 const fieldOptions = ['Finding', 'Impression', 'Plan'];
-type ExportModalProps = {
-  onClose: () => void;
-};
-
-export default function ExportModal({ onClose }: ExportModalProps) {
+type ExportModalProps = () => void;
+export default function ExportModal({
+  onClose,
+  messagelist,
+}: {
+  onClose: ExportModalProps;
+  messagelist: MessageType[];
+}) {
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -21,11 +26,23 @@ export default function ExportModal({ onClose }: ExportModalProps) {
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const coordinatesFromRedux = useAppSelector((state) => state.coordinate.coordinates);
   const { reportData } = useAppSelector((state) => state.report);
+  const [finding, setFinding] = useState<string>('');
+  // const [impression, setImpression] = useState<string>("");
 
   const pdfRef = useRef<HTMLDivElement | null>(null);
 
   const handleDownloadPDF = async () => {
     fetchPDF();
+  };
+
+  const handleFinding = async () => {
+    if (reportData !== null) {
+      const data = await find(messagelist, reportData);
+      if (data) {
+        setFinding(data); // 이거 아님 바꿔야함
+        console.log(data);
+      }
+    }
   };
 
   const handleImageLoad = () => {
@@ -45,10 +62,10 @@ export default function ExportModal({ onClose }: ExportModalProps) {
   const immpression = `Right center lobe atelectasis, potentially due to bronchial obstruction (e.g., mucus
                 plug, external compression by a nearby mass, or airway narrowing).`;
 
-  const finding = `Increased opacity in the right lung zone, consistent with partial collapse or
-                insufficient expansion of the ceter to the right. No significant shift of
-                mediastinal structures, indicating that the atelectasis is likely due to an
-                obstructive or compressive process rather than volume loss.`;
+  // const finding = `Increased opacity in the right lung zone, consistent with partial collapse or
+  //               insufficient expansion of the ceter to the right. No significant shift of
+  //               mediastinal structures, indicating that the atelectasis is likely due to an
+  //               obstructive or compressive process rather than volume loss.`;
 
   const handleAddField = (field: string) => {
     setSelectedFields([...selectedFields, field]);
@@ -225,7 +242,12 @@ export default function ExportModal({ onClose }: ExportModalProps) {
                     .map((option, index) => (
                       <div
                         key={index}
-                        onClick={() => handleAddField(option)}
+                        onClick={() => {
+                          handleAddField(option);
+                          if (option === 'Finding') {
+                            handleFinding();
+                          }
+                        }}
                         className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2"
                       >
                         {option}
