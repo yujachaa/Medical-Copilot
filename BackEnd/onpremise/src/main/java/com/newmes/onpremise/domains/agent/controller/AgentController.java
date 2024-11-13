@@ -25,7 +25,7 @@ public class AgentController {
 
     @PostMapping
     public ResponseEntity<?> processAgentRequest(@RequestBody AgentRequestDto agentRequestDto) {
-        agentRequestDto = agentRequestDto.withMemberId(MemberInfo.getMemberId());
+        agentRequestDto.setMemberId(MemberInfo.getMemberId());
 
         ResponseEntity<Map> responseEntity;
         try {

@@ -62,6 +62,7 @@ const mainSlices = createSlice({
     },
     setModality: (state, action: PayloadAction<string>) => {
       state.patientRequest.agent = action.payload;
+      state.patient.modality = action.payload;
     },
     //보낼 이미지를 저장하는 함수
     setReqeustImage: (state, action: PayloadAction<string>) => {

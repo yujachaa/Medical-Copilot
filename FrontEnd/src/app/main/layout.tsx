@@ -1,10 +1,10 @@
-// import SEEHandler from '@/components/Alarm/SEEHandler';
+import SSEHandler from '@/components/Alarm/SSEHandler';
 import React from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      {/* <SEEHandler /> */}
+      <SSEHandler />
       {children}
     </>
   );

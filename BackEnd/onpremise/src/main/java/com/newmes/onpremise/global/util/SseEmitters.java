@@ -13,15 +13,18 @@ public class SseEmitters {
 
   ConcurrentHashMap<String, SseEmitter> emitters = new ConcurrentHashMap<>();
 
-  public SseEmitter addEmitter(String id){
+  public SseEmitter addEmitter(String id) {
+    log.error("Adding emitter :id ={}, emitters : {}", id, emitters.toString());
     SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
     emitters.put(id, emitter);
-    try{
-      emitter.send(SseEmitter.event()
-          .name("connect")
-          .data("connected!"));
-    } catch(IOException e){
-      log.error("Failed to connect SSE");
+
+    log.info("Emitter added for id: {}", id);
+
+    try {
+      emitter.send(SseEmitter.event().name("connect").data("connected!"));
+      log.info("Sent connect message to id: {}", id);
+    } catch (IOException e) {
+      log.error("Failed to connect SSE for id: {}, error: {}", id, e.getMessage());
     }
 
     emitter.onError(x -> {
@@ -29,26 +32,33 @@ public class SseEmitters {
     });
 
     emitter.onTimeout(() -> {
+      log.warn("SSE Timeout for id: {}", id);
       emitter.complete();
     });
 
     emitter.onCompletion(() -> {
+      log.info("SSE Completed for id: {}", id);
       emitters.remove(id);
       SseEmitter newEmitter = new SseEmitter(Long.MAX_VALUE);
       emitters.put(id, newEmitter);
+      log.info("New emitter created for id: {}", id);
     });
 
     return emitter;
   }
 
+
   public void sendNotification(NotificationResponseDto responseDto){
+    log.info("send notification");
     String id = responseDto.getMemberId();
+    log.info("send SSE : member id= {}, id= {}",responseDto.getMemberId(), responseDto.getId());
     try{
       SseEmitter emitter = emitters.getOrDefault(id, null);
       if (null == emitter){
         log.error("SSE does not exist for id : {}", id);
       } else {
-        emitter.send(SseEmitter.event().name("notification").data(responseDto));
+        emitter.send(SseEmitter.event().name("message").data(responseDto));
+        log.info("send event");
       }
     } catch (IOException e){
       log.error("Error occurred sending notification: {}", e.getMessage());

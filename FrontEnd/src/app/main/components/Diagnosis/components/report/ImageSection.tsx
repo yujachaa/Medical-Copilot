@@ -42,7 +42,8 @@ export default function ImageSection() {
           <Image
             src={reportData?.imageUrl || xrayDefault} // 기본 이미지 URL 설정
             alt="이미지"
-            fill
+            width={640}
+            height={640}
             style={{ objectFit: 'cover' }}
             onLoad={handleImageLoad}
             priority

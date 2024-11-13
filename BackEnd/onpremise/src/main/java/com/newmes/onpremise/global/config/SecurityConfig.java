@@ -6,12 +6,15 @@ import com.newmes.onpremise.global.security.exception.CustomAuthenticationEntryP
 import com.newmes.onpremise.global.security.jwt.JwtAuthFilter;
 import com.newmes.onpremise.global.security.jwt.JwtUtil;
 import com.newmes.onpremise.global.security.userdetails.CustomUserDetailsService;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -29,18 +32,20 @@ public class SecurityConfig {
 	private final RedisService redisService;
 
 	private static final String[] AUTH_WHITELIST = {
-			"/swagger-ui/**", "/**", "/notification/emitter/**"
+			"/swagger-ui/**", "/**"
 	};
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
 		http
 				.cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOrigins(Arrays.asList(
                             "https://k11s205.p.ssafy.io",
                             "http://localhost:3000",
-                            "http://localhost:3001"
+                            "http://localhost:3001",
+							"https://medical-copilot.net"
                     ));
                     configuration.setAllowedMethods(Arrays.asList("*"));
                     configuration.setAllowCredentials(true);
@@ -55,6 +60,7 @@ public class SecurityConfig {
 				.httpBasic(basic -> basic.disable())
 				.addFilterBefore(new JwtAuthFilter(customUserDetailsService, jwtUtil, redisService),
 						UsernamePasswordAuthenticationFilter.class)
+				.securityContext(securityContext -> securityContext.requireExplicitSave(true))
 				.exceptionHandling(exceptionHandling -> exceptionHandling
 						.authenticationEntryPoint(authenticationEntryPoint)
 						.accessDeniedHandler(accessDeniedHandler))
@@ -64,4 +70,10 @@ public class SecurityConfig {
 
 		return http.build();
 	}
+	@PostConstruct
+	public void init() {
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+	}
+
+
 }

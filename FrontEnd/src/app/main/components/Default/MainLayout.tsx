@@ -5,13 +5,13 @@ import styles from './Main.module.scss';
 import Logo from '@/assets/images/logo.svg';
 import CapSule from '@/assets/images/capsule.svg';
 import Cxr from '@/assets/images/cxr.svg';
-import { PluginType } from '@/components/Tabs/Tab';
 import SelectTabIcons from '@/components/Tabs/components/SelectTabIcons';
 import Input from './Input';
+import { useAppSelector } from '@/redux/store/hooks/store';
 
 export default function Main() {
+  const { patient } = useAppSelector((state) => state.main);
   const [isActive, setIsActive] = useState(false);
-  const [plugin, setPlugin] = useState<PluginType>('default');
   const toggleIcons = () => {
     setIsActive((prev) => !prev);
   };
@@ -33,31 +33,13 @@ export default function Main() {
             onClick={toggleIcons}
           >
             <SelectTabIcons
-              logoType={plugin}
+              logoType={patient.modality}
               className={'w-[60px] h-[60px]'}
             />
           </div>
-          <Logo
-            className={styles.icon1}
-            onClick={() => {
-              setPlugin('default');
-              setIsActive(false);
-            }}
-          />
-          <Cxr
-            className={styles.icon2}
-            onClick={() => {
-              setPlugin('cxr');
-              setIsActive(false);
-            }}
-          />
-          <CapSule
-            className={styles.icon3}
-            onClick={() => {
-              setPlugin('capsule');
-              setIsActive(false);
-            }}
-          />
+          <Logo className={styles.icon1} />
+          <Cxr className={styles.icon2} />
+          <CapSule className={styles.icon3} />
         </div>
         <Input />
       </div>
