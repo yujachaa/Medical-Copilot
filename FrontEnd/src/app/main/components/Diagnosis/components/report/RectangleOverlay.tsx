@@ -7,17 +7,13 @@ type RectangleOverlayProps = {
 };
 
 export default function RectangleOverlay({ imgWrapperRef }: RectangleOverlayProps) {
-  console.log(
-    '처음 프롭스 받았을 때',
-    imgWrapperRef.current ? imgWrapperRef.current.getBoundingClientRect().width : null,
-  );
   const [rectPosition, setRectPosition] = useState({ top: 0, left: 0, width: 0, height: 0 });
 
   useEffect(() => {
-    console.log(
-      'useEffect',
-      imgWrapperRef.current ? imgWrapperRef.current.getBoundingClientRect().width : null,
-    );
+    // console.log(
+    //   'useEffect',
+    //   imgWrapperRef.current ? imgWrapperRef.current.getBoundingClientRect().width : null,
+    // );
     const updateRectanglePosition = () => {
       if (imgWrapperRef.current) {
         const wrapperRect = imgWrapperRef.current.getBoundingClientRect();

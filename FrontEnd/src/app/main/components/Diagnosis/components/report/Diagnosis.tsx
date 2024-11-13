@@ -3,9 +3,15 @@
 import { useEffect, useState } from 'react';
 import styles from './ReportData.module.scss';
 import { TbEdit } from 'react-icons/tb';
+import { useAppSelector, useAppDispatch } from '@/redux/store/hooks/store';
+import { updateReportData } from '@/redux/features/report/reportSlice';
 
 export default function Diagnosis() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isEditable, setIsEditable] = useState(false); // 수정 가능 여부 상태
+  const dispatch = useAppDispatch();
+  const { reportData } = useAppSelector((state) => state.report);
+
   // 화면 크기를 감지하여 상태를 업데이트하는 로직
   useEffect(() => {
     const handleResize = () => {
@@ -17,31 +23,93 @@ export default function Diagnosis() {
 
     return () => window.removeEventListener('resize', handleResize); // 이벤트 클린업
   }, []);
+
+  // 입력값 변경 시 dispatch로 상태 업데이트
+  const handleChange = (field: string, value: string) => {
+    dispatch(updateReportData({ [field]: value }));
+  };
+
+  // 수정 모드 토글 함수
+  const toggleEditMode = () => {
+    setIsEditable(!isEditable);
+  };
+
   return (
     <div className={`${styles.info}`}>
       <div>Diagnosis</div>
       <div className={styles.infoBox}>
-        {['Labels', 'Location', 'Size', 'Symptoms'].map((label, index) => (
-          <div
-            key={index}
-            className="w-full"
-          >
-            <div className={styles.oneInfo}>
-              <div className="text-white flex-grow max-1024:text-sm">• {label}</div>
-              <div className="flex gap-[2px]">
-                <div className="text-white">|</div>
-                <input className={`${styles.infoInput}`} />
-              </div>
+        {/* Disease 필드 */}
+        <div className="w-full">
+          <div className={styles.oneInfo}>
+            <div className="text-white flex-grow max-1024:text-sm">• Disease</div>
+            <div className="flex gap-[2px]">
+              <div className="text-white">|</div>
+              <input
+                className={styles.infoInput}
+                value={reportData?.disease || ''}
+                readOnly={!isEditable} // 수정 가능 여부에 따라 readOnly 설정
+                onChange={(e) => handleChange('disease', e.target.value)}
+              />
             </div>
-            {/* 화면 크기에 따라 hr 추가 로직 다르게 설정 */}
-            {isSmallScreen
-              ? index === 0 && <hr className="absolute top-1/2" /> // 작은 화면에서는 1번과 3번 항목 밑에만 hr 추가
-              : index < 3 && <hr />}
           </div>
-        ))}
+          {isSmallScreen ? <hr className="absolute top-1/2" /> : <hr />}
+        </div>
+
+        {/* Location 필드 */}
+        <div className="w-full">
+          <div className={styles.oneInfo}>
+            <div className="text-white flex-grow max-1024:text-sm">• Location</div>
+            <div className="flex gap-[2px]">
+              <div className="text-white">|</div>
+              <input
+                className={styles.infoInput}
+                value={reportData?.location || ''}
+                readOnly={!isEditable}
+                onChange={(e) => handleChange('location', e.target.value)}
+              />
+            </div>
+          </div>
+          {isSmallScreen ? null : <hr />}
+        </div>
+
+        {/* Size 필드 */}
+        <div className="w-full">
+          <div className={styles.oneInfo}>
+            <div className="text-white flex-grow max-1024:text-sm">• Size</div>
+            <div className="flex gap-[2px]">
+              <div className="text-white">|</div>
+              <input
+                className={styles.infoInput}
+                value={reportData?.size || ''}
+                readOnly={!isEditable}
+                onChange={(e) => handleChange('size', e.target.value)}
+              />
+            </div>
+          </div>
+          {isSmallScreen ? null : <hr />}
+        </div>
+
+        {/* Symptoms 필드 */}
+        <div className="w-full">
+          <div className={styles.oneInfo}>
+            <div className="text-white flex-grow max-1024:text-sm">• Symptoms</div>
+            <div className="flex gap-[2px]">
+              <div className="text-white">|</div>
+              <input
+                className={styles.infoInput}
+                value={reportData?.symptoms || ''}
+                readOnly={!isEditable}
+                onChange={(e) => handleChange('symptoms', e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className={styles.editorBtn}>
+      <div
+        className={`${styles.editorBtn} ${isEditable ? styles.active : ''}`}
+        onClick={toggleEditMode}
+      >
         <TbEdit />
       </div>
     </div>

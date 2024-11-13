@@ -129,6 +129,7 @@
     align-self: stretch;
     box-sizing: border-box;
     overflow-y: auto;
+    overflow-x: hidden;
 
     // 스크롤 바 전체
     &::-webkit-scrollbar {

@@ -1,6 +1,6 @@
 type ReportInfoProps = {
   id: string;
-  date: Date;
+  date?: Date;
 };
 
 export default function ReportInfo({ id, date }: ReportInfoProps) {
@@ -12,7 +12,7 @@ export default function ReportInfo({ id, date }: ReportInfoProps) {
       </div>
       <div>
         <div className="text-xs font-bold">Date</div>
-        <div className="bg-blue-base rounded-md p-1 text-sm">{date.toLocaleDateString()}</div>
+        <div className="bg-blue-base rounded-md p-1 text-sm">{date?.toLocaleDateString()}</div>
       </div>
     </div>
   );
