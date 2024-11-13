@@ -1,14 +1,13 @@
 package com.newmes.onpremise.domains.notification.controller;
 
-import com.newmes.onpremise.domains.member.domain.Member;
-import com.newmes.onpremise.domains.member.domain.Token;
-import com.newmes.onpremise.domains.notification.dto.OtpResponseDto;
+
 import com.newmes.onpremise.domains.notification.dto.response.NotificationResponseDto;
 import com.newmes.onpremise.domains.notification.service.NotificationService;
 import com.newmes.onpremise.global.redis.dto.RedisDto;
 import com.newmes.onpremise.global.redis.service.RedisService;
 import com.newmes.onpremise.global.security.jwt.JwtUtil;
 import com.newmes.onpremise.global.util.MemberInfo;
+import com.newmes.onpremise.global.util.SessionHolders;
 import com.newmes.onpremise.global.util.SseEmitters;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -33,25 +32,21 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class NotificationController {
 
   private final NotificationService notificationService;
-  private final SseEmitters sseEmitters;
-  private final RedisService redisService;
-  private final JwtUtil jwtUtil;
 
 
   @GetMapping(value = "/emitter/{memberId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public ResponseEntity<SseEmitter> addEmitter(@PathVariable("memberId") String memberId) {
+  public ResponseEntity<SseEmitter> addEmitter(@PathVariable("memberId") String memberId, HttpSession session) {
     log.info("emitter join---, id: {}",MemberInfo.getMemberId());
-  String  id = MemberInfo.getMemberId();
     try {
-      // 1. SecurityContext에서 사용자 ID 가져오기
-      if (id == null || "anonymousUser".equals(id)) {
-
-        log.info("security token id: " + id);
-        id =memberId;
-      }
-      // 4. SSE Emitter 생성 및 반환
-
-      SseEmitter emitter = sseEmitters.addEmitter(id);
+      //  String  id = MemberInfo.getMemberId();
+//      // 1. SecurityContext에서 사용자 ID 가져오기
+//      if (id == null || "anonymousUser".equals(id)) {
+//
+//        log.info("security token id: " + id);
+//        id =memberId;
+//      }
+      String sessionId = session.getId();
+      SseEmitter emitter = notificationService.addEmitter(memberId, sessionId);
       return ResponseEntity.ok(emitter);
     } catch (Exception e) {
       log.error("Error in addEmitter: ", e);
