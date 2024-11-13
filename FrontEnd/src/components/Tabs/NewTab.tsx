@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './NewTab.module.scss';
-import { CgMathPlus } from 'react-icons/cg';
+import { CgMathPlus } from '@react-icons/all-files/cg/CgMathPlus';
 
 type NewTabProps = {
   onPlus?: () => void;

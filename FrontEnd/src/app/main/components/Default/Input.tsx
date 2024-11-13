@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import styles from './Input.module.scss';
 import Send from '@/assets/images/send.svg';
-import { FaDatabase } from 'react-icons/fa6';
-import PatientDB from '@/components/PatientDB/PatientDB';
+import { FaDatabase } from '@react-icons/all-files/fa/FaDatabase';
+import dynamic from 'next/dynamic';
+const PatientDB = dynamic(() => import('@/components/PatientDB/PatientDB'), { ssr: false });
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { moveTab } from '@/redux/features/tab/tabSlice';
 import { Patient } from '@/redux/features/main/mainSlice';

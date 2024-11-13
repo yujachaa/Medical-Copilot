@@ -1,6 +1,6 @@
 import styles from './Modality.module.scss';
 import React, { useState } from 'react';
-import { IoMdCloseCircleOutline } from 'react-icons/io';
+import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircleOutline';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { setModality } from '@/redux/features/main/mainSlice';
 
@@ -24,7 +24,6 @@ export default function Modality({ onClose, onPatientClose }: Props) {
   };
 
   const handleSetPatient = () => {
-    //여기에 이미지를 불러오는 API를 추가할 예정입니다.
     dispatch(setModality(selectedModality));
     onClose();
     onPatientClose();

@@ -11,9 +11,9 @@ import Summary from './components/report/Summary';
 import styles from './page.module.scss';
 import Header from '@/components/Header/Header';
 import { useEffect, useState } from 'react';
-import { BiMessageRoundedDots } from 'react-icons/bi';
+import { BiMessageRoundedDots } from '@react-icons/all-files/bi/BiMessageRoundedDots';
 import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
-import { CgClose } from 'react-icons/cg';
+import { CgClose } from '@react-icons/all-files/cg/CgClose';
 import { fetchPatientChat } from '@/apis/Patient';
 import { useAppSelector } from '@/redux/store/hooks/store';
 import { fetchReport } from '@/apis/report';
@@ -109,10 +109,6 @@ export default function Chat({ pid }: ChatProps) {
             <ChatInput />
           </div>
 
-          {/* 이부분이 랜더링이 되야한다 
-             1. 채팅의 버튼을 클릭하는데, reportId가 있는 채팅만 클릭이 가능하게한다.
-             2. 그러면 여기서 선택된 리포트를 관리하는것 그리고 그것을 리포트정보에 넣어주는것
-          */}
           <div className={styles.reportContainer}>
             <div className={styles.scrollable}>
               <div className={styles.reportInfo}>

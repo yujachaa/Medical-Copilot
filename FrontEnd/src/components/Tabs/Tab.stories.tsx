@@ -15,8 +15,8 @@ export const Default: Story = {
     HandleDelete: () => console.log('Tab closed'),
     tab: {
       id: 1,
-      title: 'Default Plugins',
-      type: 'default',
+      title: 'MG Plugins',
+      type: 'MG',
       tabType: 'default',
       pid: 1,
     },
@@ -29,7 +29,7 @@ export const CXR: Story = {
     tab: {
       id: 1,
       title: 'CXR Plugins',
-      type: 'cxr',
+      type: 'CXR',
       tabType: 'default',
       pid: 1,
     },
@@ -42,8 +42,8 @@ export const Capsule: Story = {
     HandleDelete: () => console.log('Tab closed'),
     tab: {
       id: 1,
-      title: 'CapSule',
-      type: 'capsule',
+      title: 'CT',
+      type: 'CT',
       tabType: 'default',
       pid: 1,
     },

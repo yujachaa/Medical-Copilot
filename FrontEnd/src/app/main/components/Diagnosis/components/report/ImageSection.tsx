@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState, useRef } from 'react';
 import styles from './ReportData.module.scss';
-import XrayImg from '@/assets/images/xrayImg.jpg';
+import XrayImg from '@/assets/images/xrayImg.webp';
 import { MdOutlineDraw } from 'react-icons/md';
 import EditModal from './EditModal';
 import RectangleOverlay from './RectangleOverlay';
@@ -31,7 +31,8 @@ export default function ImageSection() {
           <Image
             src={XrayImg}
             alt="이미지"
-            fill
+            width={640}
+            height={640}
             style={{ objectFit: 'cover' }}
             placeholder="blur"
             onLoad={handleImageLoad} // 이미지 로드 완료 시 호출
