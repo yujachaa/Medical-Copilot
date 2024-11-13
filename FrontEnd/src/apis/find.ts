@@ -11,7 +11,7 @@ export async function find(messagelist: MessageType[], reportData: ReportDataTyp
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        memeber_id: reportData.memberId,
+        member_id: reportData.memberId,
         summary: reportData.summary,
         disease: reportData.disease,
         bbox: '',
