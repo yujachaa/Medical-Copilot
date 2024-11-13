@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,30 +17,46 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public String register(HistoryEntity historyEntity) {
+        if (historyEntity == null) {
+            throw new IllegalArgumentException("HistoryEntity cannot be null.");
+        }
         return historyRepository.save(historyEntity).getId();
     }
 
     @Override
     public List<History> getHistoryByMemberId() {
         String memberId = MemberInfo.getMemberId();
-        List<HistoryEntity> historyEntities = historyRepository.findAllByMemberId(memberId);
+        if (memberId == null || memberId.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<HistoryEntity> historyEntities = Optional.ofNullable(historyRepository.findAllByMemberId(memberId))
+                .orElse(Collections.emptyList());
 
         Map<String, History> recentHistoryMap = new LinkedHashMap<>();
 
         historyEntities.stream()
-                .sorted(Comparator.comparing(HistoryEntity::getRecentDate).reversed())
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparing(HistoryEntity::getRecentDate, Comparator.nullsLast(Date::compareTo)).reversed())
                 .forEach(entity -> {
-                    String pid = entity.getPID();
+                    String pid = Optional.ofNullable(entity.getPID()).orElse("");
+                    if (pid.isEmpty()) return;
 
                     if (recentHistoryMap.containsKey(pid)) {
                         History currentHistory = recentHistoryMap.get(pid);
 
-                        String agentSummary = currentHistory.summary().split(" : ")[0];
+                        if (currentHistory == null || currentHistory.summary() == null) {
+                            return;
+                        }
+
+                        String[] summaryParts = currentHistory.summary().split(" : ");
+                        String agentSummary = summaryParts.length > 0 ? summaryParts[0] : "none";
+                        String diseaseSummary = summaryParts.length > 1 ? summaryParts[1] : "none";
+
                         if (agentSummary.split(", ").length < 2 && !agentSummary.contains(entity.getAgent())) {
                             agentSummary = updateAgentSummary(agentSummary, entity.getAgent());
                         }
 
-                        String diseaseSummary = currentHistory.summary().split(" : ")[1];
                         if (diseaseSummary.equals("none") && entity.getDisease() != null) {
                             diseaseSummary = entity.getDisease();
                         }
@@ -57,14 +72,16 @@ public class HistoryServiceImpl implements HistoryService {
 
                         recentHistoryMap.put(pid, currentHistory);
                     } else {
-                        String summary = (entity.getAgent() != null ? entity.getAgent() : "none") + " : " +
-                                (entity.getDisease() != null ? entity.getDisease() : "none");
+                        String agent = Optional.ofNullable(entity.getAgent()).orElse("none");
+                        String disease = Optional.ofNullable(entity.getDisease()).orElse("none");
+                        String summary = agent + " : " + disease;
+
                         History history = new History(
-                                entity.getPID(),
-                                entity.getSex(),
+                                Optional.ofNullable(entity.getPID()).orElse(""),
+                                Optional.ofNullable(entity.getSex()).orElse("unknown"),
                                 entity.getAge(),
                                 summary,
-                                entity.getMemberId(),
+                                Optional.ofNullable(entity.getMemberId()).orElse("unknown"),
                                 entity.getRecentDate()
                         );
                         recentHistoryMap.put(pid, history);
@@ -75,8 +92,10 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     private String updateAgentSummary(String existingAgents, String newAgent) {
-        if (existingAgents.equals("none")) {
-            return newAgent;
+        if (existingAgents == null || existingAgents.equals("none")) {
+            return Optional.ofNullable(newAgent).orElse("none");
+        } else if (newAgent == null || newAgent.isEmpty()) {
+            return existingAgents;
         } else {
             return existingAgents + ", " + newAgent;
         }
