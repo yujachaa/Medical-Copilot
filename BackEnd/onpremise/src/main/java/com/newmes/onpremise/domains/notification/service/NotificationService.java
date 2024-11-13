@@ -10,11 +10,13 @@ public interface NotificationService {
 
   void createAndSend(NotificationRequestDto requestDto);
 
-  void readNotification(int id);
+  String readNotification(int id);
 
   NotificationResponseDto getNotification(int id);
 
   List<NotificationResponseDto> listAllNotifications(String id);
 
   SseEmitter addEmitter(String memberId, String sessionId);
+
+  void readAll(String memberId);
 }
