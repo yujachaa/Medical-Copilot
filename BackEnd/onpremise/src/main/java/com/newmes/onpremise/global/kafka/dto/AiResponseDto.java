@@ -26,4 +26,5 @@ public class AiResponseDto {
     private String answer;
     private Classification classification;
     private Detection detection;
+    private String location;
 }
