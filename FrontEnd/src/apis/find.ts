@@ -3,6 +3,8 @@ import { GPUURL } from './core';
 import { ReportDataType } from '@/types/report';
 
 export async function find(messagelist: MessageType[], reportData: ReportDataType) {
+  console.log(reportData);
+  console.log(messagelist);
   try {
     const response = await fetch(`${GPUURL}generate_find`, {
       cache: 'no-store',
@@ -15,7 +17,12 @@ export async function find(messagelist: MessageType[], reportData: ReportDataTyp
         summary: reportData.summary,
         disease: reportData.disease,
         bbox: '',
-        chat_list: messagelist,
+        chat_list: messagelist.map((message) => {
+          return {
+            message: message.comment,
+            question: message.question,
+          };
+        }),
       }),
     });
     if (!response.ok) {
