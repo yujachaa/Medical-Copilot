@@ -37,6 +37,7 @@ export default function SSEHandler() {
       eventSourceRef.current!.onmessage = (event: MessageEvent) => {
         console.log(event);
         console.log(event.data);
+        //여기서 알람 팝업 열기
       };
       eventSourceRef.current!.addEventListener('notification', (e: Event) => {
         console.log(e);
