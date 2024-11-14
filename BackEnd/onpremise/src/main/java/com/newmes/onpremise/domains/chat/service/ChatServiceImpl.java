@@ -45,15 +45,18 @@ public class ChatServiceImpl implements ChatService{
 
     Page<ChatEntity> chatEntityPage = chatRepository.findByPID(pid, pageRequest);
 
-    Page<ChatResponseDto> chatResponsePage = chatEntityPage.map(chatEntity -> {
-      List<Chat> chatList = List.of(Chat.from(chatEntity));
-      return ChatResponseDto.builder()
-              .PID(pid)
-              .chatList(chatList)
-              .build();
-    });
+    List<Chat> chatList = chatEntityPage.stream()
+            .map(Chat::from)
+            .collect(Collectors.toList());
 
-    return chatResponsePage;
+    ChatResponseDto responseDto = ChatResponseDto.builder()
+            .PID(pid)
+            .chatList(chatList)
+            .build();
+
+    return new PageImpl<>(List.of(responseDto), pageRequest, chatEntityPage.getTotalElements());
   }
+
+
 
 }
