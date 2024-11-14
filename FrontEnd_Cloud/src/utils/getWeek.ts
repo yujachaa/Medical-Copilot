@@ -26,7 +26,7 @@ function getWeekRange(index: number): string {
   const endMonth = String(endDate.getMonth() + 1).padStart(2, '0');
   const endDay = String(endDate.getDate()).padStart(2, '0');
 
-  return `${startMonth}월 ${startDay}일 ~ ${endMonth}월 ${endDay}일`;
+  return `${startMonth}/${startDay} ~ ${endMonth}/${endDay}`;
 }
 
 export { getWeekRange };

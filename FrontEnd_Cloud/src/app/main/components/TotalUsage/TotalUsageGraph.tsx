@@ -5,6 +5,15 @@ import { ResponsivePie } from '@nivo/pie';
 
 export default function TotalUsageGraph() {
   const { list } = useTotalUsage();
+
+  const tooltipStyle = {
+    background: 'white',
+    color: 'inherit',
+    fontSize: 'inherit',
+    borderRadius: '2px',
+    boxShadow: 'rgba(0, 0, 0, 0.25) 0px 1px 2px',
+    padding: '5px 9px',
+  };
   return (
     <ResponsivePie
       data={list}
@@ -48,6 +57,15 @@ export default function TotalUsageGraph() {
           spacing: 10,
         },
       ]}
+      tooltip={(item) => {
+        return (
+          <div style={tooltipStyle}>
+            <b>
+              {item.datum.data.id.startsWith('c') ? 'CXR' : 'MG'} : {item.datum.value}
+            </b>
+          </div>
+        );
+      }}
     />
   );
 }

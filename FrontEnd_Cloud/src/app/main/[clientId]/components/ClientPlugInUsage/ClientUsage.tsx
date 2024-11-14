@@ -11,8 +11,9 @@ export default function ClientUsage({
   serialKey: string;
 }) {
   const { list } = useClientUsage(standard, serialKey);
+  console.log(list);
   if (list.every((object) => object.value === 0)) {
-    return null;
+    return <div>No usage data available.</div>;
   }
   return (
     <ResponsivePie
