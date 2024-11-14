@@ -1,5 +1,5 @@
 //redux store 저장공간
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore, createAction } from '@reduxjs/toolkit';
 import testSlices from '../features/testSlice';
 import tabSlices from '../features/tab/tabSlice';
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
@@ -10,6 +10,8 @@ import mainSlices from '../features/main/mainSlice';
 import AlarmSlices from '../features/alarm/alarmSlice';
 import coordinateSlices from '../features/report/coordinateSlice';
 import reportSlices from '../features/report/reportSlice';
+
+export const resetState = createAction('RESET_STATE');
 
 const persistConfig = {
   key: 'persist',
@@ -28,7 +30,14 @@ const reducer = combineReducers({
   report: reportSlices.reducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, reducer);
+const rootReducer = (state: ReturnType<typeof reducer> | undefined, action: any) => {
+  if (action.type === resetState.type) {
+    state = undefined; // 전체 상태를 초기화
+  }
+  return reducer(state, action);
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
