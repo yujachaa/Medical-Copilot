@@ -10,6 +10,7 @@ import com.newmes.cloud.domains.corporate.repository.CorporateRepository;
 import com.newmes.cloud.domains.usage.entity.UsageEntity;
 import com.newmes.cloud.domains.usage.repository.UsageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,14 +65,17 @@ public class CorporateServiceImpl implements CorporateService {
         return CorporateResponseDto.from(Corporate.fromEntity(updatedEntity));
     }
 
-    @Override
+    @Scheduled(cron = "0 0 0 * * MON", zone = "Asia/Seoul")
     @Transactional
-    public void init(String key) {
-        UsageEntity entity = usageRepository.findByCorporateKey(key)
-                .orElseThrow(() -> new CorporateNotFoundException("Key: " + key));
-        entity.initAgentCount();
+    public void init() {
 
-        usageRepository.save(entity);
+        List<UsageEntity> entities = usageRepository.findAll();
+
+        for (UsageEntity entity : entities) {
+            entity.initAgentCount();
+        }
+
+        usageRepository.saveAll(entities);
     }
 
     @Override
