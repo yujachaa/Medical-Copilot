@@ -8,7 +8,7 @@ export default function Summary() {
   const dispatch = useAppDispatch();
   const { reportData } = useAppSelector((state) => state.report);
   const [isEditable, setIsEditable] = useState(false);
-  const [localSummary, setLocalSummary] = useState(reportData?.summary);
+  const [localSummary, setLocalSummary] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // 편집 모드 토글
@@ -31,6 +31,11 @@ export default function Summary() {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 스크롤 높이만큼 설정
     }
   };
+  useEffect(() => {
+    if (reportData !== null) {
+      setLocalSummary(reportData?.summary);
+    }
+  }, [reportData]);
 
   useEffect(() => {
     adjustTextareaHeight(); // 초기 로드 시 높이 조절

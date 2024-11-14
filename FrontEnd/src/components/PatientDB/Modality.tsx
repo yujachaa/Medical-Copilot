@@ -33,7 +33,7 @@ export default function Modality({ onClose, onPatientClose }: Props) {
     <div className={styles.container}>
       <div className={`${styles.box}`}>
         <div className={`${styles.title} flex items-center justify-between gap-4 pr-4 pl-4`}>
-          <span>Click Your Modality</span>
+          <span>Select Modality</span>
           <IoMdCloseCircleOutline
             onClick={onClose}
             className="cursor-pointer"
