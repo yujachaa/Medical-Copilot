@@ -220,7 +220,7 @@ export default function ExportModal({
                 <div
                   className={`${styles.analysisBox} ${findingLoading && 'flex justify-center items-center h-[70px] p-5'}`}
                 >
-                  {findingLoading ? <HashLoader /> : finding}
+                  {findingLoading ? <HashLoader color="#5DA6F6" /> : finding}
                 </div>
                 {!findingLoading && (
                   <div className="w-full flex justify-end">
@@ -240,7 +240,7 @@ export default function ExportModal({
                 <div
                   className={`${styles.analysisBox} ${impressionLoading && 'flex justify-center items-center h-[70px] p-5'}`}
                 >
-                  {impressionLoading ? <HashLoader /> : impression}
+                  {impressionLoading ? <HashLoader color="#5DA6F6" /> : impression}
                 </div>
                 {!impressionLoading && (
                   <div className="w-full flex justify-end">
@@ -260,7 +260,7 @@ export default function ExportModal({
                 <div
                   className={`${styles.analysisBox} ${planLoading && 'flex justify-center items-center h-[70px] p-5'}`}
                 >
-                  {planLoading ? <HashLoader /> : plan}
+                  {planLoading ? <HashLoader color="#5DA6F6" /> : plan}
                 </div>
                 {!planLoading && (
                   <div className="w-full flex justify-end">
