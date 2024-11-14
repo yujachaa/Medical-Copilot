@@ -24,7 +24,7 @@ public class NotificationRequestDto {
 
   private Modality modality;
 
-  private boolean read;
+  private boolean isRead;
 
   private LocalDateTime createdDate;
 
@@ -37,7 +37,7 @@ public class NotificationRequestDto {
         .memberId(entity.getMemberId())
         .PID(entity.getPID())
         .modality(entity.getModality())
-        .read(entity.isRead())
+        .isRead(entity.isRead())
         .createdDate(entity.getCreatedDate())
         .readDate(entity.getReadDate())
         .build();
