@@ -22,6 +22,11 @@ export default function PatientHistory({ onClose, isAnimate }: Props) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [patientHistories, setPatientHistories] = useState<PatientHistory[]>([]);
 
+  const goReport = (pid: string) => {
+    //(예정) 클릭한 히스토리의 pid 채팅방으로 가고, 마지막 보고서 조회하는 것 추가하기
+    console.log(pid);
+  };
+
   useEffect(() => {
     const getPatientHistory = async () => {
       const data = await fetchPatientHistory();
@@ -85,6 +90,7 @@ export default function PatientHistory({ onClose, isAnimate }: Props) {
               <div
                 key={index}
                 className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+                onClick={() => goReport(history.PID)}
               >
                 <span>{history.PID}</span>
                 <span>{history.sex}</span>
