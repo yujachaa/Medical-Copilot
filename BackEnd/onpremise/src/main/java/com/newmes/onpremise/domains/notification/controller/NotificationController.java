@@ -68,7 +68,21 @@ public class NotificationController {
   @PatchMapping("/{notificationId}")
   public ResponseEntity<?> readNotification(@PathVariable int notificationId){
     try {
-      notificationService.readNotification(notificationId);
+      String res = notificationService.readNotification(notificationId);
+      if (null == res){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Notification does not exist");
+      }
+    } catch (Exception e){
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fail");
+    }
+    return ResponseEntity.status(HttpStatus.OK).body("Success");
+  }
+
+  @PatchMapping("/readAll")
+  public ResponseEntity<?> readAll(){
+    String memberId = MemberInfo.getMemberId();
+    try {
+      notificationService.readAll(memberId);
     } catch (Exception e){
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fail");
     }

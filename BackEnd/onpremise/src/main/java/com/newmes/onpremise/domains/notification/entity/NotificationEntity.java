@@ -33,7 +33,7 @@ public class NotificationEntity {
 
   private Modality modality;
 
-  private boolean read;
+  private boolean isRead;
 
   @Field(type = FieldType.Date, format = DateFormat.date_time)
   @CreatedDate
@@ -49,14 +49,14 @@ public class NotificationEntity {
         .memberId(notificationDto.getMemberId())
         .PID(notificationDto.getPID())
         .modality(notificationDto.getModality())
-        .read(notificationDto.isRead())
+        .isRead(notificationDto.isRead())
         .createdDate(notificationDto.getCreatedDate())
         .readDate(notificationDto.getReadDate())
         .build();
   }
 
   public void updateRead(){
-    this.read = true;
+    this.isRead = true;
     readDate = LocalDateTime.now();
   }
 }

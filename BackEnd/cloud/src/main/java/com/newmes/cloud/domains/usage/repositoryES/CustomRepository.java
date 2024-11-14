@@ -25,5 +25,7 @@ public interface CustomRepository {
   Map<String, Aggregate> customerMonthlyTotal(String key) throws IOException;
 
   Map<String, Aggregate> customerWeeklyTotal(String key) throws IOException;
+
+  long weeklyTokenCount(String key) throws IOException;
 }
 
