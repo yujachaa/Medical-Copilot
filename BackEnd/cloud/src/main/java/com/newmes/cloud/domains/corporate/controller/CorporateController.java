@@ -64,16 +64,16 @@ public class CorporateController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    @GetMapping("/{corporateKey}/init")
-    public ResponseEntity<?> initCorporate(@PathVariable("corporateKey") String key) {
-        try {
-            corporateService.init(key);
-            return httpResponseUtil.createSuccessResponse("success", HttpStatus.OK.value());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//
+//    @GetMapping("/{corporateKey}/init")
+//    public ResponseEntity<?> initCorporate(@PathVariable("corporateKey") String key) {
+//        try {
+//            corporateService.init(key);
+//            return httpResponseUtil.createSuccessResponse("success", HttpStatus.OK.value());
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
     @PatchMapping("/{corporateKey}/limit")
     public ResponseEntity<?> suspendCorporateKey(@PathVariable("corporateKey") String key) {

@@ -24,8 +24,8 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody MemberRequestDto requestDto) {
         try {
-            memberService.login(requestDto);
-            return responseUtil.createSuccessResponse(200, "login success");
+            String token = memberService.login(requestDto);
+            return responseUtil.createResponse(token);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
