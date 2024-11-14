@@ -20,7 +20,7 @@ export async function find(messagelist: MessageType[], reportData: ReportDataTyp
         chat_list: messagelist.map((message) => {
           return {
             message: message.comment,
-            question: message.question,
+            isQuestion: message.question,
           };
         }),
       }),
