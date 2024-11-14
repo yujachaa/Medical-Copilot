@@ -96,6 +96,7 @@ public class KafkaConsumer {
                 .PID(aiResponse.getPID())
                 .sex(aiResponse.getSex())
                 .disease(aiResponse.getClassification() != null ? aiResponse.getClassification().getPredictedClass() : null)
+                .agent(aiResponse.getAgent().name())
                 .build();
         historyService.register(historyEntity);
 
