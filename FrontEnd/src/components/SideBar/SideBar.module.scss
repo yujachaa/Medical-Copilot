@@ -2,7 +2,7 @@
 
 .main {
   background-color: $sidebar-bg;
-  z-index: 2;
+  z-index: 1000;
 
   @media (max-width: 768px) {
     position: fixed;
