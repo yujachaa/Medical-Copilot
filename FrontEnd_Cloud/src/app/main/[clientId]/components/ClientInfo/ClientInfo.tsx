@@ -37,7 +37,7 @@ export default function ClientInfo({ data }: { data: clientDetail }) {
               dispatch(setClientModifyModal());
             }}
           >
-            EDIT
+            Edit
           </span>
           <span
             className={`${data.availability ? styles.stopColor : styles.startColor} flex justify-center items-center cursor-pointer`}
@@ -49,7 +49,7 @@ export default function ClientInfo({ data }: { data: clientDetail }) {
               }
             }}
           >
-            {data.availability ? 'STOP' : 'START'}
+            {data.availability ? 'Stop' : 'Start'}
           </span>
         </div>
       </div>
