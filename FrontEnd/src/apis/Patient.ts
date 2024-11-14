@@ -85,7 +85,7 @@ export async function fetchPatientHistory() {
       throw new Error('응답이 없습니다.');
     }
     const data = await response.json();
-    return data.data;
+    return data;
   } catch (error) {
     console.log(error);
   }
