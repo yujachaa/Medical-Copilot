@@ -32,6 +32,7 @@ export default function AlarmModal({ onClose }: Props) {
             new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
         );
         setAlarms(sortedData);
+        console.log('알람목록', sortedData);
       }
     };
     fetchData();
@@ -49,13 +50,13 @@ export default function AlarmModal({ onClose }: Props) {
     <div className={styles.container}>
       <div className={styles.box}>
         <div className={styles.top}>
-          <div className={styles.title}>알림</div>
+          <div className={styles.title}>Notifications</div>
 
           <div
             className={styles.readbtn}
             onClick={clickReadAll}
           >
-            모두 읽음
+            Read All
           </div>
           <IoMdCloseCircleOutline
             onClick={onClose}
