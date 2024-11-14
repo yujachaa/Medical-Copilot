@@ -19,16 +19,16 @@ export default function Popup({ onClose, isClosing }: PopupProps) {
           className="w-5 h-5 ml-auto cursor-pointer text-rgb0.5"
           onClick={onClose}
         />
-        <div className="text-center font-bold text-2xl">Notification!</div>
+        <div className="text-center font-bold text-2xl max-1024:text-xl">Notification!</div>
       </div>
-      <div className="text-center text-lg">
+      <div className="text-center text-lg max-1024:text-base">
         Analysis Complete!
         <br />
         <br />
         Please review your patient&apos;s diagnostic report.
       </div>
       <button
-        className="font-bold text-lg bg-blue-btn text-white rounded-md py-2 px-3"
+        className="font-bold text-lg max-1024:text-base bg-blue-btn text-white rounded-md py-2 px-3"
         onClick={goReport}
         aria-label="go report"
       >
