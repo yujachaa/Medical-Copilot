@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react';
 import { BiMessageRoundedDots } from '@react-icons/all-files/bi/BiMessageRoundedDots';
 import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
 import { CgClose } from '@react-icons/all-files/cg/CgClose';
-import { fetchPatientChat } from '@/apis/Patient';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { fetchDrawing, fetchReport } from '@/apis/report';
 import { setReportData } from '@/redux/features/report/reportSlice';
@@ -56,16 +55,16 @@ export default function Chat({ pid }: ChatProps) {
     setReportId(reportId);
   };
 
-  useEffect(() => {
-    const fetchPatient = async () => {
-      const response = await fetchPatientChat(pid);
-      console.log('페이션트:', response);
-      setMessages(response.chatList);
-      //가장 마지막 리포트를 저장
-      setReportId(response.chatList[response.chatList.length - 1].reportId);
-    };
-    fetchPatient();
-  }, [pid]);
+  // useEffect(() => {
+  //   const fetchPatient = async () => {
+  //     const response = await fetchPatientChat(pid);
+  //     console.log('페이션트:', response);
+  //     setMessages(response.chatList);
+  //     //가장 마지막 리포트를 저장
+  //     setReportId(response.chatList[response.chatList.length - 1].reportId);
+  //   };
+  //   fetchPatient();
+  // }, [pid]);
 
   useEffect(() => {
     const getReport = async () => {
@@ -120,7 +119,9 @@ export default function Chat({ pid }: ChatProps) {
             </div>
             <MessaageList
               messagelist={messages}
+              setMessagelist={setMessages}
               selectReport={selectReport}
+              pid={pid}
             />
             <ChatInput />
           </div>
