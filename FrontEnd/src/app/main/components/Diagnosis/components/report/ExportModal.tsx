@@ -9,6 +9,8 @@ import CanvasOverlay from './CanvasOverlay';
 import { useAppSelector } from '@/redux/store/hooks/store';
 import { MessageType } from '../../ChatLayout';
 import { find } from '@/apis/find';
+import { fetchImpression } from '@/apis/impression';
+import { HashLoader } from 'react-spinners';
 
 const fieldOptions = ['Finding', 'Impression', 'Plan'];
 type ExportModalProps = () => void;
@@ -27,7 +29,8 @@ export default function ExportModal({
   const coordinatesFromRedux = useAppSelector((state) => state.coordinate.coordinates);
   const { reportData } = useAppSelector((state) => state.report);
   const [finding, setFinding] = useState<string>('');
-  // const [impression, setImpression] = useState<string>("");
+  const [impression, setImpression] = useState<string>('');
+  const [findingLoading, setFindingLoading] = useState<boolean>(false);
 
   const pdfRef = useRef<HTMLDivElement | null>(null);
 
@@ -37,10 +40,25 @@ export default function ExportModal({
 
   const handleFinding = async () => {
     if (reportData !== null) {
-      const data = await find(messagelist, reportData);
+      setFindingLoading(true);
+      try {
+        const data = await find(messagelist, reportData);
+        if (data) {
+          setFinding(data);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setFindingLoading(false);
+      }
+    }
+  };
+
+  const handleImpression = async () => {
+    if (reportData !== null) {
+      const data = await fetchImpression(finding, reportData);
       if (data) {
-        setFinding(data); // 이거 아님 바꿔야함
-        console.log(data);
+        setImpression(data);
       }
     }
   };
@@ -59,13 +77,6 @@ export default function ExportModal({
                 identifying any obstructive or compressive factors. Monitoring : Repeat chest
                 imaging as clinically indicated to assess for resolution or progression of
                 atelectasis.`;
-  const immpression = `Right center lobe atelectasis, potentially due to bronchial obstruction (e.g., mucus
-                plug, external compression by a nearby mass, or airway narrowing).`;
-
-  // const finding = `Increased opacity in the right lung zone, consistent with partial collapse or
-  //               insufficient expansion of the ceter to the right. No significant shift of
-  //               mediastinal structures, indicating that the atelectasis is likely due to an
-  //               obstructive or compressive process rather than volume loss.`;
 
   const handleAddField = (field: string) => {
     setSelectedFields([...selectedFields, field]);
@@ -184,21 +195,17 @@ export default function ExportModal({
             {selectedFields.includes('Finding') && (
               <div className={styles.field}>
                 <div className="font-bold text-lg">Finding</div>
-                <div className={styles.analysisBox}>{finding}</div>
-                <div className="w-full flex justify-end">
-                  <button
-                    className="text-sm underline pr-1"
-                    onClick={() => handleRemoveField('Finding')}
-                  >
-                    Remove
-                  </button>
+                <div
+                  className={`${styles.analysisBox} ${findingLoading && 'flex justify-center items-center h-[70px] p-5'}`}
+                >
+                  {findingLoading ? <HashLoader /> : finding}
                 </div>
               </div>
             )}
             {selectedFields.includes('Impression') && (
               <div className={styles.field}>
                 <div className="font-bold text-lg">Impression</div>
-                <div className={styles.analysisBox}>{immpression}</div>
+                <div className={styles.analysisBox}>{impression}</div>
                 <div className="w-full flex justify-end">
                   <button
                     className="text-sm underline pr-1"
@@ -246,6 +253,9 @@ export default function ExportModal({
                           handleAddField(option);
                           if (option === 'Finding') {
                             handleFinding();
+                          }
+                          if (option === 'Impression') {
+                            handleImpression();
                           }
                         }}
                         className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2"
