@@ -20,6 +20,7 @@ type Props = {
 
 export default function AlarmModal({ onClose }: Props) {
   const [alarms, setAlarms] = useState<Alarm[]>([]);
+  const [isFetched, setIsFetched] = useState<boolean>(false);
 
   useEffect(() => {
     // fetchAllAlarm 함수 호출 및 데이터 저장
@@ -32,6 +33,7 @@ export default function AlarmModal({ onClose }: Props) {
             new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
         );
         setAlarms(sortedData);
+        setIsFetched(true);
         console.log('알람목록', sortedData);
       }
     };
@@ -63,19 +65,24 @@ export default function AlarmModal({ onClose }: Props) {
             className={`${styles.close} cursor-pointer ml-auto`}
           />
         </div>
-        {alarms.length > 0 ? (
-          <div className={styles.item_box}>
-            {alarms.map((alarm) => (
-              <Item
-                key={alarm.id}
-                alarmId={alarm.id}
-                alarmData={alarm}
-              />
-            ))}
-          </div>
-        ) : (
-          <div>There are no notifications.</div>
-        )}
+        {
+          isFetched ? (
+            alarms.length > 0 ? (
+              <div className={styles.item_box}>
+                {alarms.map((alarm) => (
+                  <Item
+                    key={alarm.id}
+                    alarmId={alarm.id}
+                    alarmData={alarm}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div>There are no notifications.</div>
+            )
+          ) : null
+          // (예정) 여기에 스피너 추가
+        }
       </div>
     </div>
   );
