@@ -1,14 +1,24 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './SmallTabBoard.module.scss';
 import Tab from '../Tab';
 import NewTab from '../NewTab';
+import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { addTab, deleteTab, setSelectedTab } from '@/redux/features/tab/tabSlice';
 
 export default function TabBoard() {
   const { selectedIndex, tablist } = useAppSelector((state) => state.tab);
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  useEffect(() => {
+    // 상태가 업데이트되었을 때 router.push 호출
+    if (selectedIndex !== -1 && tablist[selectedIndex]) {
+      router.push(tablist[selectedIndex].pathname);
+    }
+  }, [selectedIndex, tablist, router]);
+
   const handleDelete = (id: number) => {
     dispatch(deleteTab(id));
   };
@@ -17,9 +27,9 @@ export default function TabBoard() {
     dispatch(addTab());
   };
 
-  const hadnleClick = (id: number) => {
+  const hadnleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: number) => {
+    e.stopPropagation();
     dispatch(setSelectedTab(id));
-    //탭으로 이동할때 chat방이면 pid를 통해 fetch를 한번 더
   };
   return (
     <div className={styles.container}>
@@ -28,8 +38,8 @@ export default function TabBoard() {
           key={tab.id}
           tab={tab}
           isActive={index === selectedIndex ? true : false}
-          onClick={() => hadnleClick(tab.id)}
           HandleDelete={handleDelete}
+          onClick={(e) => hadnleClick(e, tab.id)}
         />
       ))}
       <NewTab onPlus={handleCreateTab} />
