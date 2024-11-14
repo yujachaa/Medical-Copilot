@@ -24,7 +24,7 @@ export default function Popup({ onClose, isClosing }: PopupProps) {
       <div className="text-center text-lg max-1024:text-base">
         Analysis Complete!
         <br />
-        <br />
+        {/* <br /> */}
         Please review your patient&apos;s diagnostic report.
       </div>
       <button
