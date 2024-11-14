@@ -36,7 +36,7 @@ public class KafkaConsumer {
     private final NotificationService notificationService;
     private final DrawingService drawingService;
 
-    @KafkaListener(topics = "ai", groupId = "ai-group")
+    @KafkaListener(topics = "ai", groupId = "ai-group", concurrency ="1")
     public void processAiTopic(ConsumerRecord<String, AiResponseDto> record) {
         log.info("ai로부터 온 메시지 : {}", record.toString());
         AiResponseDto aiResponse = record.value();

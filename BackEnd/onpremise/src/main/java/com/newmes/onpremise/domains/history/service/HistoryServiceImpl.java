@@ -58,8 +58,9 @@ public class HistoryServiceImpl implements HistoryService {
                         String agentSummary = summaryParts.length > 0 ? summaryParts[0] : "none";
                         String diseaseSummary = summaryParts.length > 1 ? summaryParts[1] : "none";
 
-                        if (agentSummary.split(", ").length < 2 && !agentSummary.contains(entity.getAgent())) {
-                            agentSummary = updateAgentSummary(agentSummary, entity.getAgent());
+                        String newAgent = Optional.ofNullable(entity.getAgent()).orElse("");
+                        if (agentSummary.split(", ").length < 2 && !newAgent.isEmpty() && !agentSummary.contains(newAgent)) {
+                            agentSummary = updateAgentSummary(agentSummary, newAgent);
                         }
 
                         if (diseaseSummary.equals("none") && entity.getDisease() != null) {
@@ -77,7 +78,6 @@ public class HistoryServiceImpl implements HistoryService {
 
                         recentHistoryMap.put(pid, currentHistory);
                     } else {
-
                         String agent = Optional.ofNullable(entity.getAgent()).orElse("none");
                         String disease = Optional.ofNullable(entity.getDisease()).orElse("none");
                         String summary = agent + " : " + disease;
