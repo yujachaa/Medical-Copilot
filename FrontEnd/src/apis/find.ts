@@ -3,8 +3,6 @@ import { GPUURL } from './core';
 import { ReportDataType } from '@/types/report';
 
 export async function find(messagelist: MessageType[], reportData: ReportDataType) {
-  console.log(reportData);
-  console.log(messagelist);
   try {
     const response = await fetch(`${GPUURL}generate_find`, {
       cache: 'no-store',
