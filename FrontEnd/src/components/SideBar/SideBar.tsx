@@ -13,9 +13,8 @@ import Image from 'next/image';
 import UserIcon from '@/assets/images/userImg.png';
 import { FaUserLarge } from 'react-icons/fa6';
 import PatientHistory from '../PatientHistory/PatientHistory';
-import { setInit } from '@/redux/features/user/userSlice';
 import { fetchLogout } from '@/apis/fetchLogout';
-import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
+import { useAppSelector } from '@/redux/store/hooks/store';
 import AlarmModal from '../Alarm/AlarmModal';
 
 export default function SideBar() {
@@ -25,11 +24,9 @@ export default function SideBar() {
   const [isNotification, setNotification] = useState(false);
   const router = useRouter();
   const accessToken = useAppSelector<string>((state) => state.user.accessToken);
-  const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
     await fetchLogout(accessToken);
-    dispatch(setInit());
     router.push('/');
   };
 
