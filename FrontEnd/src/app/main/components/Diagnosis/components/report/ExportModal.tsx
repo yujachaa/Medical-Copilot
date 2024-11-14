@@ -11,6 +11,7 @@ import { MessageType } from '../../ChatLayout';
 import { find } from '@/apis/find';
 import { fetchImpression } from '@/apis/impression';
 import { HashLoader } from 'react-spinners';
+import { fetchPlan } from '@/apis/plan';
 
 const fieldOptions = ['Finding', 'Impression', 'Plan'];
 type ExportModalProps = () => void;
@@ -30,7 +31,10 @@ export default function ExportModal({
   const { reportData } = useAppSelector((state) => state.report);
   const [finding, setFinding] = useState<string>('');
   const [impression, setImpression] = useState<string>('');
+  const [plan, setPlan] = useState<string>('');
   const [findingLoading, setFindingLoading] = useState<boolean>(false);
+  const [impressionLoading, setImpressionLoading] = useState<boolean>(false);
+  const [planLoading, setPlanLoading] = useState<boolean>(false);
 
   const pdfRef = useRef<HTMLDivElement | null>(null);
 
@@ -56,9 +60,32 @@ export default function ExportModal({
 
   const handleImpression = async () => {
     if (reportData !== null) {
-      const data = await fetchImpression(finding, reportData);
-      if (data) {
-        setImpression(data);
+      setImpressionLoading(true);
+      try {
+        const data = await fetchImpression(finding, reportData);
+        if (data) {
+          setImpression(data);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setImpressionLoading(false);
+      }
+    }
+  };
+
+  const handlePlan = async () => {
+    if (reportData !== null) {
+      setPlanLoading(true);
+      try {
+        const data = await fetchPlan(impression, reportData);
+        if (data) {
+          setPlan(data);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setPlanLoading(false);
       }
     }
   };
@@ -72,11 +99,6 @@ export default function ExportModal({
       });
     }
   };
-
-  const plan = `Imaging : Perform a chest CT to futher evaluate the extent and cause of atelectasis,
-                identifying any obstructive or compressive factors. Monitoring : Repeat chest
-                imaging as clinically indicated to assess for resolution or progression of
-                atelectasis.`;
 
   const handleAddField = (field: string) => {
     setSelectedFields([...selectedFields, field]);
@@ -198,36 +220,58 @@ export default function ExportModal({
                 <div
                   className={`${styles.analysisBox} ${findingLoading && 'flex justify-center items-center h-[70px] p-5'}`}
                 >
-                  {findingLoading ? <HashLoader /> : finding}
+                  {findingLoading ? <HashLoader color="#5DA6F6" /> : finding}
                 </div>
+                {!findingLoading && (
+                  <div className="w-full flex justify-end">
+                    <button
+                      className="text-sm underline pr-1"
+                      onClick={() => handleRemoveField('Impression')}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
               </div>
             )}
             {selectedFields.includes('Impression') && (
               <div className={styles.field}>
                 <div className="font-bold text-lg">Impression</div>
-                <div className={styles.analysisBox}>{impression}</div>
-                <div className="w-full flex justify-end">
-                  <button
-                    className="text-sm underline pr-1"
-                    onClick={() => handleRemoveField('Impression')}
-                  >
-                    Remove
-                  </button>
+                <div
+                  className={`${styles.analysisBox} ${impressionLoading && 'flex justify-center items-center h-[70px] p-5'}`}
+                >
+                  {impressionLoading ? <HashLoader color="#5DA6F6" /> : impression}
                 </div>
+                {!impressionLoading && (
+                  <div className="w-full flex justify-end">
+                    <button
+                      className="text-sm underline pr-1"
+                      onClick={() => handleRemoveField('Impression')}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
               </div>
             )}
             {selectedFields.includes('Plan') && (
               <div className={styles.field}>
                 <div className="font-bold text-lg">Plan</div>
-                <div className={styles.analysisBox}>{plan}</div>
-                <div className="w-full flex justify-end">
-                  <button
-                    className="text-sm underline pr-1"
-                    onClick={() => handleRemoveField('Plan')}
-                  >
-                    Remove
-                  </button>
+                <div
+                  className={`${styles.analysisBox} ${planLoading && 'flex justify-center items-center h-[70px] p-5'}`}
+                >
+                  {planLoading ? <HashLoader color="#5DA6F6" /> : plan}
                 </div>
+                {!planLoading && (
+                  <div className="w-full flex justify-end">
+                    <button
+                      className="text-sm underline pr-1"
+                      onClick={() => handleRemoveField('Plan')}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
@@ -256,6 +300,9 @@ export default function ExportModal({
                           }
                           if (option === 'Impression') {
                             handleImpression();
+                          }
+                          if (option === 'Plan') {
+                            handlePlan();
                           }
                         }}
                         className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2"
