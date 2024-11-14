@@ -11,7 +11,6 @@ import { HiOutlinePencil, HiOutlineTrash, HiPencil, HiTrash } from 'react-icons/
 import { PiEraser, PiEraserFill } from 'react-icons/pi';
 import { BsCheckCircle, BsCheckCircleFill } from 'react-icons/bs';
 import RectangleOverlay from './RectangleOverlay';
-// import { updateDrawing } from '@/apis/report';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
 
@@ -21,11 +20,6 @@ interface CoordinatesGroup {
 
 type EditModalProps = {
   onClose: () => void;
-  // onSaveCoordinates: (
-  //   groups: CoordinatesGroup[],
-  //   // imageSize: { width: number; height: number },
-  // ) => void;
-  // reportId?: string;
 };
 
 export default function EditModal({ onClose }: EditModalProps) {
@@ -34,27 +28,18 @@ export default function EditModal({ onClose }: EditModalProps) {
   const [isDrawing, setIsDrawing] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [coordinatesGroups, setCoordinatesGroups] = useState<CoordinatesGroup[]>([]);
-  // Redux에서 coordinates 상태를 가져옴
   const coordinatesFromRedux = useAppSelector((state) => state.coordinate.coordinates);
   const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
 
   const [undoStack, setUndoStack] = useState<CoordinatesGroup[][]>([]);
   const [redoStack, setRedoStack] = useState<CoordinatesGroup[][]>([]);
-  // const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
   // 컴포넌트 마운트 시 Redux 상태를 로컬 상태의 초기값으로 설정
   useEffect(() => {
     setCoordinatesGroups(coordinatesFromRedux);
   }, [coordinatesFromRedux]);
-
-  // useEffect(() => {
-  //   if (imgWrapperRef.current) {
-  //     const { offsetWidth, offsetHeight } = imgWrapperRef.current;
-  //     // setImageSize({ width: offsetWidth, height: offsetHeight });
-  //   }
-  // }, [imgWrapperRef]);
 
   const saveSnapshot = () => {
     setUndoStack((prev) => {
@@ -68,8 +53,15 @@ export default function EditModal({ onClose }: EditModalProps) {
     setSelectedButton(buttonName === selectedButton ? null : buttonName);
   };
 
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const startDrawing = (
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>,
+  ) => {
     if (!canvasRef.current || !imgWrapperRef.current) return;
+    setIsChecked(false);
+
+    const isTouchEvent = (
+      e: React.TouchEvent<HTMLCanvasElement> | React.MouseEvent<HTMLCanvasElement>,
+    ): e is React.TouchEvent<HTMLCanvasElement> => 'touches' in e;
 
     if (selectedButton === 'pencil' || selectedButton === 'eraser') {
       setIsDrawing(true);
@@ -78,8 +70,12 @@ export default function EditModal({ onClose }: EditModalProps) {
 
     if (selectedButton === 'pencil') {
       const rect = imgWrapperRef.current.getBoundingClientRect();
-      const x = parseFloat(((e.clientX - rect.left) / rect.width).toFixed(3));
-      const y = parseFloat(((e.clientY - rect.top) / rect.height).toFixed(3));
+      const x = isTouchEvent(e)
+        ? parseFloat(((e.touches[0].clientX - rect.left) / rect.width).toFixed(3))
+        : parseFloat(((e.clientX - rect.left) / rect.width).toFixed(3));
+      const y = isTouchEvent(e)
+        ? parseFloat(((e.touches[0].clientY - rect.top) / rect.height).toFixed(3))
+        : parseFloat(((e.clientY - rect.top) / rect.height).toFixed(3));
 
       setCoordinatesGroups((prev) => [...prev, { points: [{ x, y }] }]);
 
@@ -91,18 +87,21 @@ export default function EditModal({ onClose }: EditModalProps) {
     }
   };
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (!isDrawing) return;
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
     if (!ctx || !imgWrapperRef.current) return;
 
+    const isTouchEvent = (
+      e: React.TouchEvent<HTMLCanvasElement> | React.MouseEvent<HTMLCanvasElement>,
+    ): e is React.TouchEvent<HTMLCanvasElement> => 'touches' in e;
+
     const rect = imgWrapperRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    // console.log(x, y);
+    const x = isTouchEvent(e) ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
+    const y = isTouchEvent(e) ? e.touches[0].clientY - rect.top : e.clientY - rect.top;
+
     if (isDrawing && selectedButton === 'eraser') {
-      // console.log('지우개!!!!!!!!!!!!!!!');
       const eraserSize = 20;
       setCoordinatesGroups((prev) => {
         const updatedGroups: CoordinatesGroup[] = [];
@@ -142,13 +141,11 @@ export default function EditModal({ onClose }: EditModalProps) {
         return updatedGroups;
       });
     } else if (isDrawing && selectedButton === 'pencil') {
-      // console.log('드로우!!!!!!!!!!!!!!!');
       ctx.lineTo(x, y);
       ctx.stroke();
 
       const relX = parseFloat((x / rect.width).toFixed(3));
       const relY = parseFloat((y / rect.height).toFixed(3));
-      // console.log(relX, relY);
       setCoordinatesGroups((prev) => {
         const updatedGroups = [...prev];
         const currentGroup = updatedGroups[updatedGroups.length - 1];
@@ -162,6 +159,7 @@ export default function EditModal({ onClose }: EditModalProps) {
 
   const handleUndo = () => {
     if (undoStack.length === 0) return;
+    setIsChecked(false);
 
     setRedoStack((prev) => [coordinatesGroups, ...prev]);
     const previousState = undoStack[undoStack.length - 1];
@@ -192,6 +190,7 @@ export default function EditModal({ onClose }: EditModalProps) {
 
   const handleRedo = () => {
     if (redoStack.length === 0) return;
+    setIsChecked(false);
 
     setUndoStack((prev) => [...prev, coordinatesGroups]);
     const nextState = redoStack[0];
@@ -221,10 +220,11 @@ export default function EditModal({ onClose }: EditModalProps) {
   };
 
   const handleTrash = () => {
-    if (confirm('모든 좌표를 지우겠습니까? 복구할 수 없습니다.')) {
+    if (confirm('모든 기록이 지워집니다.')) {
       setCoordinatesGroups([]);
       setUndoStack([]);
       setRedoStack([]);
+      setIsChecked(false);
 
       if (canvasRef.current) {
         const ctx = canvasRef.current.getContext('2d');
@@ -236,23 +236,13 @@ export default function EditModal({ onClose }: EditModalProps) {
   };
 
   const handleCheck = async () => {
-    // onSaveCoordinates(coordinatesGroups, imageSize);
-    // onSaveCoordinates(coordinatesGroups);
     dispatch(setCoordinates(coordinatesGroups));
     console.log('좌표', coordinatesGroups);
     setIsChecked(true);
-    // if (reportId) {
-    //   const data = await updateDrawing(reportId, coordinatesGroups);
-    //   console.log('업데이트 후 응답!!!!!!!!!!:', data);
-    // }
   };
 
   const handleClose = () => {
-    if (
-      coordinatesGroups.length > 0 &&
-      !isChecked &&
-      confirm('저장하지 않은 정보는 사라집니다. 나가시겠습니까?')
-    ) {
+    if (!isChecked && confirm('저장하지 않은 정보는 사라집니다. 나가시겠습니까?')) {
       setCoordinatesGroups(coordinatesFromRedux || []);
       onClose();
     } else {
@@ -272,7 +262,6 @@ export default function EditModal({ onClose }: EditModalProps) {
     ctx.strokeStyle = 'yellow';
     ctx.lineWidth = 2;
 
-    // 처음에만 좌표 그룹을 그리도록 설정
     if (coordinatesFromRedux.length > 0 && !isDrawing) {
       coordinatesFromRedux.forEach((group) => {
         if (group.points.length > 0) {
@@ -293,8 +282,14 @@ export default function EditModal({ onClose }: EditModalProps) {
   }, [coordinatesFromRedux]);
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
+    <div
+      className={styles.modalOverlay}
+      onClick={(e) => e.stopPropagation()} // 클릭 이벤트 전파 방지
+    >
+      <div
+        className={styles.modalContent}
+        onClick={(e) => e.stopPropagation()} // modalContent 내부 클릭만 허용
+      >
         <CgClose
           className="absolute right-2 top-2 cursor-pointer text-rgb0.5"
           onClick={handleClose}
@@ -319,6 +314,22 @@ export default function EditModal({ onClose }: EditModalProps) {
               onMouseMove={draw}
               onMouseUp={stopDrawing}
               onMouseLeave={stopDrawing}
+              onTouchStart={(e) => {
+                e.preventDefault(); // 터치 이벤트와 스크롤이 겹치지 않도록 방지
+                startDrawing(e);
+              }}
+              onTouchMove={(e) => {
+                e.preventDefault();
+                draw(e);
+              }}
+              onTouchEnd={(e) => {
+                e.preventDefault();
+                stopDrawing();
+              }}
+              onTouchCancel={(e) => {
+                e.preventDefault();
+                stopDrawing();
+              }}
             />
           </div>
         </div>
