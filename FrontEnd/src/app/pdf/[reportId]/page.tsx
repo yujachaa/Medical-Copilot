@@ -9,6 +9,9 @@ import CanvasOverlay from '@/app/main/components/Diagnosis/components/report/Can
 import { useAppSelector } from '@/redux/store/hooks/store';
 
 export default function PDFPage() {
+  const finding = useAppSelector((state) => state.fip.finding);
+  const impression = useAppSelector((state) => state.fip.impression);
+  const plan = useAppSelector((state) => state.fip.plan);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const imgWrapperRef = useRef<HTMLDivElement | null>(null);
   const pdfRef = useRef<HTMLDivElement | null>(null);
@@ -25,18 +28,6 @@ export default function PDFPage() {
       });
     }
   };
-
-  const plan = `Imaging : Perform a chest CT to futher evaluate the extent and cause of atelectasis,
-                identifying any obstructive or compressive factors. Monitoring : Repeat chest
-                imaging as clinically indicated to assess for resolution or progression of
-                atelectasis.`;
-  const immpression = `Right center lobe atelectasis, potentially due to bronchial obstruction (e.g., mucus
-                plug, external compression by a nearby mass, or airway narrowing).`;
-
-  const finding = `Increased opacity in the right lung zone, consistent with partial collapse or
-                insufficient expansion of the ceter to the right. No significant shift of
-                mediastinal structures, indicating that the atelectasis is likely due to an
-                obstructive or compressive process rather than volume loss.`;
 
   return (
     <div
@@ -65,6 +56,7 @@ export default function PDFPage() {
                 >
                   <div className={styles.oneInfo}>
                     <div
+                      id="element-id"
                       // className={`font-bold w-1/2 ${label === 'Visit Date' ? 'tracking-tighter max-1024:tracking-[-.13em]' : ''} max-1024:text-sm max-1024:w-1/2`}
                       className={`font-bold w-[40%] max-1024:text-sm`}
                     >
@@ -140,7 +132,7 @@ export default function PDFPage() {
 
         <div className={styles.field}>
           <div className="font-bold text-lg">Impression</div>
-          <div className={styles.analysisBox}>{immpression}</div>
+          <div className={styles.analysisBox}>{impression}</div>
         </div>
 
         <div className={styles.field}>
