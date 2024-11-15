@@ -33,7 +33,7 @@ export default function Main() {
             onClick={toggleIcons}
           >
             <SelectTabIcons
-              logoType={patient.modality}
+              logoType={tablist[selectedIndex].type}
               className={'w-[60px] h-[60px]'}
             />
           </div>

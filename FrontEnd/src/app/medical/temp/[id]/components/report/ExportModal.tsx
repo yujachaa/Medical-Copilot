@@ -7,7 +7,7 @@ import { fetchPDF } from '@/apis/fetchPDF';
 import RectangleOverlay from './RectangleOverlay';
 import CanvasOverlay from './CanvasOverlay';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import { MessageType } from '../../ChatLayout';
+import { MessageType } from '../../TempLayout';
 import { find } from '@/apis/find';
 import { fetchImpression } from '@/apis/impression';
 import { HashLoader } from 'react-spinners';
@@ -46,7 +46,9 @@ export default function ExportModal({
   }, [dispatch]);
 
   const handleDownloadPDF = async () => {
-    fetchPDF();
+    if (reportData) {
+      fetchPDF(reportData.id);
+    }
   };
 
   const handleFinding = async () => {

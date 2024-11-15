@@ -1,36 +1,60 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from './Input.module.scss';
 import Send from '@/assets/images/send.svg';
 import { FaDatabase } from '@react-icons/all-files/fa/FaDatabase';
 import dynamic from 'next/dynamic';
 const PatientDB = dynamic(() => import('@/components/PatientDB/PatientDB'), { ssr: false });
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import { addTempTab } from '@/redux/features/tab/tabSlice';
-import { Patient } from '@/redux/features/main/mainSlice';
+import { addTempTab, Patient } from '@/redux/features/tab/tabSlice';
 import { fetchCallAI } from '@/apis/Patient';
 import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from 'next/navigation';
-
+import { PatientReqeust } from '@/redux/features/tab/tabSlice';
+import { jwtDecode } from 'jwt-decode';
 const id = uuidv4();
 export default function Input() {
   const [isPatientModal, setPatientModal] = useState<boolean>(false);
   const router = useRouter();
-  const { patientRequest, patient } = useAppSelector((state) => state.main);
+  const { tablist, selectedIndex } = useAppSelector((state) => state.tab);
+  const { accessToken } = useAppSelector((state) => state.user);
   const [input, setInput] = useState('');
   const dispatch = useAppDispatch();
   const CloseModal = () => {
     setPatientModal(false);
   };
 
+  interface DecodedToken {
+    sub: string;
+    id: string;
+    email: string;
+    role: string;
+    exp: number;
+    iat: number;
+  }
+  const pid = useMemo(() => {
+    // memeberId가 맞는데 fetch를 같이 쓰고 있어서 pid로 했어요.
+    const decodedToken = jwtDecode<DecodedToken>(accessToken);
+    return decodedToken.id;
+  }, [accessToken]);
+
   const handleSend = async (data: Patient) => {
-    //여기에 AI에게 명령을 보내는 코드를 작성
-    const postdata = { ...patientRequest };
-    postdata.comments = input;
-    //환자가 선택이 안되면 그 채팅 모아두는 곳으로 전송 -> 이게 mainSlice의 initial값으로 사용될듯!
-    dispatch(addTempTab({ patient: data, uuid: id }));
-    router.replace(`/medical/temp/${id}`);
-    await fetchCallAI(postdata);
+    //환자를 선택하지 않았을때
+    if (tablist[selectedIndex].patient.pid === '') {
+      dispatch(
+        addTempTab({ patient: data, uuid: id + `?comment=${input}&question=true&memberId=${pid}` }),
+      );
+      router.replace(`/medical/temp/${id}?comment=${input}&question=true&memberId=${pid}`);
+    }
+    //환자를 선택했을때
+    else {
+      const postdata: PatientReqeust = { ...tablist[selectedIndex].patientRequest! };
+      postdata.comments = input;
+      //환자가 선택이 안되면 그 채팅 모아두는 곳으로 전송 -> 이게 mainSlice의 initial값으로 사용될듯!
+      dispatch(addTempTab({ patient: data, uuid: id }));
+      router.replace(`/medical/temp/${id}`);
+      await fetchCallAI(postdata);
+    }
   };
 
   const handleOnchage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +63,9 @@ export default function Input() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.pid}>PID : {patient.pid}</div>
+      <div className={styles.pid}>
+        PID : {tablist[selectedIndex].patient !== null && tablist[selectedIndex].patient!.pid}
+      </div>
       <label
         className={styles.file}
         onClick={() => setPatientModal(true)}
@@ -56,7 +82,7 @@ export default function Input() {
       />
       <Send
         className={'w-7 text-clip blue-logo ml-auto mr-5 cursor-pointer'}
-        onClick={() => handleSend(patient)}
+        onClick={() => handleSend(tablist[selectedIndex].patient!)}
       />
     </div>
   );

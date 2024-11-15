@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { useAppSelector } from '@/redux/store/hooks/store';
 import { updateDrawing, updateReport } from '@/apis/report';
-import { MessageType } from '../../ChatLayout';
+import { MessageType } from '../../TempLayout';
 const ExportModal = dynamic(() => import('./ExportModal'));
 
 export default function ReportBtn({ messagelist }: { messagelist: MessageType[] }) {

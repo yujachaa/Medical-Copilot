@@ -15,7 +15,7 @@ export default function TabBoard() {
   useEffect(() => {
     // 상태가 업데이트되었을 때 router.push 호출
     if (selectedIndex !== -1 && tablist[selectedIndex]) {
-      router.push(tablist[selectedIndex].pathname);
+      router.replace(tablist[selectedIndex].pathname);
     }
   }, [selectedIndex, tablist, router]);
 
@@ -29,6 +29,7 @@ export default function TabBoard() {
 
   const hadnleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: number) => {
     e.stopPropagation();
+    e.preventDefault();
     dispatch(setSelectedTab(id));
   };
   return (

@@ -1,6 +1,6 @@
 import Message from './Message';
 import styles from './MessageList.module.scss';
-import { MessageType } from '../../ChatLayout';
+import { MessageType } from '../../TempLayout';
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { fetchMessages } from '@/apis/message';
 

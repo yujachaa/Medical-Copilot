@@ -8,8 +8,8 @@ import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircl
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchPatient } from '@/apis/Patient';
 import { useAppDispatch } from '@/redux/store/hooks/store';
-import { setPatient } from '@/redux/features/main/mainSlice';
 import Modality from './Modality';
+import { setPatient } from '@/redux/features/tab/tabSlice';
 
 type Props = {
   onClose: () => void;
