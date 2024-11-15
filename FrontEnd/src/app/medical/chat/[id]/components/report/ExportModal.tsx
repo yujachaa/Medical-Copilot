@@ -13,6 +13,7 @@ import { fetchImpression } from '@/apis/impression';
 import { HashLoader } from 'react-spinners';
 import { fetchPlan } from '@/apis/plan';
 import { setFinding, setImpression, setInit, setPlan } from '@/redux/features/fip/fipSlice';
+import { fetchInitfip } from '@/apis/fip';
 
 const fieldOptions = ['Finding', 'Impression', 'Plan'];
 type ExportModalProps = () => void;
@@ -40,13 +41,20 @@ export default function ExportModal({
   const [count, setCount] = useState<number>(0);
 
   const pdfRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (reportData) {
+      fetchInitfip(reportData.id);
+    }
+  }, [reportData]);
 
   useEffect(() => {
     dispatch(setInit());
   }, [dispatch]);
 
   const handleDownloadPDF = async () => {
-    fetchPDF();
+    if (reportData) {
+      fetchPDF(reportData.id);
+    }
   };
 
   const handleFinding = async () => {
