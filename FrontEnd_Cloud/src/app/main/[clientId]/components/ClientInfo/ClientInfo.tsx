@@ -3,12 +3,18 @@ import styles from './ClientInfo.module.scss';
 import { useCallback, useEffect, useState } from 'react';
 import { fetchLimit } from '@/apis/fetchLimit';
 import { useAppDispatch } from '@/redux/store/hooks/store';
-import { setClientModifyModal, setWarningModal } from '@/redux/features/modal/modalSlice';
+import {
+  setClientModifyModal,
+  setIsStarted,
+  setWarningModal,
+} from '@/redux/features/modal/modalSlice';
 import { fetchClientWeekUsage } from '@/apis/fetchClientWeekUsage';
 
 export default function ClientInfo({ data }: { data: clientDetail }) {
   const dispatch = useAppDispatch();
   const [usage, setUsage] = useState<number>(0);
+  // const [isStarted, setIsStarted] = useState<boolean>(false);
+
   useEffect(() => {
     async function getUsage() {
       const fetchedUsage = await fetchClientWeekUsage(data);
@@ -18,10 +24,13 @@ export default function ClientInfo({ data }: { data: clientDetail }) {
     }
     getUsage();
   }, [data]);
+
   const handleLimit = useCallback(async () => {
     const data1 = await fetchLimit(data.key);
     if (data1 && data1.msg === 'success') {
-      window.location.reload();
+      dispatch(setIsStarted(true));
+      alert('The service has started successfully.');
+      console.log('시작 후 데이터:', data);
     }
   }, [data.key]);
 
@@ -43,8 +52,10 @@ export default function ClientInfo({ data }: { data: clientDetail }) {
             className={`${data.availability ? styles.stopColor : styles.startColor} flex justify-center items-center cursor-pointer`}
             onClick={() => {
               if (data.availability) {
+                console.log('어베일러빌리티 트루');
                 dispatch(setWarningModal());
               } else {
+                console.log('어베일러빌리티 폴스');
                 handleLimit();
               }
             }}
