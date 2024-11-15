@@ -7,6 +7,15 @@ export default function UsageByModuleGraph({
 }: {
   list: { id: string; color: string; data: { x: string; y: number }[] }[];
 }) {
+  const tooltipStyle = {
+    background: 'white',
+    color: 'inherit',
+    fontSize: 'inherit',
+    borderRadius: '2px',
+    boxShadow: 'rgba(0, 0, 0, 0.25) 0px 1px 2px',
+    padding: '5px 9px',
+  };
+
   return (
     <>
       {list.length > 0 && (
@@ -18,6 +27,8 @@ export default function UsageByModuleGraph({
             type: 'linear',
             stacked: false,
             reverse: false,
+            // min: 0,
+            // max: 100,
           }}
           yFormat=" >-.0f"
           axisTop={null}
@@ -74,6 +85,15 @@ export default function UsageByModuleGraph({
               ],
             },
           ]}
+          tooltip={(item) => {
+            return (
+              <div style={tooltipStyle}>
+                <b>
+                  {item.point.id.startsWith('c') ? 'CXR' : 'MG'} : {item.point.data.yFormatted}
+                </b>
+              </div>
+            );
+          }}
         />
       )}
     </>

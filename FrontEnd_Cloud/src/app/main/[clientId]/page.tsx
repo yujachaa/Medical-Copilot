@@ -14,7 +14,7 @@ import ClientModify from './components/ClientModify/ClientModify';
 
 export default function ClientDetailPage({ params }: { params: { clientId: string } }) {
   const [clientDetail, setClientDetail] = useState<clientDetail>();
-  const [standard, setStandard] = useState<number>(0);
+  const [standard, setStandard] = useState<number>(2);
   const warningModal = useAppSelector((state) => state.modal.warning);
   const clientModifyModal = useAppSelector((state) => state.modal.clientModify);
   useEffect(() => {

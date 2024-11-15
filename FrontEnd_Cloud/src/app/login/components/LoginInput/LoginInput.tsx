@@ -36,14 +36,17 @@ export default function LoginInput() {
           onChange={(event) => {
             setPassword(event.target.value);
           }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              handleLogin();
+            }
+          }}
         />
       </div>
       <div className={`${styles.btn} flex w-full`}>
         <div
           className={`${styles.signup} w-[422px] h-[64px] flex justify-center items-center cursor-pointer`}
-          onClick={() => {
-            handleLogin();
-          }}
+          onClick={handleLogin}
         >
           Login
         </div>

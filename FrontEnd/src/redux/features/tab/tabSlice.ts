@@ -9,6 +9,7 @@ export type tab = {
   type: PluginType;
   tabType: TabType;
   pid: number;
+  pathname: string;
 };
 
 type tabProps = {
@@ -18,13 +19,42 @@ type tabProps = {
   selectedIndex: number;
 };
 
+type changeTab = {
+  pathname: string;
+  title: string;
+};
+
 const initialState: tabProps = {
   tablist: [
-    { id: 0, title: 'Default Plugin', type: 'MG', tabType: 'default', pid: -1 },
-    { id: 1, title: '1 Dignosis', type: 'CXR', tabType: 'chat', pid: 1 },
+    {
+      id: 0,
+      title: 'Medical Copilot',
+      type: 'MG',
+      tabType: 'default',
+      pid: -1,
+      pathname: '/medical/main',
+    },
+    { id: 1, title: 'My Chat', type: 'CXR', tabType: 'chat', pid: 1, pathname: '/medical/mychat' },
+    {
+      id: 2,
+      title: 'My Page',
+      type: 'MG',
+      tabType: 'chat',
+      pid: 1,
+      pathname: '/medical/mypage?t=profile',
+    },
+    { id: 3, title: 'My temp', type: 'MG', tabType: 'chat', pid: 1, pathname: '/medical/temp/2' },
+    {
+      id: 4,
+      title: '1 Dignosis',
+      type: 'CXR',
+      tabType: 'chat',
+      pid: 1,
+      pathname: '/medical/chat/1',
+    },
   ],
   selectedTab: 0,
-  increment: 1,
+  increment: 5,
   selectedIndex: 0,
 };
 
@@ -37,7 +67,6 @@ const tabSlices = createSlice({
       if (index !== -1) {
         state.selectedIndex = index;
       }
-      state.selectedTab = action.payload;
     },
     addTab: (state) => {
       const newTab: tab = {
@@ -46,6 +75,7 @@ const tabSlices = createSlice({
         type: 'MG',
         tabType: 'default',
         pid: -1,
+        pathname: '/medical/main',
       };
       state.tablist.push(newTab);
       state.selectedIndex = state.tablist.length - 1;
@@ -87,8 +117,19 @@ const tabSlices = createSlice({
         state.selectedIndex = index;
       }
     },
+    //로고 클릭했을때 탭 메인으로 이동
+    goMain: (state) => {
+      state.tablist[state.selectedIndex].pathname = '/medical/main';
+      state.tablist[state.selectedIndex].title = 'medical Copilot';
+    },
+    //선택된 탭의 종류가 바뀐다.
+    setTabPathname: (state, action: PayloadAction<changeTab>) => {
+      state.tablist[state.selectedIndex].pathname = action.payload.pathname;
+      state.tablist[state.selectedIndex].title = action.payload.title;
+    },
   },
 });
 
-export const { setSelectedTab, addTab, deleteTab, initialIndex, moveTab } = tabSlices.actions;
+export const { setSelectedTab, addTab, deleteTab, initialIndex, moveTab, goMain, setTabPathname } =
+  tabSlices.actions;
 export default tabSlices;

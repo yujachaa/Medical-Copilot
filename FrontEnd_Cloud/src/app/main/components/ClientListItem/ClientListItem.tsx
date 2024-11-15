@@ -4,6 +4,7 @@ import { FaChevronRight } from 'react-icons/fa';
 import { client } from '@/types/client';
 
 export default function ClientListItem({ client }: { client: client }) {
+  console.log('클라이언트', client);
   return (
     <Link
       className={`${styles.main} w-full h-[110px] rounded-[10px] flex pl-4 pt-3 pr-2 pb-3`}
@@ -15,7 +16,12 @@ export default function ClientListItem({ client }: { client: client }) {
         </span>
         <span className={`${styles.clientName}`}>{client.comName}</span>
         <div className={`${styles.tag} flex gap-6 h-[35px] justify-between`}>
-          <span className={`${styles.usage}`}>{client.totalCount}</span>
+          <span className={`${styles.usage} relative`}>
+            {client.totalCount}
+            {/* <div className="absolute bottom-1 right-1 text-[12px] "> */}/
+            {checkGrade(client.grade)}
+            {/* </div> */}
+          </span>
           <span className={`${styles.week}`}>{client.subscription}weeks</span>
           <span
             style={
@@ -33,3 +39,10 @@ export default function ClientListItem({ client }: { client: client }) {
     </Link>
   );
 }
+
+const checkGrade = (grade: string) => {
+  if (grade === 'DEFAULT') return 50;
+  if (grade === 'SILVER') return 100;
+  if (grade === 'GOLD') return 200;
+  if (grade === 'PLATINUM') return 500;
+};

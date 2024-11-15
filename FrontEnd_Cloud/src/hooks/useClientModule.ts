@@ -5,9 +5,9 @@ import { getWeekRange } from '@/utils/getWeek';
 import { useEffect, useState } from 'react';
 
 type data = {
-  csr: number[];
+  cxr: number[];
   mg: number[];
-  capsule: number[];
+  // capsule: number[];
 };
 
 type result = {
@@ -18,11 +18,12 @@ type result = {
 
 export function useClientModule(standard: number, serialKey: string) {
   const [list, setList] = useState<result>([]);
-
+  console.log('여기여기');
   useEffect(() => {
     const handleTotalData = async () => {
       const data: data = await fetchClientModule(standard, serialKey);
       if (data) {
+        console.log(data);
         const newList: result = Object.entries(data).map(([key, value]) => ({
           id: key,
           color: 'hsl(166, 70%, 50%)',
@@ -36,7 +37,8 @@ export function useClientModule(standard: number, serialKey: string) {
             y: data1,
           })),
         }));
-        setList(newList);
+        console.log(newList);
+        setList(newList.slice(0, -1));
       }
     };
     handleTotalData();

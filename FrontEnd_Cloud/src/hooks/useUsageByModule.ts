@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 type data = {
   csr: number[];
   mg: number[];
-  capsule: number[];
+  // capsule: number[];
 };
 
 type result = {
@@ -36,7 +36,9 @@ export function useUsageByModule(standard: number) {
             y: data1,
           })),
         }));
-        setList(newList);
+
+        console.log(newList);
+        setList(newList.slice(0, -1));
       }
     };
     handleTotalData();
