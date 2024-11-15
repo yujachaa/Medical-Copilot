@@ -4,13 +4,22 @@ import styles from './ChatInput.module.scss';
 import { FaDatabase } from '@react-icons/all-files/fa/FaDatabase';
 import Send from '@/assets/images/send.svg';
 import { useState } from 'react';
-import PatientDB from '@/components/PatientDB/PatientDB';
+import FilteredPatientDB from './PatientDB/FilteredPatientDB';
 
 export default function ChatInput() {
   const [isPatientModal, setPatientModal] = useState<boolean>(false);
+  const [isNewDb, setIsNewDb] = useState<boolean>(false);
 
   const CloseModal = () => {
     setPatientModal(false);
+  };
+
+  const clickSend = () => {
+    if (isNewDb) {
+      //새 db 선택한경우 -> 에이전트 요청
+    } else {
+      //후속질문
+    }
   };
 
   return (
@@ -22,11 +31,22 @@ export default function ChatInput() {
 
       <input
         className={styles.chatInput}
-        placeholder="메시지를 입력하세요..."
+        placeholder="Enter a message"
+        onKeyDown={(e) => {
+          if (e.key === 'enter') clickSend();
+        }}
       />
-      <Send className={styles.sendIcon} />
+      <Send
+        className={styles.sendIcon}
+        onClick={clickSend}
+      />
 
-      {isPatientModal && <PatientDB onClose={CloseModal} />}
+      {isPatientModal && (
+        <FilteredPatientDB
+          onClose={CloseModal}
+          newDbFlag={setIsNewDb}
+        />
+      )}
     </div>
   );
 }
