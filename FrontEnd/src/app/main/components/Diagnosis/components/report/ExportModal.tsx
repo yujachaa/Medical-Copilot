@@ -1,17 +1,18 @@
 import { CgClose } from '@react-icons/all-files/cg/CgClose';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './ExportModal.module.scss';
 import Image from 'next/image';
 import xrayDefault from '@/assets/images/xray-default.webp';
 import { fetchPDF } from '@/apis/fetchPDF';
 import RectangleOverlay from './RectangleOverlay';
 import CanvasOverlay from './CanvasOverlay';
-import { useAppSelector } from '@/redux/store/hooks/store';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { MessageType } from '../../ChatLayout';
 import { find } from '@/apis/find';
 import { fetchImpression } from '@/apis/impression';
 import { HashLoader } from 'react-spinners';
 import { fetchPlan } from '@/apis/plan';
+import { setFinding, setImpression, setInit, setPlan } from '@/redux/features/fip/fipSlice';
 
 const fieldOptions = ['Finding', 'Impression', 'Plan'];
 type ExportModalProps = () => void;
@@ -22,6 +23,7 @@ export default function ExportModal({
   onClose: ExportModalProps;
   messagelist: MessageType[];
 }) {
+  const dispatch = useAppDispatch();
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -29,14 +31,19 @@ export default function ExportModal({
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const coordinatesFromRedux = useAppSelector((state) => state.coordinate.coordinates);
   const { reportData } = useAppSelector((state) => state.report);
-  const [finding, setFinding] = useState<string>('');
-  const [impression, setImpression] = useState<string>('');
-  const [plan, setPlan] = useState<string>('');
+  const finding = useAppSelector((state) => state.fip.finding);
+  const impression = useAppSelector((state) => state.fip.impression);
+  const plan = useAppSelector((state) => state.fip.plan);
   const [findingLoading, setFindingLoading] = useState<boolean>(false);
   const [impressionLoading, setImpressionLoading] = useState<boolean>(false);
   const [planLoading, setPlanLoading] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(0);
 
   const pdfRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    dispatch(setInit());
+  }, [dispatch]);
 
   const handleDownloadPDF = async () => {
     fetchPDF();
@@ -48,7 +55,7 @@ export default function ExportModal({
       try {
         const data = await find(messagelist, reportData);
         if (data) {
-          setFinding(data);
+          dispatch(setFinding(data));
         }
       } catch (error) {
         console.log(error);
@@ -64,7 +71,7 @@ export default function ExportModal({
       try {
         const data = await fetchImpression(finding, reportData);
         if (data) {
-          setImpression(data);
+          dispatch(setImpression(data));
         }
       } catch (error) {
         console.log(error);
@@ -80,7 +87,7 @@ export default function ExportModal({
       try {
         const data = await fetchPlan(impression, reportData);
         if (data) {
-          setPlan(data);
+          dispatch(setPlan(data));
         }
       } catch (error) {
         console.log(error);
@@ -103,7 +110,6 @@ export default function ExportModal({
   const handleAddField = (field: string) => {
     setSelectedFields([...selectedFields, field]);
     setDropdownOpen(false);
-    console.log(selectedFields);
   };
 
   const handleRemoveField = (field: string) => {
@@ -222,11 +228,14 @@ export default function ExportModal({
                 >
                   {findingLoading ? <HashLoader color="#5DA6F6" /> : finding}
                 </div>
-                {!findingLoading && (
+                {count === 1 && !findingLoading && (
                   <div className="w-full flex justify-end">
                     <button
                       className="text-sm underline pr-1"
-                      onClick={() => handleRemoveField('Impression')}
+                      onClick={() => {
+                        handleRemoveField('Impression');
+                        setCount((prev) => prev - 1);
+                      }}
                     >
                       Remove
                     </button>
@@ -242,11 +251,14 @@ export default function ExportModal({
                 >
                   {impressionLoading ? <HashLoader color="#5DA6F6" /> : impression}
                 </div>
-                {!impressionLoading && (
+                {count === 2 && !impressionLoading && (
                   <div className="w-full flex justify-end">
                     <button
                       className="text-sm underline pr-1"
-                      onClick={() => handleRemoveField('Impression')}
+                      onClick={() => {
+                        handleRemoveField('Impression');
+                        setCount((prev) => prev - 1);
+                      }}
                     >
                       Remove
                     </button>
@@ -262,11 +274,14 @@ export default function ExportModal({
                 >
                   {planLoading ? <HashLoader color="#5DA6F6" /> : plan}
                 </div>
-                {!planLoading && (
+                {count === 3 && !planLoading && (
                   <div className="w-full flex justify-end">
                     <button
                       className="text-sm underline pr-1"
-                      onClick={() => handleRemoveField('Plan')}
+                      onClick={() => {
+                        handleRemoveField('Plan');
+                        setCount((prev) => prev - 1);
+                      }}
                     >
                       Remove
                     </button>
@@ -288,12 +303,13 @@ export default function ExportModal({
 
               {dropdownOpen && (
                 <div className="w-fit bg-white shadow-md rounded-md p-2 text-blue-btn border-solid border border-black/20">
-                  {fieldOptions
-                    .filter((option) => !selectedFields.includes(option))
-                    .map((option, index) => (
+                  {fieldOptions.map((option, index) => {
+                    if (index !== count) return null;
+                    return (
                       <div
                         key={index}
                         onClick={() => {
+                          setCount((prev) => prev + 1);
                           handleAddField(option);
                           if (option === 'Finding') {
                             handleFinding();
@@ -309,7 +325,8 @@ export default function ExportModal({
                       >
                         {option}
                       </div>
-                    ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
