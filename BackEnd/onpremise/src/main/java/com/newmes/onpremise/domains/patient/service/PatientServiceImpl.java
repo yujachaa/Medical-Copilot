@@ -1,6 +1,7 @@
 package com.newmes.onpremise.domains.patient.service;
 
 import com.newmes.onpremise.domains.patient.domain.Modality;
+import com.newmes.onpremise.domains.patient.domain.Patient;
 import com.newmes.onpremise.domains.patient.dto.request.PatientRequestDto;
 import com.newmes.onpremise.domains.patient.dto.response.PatientResponseDto;
 import com.newmes.onpremise.domains.patient.entity.PatientEntity;
@@ -39,40 +40,16 @@ public class PatientServiceImpl implements PatientService {
                 .map(PatientEntity::getImage)
                 .orElseThrow(() -> new PatientNotFoundException(pid, agent));
     }
-
     @Override
-    public List<PatientResponseDto> searchPatients(String query) throws IOException {
+    public List<Patient> searchPatients(String query) throws IOException {
         return patientRepositoryCustom.searchPatientsByKeyword(query)
                 .stream()
-                .collect(Collectors.groupingBy(
-                        patient -> patient.getPID() + "_" + patient.getVisitDate(),
-                        Collectors.toList()
-                ))
-                .entrySet().stream()
-                .map(entry -> {
-                    String[] keys = entry.getKey().split("_");
-                    String pid = keys[0];
-                    LocalDate visitDate = LocalDate.parse(keys[1]);
-
-                    List<PatientEntity> patients = entry.getValue();
-
-                    String sex = patients.get(0).getSex().toString();
-                    int age = patients.get(0).getAge();
-                    String parsedModality = parseModality(
-                            patients.stream().map(PatientEntity::getModality).collect(Collectors.toList())
-                    );
-
-                    return PatientResponseDto.builder()
-                            .PID(pid)
-                            .sex(sex)
-                            .age(age)
-                            .modality(parsedModality)
-                            .visitDate(visitDate)
-                            .build();
-                })
+                .map(Patient::from)
                 .sorted((p1, p2) -> p2.getVisitDate().compareTo(p1.getVisitDate()))
                 .collect(Collectors.toList());
     }
+
+
 
 
     @Override
@@ -82,42 +59,18 @@ public class PatientServiceImpl implements PatientService {
                 .collect(Collectors.toList());
     }
     @Override
-    public Page<PatientResponseDto> getRecentPatients(int page, int size) {
+    public Page<Patient> getRecentPatients(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("visitDate").descending());
+        Page<PatientEntity> patientEntities = patientRepository.findAll(pageRequest);
 
-        List<PatientResponseDto> recentPatients = patientRepository.findAll(pageRequest)
+        List<Patient> patients = patientEntities
                 .stream()
-                .collect(Collectors.groupingBy(
-                        patient -> patient.getPID() + "_" + patient.getVisitDate(),
-                        Collectors.toList()
-                ))
-                .entrySet().stream()
-                .map(entry -> {
-                    String[] keys = entry.getKey().split("_");
-                    String pid = keys[0];
-                    LocalDate visitDate = LocalDate.parse(keys[1]);
-
-                    List<PatientEntity> patients = entry.getValue();
-
-                    String sex = patients.get(0).getSex().toString();
-                    int age = patients.get(0).getAge();
-                    String parsedModality = parseModality(
-                            patients.stream().map(PatientEntity::getModality).collect(Collectors.toList())
-                    );
-
-                    return PatientResponseDto.builder()
-                            .PID(pid)
-                            .sex(sex)
-                            .age(age)
-                            .modality(parsedModality)
-                            .visitDate(visitDate)
-                            .build();
-                })
-                .sorted((p1, p2) -> p2.getVisitDate().compareTo(p1.getVisitDate()))
+                .map(Patient::from)
                 .collect(Collectors.toList());
-
-        return new PageImpl<>(recentPatients, pageRequest, recentPatients.size());
+        return new PageImpl<>(patients, pageRequest, patientEntities.getTotalElements());
     }
+
+
 
 
     private String parseModality(List<Modality> modalities) {
