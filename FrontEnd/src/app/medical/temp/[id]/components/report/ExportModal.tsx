@@ -13,6 +13,7 @@ import { fetchImpression } from '@/apis/impression';
 import { HashLoader } from 'react-spinners';
 import { fetchPlan } from '@/apis/plan';
 import { setFinding, setImpression, setInit, setPlan } from '@/redux/features/fip/fipSlice';
+import { fetchfipSave } from '@/apis/fip';
 
 const fieldOptions = ['Finding', 'Impression', 'Plan'];
 type ExportModalProps = () => void;
@@ -47,7 +48,14 @@ export default function ExportModal({
 
   const handleDownloadPDF = async () => {
     if (reportData) {
+      console.log(reportData.id);
       fetchPDF(reportData.id);
+    }
+  };
+
+  const handleSave = async () => {
+    if (reportData) {
+      await fetchfipSave(reportData.id, finding, impression, plan);
     }
   };
 
@@ -335,7 +343,12 @@ export default function ExportModal({
           </div>
         </div>
         <div className={styles.btnArea}>
-          <button className="outline outline-blue-btn text-blue-btn px-3 py-2 rounded-md hover:text-white hover:bg-blue-btn">
+          <button
+            className="outline outline-blue-btn text-blue-btn px-3 py-2 rounded-md hover:text-white hover:bg-blue-btn"
+            onClick={() => {
+              handleSave();
+            }}
+          >
             Save
           </button>
           <button
