@@ -46,7 +46,9 @@ export default function ExportModal({
   }, [dispatch]);
 
   const handleDownloadPDF = async () => {
-    fetchPDF();
+    if (reportData) {
+      fetchPDF(reportData.id);
+    }
   };
 
   const handleFinding = async () => {
