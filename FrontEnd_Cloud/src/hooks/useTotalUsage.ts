@@ -16,7 +16,8 @@ export function useTotalUsage() {
           value: value as number,
           color: 'hsl(60, 70%, 50%)',
         }));
-        setList(newList);
+        console.log('여기여기여기', newList);
+        setList(newList.slice(0, -1));
       }
     };
     handleTotalData();

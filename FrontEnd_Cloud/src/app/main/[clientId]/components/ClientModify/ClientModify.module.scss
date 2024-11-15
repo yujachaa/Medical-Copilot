@@ -5,7 +5,7 @@
   width: 100vw;
   height: 100vh;
   left: 0;
-  background-color: rgb(0, 0, 0, 0.4);
+  background-color: rgb(0, 0, 0, 0.3);
   z-index: 20;
 }
 
@@ -18,20 +18,31 @@
 }
 
 .title {
-  font-size: 40px;
+  font-size: 30px;
   font-weight: 700;
-  background-color: $admin_main;
+  // background-color: $admin_main;
 }
 
 .inputTitle {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 400;
 }
 
 .add {
+  font-weight: 700;
   background-color: $admin-main;
+  color: black;
+  &:hover {
+    background-color: darken($admin-main, 10%);
+  }
 }
 
 .cancel {
-  background-color: #c4c4c4;
+  font-weight: 700;
+  background-color: $cancel;
+  color: black;
+
+  &:hover {
+    background-color: darken($cancel, 10%);
+  }
 }

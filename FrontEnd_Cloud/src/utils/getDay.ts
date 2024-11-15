@@ -5,7 +5,7 @@ function getSpecificDay(index: number): string {
   const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
   const day = String(currentDate.getDate()).padStart(2, '0');
 
-  return `${month}월 ${day}일`;
+  return `${month}/${day}`;
 }
 
 export { getSpecificDay };
