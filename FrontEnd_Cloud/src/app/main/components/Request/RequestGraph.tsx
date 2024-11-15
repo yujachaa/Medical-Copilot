@@ -66,6 +66,16 @@ type queueList = { id: string; color: string; data: { x: number; y: number }[] }
 export default function RequestGraph() {
   const [list, setList] = useState<queueList>(data);
   useTotalQueue(setList);
+
+  const tooltipStyle = {
+    background: 'white',
+    color: 'inherit',
+    fontSize: 'inherit',
+    borderRadius: '2px',
+    boxShadow: 'rgba(0, 0, 0, 0.25) 0px 1px 2px',
+    padding: '5px 9px',
+  };
+
   return (
     <ResponsiveLine
       data={list}
@@ -73,22 +83,25 @@ export default function RequestGraph() {
       xScale={{ type: 'point' }}
       yScale={{
         type: 'linear',
-        min: 'auto',
-        max: 'auto',
+        min: 0,
+        max: 100,
         stacked: false,
         reverse: false,
       }}
       yFormat=" >-.2f"
       axisTop={null}
       axisRight={null}
-      axisBottom={{
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legendOffset: 36,
-        legendPosition: 'middle',
-        truncateTickAt: 0,
-      }}
+      axisBottom={
+        null
+        //   {
+        //   tickSize: 5,
+        //   tickPadding: 5,
+        //   tickRotation: 0,
+        //   legendOffset: 36,
+        //   legendPosition: 'middle',
+        //   truncateTickAt: 0,
+        // }
+      }
       axisLeft={{
         tickSize: 5,
         tickPadding: 5,
@@ -133,6 +146,13 @@ export default function RequestGraph() {
           ],
         },
       ]}
+      tooltip={(item) => {
+        return (
+          <div style={tooltipStyle}>
+            <b>{item.point.data.yFormatted}</b>
+          </div>
+        );
+      }}
     />
   );
 }
