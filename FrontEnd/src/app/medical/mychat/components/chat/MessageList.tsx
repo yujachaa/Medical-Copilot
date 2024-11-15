@@ -1,6 +1,6 @@
 import Message from './Message';
 import styles from './MessageList.module.scss';
-import { MessageType } from '../../ChatLayout';
+import { MessageType } from '../../MyChat';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { fetchMessages } from '@/apis/message';
 import { useAppSelector } from '@/redux/store/hooks/store';

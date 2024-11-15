@@ -28,6 +28,7 @@ export default function Item({ className, alarmId, alarmData, onClose, handleDel
   const router = useRouter();
   const dispatch = useAppDispatch();
   const clickAlarm = async () => {
+    onClose();
     console.log('알람클릭', alarmId, alarmData.reportId);
     //알람 읽기 api 호출
     const data = await readAlarm(alarmId);
@@ -38,7 +39,6 @@ export default function Item({ className, alarmId, alarmData, onClose, handleDel
     router.replace(`/medical/chat/${alarmData.patientId}?reportId=${alarmData.reportId}`);
     dispatch(setAlarmTab(alarmData));
     await readAlarm(alarmData.id);
-    onClose();
   };
 
   //날짜 포맷팅 함수
