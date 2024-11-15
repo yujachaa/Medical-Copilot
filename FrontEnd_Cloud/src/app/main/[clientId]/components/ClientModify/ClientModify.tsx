@@ -18,9 +18,9 @@ export default function ClientModify({ clientDetail }: { clientDetail: clientDet
     const data = await fetchClientModify(clientDetail.key, comName, grade);
     if (data) {
       dispatch(setClientModifyModal());
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
+      alert('Your changes have been saved.');
+    } else {
+      alert('The modification is currently unavailable. Please try again in a moment.');
     }
   }, [clientDetail.key, comName, grade, dispatch]);
 
@@ -60,16 +60,17 @@ export default function ClientModify({ clientDetail }: { clientDetail: clientDet
             <span className={`${styles.inputTitle}`}>Plan</span>
             <select
               className={`${styles.plan} h-[50px] pl-4 rounded-[10px]`}
+              value={grade} // 현재 선택된 값을 반영
               onChange={(event) => {
-                setGrade(event.target.value);
+                const selectedGrade = event.target.value;
+                if (selectedGrade === 'notSelect') {
+                  setGrade(clientDetail.grade); // 기본 값으로 설정
+                } else {
+                  setGrade(selectedGrade); // 선택한 값으로 설정
+                }
               }}
             >
-              <option
-                value={'DEFAULT'}
-                selected
-              >
-                선택해주세요
-              </option>
+              <option value={'notSelect'}>Please select a plan</option>
               <option value={'DEFAULT'}>default - 50tokens</option>
               <option value={'SILVER'}>silber - 100tokens</option>
               <option value={'GOLD'}>gold - 200tokens</option>

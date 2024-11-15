@@ -19,7 +19,7 @@ export default function LoginInput() {
 
   useEffect(() => {
     if (message === 'login_required') {
-      alert('로그인이 필요합니다.');
+      alert('Login is required.');
     }
   }, [message]);
 
