@@ -121,12 +121,14 @@ const tabSlices = createSlice({
     goMain: (state) => {
       state.tablist[state.selectedIndex].pathname = '/medical/main';
       state.tablist[state.selectedIndex].title = 'medical Copilot';
+      state.tablist[state.selectedIndex].type = 'MG';
     },
     //선택된 탭의 종류가 바뀐다.
     setTabPathname: (state, action: PayloadAction<changeTab>) => {
       state.tablist[state.selectedIndex].pathname = action.payload.pathname;
       state.tablist[state.selectedIndex].title = action.payload.title;
     },
+    // goMyPage : (state)
   },
 });
 
