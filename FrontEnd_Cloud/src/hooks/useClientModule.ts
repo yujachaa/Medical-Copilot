@@ -18,7 +18,11 @@ type result = {
 
 export function useClientModule(standard: number, serialKey: string) {
   const [list, setList] = useState<result>([]);
-  console.log('여기여기');
+  // console.log('여기여기');
+  function removeCapsule(dataList: result): result {
+    return dataList.filter((item) => item.id !== 'capsule');
+  }
+
   useEffect(() => {
     const handleTotalData = async () => {
       const data: data = await fetchClientModule(standard, serialKey);
@@ -38,7 +42,7 @@ export function useClientModule(standard: number, serialKey: string) {
           })),
         }));
         console.log(newList);
-        setList(newList.slice(0, -1));
+        setList(removeCapsule(newList));
       }
     };
     handleTotalData();

@@ -6,6 +6,10 @@ type totalData = { id: string; label: string; value: number; color: string }[];
 export function useTotalUsage() {
   const [list, setList] = useState<totalData>([]);
 
+  function removeCapsule(dataList: totalData): totalData {
+    return dataList.filter((item) => item.id !== 'capsule');
+  }
+
   useEffect(() => {
     const handleTotalData = async () => {
       const data = await fetchTotal();
@@ -17,7 +21,7 @@ export function useTotalUsage() {
           color: 'hsl(60, 70%, 50%)',
         }));
         console.log('여기여기여기', newList);
-        setList(newList.slice(0, -1));
+        setList(removeCapsule(newList));
       }
     };
     handleTotalData();

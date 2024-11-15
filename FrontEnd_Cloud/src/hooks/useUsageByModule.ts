@@ -18,7 +18,9 @@ type result = {
 
 export function useUsageByModule(standard: number) {
   const [list, setList] = useState<result>([]);
-
+  function removeCapsule(dataList: result): result {
+    return dataList.filter((item) => item.id !== 'capsule');
+  }
   useEffect(() => {
     const handleTotalData = async () => {
       const data: data = await fetchUsageByModule(standard);
@@ -38,7 +40,7 @@ export function useUsageByModule(standard: number) {
         }));
 
         console.log(newList);
-        setList(newList.slice(0, -1));
+        setList(removeCapsule(newList));
       }
     };
     handleTotalData();
