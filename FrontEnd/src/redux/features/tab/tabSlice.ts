@@ -1,8 +1,9 @@
+import { PatientHistory } from '@/components/PatientHistory/PatientHistory';
 import { PluginType } from '@/components/Tabs/Tab';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type Patient = {
-  sex: 'FEMALE' | 'MALE' | '';
+  sex: string;
   age: number;
   visitDate: string;
   pid: string;
@@ -14,7 +15,7 @@ export type PatientReqeust = {
   PID: string;
   image: string | null;
   shootingDate: string;
-  sex: 'FEMALE' | 'MALE' | '';
+  sex: string;
   age: number;
   comments: string;
   key: string;
@@ -311,6 +312,49 @@ const tabSlices = createSlice({
         key: 'ccf97220-30b3-4780-acab-295301698be0',
       };
     },
+
+    //히스토리 데이터를 받아도? 괜찮을듯
+    setHistoryTab: (state, action: PayloadAction<PatientHistory>) => {
+      const index = state.tablist.findIndex(
+        (tab) => tab.pathname === '/medical/chat/' + action.payload.PID,
+      );
+      //해당 탭이 존재한다면?!
+      if (index !== -1) {
+        //선택을 이동
+        state.selectedIndex = index;
+      }
+      //존재하지 않는다면 새로운 탭을 생성
+      else {
+        {
+          const newTab: tab = {
+            id: ++state.increment,
+            title: `${action.payload.PID} Analytics`,
+            type: 'MG',
+            patient: {
+              sex: action.payload.sex,
+              age: action.payload.age,
+              visitDate: action.payload.recentDate,
+              pid: action.payload.PID,
+              modality: '',
+              image: '',
+            },
+            patientRequest: {
+              PID: '',
+              image: '',
+              shootingDate: '',
+              sex: '',
+              age: 0,
+              comments: '',
+              key: '',
+              agent: '',
+            },
+            pathname: `/medical/chat/${action.payload.PID}`,
+          };
+          state.tablist.push(newTab);
+          state.selectedIndex = state.tablist.length - 1;
+        }
+      }
+    },
   },
 });
 
@@ -325,5 +369,6 @@ export const {
   addTempTab,
   setPatient,
   setRequestModality,
+  setHistoryTab,
 } = tabSlices.actions;
 export default tabSlices;

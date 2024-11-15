@@ -1,5 +1,6 @@
 'use client';
 
+import SSEHandler from '@/components/Alarm/SSEHandler';
 import SideBar from '@/components/SideBar/SideBar';
 import TabBoard from '@/components/Tabs/TabBoard/SmallTabBoard';
 import { useAppSelector } from '@/redux/store/hooks/store';
@@ -16,9 +17,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       router.replace(tablist[selectedIndex].pathname);
     }
   }, [pathname, router, tablist, selectedIndex]);
-
   return (
     <div className="w-screen flex flex-row">
+      <SSEHandler />
       <SideBar />
       <div className="flex flex-col">
         <TabBoard />

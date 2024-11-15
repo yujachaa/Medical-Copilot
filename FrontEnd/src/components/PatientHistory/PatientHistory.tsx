@@ -3,13 +3,16 @@ import styles from './PatientHistory.module.scss';
 import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircleOutline';
 import { FaSortDown } from '@react-icons/all-files/fa/FaSortDown';
 import { fetchPatientHistory } from '@/apis/Patient';
+import { useAppDispatch } from '@/redux/store/hooks/store';
+import { setHistoryTab } from '@/redux/features/tab/tabSlice';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   onClose?: () => void;
   isAnimate?: boolean;
 };
 
-interface PatientHistory {
+export interface PatientHistory {
   PID: string;
   sex: string;
   age: number;
@@ -21,10 +24,12 @@ interface PatientHistory {
 export default function PatientHistory({ onClose, isAnimate }: Props) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [patientHistories, setPatientHistories] = useState<PatientHistory[]>([]);
-
-  const goReport = (pid: string) => {
-    //(예정) 클릭한 히스토리의 pid 채팅방으로 가고, 마지막 보고서 조회하는 것 추가하기
-    console.log(pid);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const goReport = (history: PatientHistory) => {
+    dispatch(setHistoryTab(history));
+    router.replace(`/medical/chat/${history.PID}`);
+    onClose?.();
   };
 
   useEffect(() => {
@@ -104,7 +109,7 @@ export default function PatientHistory({ onClose, isAnimate }: Props) {
                 <div
                   key={index}
                   className={`${styles.body} cursor-pointer grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-                  onClick={() => goReport(history.PID)}
+                  onClick={() => goReport(history)}
                 >
                   <span>{history.PID}</span>
                   <span>{history.sex}</span>
