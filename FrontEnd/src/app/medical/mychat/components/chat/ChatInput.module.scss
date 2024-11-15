@@ -1,0 +1,35 @@
+@import '@/style/globals_variant.scss';
+
+.inputContainer {
+  display: flex;
+  height: 48px;
+  padding: 12px 13px;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  align-self: stretch;
+  border-radius: 28px;
+  background: $gray-msg;
+  gap: 10px;
+}
+
+.chatInput {
+  width: 85%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 12px; /* 원하는 폰트 크기 설정 */
+}
+
+.dbIcon {
+  width: 22px;
+  height: 22px;
+  color: $blue-btn;
+  cursor: pointer;
+}
+
+.sendIcon {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
