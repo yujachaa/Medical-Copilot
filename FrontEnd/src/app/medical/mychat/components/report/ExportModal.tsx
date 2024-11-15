@@ -46,7 +46,7 @@ export default function ExportModal({
   }, [dispatch]);
 
   const handleDownloadPDF = async () => {
-    fetchPDF();
+    fetchPDF('1');
   };
 
   const handleFinding = async () => {
