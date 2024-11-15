@@ -128,7 +128,6 @@ const tabSlices = createSlice({
       state.tablist[state.selectedIndex].pathname = action.payload.pathname;
       state.tablist[state.selectedIndex].title = action.payload.title;
     },
-    // goMyPage : (state)
   },
 });
 
