@@ -4,8 +4,7 @@ import { BaseURL } from './core';
 
 export async function fetchfip(reportId: string) {
   try {
-    const response = await fetch(`${BaseURL}onpremise/api/pdf/${reportId}`, {
-      cache: 'no-store',
+    const response = await fetch(`${BaseURL}pdf/${reportId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -23,7 +22,7 @@ export async function fetchfip(reportId: string) {
 
 export async function fetchInitfip(reportId: string) {
   try {
-    const response = await fetch(`${BaseURL}onpremise/api/pdf/reset/${reportId}`, {
+    const response = await fetch(`${BaseURL}pdf/reset/${reportId}`, {
       cache: 'no-store',
       method: 'PATCH',
       headers: {
