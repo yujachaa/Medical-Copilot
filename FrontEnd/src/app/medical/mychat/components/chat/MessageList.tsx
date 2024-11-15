@@ -1,20 +1,26 @@
 import Message from './Message';
 import styles from './MessageList.module.scss';
 import { MessageType } from '../../ChatLayout';
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { fetchMessages } from '@/apis/message';
+import { useAppSelector } from '@/redux/store/hooks/store';
+import { jwtDecode } from 'jwt-decode';
 
 type Props = {
   messagelist: MessageType[];
   setMessagelist: Dispatch<SetStateAction<MessageType[]>>;
   selectReport: (reportId: string) => void;
-  pid: string;
 };
-export default function MessageList({ messagelist, setMessagelist, selectReport, pid }: Props) {
+export default function MessageList({ messagelist, setMessagelist, selectReport }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const loader = useRef<HTMLDivElement | null>(null);
   const [page, setPage] = useState<number>(0);
   const [size] = useState<number>(8);
+  const accessToken = useAppSelector((state) => state.user.accessToken);
+  const pid: string = useMemo(() => {
+    // memeberId가 맞는데 fetch를 같이 쓰고 있어서 pid로 했어요.
+    return jwtDecode(accessToken);
+  }, [accessToken]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -28,7 +34,7 @@ export default function MessageList({ messagelist, setMessagelist, selectReport,
   useEffect(() => {
     const getPatient = async () => {
       try {
-        const response = await fetchMessages(page, size, '42650703');
+        const response = await fetchMessages(page, size, pid);
         console.log(response);
         if (response.content === undefined) {
           new Error('Response 데이터가 이상합니다');
@@ -72,7 +78,7 @@ export default function MessageList({ messagelist, setMessagelist, selectReport,
         />
       ))}
       <div
-        className="w-4 h-10 border"
+        className="w-4 h-4 border"
         ref={loader}
       ></div>
     </div>

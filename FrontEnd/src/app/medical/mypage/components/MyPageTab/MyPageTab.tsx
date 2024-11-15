@@ -12,7 +12,7 @@ export default function MyPageTab({
 
   const handleTabClick = (tab: 'profile' | 'plan') => {
     setIsSelectedTab(tab === 'profile');
-    router.replace(`/mypage?t=${tab}`);
+    router.replace(`/medical/mypage?t=${tab}`);
   };
 
   return (
