@@ -16,8 +16,8 @@ export default function Modality({ onClose, onPatientClose }: Props) {
   const [selectedModality, setSelectedModality] = useState<string>('MG');
 
   //값이 없다면 빈배열로 초기화
-  const modalities = modality ? modality.split(',').map((item) => item.trim()) : [];
 
+  const modalities = modality ? ['CXR', 'MG'] : [];
   const handleSelect = (e: React.MouseEvent<HTMLDivElement>, modality: string) => {
     e.stopPropagation(); //버블링 방지
     setSelectedModality(modality);

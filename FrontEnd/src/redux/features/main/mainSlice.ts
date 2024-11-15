@@ -5,12 +5,13 @@ export type Patient = {
   age: number;
   visitDate: string;
   pid: string;
-  modality: string;
+  modality: string | null;
+  image: string | null;
 };
 
 export type PatientReqeust = {
   PID: string;
-  image: string;
+  image: string | null;
   shootingDate: string;
   sex: 'FEMALE' | 'MALE' | '';
   age: number;
@@ -30,11 +31,12 @@ const initialState: initialProps = {
     age: 0,
     visitDate: '',
     pid: '',
-    modality: '',
+    modality: null,
+    image: null,
   }, // 일반 key와 image는 default로 가지고 있겠습니다
   patientRequest: {
     PID: '',
-    image: 'https://newmes.s3.ap-northeast-2.amazonaws.com/classification/test.jpg',
+    image: '',
     shootingDate: '',
     sex: '',
     age: 0,
@@ -59,6 +61,7 @@ const mainSlices = createSlice({
       state.patientRequest.age = action.payload.age;
       state.patientRequest.PID = action.payload.pid;
       state.patientRequest.shootingDate = action.payload.visitDate;
+      state.patientRequest.image = action.payload.image;
     },
     setModality: (state, action: PayloadAction<string>) => {
       state.patientRequest.agent = action.payload;
