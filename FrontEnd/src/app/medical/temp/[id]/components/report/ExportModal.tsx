@@ -39,6 +39,7 @@ export default function ExportModal({
   const [impressionLoading, setImpressionLoading] = useState<boolean>(false);
   const [planLoading, setPlanLoading] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
 
   const pdfRef = useRef<HTMLDivElement | null>(null);
 
@@ -48,15 +49,15 @@ export default function ExportModal({
 
   const handleDownloadPDF = async () => {
     if (reportData) {
-      console.log(reportData.id);
       fetchPDF(reportData.id);
     }
   };
 
   const handleSave = async () => {
     if (reportData) {
-      console.log(reportData.id, finding, impression, plan);
       await fetchfipSave(reportData.id, finding, impression, plan);
+      alert('Your content saving has been completed.');
+      setIsSaved(true);
     }
   };
 
@@ -98,7 +99,6 @@ export default function ExportModal({
       try {
         const data = await fetchPlan(impression, reportData);
         if (data) {
-          console.log(data);
           dispatch(setPlan(data));
         }
       } catch (error) {
@@ -286,7 +286,7 @@ export default function ExportModal({
                 >
                   {planLoading ? <HashLoader color="#5DA6F6" /> : plan}
                 </div>
-                {count === 3 && !planLoading && (
+                {!isSaved && count === 3 && !planLoading && (
                   <div className="w-full flex justify-end">
                     <button
                       className="text-sm underline pr-1"
@@ -304,14 +304,17 @@ export default function ExportModal({
 
             {/* 필드 추가 버튼 및 드롭다운 */}
             <div className={styles.addFieldArea}>
-              {selectedFields.length < 3 && (
-                <button
-                  className={`px-2 rounded-full bg-blue-btn text-white font-bold text-xl border-2 border-transparent hover:border-blue-btn hover:text-blue-btn hover:bg-white ${dropdownOpen ? styles.dropdownActive : ''}`}
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                >
-                  +
-                </button>
-              )}
+              {!findingLoading &&
+                !impressionLoading &&
+                !planLoading &&
+                selectedFields.length < 3 && (
+                  <button
+                    className={`px-2 rounded-full bg-blue-btn text-white font-bold text-xl border-2 border-transparent hover:border-blue-btn hover:text-blue-btn hover:bg-white ${dropdownOpen ? styles.dropdownActive : ''}`}
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                  >
+                    +
+                  </button>
+                )}
 
               {dropdownOpen && (
                 <div className="w-fit bg-white shadow-md rounded-md p-2 text-blue-btn border-solid border border-black/20">
@@ -345,18 +348,28 @@ export default function ExportModal({
           </div>
         </div>
         <div className={styles.btnArea}>
-          <button
-            className="outline outline-blue-btn text-blue-btn px-3 py-2 rounded-md hover:text-white hover:bg-blue-btn"
-            onClick={() => {
-              handleSave();
-            }}
-          >
-            Save
-          </button>
+          {!isSaved && count === 3 && (
+            <button
+              className="outline outline-blue-btn text-blue-btn px-3 py-2 rounded-md hover:text-white hover:bg-blue-btn"
+              onClick={() => {
+                handleSave();
+              }}
+            >
+              Save
+            </button>
+          )}
           <button
             className="outline outline-[#ff484a] text-[#ff484a] px-3 py-2 rounded-md hover:text-white hover:bg-[#ff484a]"
             onClick={() => {
-              handleDownloadPDF();
+              if (isSaved) {
+                handleDownloadPDF();
+              } else {
+                if (count !== 3) {
+                  alert('Press the plus button to create finding, impression, and plan.');
+                } else {
+                  alert('Please save it first.');
+                }
+              }
             }}
           >
             Export PDF
