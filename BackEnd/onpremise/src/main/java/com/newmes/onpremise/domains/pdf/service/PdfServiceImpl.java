@@ -16,9 +16,20 @@ public class PdfServiceImpl implements PdfService {
 
     @Override
     public Pdf register(Pdf pdf) {
-        PdfEntity entity = PdfEntity.fromDomain(pdf);
-        PdfEntity savedEntity = pdfRepository.save(entity);
-        return savedEntity.toDomain();
+        Optional<PdfEntity> optionalEntity = pdfRepository.findByReportId(pdf.getReportId());
+
+        if (optionalEntity.isPresent()) {
+            PdfEntity existingEntity = optionalEntity.get();
+            existingEntity.setFind(pdf.getFind());
+            existingEntity.setImpression(pdf.getImpression());
+            existingEntity.setPlan(pdf.getPlan());
+            PdfEntity updatedEntity = pdfRepository.save(existingEntity);
+            return updatedEntity.toDomain();
+        } else {
+            PdfEntity newEntity = PdfEntity.fromDomain(pdf);
+            PdfEntity savedEntity = pdfRepository.save(newEntity);
+            return savedEntity.toDomain();
+        }
     }
 
     @Override
