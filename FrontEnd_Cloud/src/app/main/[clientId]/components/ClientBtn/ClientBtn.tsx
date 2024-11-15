@@ -11,9 +11,7 @@ export default function ClientBtn({
   setStandard: Dispatch<SetStateAction<number>>;
 }) {
   return (
-    <div
-      className={`${styles.main} flex justify-between items-center pl-4 pr-4 h-[10%] min-h-[60px]`}
-    >
+    <div className={`${styles.main} flex justify-end items-center pl-4 pr-4 h-[10%] min-h-[60px]`}>
       <div className={`${styles.standard} flex gap-3 text-xl`}>
         <span
           className={`${standard === 0 && styles.active}`}

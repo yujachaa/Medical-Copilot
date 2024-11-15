@@ -29,7 +29,7 @@ export default function LoginInput() {
       setIsLogin(true);
       dispatch(setUserInfo(data.status));
       // dispatch(getOTP());
-      router.push('/main');
+      router.push('/medical');
     } else {
       setIsLogin(false);
     }

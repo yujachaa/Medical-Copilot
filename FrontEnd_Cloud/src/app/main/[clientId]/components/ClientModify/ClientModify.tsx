@@ -7,6 +7,7 @@ import { setClientModifyModal } from '@/redux/features/modal/modalSlice';
 import { useCallback, useState } from 'react';
 import { clientDetail } from '@/types/client';
 import { fetchClientModify } from '@/apis/fetchClientModify';
+import { BiMessageAltEdit } from 'react-icons/bi';
 
 export default function ClientModify({ clientDetail }: { clientDetail: clientDetail }) {
   const dispatch = useAppDispatch();
@@ -31,7 +32,10 @@ export default function ClientModify({ clientDetail }: { clientDetail: clientDet
         <div
           className={`${styles.title} flex h-[80px] justify-between items-center pl-6 pr-6 rounded-se-[20px] rounded-ss-[20px]`}
         >
-          <span>Modify Client</span>
+          <div className="flex items-center gap-[10px]">
+            <BiMessageAltEdit size={40} />
+            <span>Modify Client</span>
+          </div>
           <IoCloseOutline
             className={`cursor-pointer`}
             onClick={() => {

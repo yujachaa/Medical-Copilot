@@ -14,10 +14,13 @@ import UserIcon from '@/assets/images/userImg.png';
 import { FaUserLarge } from 'react-icons/fa6';
 import PatientHistory from '../PatientHistory/PatientHistory';
 import { fetchLogout } from '@/apis/fetchLogout';
-import { useAppSelector } from '@/redux/store/hooks/store';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import AlarmModal from '../Alarm/AlarmModal';
+import Link from 'next/link';
+import { goMain, setTabPathname } from '@/redux/features/tab/tabSlice';
 
 export default function SideBar() {
+  const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -34,16 +37,17 @@ export default function SideBar() {
     setIsModalOpen(!isModalOpen);
   };
 
-  const goMain = () => {
-    router.push('/main');
-  };
-
-  const goSettings = () => {
-    router.push('/mypage?t=profile');
+  const handleMainMove = () => {
+    dispatch(goMain());
   };
 
   const goPlan = () => {
     router.push('/mypage?t=plan');
+  };
+
+  const goMypage = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    dispatch(setTabPathname({ pathname: '/medical/mypage?t=profile', title: 'My Page' }));
   };
 
   const handleHistoryClose = () => {
@@ -72,10 +76,12 @@ export default function SideBar() {
         <div
           className={`w-[55px] h-[67px] flex justify-center items-center max-768:w-[67px] max-768:h-[55px]`}
         >
-          <Logo
-            className={`w-[35px] cursor-pointer ${styles.logo}`}
-            onClick={goMain}
-          />
+          <Link href="/medical/main">
+            <Logo
+              className={`w-[35px] cursor-pointer ${styles.logo}`}
+              onClick={handleMainMove}
+            />
+          </Link>
         </div>
         <div
           className={`w-[55px] h-[890px] flex flex-col justify-center items-center gap-8 max-768:w-[890px] max-768:h-[55px] max-768:flex-row`}
@@ -117,13 +123,15 @@ export default function SideBar() {
                 <FaStar className="w-[20px] h-[20px]" />
                 <span>My Plan</span>
               </li>
-              <li
-                className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2"
-                onClick={goSettings}
+              <Link
+                href="/medical/mypage?t=profile"
+                onClick={goMypage}
               >
-                <TbSettingsFilled className="w-[20px] h-[20px]" />
-                <span>Settings</span>
-              </li>
+                <li className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2">
+                  <TbSettingsFilled className="w-[20px] h-[20px]" />
+                  <span>Settings</span>
+                </li>
+              </Link>
               <li
                 className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2"
                 onClick={handleLogout}

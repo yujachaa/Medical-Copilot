@@ -16,8 +16,10 @@ export default function WarningModal({ clientDetail }: { clientDetail: clientDet
   }, [clientDetail.key]);
 
   return (
-    <div className={`${styles.main} w-screen h-screen fixed flex justify-center pt-[10%]`}>
-      <div className={`${styles.box} flex w-[490px] h-[300px] p-6 rounded-[20px]`}>
+    <div
+      className={`${styles.main} w-screen h-screen fixed top-0 flex justify-center items-center`}
+    >
+      <div className={`${styles.box} flex w-[490px] h-fit p-6 rounded-[20px]`}>
         <RiErrorWarningLine className={`w-[200px] ${styles.mark} text-[48px] mt-2`} />
         <div className={`flex flex-col pl-4`}>
           <span className={`${styles.warning} text-[40px]`}>Warning</span>
@@ -29,17 +31,17 @@ export default function WarningModal({ clientDetail }: { clientDetail: clientDet
             <button
               onClick={() => {
                 dispatch(setWarningModal());
+                handleFetchStop();
               }}
             >
-              취소
+              Stop
             </button>
             <button
               onClick={() => {
                 dispatch(setWarningModal());
-                handleFetchStop();
               }}
             >
-              정지
+              Cancle
             </button>
           </div>
         </div>
