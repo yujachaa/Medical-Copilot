@@ -52,9 +52,6 @@ export default function SSEHandler() {
         setIsPopupOpen(true); // 알람 팝업 열기
         setIsClosing(false); // 팝업 열릴 때는 닫힘 상태 false
       };
-      eventSourceRef.current!.addEventListener('notification', (e: Event) => {
-        console.log(e);
-      });
 
       eventSourceRef.current!.onerror = (error: unknown) => {
         console.error('EventSource failed:', error);
