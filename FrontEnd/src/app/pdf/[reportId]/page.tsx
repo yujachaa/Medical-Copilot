@@ -97,20 +97,26 @@ export default async function PDFPage({ params }: { params: { reportId: string }
       </div>
 
       <div className={`${styles.analysisArea} flex flex-col gap-7`}>
-        <div className={styles.field}>
-          <div className="font-bold text-lg">Finding</div>
-          <div className={styles.analysisBox}>{fip.find}</div>
-        </div>
+        {fip.find !== '' && (
+          <div className={styles.field}>
+            <div className="font-bold text-lg">Finding</div>
+            <div className={styles.analysisBox}>{fip.find}</div>
+          </div>
+        )}
 
-        <div className={styles.field}>
-          <div className="font-bold text-lg">Impression</div>
-          <div className={styles.analysisBox}>{fip.impression}</div>
-        </div>
+        {fip.impression !== '' && (
+          <div className={styles.field}>
+            <div className="font-bold text-lg">Impression</div>
+            <div className={styles.analysisBox}>{fip.impression}</div>
+          </div>
+        )}
 
-        <div className={styles.field}>
-          <div className="font-bold text-lg">Plan</div>
-          <div className={styles.analysisBox}>{fip.plan}</div>
-        </div>
+        {fip.plan !== '' && (
+          <div className={styles.field}>
+            <div className="font-bold text-lg">Plan</div>
+            <div className={styles.analysisBox}>{fip.plan}</div>
+          </div>
+        )}
       </div>
     </div>
   );
