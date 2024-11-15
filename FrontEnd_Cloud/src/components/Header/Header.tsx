@@ -14,8 +14,12 @@ export default function Header() {
   const router = useRouter();
 
   const handleLogout = async () => {
+    console.log('문제 3');
+
     const data = await fetchLogout();
     if (data) {
+      console.log('문제 4');
+
       router.replace('/');
     }
   };
