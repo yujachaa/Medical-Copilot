@@ -279,6 +279,7 @@ export default function EditModal({ onClose }: EditModalProps) {
         }
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coordinatesFromRedux]);
 
   return (
