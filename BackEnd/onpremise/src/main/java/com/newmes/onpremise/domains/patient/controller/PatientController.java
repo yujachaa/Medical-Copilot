@@ -1,6 +1,7 @@
 package com.newmes.onpremise.domains.patient.controller;
 
 import com.newmes.onpremise.domains.patient.domain.Modality;
+import com.newmes.onpremise.domains.patient.domain.Patient;
 import com.newmes.onpremise.domains.patient.dto.request.PatientRequestDto;
 import com.newmes.onpremise.domains.patient.dto.response.PatientResponseDto;
 import com.newmes.onpremise.domains.patient.service.PatientService;
@@ -35,7 +36,7 @@ public class PatientController {
     @GetMapping("/search/{query}")
     public ResponseEntity<?> searchPatients(@PathVariable String query) {
         try {
-            List<PatientResponseDto> results = patientService.searchPatients(query);
+            List<Patient> results = patientService.searchPatients(query);
             return httpResponseUtil.createResponse(results);
         } catch (IOException e) {
             return httpResponseUtil.errorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to search patients");
@@ -57,7 +58,7 @@ public class PatientController {
             @PathVariable("page") int page,
             @PathVariable("size") int size) {
         try {
-            Page<PatientResponseDto> results = patientService.getRecentPatients(page, size);
+            Page<Patient> results = patientService.getRecentPatients(page, size);
             return httpResponseUtil.createResponse(results);
         } catch (Exception e) {
             e.printStackTrace();
