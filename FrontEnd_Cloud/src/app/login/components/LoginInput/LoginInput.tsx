@@ -4,15 +4,20 @@ import styles from './LoginInput.module.scss';
 import { useState } from 'react';
 import { fetchLogin } from '@/apis/fetchLogin';
 import { useRouter } from 'next/navigation';
+import { setAccessToken } from '@/redux/features/auth/authSlice';
+import { useDispatch } from 'react-redux';
 
 export default function LoginInput() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
     const data = await fetchLogin(email, password);
     if (data) {
+      console.log(data);
+      dispatch(setAccessToken(data));
       router.replace('/main');
     } else {
       alert('로그인 실패');
