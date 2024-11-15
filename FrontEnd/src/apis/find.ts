@@ -1,4 +1,4 @@
-import { MessageType } from '@/app/main/components/Diagnosis/ChatLayout';
+import { MessageType } from '@/app/medical/chat/[id]/ChatLayout';
 import { GPUURL } from './core';
 import { ReportDataType } from '@/types/report';
 

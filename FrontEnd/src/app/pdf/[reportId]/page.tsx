@@ -4,8 +4,8 @@ import { useRef, useState } from 'react';
 import xrayDefault from '@/assets/images/xray-default.webp';
 import styles from './page.module.scss';
 import Image from 'next/image';
-import RectangleOverlay from '@/app/main/components/Diagnosis/components/report/RectangleOverlay';
-import CanvasOverlay from '@/app/main/components/Diagnosis/components/report/CanvasOverlay';
+import RectangleOverlay from '@/app/medical/chat/[id]/components/report/RectangleOverlay';
+import CanvasOverlay from '@/app/medical/chat/[id]/components/report/CanvasOverlay';
 import { useAppSelector } from '@/redux/store/hooks/store';
 
 export default function PDFPage() {
