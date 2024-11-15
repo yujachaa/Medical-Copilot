@@ -1,25 +1,49 @@
 FROM node:20.18.0-alpine
+
+# Puppeteer 의존성을 설치하기 위해 apk 사용
+RUN apk update && apk add --no-cache \
+    nss \
+    x11 \
+    libxcomposite \
+    libxrandr \
+    libxi \
+    libxtst \
+    libxcursor \
+    libxdamage \
+    libxrender \
+    mesa-gl \
+    dbus-glib \
+    ttf-freefont \
+    chromium
+
+# 작업 디렉토리 설정
 RUN mkdir -p /app
 WORKDIR /app
 
+# package.json 파일 복사 및 의존성 설치
 COPY package*.json ./
-
 RUN npm install
 
 # Jenkins에서 복사된 .env 파일을 빌드 컨텍스트에 포함
 COPY .env ./
 
+# 나머지 애플리케이션 파일 복사
 COPY . .
 
+# 애플리케이션 및 Storybook 빌드
 RUN npm run build
 RUN npm run build-storybook
 
+# Puppeteer가 Chromium을 참조할 수 있도록 설정
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
+# 포트 노출
 EXPOSE 3001
 EXPOSE 6006 
 
-ENV PORT 3001
-ENV STORYBOOK_PORT 6006
-
+# 글로벌 패키지 설치
 RUN npm install -g concurrently
 
+# 애플리케이션 및 Storybook 동시 실행
 CMD ["concurrently", "npm:start", "npm:storybook"]
