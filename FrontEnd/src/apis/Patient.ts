@@ -1,6 +1,5 @@
 'use server';
-
-import { PatientReqeust } from '@/redux/features/main/mainSlice';
+import { PatientReqeust } from '@/redux/features/tab/tabSlice';
 import { BaseURL } from './core';
 import { getCookie } from '@/utils/cookie';
 import { redirect } from 'next/navigation';

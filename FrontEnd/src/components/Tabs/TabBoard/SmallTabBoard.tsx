@@ -29,6 +29,7 @@ export default function TabBoard() {
 
   const hadnleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: number) => {
     e.stopPropagation();
+    e.preventDefault();
     dispatch(setSelectedTab(id));
   };
   return (
