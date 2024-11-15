@@ -1,15 +1,25 @@
+import { useRouter } from 'next/navigation';
+import { Noti } from '../SSEHandler';
 import styles from './Popup.module.scss';
 import { CgClose } from '@react-icons/all-files/cg/CgClose';
+import { useAppDispatch } from '@/redux/store/hooks/store';
+import { setAlarmTab } from '@/redux/features/tab/tabSlice';
 
 type PopupProps = {
   onClose: () => void;
   isClosing: boolean;
+  data: Noti;
 };
 
-export default function Popup({ onClose, isClosing }: PopupProps) {
+export default function Popup({ onClose, isClosing, data }: PopupProps) {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const goReport = () => {
-    console.log('리포트 보러 가기!!');
-    // (예정) 알림정보로 채팅페이지로 이동 & 해당 리포트 띄워주기 추가
+    if (data.id !== -1) {
+      router.replace(`/medical/chat/${data.patientId}`);
+      dispatch(setAlarmTab(data));
+    }
+    onClose();
   };
 
   return (
