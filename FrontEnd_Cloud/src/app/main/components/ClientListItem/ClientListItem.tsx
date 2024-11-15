@@ -16,12 +16,7 @@ export default function ClientListItem({ client }: { client: client }) {
         </span>
         <span className={`${styles.clientName}`}>{client.comName}</span>
         <div className={`${styles.tag} flex gap-6 h-[35px] justify-between`}>
-          <span className={`${styles.usage} relative`}>
-            {client.totalCount}
-            {/* <div className="absolute bottom-1 right-1 text-[12px] "> */}/
-            {checkGrade(client.grade)}
-            {/* </div> */}
-          </span>
+          <span className={`${styles.usage} relative`}>{client.totalCount}</span>
           <span className={`${styles.week}`}>{client.subscription}weeks</span>
           <span
             style={
@@ -39,10 +34,3 @@ export default function ClientListItem({ client }: { client: client }) {
     </Link>
   );
 }
-
-const checkGrade = (grade: string) => {
-  if (grade === 'DEFAULT') return 50;
-  if (grade === 'SILVER') return 100;
-  if (grade === 'GOLD') return 200;
-  if (grade === 'PLATINUM') return 500;
-};
