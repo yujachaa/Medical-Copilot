@@ -8,7 +8,7 @@ type Props = {
   messagelist: MessageType[];
   setMessagelist: Dispatch<SetStateAction<MessageType[]>>;
   selectReport: (reportId: string) => void;
-  pid: number;
+  pid: string;
 };
 export default function MessageList({ messagelist, setMessagelist, selectReport, pid }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);

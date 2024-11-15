@@ -1,4 +1,4 @@
-import Chat from './Diagnosis/Chat';
+import Chat from './ChatLayout';
 
 type Props = {
   params: {
