@@ -96,8 +96,9 @@ export default function ExportModal({
     if (reportData !== null) {
       setPlanLoading(true);
       try {
-        const data = await fetchPlan(plan, reportData);
+        const data = await fetchPlan(impression, reportData);
         if (data) {
+          console.log(data);
           dispatch(setPlan(data));
         }
       } catch (error) {
