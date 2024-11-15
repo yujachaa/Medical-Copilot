@@ -17,7 +17,7 @@ import { fetchLogout } from '@/apis/fetchLogout';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import AlarmModal from '../Alarm/AlarmModal';
 import Link from 'next/link';
-import { goMain, setTabPathname } from '@/redux/features/tab/tabSlice';
+import { goMain, goMypage } from '@/redux/features/tab/tabSlice';
 
 export default function SideBar() {
   const dispatch = useAppDispatch();
@@ -41,13 +41,14 @@ export default function SideBar() {
     dispatch(goMain());
   };
 
-  const goPlan = () => {
-    router.push('/mypage?t=plan');
+  const goPlan = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    dispatch(goMypage('/medical/mypage?t=plan'));
   };
 
-  const goMypage = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const goProfile = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    dispatch(setTabPathname({ pathname: '/medical/mypage?t=profile', title: 'My Page' }));
+    dispatch(goMypage('/medical/mypage?t=profile'));
   };
 
   const handleHistoryClose = () => {
@@ -116,16 +117,18 @@ export default function SideBar() {
             className={`absolute bottom-[10px] left-[60px] w-40 bg-white shadow-md rounded-md p-2 text-blue-btn border-solid border border-black/20 max-768:bottom-[60px] max-768:left-[unset] max-768:right-[10px] ${styles.modal}`}
           >
             <ul className="flex flex-col gap-2 font-bold">
-              <li
-                className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2"
+              <Link
+                href="/medical/mypage?t=plan"
                 onClick={goPlan}
               >
-                <FaStar className="w-[20px] h-[20px]" />
-                <span>My Plan</span>
-              </li>
+                <li className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2">
+                  <FaStar className="w-[20px] h-[20px]" />
+                  <span>My Plan</span>
+                </li>
+              </Link>
               <Link
                 href="/medical/mypage?t=profile"
-                onClick={goMypage}
+                onClick={goProfile}
               >
                 <li className="cursor-pointer hover:bg-gray-100 p-2 rounded-md flex items-center gap-2">
                   <TbSettingsFilled className="w-[20px] h-[20px]" />

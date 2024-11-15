@@ -128,9 +128,40 @@ const tabSlices = createSlice({
       state.tablist[state.selectedIndex].pathname = action.payload.pathname;
       state.tablist[state.selectedIndex].title = action.payload.title;
     },
+    goMypage: (state, action: PayloadAction<string>) => {
+      const index = state.tablist.findIndex((tab) => tab.pathname.includes('mypage'));
+      console.log(action.payload);
+      //기존의 탭이 있는 경우 세팅클릭하면 이동
+      if (index !== -1) {
+        state.tablist[index].pathname = action.payload;
+        state.tablist[index].title = 'My Page';
+        state.selectedIndex = index;
+      }
+      //없다면 새탭으로 이동
+      else {
+        const newTab: tab = {
+          id: ++state.increment,
+          title: `My Page`,
+          type: 'MG',
+          tabType: 'default',
+          pid: -1,
+          pathname: action.payload,
+        };
+        state.tablist.push(newTab);
+        state.selectedIndex = state.tablist.length - 1;
+      }
+    },
   },
 });
 
-export const { setSelectedTab, addTab, deleteTab, initialIndex, moveTab, goMain, setTabPathname } =
-  tabSlices.actions;
+export const {
+  setSelectedTab,
+  addTab,
+  deleteTab,
+  initialIndex,
+  moveTab,
+  goMain,
+  setTabPathname,
+  goMypage,
+} = tabSlices.actions;
 export default tabSlices;
