@@ -66,6 +66,7 @@ type queueList = { id: string; color: string; data: { x: number; y: number }[] }
 export default function RequestGraph() {
   const [list, setList] = useState<queueList>(data);
   useTotalQueue(setList);
+  console.log('리스트', list);
 
   const tooltipStyle = {
     background: 'white',
@@ -83,8 +84,8 @@ export default function RequestGraph() {
       xScale={{ type: 'point' }}
       yScale={{
         type: 'linear',
-        min: 0,
-        max: 100,
+        // min: 0,
+        // max: 100,
         stacked: false,
         reverse: false,
       }}
