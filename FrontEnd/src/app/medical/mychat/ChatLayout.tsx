@@ -2,24 +2,15 @@
 
 import ChatInput from './components/chat/ChatInput';
 import MessaageList from './components/chat/MessageList';
-// import PluginInfo from './components/report/PluginInfo';
-import ReportBtn from './components/report/ReportBtn';
-import ReportData from './components/report/ReportData';
-import ReportInfo from './components/report/ReportInfo';
-import Summary from './components/report/Summary';
 import styles from './page.module.scss';
 import { useEffect, useState } from 'react';
 import { BiMessageRoundedDots } from '@react-icons/all-files/bi/BiMessageRoundedDots';
 import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
 import { CgClose } from '@react-icons/all-files/cg/CgClose';
-import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
+import { useAppDispatch } from '@/redux/store/hooks/store';
 import { fetchDrawing, fetchReport } from '@/apis/report';
 import { setReportData } from '@/redux/features/report/reportSlice';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
-
-type ChatProps = {
-  pid: string;
-};
 
 export type MessageType = {
   id: string;
@@ -31,13 +22,12 @@ export type MessageType = {
   reportId: string;
 };
 
-export default function Chat({ pid }: ChatProps) {
+export default function Chat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
   //어떤리포트를 처음에 띄워줄건가? 이걸 내가 한번 필터를 해야하나?
   const [selectedReportId, setReportId] = useState<string>('');
-  const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
 
   const toggleChat = () => {
@@ -51,17 +41,6 @@ export default function Chat({ pid }: ChatProps) {
   const selectReport = (reportId: string) => {
     setReportId(reportId);
   };
-
-  // useEffect(() => {
-  //   const fetchPatient = async () => {
-  //     const response = await fetchPatientChat(pid);
-  //     console.log('페이션트:', response);
-  //     setMessages(response.chatList);
-  //     //가장 마지막 리포트를 저장
-  //     setReportId(response.chatList[response.chatList.length - 1].reportId);
-  //   };
-  //   fetchPatient();
-  // }, [pid]);
 
   useEffect(() => {
     const getReport = async () => {
@@ -114,7 +93,6 @@ export default function Chat({ pid }: ChatProps) {
           messagelist={messages}
           setMessagelist={setMessages}
           selectReport={selectReport}
-          pid={pid}
         />
         <ChatInput />
       </div>
@@ -123,29 +101,6 @@ export default function Chat({ pid }: ChatProps) {
              1. 채팅의 버튼을 클릭하는데, reportId가 있는 채팅만 클릭이 가능하게한다.
              2. 그러면 여기서 선택된 리포트를 관리하는것 그리고 그것을 리포트정보에 넣어주는것
           */}
-
-      {selectedReportId !== '' ? (
-        <div className={styles.reportContainer}>
-          <div className={styles.scrollable}>
-            <div className={styles.reportInfo}>
-              {/* <PluginInfo type={patient.modality} /> */}
-              <ReportInfo
-                id={selectedReportId}
-                date={reportData ? new Date(reportData.createDate) : undefined}
-              />
-              <ReportBtn messagelist={messages} />
-            </div>
-            <ReportData />
-            <Summary />
-          </div>
-        </div>
-      ) : (
-        <div className={styles.reportContainer}>
-          <div className={styles.scrollable}>
-            <div className={styles.reportInfo}>{/* <PluginInfo type={patient.modality} /> */}</div>
-          </div>
-        </div>
-      )}
 
       <div
         className={`${styles.messageButton} ${isChatOpen ? styles.active : ''}`}

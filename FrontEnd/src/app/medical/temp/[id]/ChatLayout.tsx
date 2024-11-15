@@ -37,6 +37,7 @@ export default function Chat({ pid }: ChatProps) {
   const [messages, setMessages] = useState<MessageType[]>([]);
   //어떤리포트를 처음에 띄워줄건가? 이걸 내가 한번 필터를 해야하나?
   const [selectedReportId, setReportId] = useState<string>('');
+  // const { patient } = useAppSelector((state) => state.main);
   const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
 

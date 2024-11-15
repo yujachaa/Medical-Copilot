@@ -32,7 +32,7 @@ export default function PatientHistory({ onClose, isAnimate }: Props) {
       const data = await fetchPatientHistory();
       if (data) {
         console.log('patient history:', data);
-        setPatientHistories(data);
+        setPatientHistories([{}, ...data]);
       }
     };
 
@@ -86,18 +86,33 @@ export default function PatientHistory({ onClose, isAnimate }: Props) {
             <span>Summary</span>
           </div>
           <div className={styles.content}>
-            {patientHistories.map((history, index) => (
-              <div
-                key={index}
-                className={`${styles.body} grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
-                onClick={() => goReport(history.PID)}
-              >
-                <span>{history.PID}</span>
-                <span>{history.sex}</span>
-                <span>{history.age}</span>
-                <span>{history.summary}</span>
-              </div>
-            ))}
+            {patientHistories.map((history, index) => {
+              if (index === 0) {
+                return (
+                  <div
+                    key={index}
+                    className={`${styles.body} cursor-pointer flex justify-center items-center h-[50px] min-h-[50px] rounded-[10px]`}
+                    onClick={() => {
+                      // router.replace("/medical/mychat");
+                    }}
+                  >
+                    <span>Go MyChat</span>
+                  </div>
+                );
+              }
+              return (
+                <div
+                  key={index}
+                  className={`${styles.body} cursor-pointer grid grid-cols-[1.3fr_1fr_1fr_2fr] h-[50px] min-h-[50px] rounded-[10px]`}
+                  onClick={() => goReport(history.PID)}
+                >
+                  <span>{history.PID}</span>
+                  <span>{history.sex}</span>
+                  <span>{history.age}</span>
+                  <span>{history.summary}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
