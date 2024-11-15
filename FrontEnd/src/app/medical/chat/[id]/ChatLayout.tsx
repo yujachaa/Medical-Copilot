@@ -37,7 +37,8 @@ export default function Chat({ pid }: ChatProps) {
   const [messages, setMessages] = useState<MessageType[]>([]);
   //어떤리포트를 처음에 띄워줄건가? 이걸 내가 한번 필터를 해야하나?
   const [selectedReportId, setReportId] = useState<string>('');
-  const { patient } = useAppSelector((state) => state.main);
+  const { tablist, selectedIndex } = useAppSelector((state) => state.tab);
+  console.log(selectedIndex);
   const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
 
@@ -129,7 +130,7 @@ export default function Chat({ pid }: ChatProps) {
         <div className={styles.reportContainer}>
           <div className={styles.scrollable}>
             <div className={styles.reportInfo}>
-              <PluginInfo type={patient.modality} />
+              <PluginInfo type={tablist[selectedIndex].patient!.modality!} />
               <ReportInfo
                 id={selectedReportId}
                 date={reportData ? new Date(reportData.createDate) : undefined}
@@ -144,7 +145,7 @@ export default function Chat({ pid }: ChatProps) {
         <div className={styles.reportContainer}>
           <div className={styles.scrollable}>
             <div className={styles.reportInfo}>
-              <PluginInfo type={patient.modality} />
+              <PluginInfo type={tablist[selectedIndex].patient!.modality!} />
             </div>
           </div>
         </div>

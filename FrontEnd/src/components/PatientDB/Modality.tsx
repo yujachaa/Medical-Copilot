@@ -2,7 +2,7 @@ import styles from './Modality.module.scss';
 import React, { useState } from 'react';
 import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircleOutline';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import { setModality } from '@/redux/features/main/mainSlice';
+import { setRequestModality } from '@/redux/features/tab/tabSlice';
 
 type Props = {
   onClose: () => void;
@@ -10,21 +10,21 @@ type Props = {
 };
 
 export default function Modality({ onClose, onPatientClose }: Props) {
-  const { modality } = useAppSelector((state) => state.main.patient);
+  const { tablist, selectedIndex } = useAppSelector((state) => state.tab);
   const dispatch = useAppDispatch();
   //기본적으로 MG를 선택함
   const [selectedModality, setSelectedModality] = useState<string>('MG');
 
   //값이 없다면 빈배열로 초기화
 
-  const modalities = modality ? ['CXR', 'MG'] : [];
+  const modalities = tablist[selectedIndex].patient!.modality ? ['CXR', 'MG'] : [];
   const handleSelect = (e: React.MouseEvent<HTMLDivElement>, modality: string) => {
     e.stopPropagation(); //버블링 방지
     setSelectedModality(modality);
   };
 
   const handleSetPatient = () => {
-    dispatch(setModality(selectedModality));
+    dispatch(setRequestModality(selectedModality));
     onClose();
     onPatientClose();
   };

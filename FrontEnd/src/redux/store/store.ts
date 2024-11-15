@@ -6,7 +6,6 @@ import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } fro
 import storage from 'redux-persist/lib/storage';
 import { persistStore } from 'redux-persist';
 import userSlices from '../features/user/userSlice';
-import mainSlices from '../features/main/mainSlice';
 import AlarmSlices from '../features/alarm/alarmSlice';
 import coordinateSlices from '../features/report/coordinateSlice';
 import reportSlices from '../features/report/reportSlice';
@@ -26,7 +25,6 @@ const reducer = combineReducers({
   test: testSlices.reducer,
   tab: tabSlices.reducer,
   user: userSlices.reducer,
-  main: mainSlices.reducer,
   coordinate: coordinateSlices.reducer,
   report: reportSlices.reducer,
   fip: fipSlice.reducer,

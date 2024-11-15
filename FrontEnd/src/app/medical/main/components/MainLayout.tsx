@@ -10,7 +10,7 @@ import Input from './Input';
 import { useAppSelector } from '@/redux/store/hooks/store';
 
 export default function Main() {
-  const { patient } = useAppSelector((state) => state.main);
+  const { tablist, selectedIndex } = useAppSelector((state) => state.tab);
   const [isActive, setIsActive] = useState(false);
   const toggleIcons = () => {
     setIsActive((prev) => !prev);
@@ -33,7 +33,7 @@ export default function Main() {
             onClick={toggleIcons}
           >
             <SelectTabIcons
-              logoType={patient.modality}
+              logoType={tablist[selectedIndex].type}
               className={'w-[60px] h-[60px]'}
             />
           </div>
