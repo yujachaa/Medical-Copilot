@@ -1,7 +1,7 @@
 import { GPUURL } from './core';
 import { ReportDataType } from '@/types/report';
 
-export async function fetchPlan(plan: string, reportData: ReportDataType) {
+export async function fetchPlan(impression: string, reportData: ReportDataType) {
   try {
     const response = await fetch(`${GPUURL}generate_plan`, {
       cache: 'no-store',
@@ -11,7 +11,7 @@ export async function fetchPlan(plan: string, reportData: ReportDataType) {
       },
       body: JSON.stringify({
         member_id: reportData.memberId,
-        plan,
+        impression: impression,
       }),
     });
     if (!response.ok) {
