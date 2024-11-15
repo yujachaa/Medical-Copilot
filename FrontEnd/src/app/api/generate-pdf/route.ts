@@ -11,7 +11,10 @@ export async function POST(request: NextRequest) {
 
   try {
     // Puppeteer 브라우저 시작
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
     const page = await browser.newPage();
 
     // URL로 이동
