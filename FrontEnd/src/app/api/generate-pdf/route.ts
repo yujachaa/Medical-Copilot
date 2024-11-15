@@ -15,13 +15,7 @@ export async function POST(request: NextRequest) {
     const page = await browser.newPage();
 
     // URL로 이동
-    await page.goto(url, { waitUntil: 'networkidle0' });
-
-    await page.evaluate(() => {
-      // 클라이언트 사이드에서 특정 JavaScript 코드를 실행
-      const state = window.localStorage.getItem('persist:persist'); // Redux 상태를 페이지 내에서 가져오는 방법
-      console.log(state);
-    });
+    await page.goto(url, { waitUntil: 'networkidle2' });
 
     // PDF 생성
     const pdfBuffer = await page.pdf({
