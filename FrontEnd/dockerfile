@@ -1,4 +1,4 @@
-FROM node:20.18.0-alpine
+FROM node:20.18.0-buster
 
 # Puppeteer 의존성을 설치하기 위해 apk 사용
 RUN apk update && apk add --no-cache \
