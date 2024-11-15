@@ -11,7 +11,11 @@ export default function WarningModal({ clientDetail }: { clientDetail: clientDet
   const handleFetchStop = useCallback(async () => {
     const data = await fetchLimit(clientDetail.key);
     if (data && data.msg === 'success') {
-      window.location.reload();
+      // window.location.reload();
+      dispatch(setWarningModal());
+    } else {
+      alert('Suspension is not available at the moment. Please try again later.');
+      dispatch(setWarningModal());
     }
   }, [clientDetail.key]);
 
@@ -28,14 +32,7 @@ export default function WarningModal({ clientDetail }: { clientDetail: clientDet
             accessing their services and cannot be easily undone.
           </span>
           <div className={`${styles.btns} flex justify-end gap-3 mt-3 mr-5`}>
-            <button
-              onClick={() => {
-                dispatch(setWarningModal());
-                handleFetchStop();
-              }}
-            >
-              Stop
-            </button>
+            <button onClick={handleFetchStop}>Stop</button>
             <button
               onClick={() => {
                 dispatch(setWarningModal());

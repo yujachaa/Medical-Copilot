@@ -8,6 +8,7 @@ import { useAppDispatch } from '@/redux/store/hooks/store';
 import { setClientAddModal } from '@/redux/features/modal/modalSlice';
 import { useRouter } from 'next/navigation';
 import { fetchLogout } from '@/apis/fetchLogout';
+import { clearAuth } from '@/redux/features/auth/authSlice';
 
 export default function Header() {
   const dispatch = useAppDispatch();
@@ -16,6 +17,7 @@ export default function Header() {
   const handleLogout = async () => {
     const data = await fetchLogout();
     if (data) {
+      dispatch(clearAuth());
       router.replace('/');
     }
   };

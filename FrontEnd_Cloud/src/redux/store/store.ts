@@ -1,11 +1,14 @@
 //redux store 저장공간
 
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore, createAction } from '@reduxjs/toolkit';
 import testSlices from '../features/testSlice';
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { persistStore } from 'redux-persist';
 import modalSlices from '../features/modal/modalSlice';
+import authSlice from '../features/auth/authSlice';
+
+export const resetState = createAction('RESET_STATE');
 
 const persistConfig = {
   key: 'persist',
@@ -17,6 +20,7 @@ const persistConfig = {
 const reducer = combineReducers({
   test: testSlices.reducer,
   modal: modalSlices.reducer,
+  auth: authSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

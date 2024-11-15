@@ -4,9 +4,17 @@ import Image from 'next/image';
 import Logo from '@/assets/images/Logo_Landing.png';
 import styles from './page.module.scss';
 import { useLandingAnimation } from '@/hooks/useLandingAnimation';
+import { useAppDispatch } from '@/redux/store/hooks/store';
+import { useEffect } from 'react';
+import { resetState } from '@/redux/store/store';
 
 export default function Home() {
   const { animation, medicalRef, copilotRef } = useLandingAnimation();
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(resetState());
+  }, [dispatch]);
   return (
     <>
       <div className={`w-screen h-screen flex justify-center items-center gap-5 overflow-hidden`}>
