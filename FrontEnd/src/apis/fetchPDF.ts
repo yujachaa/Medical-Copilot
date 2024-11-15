@@ -6,7 +6,7 @@ export const fetchPDF = async () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      // body: JSON.stringify({ url: 'http://k11s205.p.ssafy.io/pdf/1' }),
+      // body: JSON.stringify({ url: 'https://medical-copilot.net/pdf/1' }),
       body: JSON.stringify({ url: 'http://localhost:3000/pdf/1' }),
     });
 
