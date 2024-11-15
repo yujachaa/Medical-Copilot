@@ -38,7 +38,7 @@ RUN npm run build
 RUN npm run build-storybook
 
 # Puppeteer가 Chromium을 참조할 수 있도록 설정
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 # 포트 노출
