@@ -9,6 +9,9 @@ import com.newmes.onpremise.domains.history.entity.HistoryEntity;
 import com.newmes.onpremise.domains.history.service.HistoryService;
 import com.newmes.onpremise.domains.notification.dto.request.NotificationRequestDto;
 import com.newmes.onpremise.domains.notification.service.NotificationService;
+import com.newmes.onpremise.domains.pdf.domain.Pdf;
+import com.newmes.onpremise.domains.pdf.entity.PdfEntity;
+import com.newmes.onpremise.domains.pdf.service.PdfService;
 import com.newmes.onpremise.domains.quota.entity.QuotaEntity;
 import com.newmes.onpremise.domains.quota.service.QuotaService;
 import com.newmes.onpremise.domains.report.dto.request.ReportRequestDto;
@@ -35,6 +38,7 @@ public class KafkaConsumer {
     private final QuotaService quotaService;
     private final NotificationService notificationService;
     private final DrawingService drawingService;
+    private final PdfService pdfService;
 
     @KafkaListener(topics = "ai", groupId = "ai-group", concurrency ="1")
     public void processAiTopic(ConsumerRecord<String, AiResponseDto> record) {
@@ -67,6 +71,14 @@ public class KafkaConsumer {
                 .build();
 
         drawingService.saveDrawing(reportId, drawingRequestDto);
+
+        Pdf pdf = Pdf.builder()
+                .reportId(reportId)
+                .plan("")
+                .find("")
+                .impression("")
+                .build();
+        pdfService.register(pdf);
 
         ChatRequestDto userQuestion = ChatRequestDto.builder()
                 .agent(aiResponse.getAgent())
