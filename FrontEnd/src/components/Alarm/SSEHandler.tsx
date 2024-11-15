@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Popup from './components/Popup';
 
-type Token = {
+export type Token = {
   email: string;
   exp: number;
   iat: number;

@@ -400,6 +400,45 @@ const tabSlices = createSlice({
         }
       }
     },
+    setMyChatTab: (state) => {
+      const index = state.tablist.findIndex((tab) => tab.pathname.includes('/medical/mychat'));
+      //해당 탭이 존재한다면?!
+      if (index !== -1) {
+        //선택을 이동
+        state.selectedIndex = index;
+      }
+      //존재하지 않는다면 새로운 탭을 생성
+      else {
+        {
+          const newTab: tab = {
+            id: ++state.increment,
+            title: `My Chat`,
+            type: 'MG',
+            patient: {
+              sex: '',
+              age: 0,
+              visitDate: '',
+              pid: '',
+              modality: '',
+              image: '',
+            },
+            patientRequest: {
+              PID: '',
+              image: '',
+              shootingDate: '',
+              sex: '',
+              age: 0,
+              comments: '',
+              key: '',
+              agent: '',
+            },
+            pathname: `/medical/mychat`,
+          };
+          state.tablist.push(newTab);
+          state.selectedIndex = state.tablist.length - 1;
+        }
+      }
+    },
   },
 });
 
@@ -416,5 +455,6 @@ export const {
   setRequestModality,
   setHistoryTab,
   setAlarmTab,
+  setMyChatTab,
 } = tabSlices.actions;
 export default tabSlices;
