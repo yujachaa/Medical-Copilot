@@ -18,7 +18,7 @@ export async function fetchPlan(impression: string, reportData: ReportDataType) 
       throw new Error('응답이 없습니다.');
     }
     const data = await response.json();
-    return data.impression;
+    return data.plan;
   } catch (error) {
     console.log(error);
   }
