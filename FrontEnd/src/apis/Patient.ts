@@ -95,8 +95,13 @@ export type NoPatientQuestion = {
   PID: string;
   member_id: string;
   agent: string;
-  chat_list: string[];
+  chat_list: chatType[];
   summary: string;
+};
+
+export type chatType = {
+  message: string;
+  isQuestion: boolean;
 };
 export async function fetcMedicalAI(datas: NoPatientQuestion) {
   console.log(datas);
@@ -113,8 +118,7 @@ export async function fetcMedicalAI(datas: NoPatientQuestion) {
       throw new Error('응답이 없습니다.');
     }
     const data = await response.json();
-    console.log(data);
-    return;
+    return data;
   } catch (error) {
     console.log(error);
   }
