@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './AlarmModal.module.scss';
 import Item from '@/components/Alarm/components/Item';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
-import { fetchAllAlarm, readAllAlarm } from '@/apis/alarm';
+import { fetchAllAlarm, readAlarm, readAllAlarm } from '@/apis/alarm';
 
 // 알람 데이터 타입 정의
 type Alarm = {
@@ -15,7 +15,7 @@ type Alarm = {
 };
 
 type Props = {
-  onClose?: () => void;
+  onClose: () => void;
 };
 
 export default function AlarmModal({ onClose }: Props) {
@@ -48,6 +48,12 @@ export default function AlarmModal({ onClose }: Props) {
     }
   };
 
+  const handleDelete = async (e: React.MouseEvent<SVGElement>, id: number) => {
+    e.stopPropagation();
+    readAlarm(id);
+    setAlarms((prev) => prev.filter((item) => item.id !== id));
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.box}>
@@ -74,6 +80,8 @@ export default function AlarmModal({ onClose }: Props) {
                     key={alarm.id}
                     alarmId={alarm.id}
                     alarmData={alarm}
+                    onClose={onClose}
+                    handleDelete={handleDelete}
                   />
                 ))}
               </div>

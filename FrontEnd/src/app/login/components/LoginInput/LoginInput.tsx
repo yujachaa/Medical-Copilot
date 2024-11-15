@@ -29,7 +29,7 @@ export default function LoginInput() {
       setIsLogin(true);
       dispatch(setUserInfo(data.status));
       // dispatch(getOTP());
-      router.push('/medical');
+      router.replace('/medical');
     } else {
       setIsLogin(false);
     }
@@ -78,7 +78,7 @@ export default function LoginInput() {
         <button
           className={`${styles.signup} w-[190px] h-[64px] flex justify-center items-center`}
           onClick={() => {
-            router.push('/regist');
+            router.replace('/regist');
           }}
         >
           Sign up

@@ -16,7 +16,7 @@ export function useLandingAnimation() {
         setAnimation(true);
       }, 500);
       setTimeout(() => {
-        router.push('/login');
+        router.replace('/login');
       }, 3000);
     }
   }, [router]);

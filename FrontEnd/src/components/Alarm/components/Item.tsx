@@ -3,6 +3,9 @@ import React from 'react';
 import styles from './Item.module.scss';
 import { CgClose } from 'react-icons/cg';
 import { readAlarm } from '@/apis/alarm';
+import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/redux/store/hooks/store';
+import { setAlarmTab } from '@/redux/features/tab/tabSlice';
 
 // 알람 데이터 타입 정의
 type Alarm = {
@@ -18,8 +21,12 @@ type ItemProps = {
   className?: string;
   alarmId: number;
   alarmData: Alarm;
+  onClose: () => void;
+  handleDelete: (e: React.MouseEvent<SVGElement>, id: number) => void;
 };
-export default function Item({ className, alarmId, alarmData }: ItemProps) {
+export default function Item({ className, alarmId, alarmData, onClose, handleDelete }: ItemProps) {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const clickAlarm = async () => {
     console.log('알람클릭', alarmId, alarmData.reportId);
     //알람 읽기 api 호출
@@ -28,6 +35,10 @@ export default function Item({ className, alarmId, alarmData }: ItemProps) {
       console.log('알람읽기 완료', data);
     }
     //(예정)클릭한 알람과 연결된 리포트 페이지로 이동하는 부분 넣기!!
+    router.replace(`/medical/chat/${alarmData.patientId}?reportId=${alarmData.reportId}`);
+    dispatch(setAlarmTab(alarmData));
+    await readAlarm(alarmData.id);
+    onClose();
   };
 
   //날짜 포맷팅 함수
@@ -72,7 +83,10 @@ export default function Item({ className, alarmId, alarmData }: ItemProps) {
           completed.
         </div>
       </div>
-      <CgClose className={`${styles.close}`} />
+      <CgClose
+        className={`${styles.close}`}
+        onClick={(e) => handleDelete(e, alarmData.id)}
+      />
     </div>
   );
 }

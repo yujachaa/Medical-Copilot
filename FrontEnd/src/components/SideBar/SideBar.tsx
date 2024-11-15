@@ -30,7 +30,7 @@ export default function SideBar() {
 
   const handleLogout = async () => {
     await fetchLogout(accessToken);
-    router.push('/');
+    router.replace('/');
   };
 
   const clickUser = () => {
