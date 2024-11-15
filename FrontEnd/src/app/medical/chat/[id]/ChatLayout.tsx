@@ -35,6 +35,7 @@ export default function Chat({ pid }: ChatProps) {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
+  //어떤리포트를 처음에 띄워줄건가? 이걸 내가 한번 필터를 해야하나?
   const [selectedReportId, setReportId] = useState<string>('');
   const { patient } = useAppSelector((state) => state.main);
   const { reportData } = useAppSelector((state) => state.report);
@@ -96,68 +97,64 @@ export default function Chat({ pid }: ChatProps) {
   }, []);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.main}>
-        <div className={styles.content}>
-          <div
-            className={`${styles.chatContainer} ${
-              isChatOpen ? styles.open : styles.hidden
-            } ${isChatMinimized ? styles.minimized : ''}`}
-          >
-            <div className={styles.chatHeader}>
-              <button onClick={minimizeChat}>
-                {isChatMinimized ? <TbFoldUp size={25} /> : <TbFoldDown size={25} />}
-              </button>
-              <button onClick={toggleChat}>
-                <CgClose size={25} />
-              </button>
-            </div>
-            <MessaageList
-              messagelist={messages}
-              setMessagelist={setMessages}
-              selectReport={selectReport}
-              pid={pid}
-            />
-            <ChatInput />
-          </div>
+    <div className={styles.content}>
+      <div
+        className={`${styles.chatContainer} ${
+          isChatOpen ? styles.open : styles.hidden
+        } ${isChatMinimized ? styles.minimized : ''}`}
+      >
+        <div className={styles.chatHeader}>
+          <button onClick={minimizeChat}>
+            {isChatMinimized ? <TbFoldUp size={25} /> : <TbFoldDown size={25} />}
+          </button>
+          <button onClick={toggleChat}>
+            <CgClose size={25} />
+          </button>
+        </div>
+        <MessaageList
+          messagelist={messages}
+          setMessagelist={setMessages}
+          selectReport={selectReport}
+          pid={pid}
+        />
+        <ChatInput />
+      </div>
 
-          {/* 이부분이 랜더링이 되야한다 
+      {/* 이부분이 랜더링이 되야한다 
              1. 채팅의 버튼을 클릭하는데, reportId가 있는 채팅만 클릭이 가능하게한다.
              2. 그러면 여기서 선택된 리포트를 관리하는것 그리고 그것을 리포트정보에 넣어주는것
           */}
 
-          {selectedReportId !== '' ? (
-            <div className={styles.reportContainer}>
-              <div className={styles.scrollable}>
-                <div className={styles.reportInfo}>
-                  <PluginInfo type={patient.modality} />
-                  <ReportInfo
-                    id={selectedReportId}
-                    date={reportData ? new Date(reportData.createDate) : undefined}
-                  />
-                  <ReportBtn messagelist={messages} />
-                </div>
-                <ReportData />
-                <Summary />
-              </div>
+      {selectedReportId !== '' ? (
+        <div className={styles.reportContainer}>
+          <div className={styles.scrollable}>
+            <div className={styles.reportInfo}>
+              <PluginInfo type={patient.modality} />
+              <ReportInfo
+                id={selectedReportId}
+                date={reportData ? new Date(reportData.createDate) : undefined}
+              />
+              <ReportBtn messagelist={messages} />
             </div>
-          ) : (
-            <div className={styles.reportContainer}>
-              <div className={styles.scrollable}>
-                <div className={styles.reportInfo}>
-                  <PluginInfo type={patient.modality} />
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div
-            className={`${styles.messageButton} ${isChatOpen ? styles.active : ''}`}
-            onClick={toggleChat}
-          >
-            <BiMessageRoundedDots size={35} />
+            <ReportData />
+            <Summary />
           </div>
         </div>
+      ) : (
+        <div className={styles.reportContainer}>
+          <div className={styles.scrollable}>
+            <div className={styles.reportInfo}>
+              <PluginInfo type={patient.modality} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div
+        className={`${styles.messageButton} ${isChatOpen ? styles.active : ''}`}
+        onClick={toggleChat}
+      >
+        <BiMessageRoundedDots size={35} />
       </div>
     </div>
   );
