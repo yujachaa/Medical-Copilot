@@ -1,14 +1,13 @@
 import { PluginType } from '@/components/Tabs/Tab';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Patient } from '../main/mainSlice';
-
 type TabType = 'default' | 'chat';
 export type tab = {
   id: number;
   title: string;
   type: PluginType;
   tabType: TabType;
-  pid: number;
+  pid: string;
   pathname: string;
 };
 
@@ -31,25 +30,32 @@ const initialState: tabProps = {
       title: 'Medical Copilot',
       type: 'MG',
       tabType: 'default',
-      pid: -1,
+      pid: '-1',
       pathname: '/medical/main',
     },
-    { id: 1, title: 'My Chat', type: 'CXR', tabType: 'chat', pid: 1, pathname: '/medical/mychat' },
+    {
+      id: 1,
+      title: 'My Chat',
+      type: 'CXR',
+      tabType: 'chat',
+      pid: '1',
+      pathname: '/medical/mychat',
+    },
     {
       id: 2,
       title: 'My Page',
       type: 'MG',
       tabType: 'chat',
-      pid: 1,
+      pid: '1',
       pathname: '/medical/mypage?t=profile',
     },
-    { id: 3, title: 'My temp', type: 'MG', tabType: 'chat', pid: 1, pathname: '/medical/temp/2' },
+    { id: 3, title: 'My temp', type: 'MG', tabType: 'chat', pid: '1', pathname: '/medical/temp/2' },
     {
       id: 4,
       title: '1 Dignosis',
       type: 'CXR',
       tabType: 'chat',
-      pid: 1,
+      pid: '1',
       pathname: '/medical/chat/1',
     },
   ],
@@ -74,12 +80,22 @@ const tabSlices = createSlice({
         title: `New Tab`,
         type: 'MG',
         tabType: 'default',
-        pid: -1,
+        pid: '-1',
         pathname: '/medical/main',
       };
       state.tablist.push(newTab);
       state.selectedIndex = state.tablist.length - 1;
     },
+
+    addTempTab: (state, action: PayloadAction<{ patient: Patient; uuid: string }>) => {
+      const { patient, uuid } = action.payload;
+      state.tablist[state.selectedIndex].pathname = `/medical/temp/${uuid}`;
+      state.tablist[state.selectedIndex].title =
+        `${!patient.modality ? 'MG' : patient.modality} Plugin`;
+      state.tablist[state.selectedIndex].pid = patient.pid;
+      state.tablist[state.selectedIndex].type = `${patient.modality === 'MG' ? 'MG' : 'CXR'}`;
+    },
+
     deleteTab: (state, action: PayloadAction<number>) => {
       if (state.tablist.length === 1) {
         alert('탭은 적어도 1개 이상이어야 합니다');
@@ -101,7 +117,7 @@ const tabSlices = createSlice({
     //환자DB선택했을때 탭이동
     moveTab: (state, action: PayloadAction<Patient>) => {
       //환자탭이 존재할때 : 기존탭에서 찾고 이동
-      const index = state.tablist.findIndex((tab) => tab.pid === Number(action.payload.pid));
+      const index = state.tablist.findIndex((tab) => tab.pid === action.payload.pid);
 
       //환자탭이 없을때 : 새탭을 만들지 말고 현재 탭에 대입하는게 맞지
       if (index === -1) {
@@ -109,7 +125,7 @@ const tabSlices = createSlice({
         state.tablist[state.selectedIndex].type =
           `${action.payload.modality === '' ? 'MG' : 'CXR'}`;
         state.tablist[state.selectedIndex].tabType = 'chat';
-        state.tablist[state.selectedIndex].pid = Number(action.payload.pid);
+        state.tablist[state.selectedIndex].pid = action.payload.pid;
       } else {
         if (action.payload.modality === '') {
           state.tablist[index].type = 'MG';
@@ -144,7 +160,7 @@ const tabSlices = createSlice({
           title: `My Page`,
           type: 'MG',
           tabType: 'default',
-          pid: -1,
+          pid: '-1',
           pathname: action.payload,
         };
         state.tablist.push(newTab);
@@ -163,5 +179,6 @@ export const {
   goMain,
   setTabPathname,
   goMypage,
+  addTempTab,
 } = tabSlices.actions;
 export default tabSlices;
