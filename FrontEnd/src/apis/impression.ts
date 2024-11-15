@@ -4,7 +4,6 @@ import { ReportDataType } from '@/types/report';
 export async function fetchImpression(finding: string, reportData: ReportDataType) {
   try {
     const response = await fetch(`${GPUURL}generate_impression`, {
-      cache: 'no-store',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
