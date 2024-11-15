@@ -1,4 +1,4 @@
-export const fetchPDF = async () => {
+export const fetchPDF = async (reportId: string) => {
   try {
     const response = await fetch('/api/generate-pdf', {
       cache: 'no-cache',
@@ -7,7 +7,7 @@ export const fetchPDF = async () => {
         'Content-Type': 'application/json',
       },
       // body: JSON.stringify({ url: 'https://medical-copilot.net/pdf/1' }),
-      body: JSON.stringify({ url: 'http://localhost:3000/pdf/1' }),
+      body: JSON.stringify({ url: `http://localhost:3000/pdf/${reportId}` }),
     });
 
     if (!response.ok) throw new Error('PDF generation failed');

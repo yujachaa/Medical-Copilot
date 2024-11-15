@@ -1,4 +1,4 @@
-import Chat from './ChatLayout';
+import Chat from './TempLayout';
 
 type Props = {
   params: {
