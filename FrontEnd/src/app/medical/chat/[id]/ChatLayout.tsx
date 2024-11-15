@@ -39,7 +39,6 @@ export default function Chat({ pid }: ChatProps) {
   const [selectedReportId, setReportId] = useState<string>('');
   const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
-
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };

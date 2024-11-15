@@ -16,6 +16,8 @@ import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { fetchDrawing, fetchReport } from '@/apis/report';
 import { setReportData } from '@/redux/features/report/reportSlice';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
+import { useSearchParams } from 'next/navigation';
+import { fetcMedicalAI, NoPatientQuestion } from '@/apis/Patient';
 
 type ChatProps = {
   pid: string;
@@ -31,7 +33,7 @@ export type MessageType = {
   reportId: string;
 };
 
-export default function Chat({ pid }: ChatProps) {
+export default function TempLayout({ pid }: ChatProps) {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -40,7 +42,7 @@ export default function Chat({ pid }: ChatProps) {
   // const { patient } = useAppSelector((state) => state.main);
   const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
-
+  const searchParams = useSearchParams();
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
@@ -63,6 +65,26 @@ export default function Chat({ pid }: ChatProps) {
   //   };
   //   fetchPatient();
   // }, [pid]);
+
+  const question = searchParams.get('question');
+  useEffect(() => {
+    //이게 있다면 PID가 없는 질문
+    if (question) {
+      console.log(question);
+      const q: NoPatientQuestion = {
+        isQuestion: true,
+        member_id: searchParams.get('memberId')!,
+        PID: searchParams.get('memberId')!,
+        comment: searchParams.get('comment')!,
+        agent: 'MG',
+        chat_list: [],
+        summary: '',
+      };
+      //호출
+      fetcMedicalAI(q);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const getReport = async () => {
