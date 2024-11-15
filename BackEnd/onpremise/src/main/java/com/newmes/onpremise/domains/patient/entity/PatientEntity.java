@@ -36,7 +36,7 @@ public class PatientEntity {
     @Field(type = FieldType.Keyword)
     Modality modality;
 
-    @Field(type = FieldType.Text, index = false)
+    @Field(type = FieldType.Text)
     String image;
 
     @Field(type = FieldType.Date)
@@ -48,6 +48,7 @@ public class PatientEntity {
                 .PID(dto.PID())
                 .sex(dto.sex())
                 .modality(dto.modality())
+                .image(dto.image())
                 .build();
         return patientEntity;
     }
