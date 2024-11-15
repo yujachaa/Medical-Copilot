@@ -5,7 +5,6 @@ import { ReportDataType } from '@/types/report';
 export async function find(messagelist: MessageType[], reportData: ReportDataType) {
   try {
     const response = await fetch(`${GPUURL}generate_find`, {
-      cache: 'no-store',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
