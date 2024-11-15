@@ -55,6 +55,7 @@ export default function ExportModal({
 
   const handleSave = async () => {
     if (reportData) {
+      console.log(reportData.id, finding, impression, plan);
       await fetchfipSave(reportData.id, finding, impression, plan);
     }
   };
