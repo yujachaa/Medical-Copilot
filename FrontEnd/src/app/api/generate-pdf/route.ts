@@ -11,22 +11,27 @@ export async function POST(request: NextRequest) {
 
   try {
     // Puppeteer 브라우저 시작
+    console.log(1);
     const browser = await puppeteer.launch({
       headless: false,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
+    console.log(2);
     const page = await browser.newPage();
 
     // URL로 이동
+    console.log(3);
     await page.goto(url, { waitUntil: 'networkidle2' });
 
     // PDF 생성
+    console.log(4);
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
     });
 
     // 브라우저 닫기
+    console.log(5);
     await browser.close();
 
     // PDF 파일 응답으로 전송
