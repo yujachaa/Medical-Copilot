@@ -22,7 +22,7 @@ export type MessageType = {
   reportId: string;
 };
 
-export default function Chat() {
+export default function MyChat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
