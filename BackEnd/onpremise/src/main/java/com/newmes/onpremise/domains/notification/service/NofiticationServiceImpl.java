@@ -56,7 +56,9 @@ public class NofiticationServiceImpl implements NotificationService{
     String[] sessions = sessionHolders.getSessions(memberId);
     if (null != sessions){
       for (String sessionId : sessions){
-        sseEmitters.sendNotification(sessionId, responseDto);
+        if (null != sessionId){
+          sseEmitters.sendNotification(sessionId, responseDto);
+        }
       }
     }
   }
