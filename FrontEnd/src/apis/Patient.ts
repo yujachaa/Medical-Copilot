@@ -94,8 +94,8 @@ export type NoPatientQuestion = {
   isQuestion: boolean;
   PID: string;
   member_id: string;
-  agent: string;
-  chat_list: string[];
+  agent: string | null;
+  chat_list: { message: string; isQuestion: boolean }[];
   summary: string;
 };
 export async function fetcMedicalAI(datas: NoPatientQuestion) {
@@ -114,7 +114,7 @@ export async function fetcMedicalAI(datas: NoPatientQuestion) {
     }
     const data = await response.json();
     console.log(data);
-    return;
+    return data;
   } catch (error) {
     console.log(error);
   }
