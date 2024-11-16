@@ -12,6 +12,13 @@
   background: $gray-msg;
   gap: 10px;
 }
+.pid {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  text-decoration: underline;
+}
 
 .chatInput {
   width: 85%;

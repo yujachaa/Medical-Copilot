@@ -21,7 +21,7 @@ export type PatientReqeust = {
   age: number;
   comments: string;
   key: string;
-  agent: string;
+  agent: string | null;
 };
 
 export type tab = {
@@ -33,6 +33,7 @@ export type tab = {
   patientRequest: PatientReqeust;
   messageList: MessageType[];
   firstMessage: string;
+  isFirst: boolean;
 };
 
 type tabProps = {
@@ -73,6 +74,7 @@ const initialState: tabProps = {
       },
       messageList: [],
       firstMessage: '',
+      isFirst: true,
       pathname: '/medical/main',
     },
   ],
@@ -90,6 +92,15 @@ const tabSlices = createSlice({
       if (index !== -1) {
         state.selectedIndex = index;
       }
+    },
+    setDispatchMessageList: (state, action: PayloadAction<MessageType[]>) => {
+      state.tablist[state.selectedIndex].messageList = [
+        ...state.tablist[state.selectedIndex].messageList,
+        ...action.payload,
+      ];
+    },
+    setIsFirst: (state) => {
+      state.tablist[state.selectedIndex].isFirst = false;
     },
     addTab: (state) => {
       const newTab: tab = {
@@ -116,6 +127,7 @@ const tabSlices = createSlice({
         },
         messageList: [],
         firstMessage: '',
+        isFirst: true,
         pathname: '/medical/main',
       };
       state.tablist.push(newTab);
@@ -202,6 +214,7 @@ const tabSlices = createSlice({
           },
           messageList: [],
           firstMessage: '',
+          isFirst: true,
           pathname: action.payload,
         };
         state.tablist.push(newTab);
@@ -216,6 +229,16 @@ const tabSlices = createSlice({
         visitDate: action.payload.visitDate,
         pid: action.payload.pid,
         image: action.payload.image,
+      };
+    },
+    setPatientModality: (state, action: PayloadAction<string>) => {
+      state.tablist[state.selectedIndex].patient = {
+        sex: state.tablist[state.selectedIndex].patient.sex,
+        age: state.tablist[state.selectedIndex].patient.age,
+        modality: action.payload,
+        visitDate: state.tablist[state.selectedIndex].patient.visitDate,
+        pid: state.tablist[state.selectedIndex].patient.pid,
+        image: state.tablist[state.selectedIndex].patient.image,
       };
     },
     setPatientInit: (state) => {
@@ -278,6 +301,7 @@ const tabSlices = createSlice({
             },
             messageList: [],
             firstMessage: '',
+            isFirst: true,
             pathname: `/medical/chat/${action.payload.PID}`,
           };
           state.tablist.push(newTab);
@@ -323,6 +347,7 @@ const tabSlices = createSlice({
             },
             messageList: [],
             firstMessage: '',
+            isFirst: true,
             pathname:
               `/medical/chat/${action.payload.patientId} ` + `?reportId=${action.payload.reportId}`,
           };
@@ -348,5 +373,8 @@ export const {
   setHistoryTab,
   setAlarmTab,
   setPatientInit,
+  setDispatchMessageList,
+  setIsFirst,
+  setPatientModality,
 } = tabSlices.actions;
 export default tabSlices;
