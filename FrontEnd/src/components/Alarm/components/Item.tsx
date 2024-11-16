@@ -35,7 +35,7 @@ export default function Item({ className, alarmId, alarmData, onClose, handleDel
     if (data) {
       console.log('알람읽기 완료', data);
     }
-    //(예정)클릭한 알람과 연결된 리포트 페이지로 이동하는 부분 넣기!!
+    //클릭한 알람과 연결된 리포트 페이지로 이동
     router.replace(`/medical/chat/${alarmData.patientId}?reportId=${alarmData.reportId}`);
     dispatch(setAlarmTab(alarmData));
     await readAlarm(alarmData.id);

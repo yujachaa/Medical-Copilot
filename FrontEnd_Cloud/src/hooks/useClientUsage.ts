@@ -6,6 +6,10 @@ type totalData = { id: string; label: string; value: number; color: string }[];
 export function useClientUsage(standard: number, serialKey: string) {
   const [list, setList] = useState<totalData>([]);
 
+  function removeCapsule(dataList: totalData): totalData {
+    return dataList.filter((item) => item.id !== 'capsule');
+  }
+
   useEffect(() => {
     const handleClientUsage = async () => {
       const data = await fetchClientUsage(standard, serialKey);
@@ -16,7 +20,7 @@ export function useClientUsage(standard: number, serialKey: string) {
           value: value as number,
           color: 'hsl(60, 70%, 50%)',
         }));
-        setList(newList);
+        setList(removeCapsule(newList));
       }
     };
     handleClientUsage();

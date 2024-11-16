@@ -63,6 +63,7 @@ export default function SSEHandler() {
       };
 
       eventSourceRef.current!.onmessage = (event: MessageEvent) => {
+        console.log('알림');
         const data = JSON.parse(event.data);
         setAlarm(data);
 
