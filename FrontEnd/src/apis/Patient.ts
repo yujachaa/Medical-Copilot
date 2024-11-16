@@ -45,12 +45,13 @@ export async function fetchPatient(page: number, size: number) {
 
 //main에서 호출할 예정
 export async function fetchCallAI(PatientReqeust: PatientReqeust) {
+  const accessToken = getCookie('accessToken');
   try {
     const response = await fetch(`${BaseURL}agent`, {
-      cache: 'no-store',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(PatientReqeust),
     });
@@ -58,8 +59,7 @@ export async function fetchCallAI(PatientReqeust: PatientReqeust) {
       throw new Error('응답이 없습니다.');
     }
     const data = await response.json();
-    console.log(data);
-    return;
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -97,6 +97,11 @@ export type NoPatientQuestion = {
   agent: string | null;
   chat_list: { message: string; isQuestion: boolean }[];
   summary: string;
+};
+
+export type chatType = {
+  message: string;
+  isQuestion: boolean;
 };
 export async function fetcMedicalAI(datas: NoPatientQuestion) {
   console.log(datas);

@@ -19,7 +19,7 @@ export type PatientReqeust = {
   shootingDate: string;
   sex: string;
   age: number;
-  comments: string;
+  comment: string;
   key: string;
   agent: string | null;
 };
@@ -68,7 +68,7 @@ const initialState: tabProps = {
         shootingDate: '',
         sex: '',
         age: 0,
-        comments: '',
+        comment: '',
         key: '',
         agent: '',
       },
@@ -121,7 +121,7 @@ const tabSlices = createSlice({
           shootingDate: '',
           sex: '',
           age: 0,
-          comments: '',
+          comment: '',
           key: '',
           agent: '',
         },
@@ -208,7 +208,7 @@ const tabSlices = createSlice({
             shootingDate: '',
             sex: '',
             age: 0,
-            comments: '',
+            comment: '',
             key: '',
             agent: '',
           },
@@ -259,7 +259,7 @@ const tabSlices = createSlice({
         shootingDate: state.tablist[state.selectedIndex].patient!.visitDate,
         PID: state.tablist[state.selectedIndex].patient!.pid,
         image: state.tablist[state.selectedIndex].patient!.image,
-        comments: '',
+        comment: '',
         key: 'ccf97220-30b3-4780-acab-295301698be0',
       };
     },
@@ -295,7 +295,7 @@ const tabSlices = createSlice({
               shootingDate: '',
               sex: '',
               age: 0,
-              comments: '',
+              comment: '',
               key: '',
               agent: '',
             },
@@ -341,7 +341,7 @@ const tabSlices = createSlice({
               shootingDate: '',
               sex: '',
               age: 0,
-              comments: '',
+              comment: '',
               key: '',
               agent: '',
             },
@@ -350,6 +350,48 @@ const tabSlices = createSlice({
             isFirst: true,
             pathname:
               `/medical/chat/${action.payload.patientId} ` + `?reportId=${action.payload.reportId}`,
+          };
+          state.tablist.push(newTab);
+          state.selectedIndex = state.tablist.length - 1;
+        }
+      }
+    },
+    setMyChatTab: (state) => {
+      const index = state.tablist.findIndex((tab) => tab.pathname.includes('/medical/mychat'));
+      //해당 탭이 존재한다면?!
+      if (index !== -1) {
+        //선택을 이동
+        state.selectedIndex = index;
+      }
+      //존재하지 않는다면 새로운 탭을 생성
+      else {
+        {
+          const newTab: tab = {
+            id: ++state.increment,
+            title: `My Chat`,
+            type: 'MG',
+            patient: {
+              sex: '',
+              age: 0,
+              visitDate: '',
+              pid: '',
+              modality: '',
+              image: '',
+            },
+            patientRequest: {
+              PID: '',
+              image: '',
+              shootingDate: '',
+              sex: '',
+              age: 0,
+              comment: '',
+              key: '',
+              agent: '',
+            },
+            pathname: `/medical/mychat`,
+            messageList: [],
+            firstMessage: '',
+            isFirst: false,
           };
           state.tablist.push(newTab);
           state.selectedIndex = state.tablist.length - 1;
@@ -372,6 +414,7 @@ export const {
   setRequestModality,
   setHistoryTab,
   setAlarmTab,
+  setMyChatTab,
   setPatientInit,
   setDispatchMessageList,
   setIsFirst,

@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic';
 const PatientDB = dynamic(() => import('@/components/PatientDB/PatientDB'), { ssr: false });
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { addTempTab, Patient, setPatientInit } from '@/redux/features/tab/tabSlice';
-import { fetchCallAI } from '@/apis/Patient';
+// import { fetchCallAI } from '@/apis/Patient';
 import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from 'next/navigation';
 import { PatientReqeust } from '@/redux/features/tab/tabSlice';
@@ -54,11 +54,12 @@ export default function Input() {
     //환자를 선택했을때
     else {
       const postdata: PatientReqeust = { ...tablist[selectedIndex].patientRequest! };
-      postdata.comments = input;
+      postdata.comment = input;
       //환자가 선택이 안되면 그 채팅 모아두는 곳으로 전송 -> 이게 mainSlice의 initial값으로 사용될듯!
       dispatch(addTempTab({ patient: data, uuid: id, firstMessage: input }));
       router.replace(`/medical/temp/${id}`);
-      await fetchCallAI(postdata);
+      console.log(postdata);
+      // await fetchCallAI(postdata);
     }
   };
 
