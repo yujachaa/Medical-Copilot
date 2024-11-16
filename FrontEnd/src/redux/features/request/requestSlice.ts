@@ -4,13 +4,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 type requestType = {
   reportId: string;
   selectedTabPathName: string;
-  loading: boolean;
 };
 
 const initialState: requestType = {
   reportId: '',
   selectedTabPathName: '',
-  loading: false,
 };
 
 const requestSlices = createSlice({
@@ -21,13 +19,11 @@ const requestSlices = createSlice({
       state.reportId = action.payload;
     },
     setSelectedTabPathName: (state, action: PayloadAction<string>) => {
+      console.log(action.payload);
       state.selectedTabPathName = action.payload;
-    },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
     },
   },
 });
 
-export const { setReportId, setSelectedTabPathName, setLoading } = requestSlices.actions;
+export const { setReportId, setSelectedTabPathName } = requestSlices.actions;
 export default requestSlices;
