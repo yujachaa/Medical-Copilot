@@ -11,8 +11,7 @@ import { useAppDispatch } from '@/redux/store/hooks/store';
 import { fetchDrawing, fetchReport } from '@/apis/report';
 import { setReportData } from '@/redux/features/report/reportSlice';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
-import Image from 'next/image';
-import Logo from '@/assets/images/Logo_Landing.png';
+import ReportLodaing from '@/components/ReportLodaing';
 export type MessageType = {
   id: string;
   agent: string;
@@ -107,29 +106,7 @@ export default function MyChat() {
       >
         <BiMessageRoundedDots size={35} />
       </div>
-      <div className={styles.right}>
-        <div className={styles.rightbox}>
-          <div>
-            <Image
-              src={Logo}
-              alt="logo"
-            />
-          </div>
-          {/* <div className={`${styles.textbox} flex flex-col text-6xl w-[365px] h-[150px] justify-center gap-2`}>
-
-          <span
-            className={`${styles.slideLeftIn}`}
-          >
-            MEDIC<span className={`${styles.blue}`}>A</span>L
-          </span>
-          <span
-            className={`${styles.slideRightIn}`}
-          >
-            COP<span className={`${styles.blue}`}>I</span>LOT
-          </span>
-          </div> */}
-        </div>
-      </div>
+      <ReportLodaing />
     </div>
   );
 }

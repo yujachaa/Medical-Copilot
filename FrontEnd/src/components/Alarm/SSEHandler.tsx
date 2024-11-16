@@ -66,7 +66,6 @@ export default function SSEHandler() {
         console.log('알림');
         const data = JSON.parse(event.data);
         setAlarm(data);
-
         //여기서 알람 팝업 열기
         setIsPopupOpen(true); // 알람 팝업 열기
         setIsClosing(false); // 팝업 열릴 때는 닫힘 상태 false
