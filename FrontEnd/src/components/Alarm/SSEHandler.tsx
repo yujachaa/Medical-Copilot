@@ -1,9 +1,10 @@
 'use client';
 import { BaseURL } from '@/apis/core';
-import { useAppSelector } from '@/redux/store/hooks/store';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import React, { useEffect, useRef, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Popup from './components/Popup';
+import { setReportId } from '@/redux/features/request/requestSlice';
 
 type Token = {
   email: string;
@@ -23,6 +24,7 @@ export type Noti = {
   createdDate: string;
 };
 export default function SSEHandler() {
+  const dispatch = useAppDispatch();
   const { accessToken } = useAppSelector((state) => state.user);
   const eventSourceRef = useRef<EventSource | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); //팝업 확인용 하드코딩
@@ -63,9 +65,9 @@ export default function SSEHandler() {
       };
 
       eventSourceRef.current!.onmessage = (event: MessageEvent) => {
-        const data = JSON.parse(event.data);
+        const data: Noti = JSON.parse(event.data);
         setAlarm(data);
-
+        dispatch(setReportId(data.reportId!));
         //여기서 알람 팝업 열기
         setIsPopupOpen(true); // 알람 팝업 열기
         setIsClosing(false); // 팝업 열릴 때는 닫힘 상태 false

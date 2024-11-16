@@ -9,6 +9,7 @@ import PatientDB from '@/components/PatientDB/PatientDB';
 import { setDispatchMessageList, setPatientInit, tab } from '@/redux/features/tab/tabSlice';
 import { useAppDispatch } from '@/redux/store/hooks/store';
 import { fetchCallAI, fetcMedicalAI } from '@/apis/Patient';
+import { setSelectedTabPathName } from '@/redux/features/request/requestSlice';
 
 export default function ChatInput({
   nowTab,
@@ -38,6 +39,7 @@ export default function ChatInput({
       agent: nowTab.patient.modality,
     });
     console.log(response);
+    setLoading(2);
   };
 
   const handleMedicalChat = async () => {
@@ -78,6 +80,7 @@ export default function ChatInput({
     if (nowTab.patient.modality === 'MG') {
       handleMedicalChat();
     } else if (nowTab.patient.modality === 'CXR') {
+      dispatch(setSelectedTabPathName(nowTab.pathname));
       handleAgentChat();
     } else {
       handleMedicalChat();
