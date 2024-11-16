@@ -47,6 +47,7 @@ export default function ChatInput({ messagelist, setMessagelist }: Props) {
       memberId: decode.id,
     };
     setMessagelist((prev) => [ms, ...prev]);
+    setComment('');
     const response = await fetcMedicalAI(q);
     const res: MessageType = {
       id: '',
@@ -58,14 +59,13 @@ export default function ChatInput({ messagelist, setMessagelist }: Props) {
       memberId: '',
     };
     setMessagelist((prev) => [res, ...prev]);
-    setComment('');
   };
   return (
     <div className={styles.inputContainer}>
       <input
         className={styles.chatInput}
         placeholder="Enter a message"
-        defaultValue={comment}
+        value={comment}
         onChange={handleOnChange}
       />
       <Send
