@@ -1,10 +1,11 @@
 import Message from './Message';
 import styles from './MessageList.module.scss';
 import { MessageType } from '../../MyChat';
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { fetchMessages } from '@/apis/message';
 import { useAppSelector } from '@/redux/store/hooks/store';
 import { jwtDecode } from 'jwt-decode';
+import { Token } from '@/components/Alarm/SSEHandler';
 
 type Props = {
   messagelist: MessageType[];
@@ -17,10 +18,7 @@ export default function MessageList({ messagelist, setMessagelist, selectReport 
   const [page, setPage] = useState<number>(0);
   const [size] = useState<number>(8);
   const accessToken = useAppSelector((state) => state.user.accessToken);
-  const pid: string = useMemo(() => {
-    // memeberId가 맞는데 fetch를 같이 쓰고 있어서 pid로 했어요.
-    return jwtDecode(accessToken);
-  }, [accessToken]);
+  const decode: Token = jwtDecode(accessToken);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -34,7 +32,7 @@ export default function MessageList({ messagelist, setMessagelist, selectReport 
   useEffect(() => {
     const getPatient = async () => {
       try {
-        const response = await fetchMessages(page, size, pid);
+        const response = await fetchMessages(page, size, decode.id);
         console.log(response);
         if (response.content === undefined) {
           new Error('Response 데이터가 이상합니다');
@@ -46,7 +44,8 @@ export default function MessageList({ messagelist, setMessagelist, selectReport 
       }
     };
     getPatient();
-  }, [page, size, pid, setMessagelist]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, size, setMessagelist]);
 
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
     const target = entries[0];
