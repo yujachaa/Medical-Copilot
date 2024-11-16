@@ -4,19 +4,20 @@ import { IoMdCloseCircleOutline } from 'react-icons/io';
 import styles from './ChatInput.module.scss';
 import { FaDatabase } from '@react-icons/all-files/fa/FaDatabase';
 import Send from '@/assets/images/send.svg';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import PatientDB from '@/components/PatientDB/PatientDB';
-import { setDispatchMessageList, setPatientInit, tab } from '@/redux/features/tab/tabSlice';
+import {
+  setDispatchMessageList,
+  setLoading,
+  setLoadingTabPathName,
+  setPatientInit,
+  tab,
+} from '@/redux/features/tab/tabSlice';
 import { useAppDispatch } from '@/redux/store/hooks/store';
 import { fetchCallAI, fetcMedicalAI } from '@/apis/Patient';
+import { setSelectedTabPathName } from '@/redux/features/request/requestSlice';
 
-export default function ChatInput({
-  nowTab,
-  setLoading,
-}: {
-  nowTab: tab;
-  setLoading: Dispatch<SetStateAction<number>>;
-}) {
+export default function ChatInput({ nowTab }: { nowTab: tab }) {
   const [isPatientModal, setPatientModal] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const CloseModal = () => {
@@ -26,24 +27,21 @@ export default function ChatInput({
   const messageList = nowTab.messageList;
 
   const handleAgentChat = async () => {
-    setLoading(1);
-    const response = await fetchCallAI({
+    await fetchCallAI({
       PID: nowTab.patient.pid,
       image: nowTab.patient.image,
-      shootingDate: '',
+      shootingDate: nowTab.patient.visitDate,
       sex: nowTab.patient.sex,
       age: nowTab.patient.age,
-      comment: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
+      comment: nowTab.isFirst ? nowTab.firstMessage : comment,
       key: nowTab.patientRequest.key,
       agent: nowTab.patient.modality,
     });
-    console.log(response);
   };
 
   const handleMedicalChat = async () => {
-    setLoading(1);
     const response = await fetcMedicalAI({
-      comment: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
+      comment: nowTab.isFirst ? nowTab.firstMessage : comment,
       isQuestion: true,
       PID: nowTab.patient.pid,
       member_id: '',
@@ -70,16 +68,21 @@ export default function ChatInput({
           },
         ]),
       );
-      setLoading(2);
     }
+    dispatch(setLoading(false));
   };
 
   const handleSend = () => {
+    console.log(nowTab.patient.modality);
     if (nowTab.patient.modality === 'MG') {
+      dispatch(setLoadingTabPathName(nowTab.pathname));
       handleMedicalChat();
     } else if (nowTab.patient.modality === 'CXR') {
+      dispatch(setLoadingTabPathName(nowTab.pathname));
+      dispatch(setSelectedTabPathName(nowTab.pathname));
       handleAgentChat();
     } else {
+      dispatch(setLoadingTabPathName(nowTab.pathname));
       handleMedicalChat();
     }
   };
@@ -108,6 +111,7 @@ export default function ChatInput({
         onChange={(e) => {
           setComment(e.target.value);
         }}
+        value={comment}
       />
       <Send
         className={styles.sendIcon}
@@ -117,8 +121,8 @@ export default function ChatInput({
               {
                 id: '',
                 reportId: '',
-                agent: 'MG',
-                comment: comment,
+                agent: nowTab.patient.modality!,
+                comment: `ID: ${nowTab.patient.pid} ${nowTab.patient.modality}\n${comment}`,
                 question: true,
                 createDate: '',
                 memberId: '',
@@ -126,6 +130,7 @@ export default function ChatInput({
             ]),
           );
           handleSend();
+          setComment('');
         }}
       />
 
