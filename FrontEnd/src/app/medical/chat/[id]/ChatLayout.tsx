@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { fetchDrawing, fetchReport } from '@/apis/report';
 import { setReportData } from '@/redux/features/report/reportSlice';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
+import { useSearchParams } from 'next/navigation';
 
 type ChatProps = {
   pid: string;
@@ -39,6 +40,13 @@ export default function Chat({ pid }: ChatProps) {
   const [selectedReportId, setReportId] = useState<string>('');
   const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setReportId(searchParams.get('reportId')!);
+  }, [searchParams]);
+
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
