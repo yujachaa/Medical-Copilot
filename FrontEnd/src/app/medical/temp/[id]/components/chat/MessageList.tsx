@@ -15,6 +15,7 @@ import { fetchCallAI, fetcMedicalAI } from '@/apis/Patient';
 import { setSelectedTabPathName } from '@/redux/features/request/requestSlice';
 import { jwtDecode } from 'jwt-decode';
 import { Token } from '@/components/Alarm/SSEHandler';
+import Image from 'next/image';
 
 type Props = {
   selectReport: (reportId: string) => void;
@@ -28,6 +29,12 @@ export default function MessageList({ selectReport, nowTab }: Props) {
   const loading = useAppSelector((state) => state.tab.loading);
   const loadingPathName = useAppSelector((state) => state.tab.loadingTabPathName);
   const accessToken = useAppSelector((state) => state.user.accessToken);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messageList]);
 
   const handleAgentChat = async () => {
     await fetchCallAI({
@@ -84,7 +91,7 @@ export default function MessageList({ selectReport, nowTab }: Props) {
             id: '',
             reportId: '',
             agent: 'MG',
-            comment: `ID: ${nowTab.patient.pid} MG\n${nowTab.firstMessage}`,
+            comment: `ID: ${nowTab.patient.pid}\n${nowTab.firstMessage}`,
             question: true,
             createDate: '',
             memberId: '',
@@ -99,7 +106,7 @@ export default function MessageList({ selectReport, nowTab }: Props) {
             id: '',
             reportId: '',
             agent: 'CXR',
-            comment: `ID: ${nowTab.patient.pid} CXR\n${nowTab.firstMessage}`,
+            comment: `ID: ${nowTab.patient.pid}\n${nowTab.firstMessage}`,
             question: true,
             createDate: '',
             memberId: '',
@@ -125,7 +132,7 @@ export default function MessageList({ selectReport, nowTab }: Props) {
             id: '',
             reportId: '',
             agent: 'MG',
-            comment: `ID: ${nowTab.patient.pid} MG\n${nowTab.firstMessage}`,
+            comment: `${nowTab.firstMessage}`,
             question: true,
             createDate: '',
             memberId: token.id,
@@ -140,24 +147,51 @@ export default function MessageList({ selectReport, nowTab }: Props) {
   }, []);
 
   return (
-    <div
-      ref={scrollRef}
-      className={styles.msgList}
-    >
-      {messageList.map((message, index) => (
-        <Message
-          key={index}
-          sender={message.question ? 'user' : 'bot'}
-          message={message.comment}
-          data={message}
-          selectReport={selectReport}
-        />
-      ))}
+    <div className={styles.msgList}>
+      {messageList.map((message, index) => {
+        return (
+          <>
+            <Message
+              key={index}
+              sender={message.question ? 'user' : 'bot'}
+              message={message.comment}
+              data={message}
+              selectReport={selectReport}
+            />
+            {message.agent === 'CXR' && message.question && (
+              <div className={`rounded-[10px] flex flex-col items-end gap-2`}>
+                <Image
+                  className={`rounded-[10px]`}
+                  alt="cxr"
+                  src={`${nowTab.patient.image}`}
+                  width={250}
+                  height={250}
+                />
+                <div className={`w-[250px] flex flex-col gap-2`}>
+                  <div className={`w-[250px] flex gap-2`}>
+                    <span className={`${styles.key}`}>ID:</span>
+                    <span>{nowTab.patient.pid}</span>
+                  </div>
+                  <div className={`w-[250px] flex gap-2`}>
+                    <span className={`${styles.key}`}>Gender:</span>
+                    <span>{nowTab.patient.sex}</span>
+                  </div>
+                  <div className={`w-[250px] flex gap-2`}>
+                    <span className={`${styles.key}`}>Age:</span>
+                    <span>{nowTab.patient.age}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        );
+      })}
       {loading && loadingPathName === nowTab.pathname && (
-        <div className={`mt-20 flex justify-center`}>
+        <div className={`mt-10 mb-10 flex justify-center`}>
           <HashLoader color="#5DA6F6" />
         </div>
       )}
+      <div ref={scrollRef} />
     </div>
   );
 }

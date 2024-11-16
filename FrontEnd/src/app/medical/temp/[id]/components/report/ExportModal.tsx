@@ -238,7 +238,20 @@ export default function ExportModal({
                 <div
                   className={`${styles.analysisBox} ${findingLoading && 'flex justify-center items-center h-[70px] p-5'}`}
                 >
-                  {findingLoading ? <HashLoader color="#5DA6F6" /> : finding}
+                  {findingLoading ? (
+                    <HashLoader color="#5DA6F6" />
+                  ) : (
+                    <input
+                      className={`w-full`}
+                      type="text"
+                      value={finding}
+                      onChange={(e) => {
+                        if (count === 1) {
+                          dispatch(setFinding(e.target.value));
+                        }
+                      }}
+                    />
+                  )}
                 </div>
                 {count === 1 && !findingLoading && (
                   <div className="w-full flex justify-end">
@@ -261,7 +274,20 @@ export default function ExportModal({
                 <div
                   className={`${styles.analysisBox} ${impressionLoading && 'flex justify-center items-center h-[70px] p-5'}`}
                 >
-                  {impressionLoading ? <HashLoader color="#5DA6F6" /> : impression}
+                  {impressionLoading ? (
+                    <HashLoader color="#5DA6F6" />
+                  ) : (
+                    <input
+                      className={`w-full`}
+                      type="text"
+                      value={impression}
+                      onChange={(e) => {
+                        if (count === 2) {
+                          dispatch(setImpression(e.target.value));
+                        }
+                      }}
+                    />
+                  )}
                 </div>
                 {count === 2 && !impressionLoading && (
                   <div className="w-full flex justify-end">
@@ -284,7 +310,20 @@ export default function ExportModal({
                 <div
                   className={`${styles.analysisBox} ${planLoading && 'flex justify-center items-center h-[70px] p-5'}`}
                 >
-                  {planLoading ? <HashLoader color="#5DA6F6" /> : plan}
+                  {planLoading ? (
+                    <HashLoader color="#5DA6F6" />
+                  ) : (
+                    <input
+                      className={`w-full`}
+                      type="text"
+                      value={plan}
+                      onChange={(e) => {
+                        if (count === 3) {
+                          dispatch(setPlan(e.target.value));
+                        }
+                      }}
+                    />
+                  )}
                 </div>
                 {!isSaved && count === 3 && !planLoading && (
                   <div className="w-full flex justify-end">
@@ -353,6 +392,7 @@ export default function ExportModal({
               className="outline outline-blue-btn text-blue-btn px-3 py-2 rounded-md hover:text-white hover:bg-blue-btn"
               onClick={() => {
                 handleSave();
+                setCount((prev) => prev + 1);
               }}
             >
               Save
