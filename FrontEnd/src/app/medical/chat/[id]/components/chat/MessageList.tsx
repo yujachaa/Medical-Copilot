@@ -1,20 +1,24 @@
 import Message from './Message';
 import styles from './MessageList.module.scss';
-import { MessageType } from '../../ChatLayout';
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchMessages } from '@/apis/message';
+import { setDispatchMessageList, tab } from '@/redux/features/tab/tabSlice';
+import { useAppDispatch } from '@/redux/store/hooks/store';
 
 type Props = {
-  messagelist: MessageType[];
-  setMessagelist: Dispatch<SetStateAction<MessageType[]>>;
+  // messagelist: MessageType[];
+  // setMessagelist: Dispatch<SetStateAction<MessageType[]>>;
   selectReport: (reportId: string) => void;
   pid: string;
+  nowTab: tab;
 };
-export default function MessageList({ messagelist, setMessagelist, selectReport, pid }: Props) {
+export default function MessageList({ selectReport, pid, nowTab }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const loader = useRef<HTMLDivElement | null>(null);
   const [page, setPage] = useState<number>(0);
   const [size] = useState<number>(8);
+  const messagelist = nowTab.messageList;
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -28,18 +32,23 @@ export default function MessageList({ messagelist, setMessagelist, selectReport,
   useEffect(() => {
     const getPatient = async () => {
       try {
-        const response = await fetchMessages(page, size, '42650703');
+        const response = await fetchMessages(page, size, pid);
         console.log(response);
         if (response.content === undefined) {
           new Error('Response 데이터가 이상합니다');
           return;
         }
-        setMessagelist((prev) => [...prev, ...response.content[0].chatList]);
+
+        console.log('메세지하나', response.content[0].chatList);
+        //setPrevMessageList로 바꾸기!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        dispatch(setDispatchMessageList(response.content[0].chatList));
+        // setMessagelist((prev) => [...prev, ...response.content[0].chatList]);
       } catch (err: unknown) {
         console.log(err);
       }
     };
     getPatient();
+    console.log('메세지 리스트', messagelist);
   }, [page, size, pid, setMessagelist]);
 
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
