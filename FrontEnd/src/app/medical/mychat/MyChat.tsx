@@ -11,7 +11,7 @@ import { useAppDispatch } from '@/redux/store/hooks/store';
 import { fetchDrawing, fetchReport } from '@/apis/report';
 import { setReportData } from '@/redux/features/report/reportSlice';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
-
+import ReportLodaing from '@/components/ReportLodaing';
 export type MessageType = {
   id: string;
   agent: string;
@@ -106,7 +106,7 @@ export default function MyChat() {
       >
         <BiMessageRoundedDots size={35} />
       </div>
-      <div className={styles.right}>여기에 어떤게 들어오면 좋을까요</div>
+      <ReportLodaing />
     </div>
   );
 }
