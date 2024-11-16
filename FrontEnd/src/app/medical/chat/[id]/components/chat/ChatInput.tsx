@@ -7,7 +7,12 @@ import { useState } from 'react';
 import FilteredPatientDB from './PatientDB/FilteredPatientDB';
 import { fetcMedicalAI, fetchCallAI } from '@/apis/Patient';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import { setDispatchMessageList, tab } from '@/redux/features/tab/tabSlice';
+import {
+  setDispatchMessageList,
+  setLoading,
+  setLoadingTabPathName,
+  tab,
+} from '@/redux/features/tab/tabSlice';
 
 type Props = {
   // messagelist: MessageType[];
@@ -55,21 +60,10 @@ export default function ChatInput({ nowTab, pid }: Props) {
       //후속질문
       handleMedicalChat();
     }
+    dispatch(setLoadingTabPathName(nowTab.pathname));
   };
 
   const handleAgentChat = async () => {
-    // setLoading(1);
-
-    console.log({
-      PID: nowTab.patient.pid,
-      image: nowTab.patient.image,
-      shootingDate: nowTab.patient.visitDate,
-      sex: nowTab.patient.sex,
-      age: nowTab.patient.age,
-      comment: comment,
-      key: nowTab.patientRequest.key,
-      agent: nowTab.patient.modality,
-    });
     const response = await fetchCallAI({
       PID: nowTab.patient.pid,
       image: nowTab.patient.image,
@@ -102,11 +96,11 @@ export default function ChatInput({ nowTab, pid }: Props) {
       };
 
     dispatch(setDispatchMessageList([notification]));
+    dispatch(setLoadingTabPathName(nowTab.pathname));
     // setMessagelist((prev) => [notification, ...prev]);
   };
 
   const handleMedicalChat = async () => {
-    // setLoading(1);
     const response = await fetcMedicalAI({
       comment: comment,
       isQuestion: true,
@@ -132,9 +126,8 @@ export default function ChatInput({ nowTab, pid }: Props) {
         memberId: '',
       };
       dispatch(setDispatchMessageList([responseMessage]));
-      // setMessagelist((prev) => [responseMessage, ...prev]);
-      // setLoading(2);
     }
+    dispatch(setLoading(false));
   };
 
   return (

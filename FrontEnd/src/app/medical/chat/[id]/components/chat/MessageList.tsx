@@ -2,8 +2,10 @@ import Message from './Message';
 import styles from './MessageList.module.scss';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchMessages } from '@/apis/message';
-import { setDispatchMessageList, tab } from '@/redux/features/tab/tabSlice';
-import { useAppDispatch } from '@/redux/store/hooks/store';
+import { setPrevMessageList, tab } from '@/redux/features/tab/tabSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
+import { MessageType } from '../../ChatLayout';
+import { HashLoader } from 'react-spinners';
 
 type Props = {
   // messagelist: MessageType[];
@@ -18,7 +20,15 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
   const [page, setPage] = useState<number>(0);
   const [size] = useState<number>(8);
   const messagelist = nowTab.messageList;
+  const [reversedMessageList, setReversedMessageList] = useState<MessageType[]>([]);
   const dispatch = useAppDispatch();
+  const loading = useAppSelector((state) => state.tab.loading);
+  const loadingPathName = useAppSelector((state) => state.tab.loadingTabPathName);
+
+  // messagelist가 변경될 때 reversedMessageList 업데이트
+  useEffect(() => {
+    setReversedMessageList([...messagelist].reverse());
+  }, [messagelist]); // messagelist가 변경될 때마다 실행
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -41,7 +51,7 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
 
         console.log('메세지하나', response.content[0].chatList);
         //setPrevMessageList로 바꾸기!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        dispatch(setDispatchMessageList(response.content[0].chatList));
+        dispatch(setPrevMessageList(response.content[0].chatList));
         // setMessagelist((prev) => [...prev, ...response.content[0].chatList]);
       } catch (err: unknown) {
         console.log(err);
@@ -49,7 +59,7 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
     };
     getPatient();
     console.log('메세지 리스트', messagelist);
-  }, [page, size, pid, setMessagelist]);
+  }, [page, size, pid]);
 
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
     const target = entries[0];
@@ -71,7 +81,12 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
       ref={scrollRef}
       className={styles.msgList}
     >
-      {messagelist.map((message, index) => (
+      {loading && loadingPathName === nowTab.pathname && (
+        <div className={`mt-20 flex justify-center`}>
+          <HashLoader color="#5DA6F6" />
+        </div>
+      )}
+      {reversedMessageList.map((message, index) => (
         <Message
           key={index}
           sender={message.question ? 'user' : 'bot'}

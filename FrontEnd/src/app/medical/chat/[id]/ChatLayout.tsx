@@ -17,6 +17,7 @@ import { fetchDrawing, fetchReport } from '@/apis/report';
 import { setReportData } from '@/redux/features/report/reportSlice';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
 import { useSearchParams } from 'next/navigation';
+import ReportLodaing from '@/components/ReportLodaing';
 
 type ChatProps = {
   pid: string;
@@ -153,6 +154,7 @@ export default function Chat({ pid }: ChatProps) {
         <div className={styles.reportContainer}>
           <div className={styles.scrollable}>
             <div className={styles.reportInfo}>{/* <PluginInfo type={patient.modality} /> */}</div>
+            <ReportLodaing />
           </div>
         </div>
       )}
