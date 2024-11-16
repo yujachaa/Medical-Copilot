@@ -23,10 +23,10 @@ export default function MessageList({ loading, setLoading, selectReport, nowTab 
     const response = await fetchCallAI({
       PID: nowTab.patient.pid,
       image: nowTab.patient.image,
-      shootingDate: '',
+      shootingDate: nowTab.patient.visitDate,
       sex: nowTab.patient.sex,
       age: nowTab.patient.age,
-      comments: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
+      comment: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
       key: nowTab.patientRequest.key,
       agent: nowTab.patient.modality,
     });

@@ -26,7 +26,7 @@ export default function MyChat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
   const [messages, setMessages] = useState<MessageType[]>([]);
-  //어떤리포트를 처음에 띄워줄건가? 이걸 내가 한번 필터를 해야하나?
+
   const [selectedReportId, setReportId] = useState<string>('');
   const dispatch = useAppDispatch();
 
@@ -94,13 +94,11 @@ export default function MyChat() {
           setMessagelist={setMessages}
           selectReport={selectReport}
         />
-        <ChatInput />
+        <ChatInput
+          messagelist={messages}
+          setMessagelist={setMessages}
+        />
       </div>
-
-      {/* 이부분이 랜더링이 되야한다 
-             1. 채팅의 버튼을 클릭하는데, reportId가 있는 채팅만 클릭이 가능하게한다.
-             2. 그러면 여기서 선택된 리포트를 관리하는것 그리고 그것을 리포트정보에 넣어주는것
-          */}
 
       <div
         className={`${styles.messageButton} ${isChatOpen ? styles.active : ''}`}
@@ -108,6 +106,7 @@ export default function MyChat() {
       >
         <BiMessageRoundedDots size={35} />
       </div>
+      <div className={styles.right}>여기에 어떤게 들어오면 좋을까요</div>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 import Popup from './components/Popup';
 import { setReportId } from '@/redux/features/request/requestSlice';
 
-type Token = {
+export type Token = {
   email: string;
   exp: number;
   iat: number;

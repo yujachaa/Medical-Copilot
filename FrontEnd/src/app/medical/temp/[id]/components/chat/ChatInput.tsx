@@ -34,7 +34,7 @@ export default function ChatInput({
       shootingDate: '',
       sex: nowTab.patient.sex,
       age: nowTab.patient.age,
-      comments: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
+      comment: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
       key: nowTab.patientRequest.key,
       agent: nowTab.patient.modality,
     });
