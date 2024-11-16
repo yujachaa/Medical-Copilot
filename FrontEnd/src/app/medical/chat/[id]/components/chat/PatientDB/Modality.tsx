@@ -1,15 +1,16 @@
 import styles from './Modality.module.scss';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircleOutline';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import { setPatientModality, setRequestModality } from '@/redux/features/tab/tabSlice';
+import { setRequestModality } from '@/redux/features/tab/tabSlice';
 
 type Props = {
   onClose: () => void;
   onPatientClose: () => void;
+  newDbFlag: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function Modality({ onClose, onPatientClose }: Props) {
+export default function Modality({ onClose, onPatientClose, newDbFlag }: Props) {
   const { tablist, selectedIndex } = useAppSelector((state) => state.tab);
   const dispatch = useAppDispatch();
   //기본적으로 MG를 선택함
@@ -25,9 +26,9 @@ export default function Modality({ onClose, onPatientClose }: Props) {
 
   const handleSetPatient = () => {
     dispatch(setRequestModality(selectedModality));
-    dispatch(setPatientModality(selectedModality));
     onClose();
     onPatientClose();
+    newDbFlag(true);
   };
 
   return (

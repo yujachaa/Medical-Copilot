@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
     // Puppeteer 브라우저 시작
     const browser = await puppeteer.launch({
       headless: true,
+      executablePath: '/usr/bin/chromium',
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     const page = await browser.newPage();

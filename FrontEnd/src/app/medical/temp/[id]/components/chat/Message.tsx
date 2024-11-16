@@ -33,7 +33,7 @@ export default function Message({ sender, message, selectReport, data }: Message
         className={`${styles.msg} ${sender === 'bot' ? styles.botStyle : styles.userStyle}`}
         onClick={sender === 'bot' ? () => handleClick(data.reportId) : undefined}
       >
-        {message}
+        <span>{message}</span>
       </div>
     </div>
   );

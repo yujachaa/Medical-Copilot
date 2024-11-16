@@ -27,3 +27,7 @@ export function middleware(request: NextRequest) {
   // 요청을 그대로 진행
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ['/', '/login', '/main/:path*'], // :path*는 하위 경로를 포함
+};

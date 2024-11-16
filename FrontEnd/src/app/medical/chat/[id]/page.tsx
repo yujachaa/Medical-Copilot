@@ -7,6 +7,5 @@ type Props = {
 };
 
 export default function Page({ params }: Props) {
-  console.log(params.id);
   return <Chat pid={params.id} />;
 }

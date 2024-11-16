@@ -23,7 +23,6 @@ export async function fetchfip(reportId: string) {
 export async function fetchInitfip(reportId: string) {
   try {
     const response = await fetch(`${BaseURL}pdf/reset/${reportId}`, {
-      cache: 'no-store',
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
