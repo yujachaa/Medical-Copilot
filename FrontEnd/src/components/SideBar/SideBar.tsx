@@ -45,11 +45,13 @@ export default function SideBar() {
   const goPlan = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     dispatch(goMypage('/medical/mypage?t=plan'));
+    setIsModalOpen(!isModalOpen);
   };
 
   const goProfile = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     dispatch(goMypage('/medical/mypage?t=profile'));
+    setIsModalOpen(!isModalOpen);
   };
 
   const handleHistoryClose = () => {

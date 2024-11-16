@@ -25,6 +25,8 @@
     border-radius: 5px;
     max-width: 90%;
     font-size: 0.9rem;
+    word-break: break-word; /* 기본적으로 줄바꿈되게 함 */
+    white-space: normal;
 
     &.botStyle {
       display: flex;
@@ -32,7 +34,6 @@
       align-items: center;
       gap: 10px;
       background: $gray-msg;
-      cursor: pointer;
     }
 
     &.userStyle {
@@ -43,5 +44,14 @@
     span {
       white-space: pre-line;
     }
+  }
+}
+
+.report {
+  cursor: pointer;
+  border: 1px solid $blue-msg;
+  font-weight: 700;
+  &:hover {
+    background-color: $blue-base !important;
   }
 }

@@ -78,6 +78,19 @@ export default function ChatInput({ nowTab }: { nowTab: tab }) {
       dispatch(setLoadingTabPathName(nowTab.pathname));
       handleMedicalChat();
     } else if (nowTab.patient.modality === 'CXR') {
+      dispatch(
+        setDispatchMessageList([
+          {
+            id: '',
+            reportId: '',
+            agent: 'CXR',
+            comment: `Analyzing the data for ID ${nowTab.patient.pid}.`,
+            question: false,
+            createDate: '',
+            memberId: '',
+          },
+        ]),
+      );
       dispatch(setLoadingTabPathName(nowTab.pathname));
       dispatch(setSelectedTabPathName(nowTab.pathname));
       handleAgentChat();
@@ -111,26 +124,47 @@ export default function ChatInput({ nowTab }: { nowTab: tab }) {
         onChange={(e) => {
           setComment(e.target.value);
         }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && comment !== '') {
+            dispatch(
+              setDispatchMessageList([
+                {
+                  id: '',
+                  reportId: '',
+                  agent: nowTab.patient.modality!,
+                  comment: `${nowTab.patient.modality !== '' ? 'ID: ' + nowTab.patient.pid + '\n' : ''}${comment}`,
+                  question: true,
+                  createDate: '',
+                  memberId: '',
+                },
+              ]),
+            );
+            handleSend();
+            setComment('');
+          }
+        }}
         value={comment}
       />
       <Send
         className={styles.sendIcon}
         onClick={() => {
-          dispatch(
-            setDispatchMessageList([
-              {
-                id: '',
-                reportId: '',
-                agent: nowTab.patient.modality!,
-                comment: `ID: ${nowTab.patient.pid} ${nowTab.patient.modality}\n${comment}`,
-                question: true,
-                createDate: '',
-                memberId: '',
-              },
-            ]),
-          );
-          handleSend();
-          setComment('');
+          if (comment !== '') {
+            dispatch(
+              setDispatchMessageList([
+                {
+                  id: '',
+                  reportId: '',
+                  agent: nowTab.patient.modality!,
+                  comment: `${nowTab.patient.modality !== '' ? 'ID: ' + nowTab.patient.pid + '\n' : ''}${comment}`,
+                  question: true,
+                  createDate: '',
+                  memberId: '',
+                },
+              ]),
+            );
+            handleSend();
+            setComment('');
+          }
         }}
       />
 

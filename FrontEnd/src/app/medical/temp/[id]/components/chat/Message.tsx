@@ -30,8 +30,10 @@ export default function Message({ sender, message, selectReport, data }: Message
         <div>{from}</div>
       </div>
       <div
-        className={`${styles.msg} ${sender === 'bot' ? styles.botStyle : styles.userStyle}`}
-        onClick={sender === 'bot' ? () => handleClick(data.reportId) : undefined}
+        className={`${styles.msg} ${sender === 'bot' ? styles.botStyle : styles.userStyle} ${data.reportId !== '' && styles.report}`}
+        onClick={
+          sender === 'bot' && data.reportId !== '' ? () => handleClick(data.reportId) : undefined
+        }
       >
         <span>{message}</span>
       </div>
