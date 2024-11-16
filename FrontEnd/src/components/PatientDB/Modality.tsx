@@ -2,7 +2,7 @@ import styles from './Modality.module.scss';
 import React, { useState } from 'react';
 import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircleOutline';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import { setRequestModality } from '@/redux/features/tab/tabSlice';
+import { setPatientModality, setRequestModality } from '@/redux/features/tab/tabSlice';
 
 type Props = {
   onClose: () => void;
@@ -25,6 +25,7 @@ export default function Modality({ onClose, onPatientClose }: Props) {
 
   const handleSetPatient = () => {
     dispatch(setRequestModality(selectedModality));
+    dispatch(setPatientModality(selectedModality));
     onClose();
     onPatientClose();
   };
