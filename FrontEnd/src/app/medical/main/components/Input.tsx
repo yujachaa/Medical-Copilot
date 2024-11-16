@@ -42,7 +42,11 @@ export default function Input() {
     //환자를 선택하지 않았을때
     if (tablist[selectedIndex].patient.pid === '') {
       dispatch(
-        addTempTab({ patient: data, uuid: id + `?comment=${input}&question=true&memberId=${pid}` }),
+        addTempTab({
+          patient: data,
+          uuid: id + `?comment=${input}&question=true&memberId=${pid}`,
+          firstMessage: input,
+        }),
       );
       router.replace(`/medical/temp/${id}?comment=${input}&question=true&memberId=${pid}`);
     }
@@ -51,7 +55,7 @@ export default function Input() {
       const postdata: PatientReqeust = { ...tablist[selectedIndex].patientRequest! };
       postdata.comments = input;
       //환자가 선택이 안되면 그 채팅 모아두는 곳으로 전송 -> 이게 mainSlice의 initial값으로 사용될듯!
-      dispatch(addTempTab({ patient: data, uuid: id }));
+      dispatch(addTempTab({ patient: data, uuid: id, firstMessage: input }));
       router.replace(`/medical/temp/${id}`);
       await fetchCallAI(postdata);
     }
