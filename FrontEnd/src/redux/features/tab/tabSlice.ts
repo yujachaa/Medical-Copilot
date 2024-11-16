@@ -144,7 +144,7 @@ const tabSlices = createSlice({
         ...action.payload,
         ...state.tablist[state.selectedIndex].messageList,
       ];
-      state.loading = true;
+      // state.loading = true;
     },
     addAgentMessage: (
       state,
