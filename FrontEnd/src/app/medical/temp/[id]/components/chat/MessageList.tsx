@@ -1,26 +1,36 @@
 import Message from './Message';
 import styles from './MessageList.module.scss';
-import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 // import { fetchMessages } from '@/apis/message';
-import { setDispatchMessageList, setIsFirst, tab } from '@/redux/features/tab/tabSlice';
-import { useAppDispatch } from '@/redux/store/hooks/store';
+import {
+  setDispatchMessageList,
+  setIsFirst,
+  setLoading,
+  setLoadingTabPathName,
+  tab,
+} from '@/redux/features/tab/tabSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { HashLoader } from 'react-spinners';
 import { fetchCallAI, fetcMedicalAI } from '@/apis/Patient';
+import { setSelectedTabPathName } from '@/redux/features/request/requestSlice';
+import { jwtDecode } from 'jwt-decode';
+import { Token } from '@/components/Alarm/SSEHandler';
 
 type Props = {
-  loading: number;
-  setLoading: Dispatch<SetStateAction<number>>;
   selectReport: (reportId: string) => void;
   nowTab: tab;
 };
-export default function MessageList({ loading, setLoading, selectReport, nowTab }: Props) {
+
+export default function MessageList({ selectReport, nowTab }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const messageList = nowTab.messageList;
+  const loading = useAppSelector((state) => state.tab.loading);
+  const loadingPathName = useAppSelector((state) => state.tab.loadingTabPathName);
+  const accessToken = useAppSelector((state) => state.user.accessToken);
 
   const handleAgentChat = async () => {
-    setLoading(1);
-    const response = await fetchCallAI({
+    await fetchCallAI({
       PID: nowTab.patient.pid,
       image: nowTab.patient.image,
       shootingDate: nowTab.patient.visitDate,
@@ -30,11 +40,9 @@ export default function MessageList({ loading, setLoading, selectReport, nowTab 
       key: nowTab.patientRequest.key,
       agent: nowTab.patient.modality,
     });
-    console.log(response);
   };
 
   const handleMedicalChat = async () => {
-    setLoading(1);
     const response = await fetcMedicalAI({
       comment: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
       isQuestion: true,
@@ -55,7 +63,7 @@ export default function MessageList({ loading, setLoading, selectReport, nowTab 
           {
             id: '',
             reportId: '',
-            agent: 'MG',
+            agent: 'ID: ${nowTab.patient.pid} MG\n${nowTab.firstMessage}',
             comment: response.response,
             question: false,
             createDate: '',
@@ -63,12 +71,13 @@ export default function MessageList({ loading, setLoading, selectReport, nowTab 
           },
         ]),
       );
-      setLoading(2);
     }
+    dispatch(setLoading(false));
   };
 
   useEffect(() => {
     if (nowTab.isFirst) {
+      console.log(nowTab.patient.modality);
       if (nowTab.patient.modality === 'MG') {
         const notification = [
           {
@@ -83,6 +92,7 @@ export default function MessageList({ loading, setLoading, selectReport, nowTab 
         ];
         handleMedicalChat();
         dispatch(setDispatchMessageList(notification));
+        dispatch(setLoadingTabPathName(nowTab.pathname));
       } else if (nowTab.patient.modality === 'CXR') {
         const notification = [
           {
@@ -105,8 +115,11 @@ export default function MessageList({ loading, setLoading, selectReport, nowTab 
           },
         ];
         handleAgentChat();
+        dispatch(setSelectedTabPathName(nowTab.pathname));
+        dispatch(setLoadingTabPathName(nowTab.pathname));
         dispatch(setDispatchMessageList(notification));
       } else {
+        const token: Token = jwtDecode(accessToken);
         const notification = [
           {
             id: '',
@@ -115,11 +128,12 @@ export default function MessageList({ loading, setLoading, selectReport, nowTab 
             comment: `ID: ${nowTab.patient.pid} MG\n${nowTab.firstMessage}`,
             question: true,
             createDate: '',
-            memberId: '',
+            memberId: token.id,
           },
         ];
         handleMedicalChat();
         dispatch(setDispatchMessageList(notification));
+        dispatch(setLoadingTabPathName(nowTab.pathname));
       }
       dispatch(setIsFirst());
     }
@@ -139,7 +153,7 @@ export default function MessageList({ loading, setLoading, selectReport, nowTab 
           selectReport={selectReport}
         />
       ))}
-      {loading === 1 && (
+      {loading && loadingPathName === nowTab.pathname && (
         <div className={`mt-20 flex justify-center`}>
           <HashLoader color="#5DA6F6" />
         </div>
