@@ -10,6 +10,9 @@ public class SessionHolders {
     Map<String, MemberSessions> holders = new ConcurrentHashMap<>();
 
     public String addSession(String memberId, String sessionId){
+        if (null == memberId){
+            return null;
+        }
         MemberSessions ms = holders.getOrDefault(memberId, new MemberSessions(memberId));
         String expired = ms.addSession(sessionId);
         holders.put(memberId, ms);
@@ -17,6 +20,9 @@ public class SessionHolders {
     }
 
     public String[] getSessions(String memberId){
+        if (null == memberId){
+            return null;
+        }
         MemberSessions memberSessions = holders.getOrDefault(memberId, null);
         if (null != memberSessions){
             return memberSessions.getSessionIds();
