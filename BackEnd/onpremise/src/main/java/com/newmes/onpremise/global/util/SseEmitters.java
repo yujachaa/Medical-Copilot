@@ -51,17 +51,20 @@ public class SseEmitters {
 
 
   public void sendNotification(String sessionId, NotificationResponseDto responseDto){
-    log.info("send notification");
     log.info("send SSE : sessionId = {}, notificationId= {}", sessionId, responseDto.getId());
+    if (null == sessionId || sessionId.isBlank()){
+      return;
+    }
+    SseEmitter emitter = emitters.getOrDefault(sessionId, null);
     try{
-      SseEmitter emitter = emitters.getOrDefault(sessionId, null);
       if (null == emitter){
         log.error("SSE does not exist for sessionId : {}", sessionId);
       } else {
         emitter.send(SseEmitter.event().name("message").data(responseDto));
       }
     } catch (IOException e){
-      log.error("Error occurred sending notification: {}", e.getMessage());
+      log.error("Error occurred sending notification: {}. Removing emitter for: {}", e.getMessage(), sessionId);
+      emitters.remove(sessionId);
     }
   }
 
