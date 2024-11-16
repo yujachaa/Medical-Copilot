@@ -1,6 +1,6 @@
 'use client';
 
-import { KeyboardEvent, useEffect, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import styles from './LoginInput.module.scss';
 import { fetchLogin } from '@/apis/fetchLogin';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -16,6 +16,13 @@ export default function LoginInput() {
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const searchParams = useSearchParams();
   const message = searchParams.get('message');
+  const emailRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (emailRef.current) {
+      emailRef.current.focus();
+    }
+  }, []);
 
   useEffect(() => {
     if (message === 'login_required') {
@@ -48,10 +55,12 @@ export default function LoginInput() {
     <div className={`${styles.main} flex flex-col items-center gap-10`}>
       <div className={`flex flex-col gap-[7px]`}>
         <input
+          ref={emailRef}
           className={`${styles.Email} w-[422px] h-[70px]`}
           placeholder="Email"
           onChange={(event) => {
             setEmail(event.target.value);
+            setIsLogin(true);
           }}
           onKeyUp={(event: KeyboardEvent) => {
             handleKeyUp(event);
@@ -63,6 +72,7 @@ export default function LoginInput() {
           type="password"
           onChange={(event) => {
             setPassword(event.target.value);
+            setIsLogin(true);
           }}
           onKeyUp={(event: KeyboardEvent) => {
             handleKeyUp(event);
@@ -93,7 +103,6 @@ export default function LoginInput() {
           Login
         </button>
       </div>
-      <span className={`text-xl underline cursor-pointer`}>Having Trouble?</span>
     </div>
   );
 }
