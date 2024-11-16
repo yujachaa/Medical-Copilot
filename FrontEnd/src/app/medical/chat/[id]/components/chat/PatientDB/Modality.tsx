@@ -2,7 +2,7 @@ import styles from './Modality.module.scss';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircleOutline';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import { setRequestModality } from '@/redux/features/tab/tabSlice';
+import { setPatientModality, setRequestModality } from '@/redux/features/tab/tabSlice';
 
 type Props = {
   onClose: () => void;
@@ -26,9 +26,11 @@ export default function Modality({ onClose, onPatientClose, newDbFlag }: Props) 
 
   const handleSetPatient = () => {
     dispatch(setRequestModality(selectedModality));
+    dispatch(setPatientModality(selectedModality));
     onClose();
     onPatientClose();
     newDbFlag(true);
+    console.log('새 db 선택했음!');
   };
 
   return (

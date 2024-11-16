@@ -40,12 +40,7 @@ export default function Chat({ pid }: ChatProps) {
   const [selectedReportId, setReportId] = useState<string>('');
   const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
-
   const searchParams = useSearchParams();
-
-  useEffect(() => {
-    setReportId(searchParams.get('reportId')!);
-  }, [searchParams]);
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
@@ -58,6 +53,10 @@ export default function Chat({ pid }: ChatProps) {
   const selectReport = (reportId: string) => {
     setReportId(reportId);
   };
+
+  useEffect(() => {
+    setReportId(searchParams.get('reportId')!);
+  }, [searchParams]);
 
   // useEffect(() => {
   //   const fetchPatient = async () => {
