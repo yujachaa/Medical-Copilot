@@ -2,7 +2,6 @@ import { BaseURL } from './core';
 
 //interceptor 추가 예정
 export async function fetchMessages(page: number, size: number, pid: string) {
-  console.log(pid);
   try {
     const response = await fetch(`${BaseURL}chat/${pid}/${page}/${size}`, {
       cache: 'no-store',

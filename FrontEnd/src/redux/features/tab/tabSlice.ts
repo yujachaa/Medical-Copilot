@@ -1,3 +1,4 @@
+import { MessageType } from '@/app/medical/temp/[id]/TempLayout';
 import { Noti } from '@/components/Alarm/SSEHandler';
 import { PatientHistory } from '@/components/PatientHistory/PatientHistory';
 import { PluginType } from '@/components/Tabs/Tab';
@@ -20,7 +21,7 @@ export type PatientReqeust = {
   age: number;
   comments: string;
   key: string;
-  agent: string;
+  agent: string | null;
 };
 
 export type tab = {
@@ -30,6 +31,9 @@ export type tab = {
   patient: Patient;
   pathname: string;
   patientRequest: PatientReqeust;
+  messageList: MessageType[];
+  firstMessage: string;
+  isFirst: boolean;
 };
 
 type tabProps = {
@@ -68,106 +72,13 @@ const initialState: tabProps = {
         key: '',
         agent: '',
       },
+      messageList: [],
+      firstMessage: '',
+      isFirst: true,
       pathname: '/medical/main',
     },
-    {
-      id: 1,
-      title: 'My Chat',
-      type: 'CXR',
-      patient: {
-        sex: '',
-        age: 0,
-        visitDate: '',
-        pid: '',
-        modality: '',
-        image: '',
-      },
-      patientRequest: {
-        PID: '',
-        image: '',
-        shootingDate: '',
-        sex: '',
-        age: 0,
-        comments: '',
-        key: '',
-        agent: '',
-      },
-      pathname: '/medical/mychat',
-    },
-    {
-      id: 2,
-      title: 'My Page',
-      type: 'MG',
-      patient: {
-        sex: '',
-        age: 0,
-        visitDate: '',
-        pid: '',
-        modality: '',
-        image: '',
-      },
-      patientRequest: {
-        PID: '',
-        image: '',
-        shootingDate: '',
-        sex: '',
-        age: 0,
-        comments: '',
-        key: '',
-        agent: '',
-      },
-      pathname: '/medical/mypage?t=profile',
-    },
-    {
-      id: 3,
-      title: 'My temp',
-      type: 'MG',
-      patient: {
-        sex: 'MALE',
-        age: 58,
-        visitDate: '2022-05-15',
-        pid: '1',
-        modality: 'CXR',
-        image: 'https://example.com/cxr.jpg',
-      },
-      patientRequest: {
-        PID: '',
-        image: '',
-        shootingDate: '',
-        sex: '',
-        age: 0,
-        comments: '',
-        key: '',
-        agent: '',
-      },
-      pathname: '/medical/temp/2',
-    },
-    {
-      id: 4,
-      title: '1 Dignosis',
-      type: 'CXR',
-      patient: {
-        sex: 'MALE',
-        age: 58,
-        visitDate: '2022-05-15',
-        pid: '1',
-        modality: 'CXR',
-        image: 'https://example.com/cxr.jpg',
-      },
-      patientRequest: {
-        PID: '',
-        image: '',
-        shootingDate: '',
-        sex: '',
-        age: 0,
-        comments: '',
-        key: '',
-        agent: '',
-      },
-      pathname: '/medical/chat/1',
-    },
   ],
-  selectedTab: 0,
+  selectedTab: 0, // 안씀
   increment: 5,
   selectedIndex: 0,
 };
@@ -181,6 +92,15 @@ const tabSlices = createSlice({
       if (index !== -1) {
         state.selectedIndex = index;
       }
+    },
+    setDispatchMessageList: (state, action: PayloadAction<MessageType[]>) => {
+      state.tablist[state.selectedIndex].messageList = [
+        ...state.tablist[state.selectedIndex].messageList,
+        ...action.payload,
+      ];
+    },
+    setIsFirst: (state) => {
+      state.tablist[state.selectedIndex].isFirst = false;
     },
     addTab: (state) => {
       const newTab: tab = {
@@ -205,15 +125,22 @@ const tabSlices = createSlice({
           key: '',
           agent: '',
         },
+        messageList: [],
+        firstMessage: '',
+        isFirst: true,
         pathname: '/medical/main',
       };
       state.tablist.push(newTab);
       state.selectedIndex = state.tablist.length - 1;
     },
 
-    addTempTab: (state, action: PayloadAction<{ patient: Patient; uuid: string }>) => {
+    addTempTab: (
+      state,
+      action: PayloadAction<{ patient: Patient; uuid: string; firstMessage: string }>,
+    ) => {
       const { patient, uuid } = action.payload;
       state.tablist[state.selectedIndex].pathname = `/medical/temp/${uuid}`;
+      state.tablist[state.selectedIndex].firstMessage = action.payload.firstMessage;
       state.tablist[state.selectedIndex].title =
         `${patient.modality === 'MG' || patient.modality === '' ? 'MG' : patient.modality} Plugin`;
       state.tablist[state.selectedIndex].patient = JSON.parse(JSON.stringify(patient));
@@ -285,6 +212,9 @@ const tabSlices = createSlice({
             key: '',
             agent: '',
           },
+          messageList: [],
+          firstMessage: '',
+          isFirst: true,
           pathname: action.payload,
         };
         state.tablist.push(newTab);
@@ -299,6 +229,26 @@ const tabSlices = createSlice({
         visitDate: action.payload.visitDate,
         pid: action.payload.pid,
         image: action.payload.image,
+      };
+    },
+    setPatientModality: (state, action: PayloadAction<string>) => {
+      state.tablist[state.selectedIndex].patient = {
+        sex: state.tablist[state.selectedIndex].patient.sex,
+        age: state.tablist[state.selectedIndex].patient.age,
+        modality: action.payload,
+        visitDate: state.tablist[state.selectedIndex].patient.visitDate,
+        pid: state.tablist[state.selectedIndex].patient.pid,
+        image: state.tablist[state.selectedIndex].patient.image,
+      };
+    },
+    setPatientInit: (state) => {
+      state.tablist[state.selectedIndex].patient = {
+        sex: '',
+        age: 0,
+        modality: '',
+        visitDate: '',
+        pid: '',
+        image: '',
       };
     },
     setRequestModality: (state, action: PayloadAction<string>) => {
@@ -349,6 +299,9 @@ const tabSlices = createSlice({
               key: '',
               agent: '',
             },
+            messageList: [],
+            firstMessage: '',
+            isFirst: true,
             pathname: `/medical/chat/${action.payload.PID}`,
           };
           state.tablist.push(newTab);
@@ -392,6 +345,9 @@ const tabSlices = createSlice({
               key: '',
               agent: '',
             },
+            messageList: [],
+            firstMessage: '',
+            isFirst: true,
             pathname:
               `/medical/chat/${action.payload.patientId} ` + `?reportId=${action.payload.reportId}`,
           };
@@ -416,5 +372,9 @@ export const {
   setRequestModality,
   setHistoryTab,
   setAlarmTab,
+  setPatientInit,
+  setDispatchMessageList,
+  setIsFirst,
+  setPatientModality,
 } = tabSlices.actions;
 export default tabSlices;

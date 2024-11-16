@@ -1,68 +1,136 @@
 import Message from './Message';
 import styles from './MessageList.module.scss';
-import { MessageType } from '../../TempLayout';
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
-import { fetchMessages } from '@/apis/message';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+// import { fetchMessages } from '@/apis/message';
+import { setDispatchMessageList, setIsFirst, tab } from '@/redux/features/tab/tabSlice';
+import { useAppDispatch } from '@/redux/store/hooks/store';
+import { HashLoader } from 'react-spinners';
+import { fetchCallAI, fetcMedicalAI } from '@/apis/Patient';
 
 type Props = {
-  messagelist: MessageType[];
-  setMessagelist: Dispatch<SetStateAction<MessageType[]>>;
+  loading: number;
+  setLoading: Dispatch<SetStateAction<number>>;
   selectReport: (reportId: string) => void;
-  pid: string;
+  nowTab: tab;
 };
-export default function MessageList({ messagelist, setMessagelist, selectReport, pid }: Props) {
+export default function MessageList({ loading, setLoading, selectReport, nowTab }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const loader = useRef<HTMLDivElement | null>(null);
-  const [page, setPage] = useState<number>(0);
-  const [size] = useState<number>(8);
+  const dispatch = useAppDispatch();
+  const messageList = nowTab.messageList;
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: scrollRef.current.scrollHeight,
-        behavior: 'auto',
-      });
+  const handleAgentChat = async () => {
+    setLoading(1);
+    const response = await fetchCallAI({
+      PID: nowTab.patient.pid,
+      image: nowTab.patient.image,
+      shootingDate: '',
+      sex: nowTab.patient.sex,
+      age: nowTab.patient.age,
+      comments: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
+      key: nowTab.patientRequest.key,
+      agent: nowTab.patient.modality,
+    });
+    console.log(response);
+  };
+
+  const handleMedicalChat = async () => {
+    setLoading(1);
+    const response = await fetcMedicalAI({
+      comment: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
+      isQuestion: true,
+      PID: nowTab.patient.pid,
+      member_id: '',
+      agent: nowTab.patient.modality,
+      chat_list: messageList.map((message) => {
+        return {
+          message: message.comment,
+          isQuestion: message.question,
+        };
+      }),
+      summary: '',
+    });
+    if (response) {
+      dispatch(
+        setDispatchMessageList([
+          {
+            id: '',
+            reportId: '',
+            agent: 'MG',
+            comment: response.response,
+            question: false,
+            createDate: '',
+            memberId: '',
+          },
+        ]),
+      );
+      setLoading(2);
     }
-  }, []);
+  };
 
   useEffect(() => {
-    const getPatient = async () => {
-      try {
-        const response = await fetchMessages(page, size, '42650703');
-        console.log(response);
-        if (response.content === undefined) {
-          new Error('Response 데이터가 이상합니다');
-          return;
-        }
-        setMessagelist((prev) => [...prev, ...response.content[0].chatList]);
-      } catch (err: unknown) {
-        console.log(err);
+    if (nowTab.isFirst) {
+      if (nowTab.patient.modality === 'MG') {
+        const notification = [
+          {
+            id: '',
+            reportId: '',
+            agent: 'MG',
+            comment: `ID: ${nowTab.patient.pid} MG\n${nowTab.firstMessage}`,
+            question: true,
+            createDate: '',
+            memberId: '',
+          },
+        ];
+        handleMedicalChat();
+        dispatch(setDispatchMessageList(notification));
+      } else if (nowTab.patient.modality === 'CXR') {
+        const notification = [
+          {
+            id: '',
+            reportId: '',
+            agent: 'CXR',
+            comment: `ID: ${nowTab.patient.pid} CXR\n${nowTab.firstMessage}`,
+            question: true,
+            createDate: '',
+            memberId: '',
+          },
+          {
+            id: '',
+            reportId: '',
+            agent: 'CXR',
+            comment: `Analyzing the data for ID ${nowTab.patient.pid}.`,
+            question: false,
+            createDate: '',
+            memberId: '',
+          },
+        ];
+        handleAgentChat();
+        dispatch(setDispatchMessageList(notification));
+      } else {
+        const notification = [
+          {
+            id: '',
+            reportId: '',
+            agent: 'MG',
+            comment: `ID: ${nowTab.patient.pid} MG\n${nowTab.firstMessage}`,
+            question: true,
+            createDate: '',
+            memberId: '',
+          },
+        ];
+        handleMedicalChat();
+        dispatch(setDispatchMessageList(notification));
       }
-    };
-    getPatient();
-  }, [page, size, pid, setMessagelist]);
-
-  const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
-    const target = entries[0];
-    if (target.isIntersecting) {
-      setPage((prev) => prev + 1);
+      dispatch(setIsFirst());
     }
   }, []);
-
-  useEffect(() => {
-    const option = {
-      threshold: 0.1,
-    };
-    const observer = new IntersectionObserver(handleObserver, option);
-    if (loader.current) observer.observe(loader.current);
-  }, [handleObserver]);
 
   return (
     <div
       ref={scrollRef}
       className={styles.msgList}
     >
-      {messagelist.map((message, index) => (
+      {messageList.map((message, index) => (
         <Message
           key={index}
           sender={message.question ? 'user' : 'bot'}
@@ -71,10 +139,11 @@ export default function MessageList({ messagelist, setMessagelist, selectReport,
           selectReport={selectReport}
         />
       ))}
-      <div
-        className="w-4 h-10 border"
-        ref={loader}
-      ></div>
+      {loading === 1 && (
+        <div className={`mt-20 flex justify-center`}>
+          <HashLoader color="#5DA6F6" />
+        </div>
+      )}
     </div>
   );
 }
