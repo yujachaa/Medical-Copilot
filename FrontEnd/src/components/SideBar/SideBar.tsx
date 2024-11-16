@@ -17,7 +17,7 @@ import { fetchLogout } from '@/apis/fetchLogout';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import AlarmModal from '../Alarm/AlarmModal';
 import Link from 'next/link';
-import { goMain, goMypage } from '@/redux/features/tab/tabSlice';
+import { goMain, goMypage, setTabHome } from '@/redux/features/tab/tabSlice';
 
 export default function SideBar() {
   const dispatch = useAppDispatch();
@@ -39,6 +39,7 @@ export default function SideBar() {
 
   const handleMainMove = () => {
     dispatch(goMain());
+    dispatch(setTabHome());
   };
 
   const goPlan = (e: React.MouseEvent<HTMLAnchorElement>) => {
