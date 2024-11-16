@@ -41,6 +41,8 @@ type tabProps = {
   selectedTab: number;
   increment: number;
   selectedIndex: number;
+  loading: boolean;
+  loadingTabPathName: string;
 };
 
 type changeTab = {
@@ -81,12 +83,49 @@ const initialState: tabProps = {
   selectedTab: 0, // 안씀
   increment: 5,
   selectedIndex: 0,
+  loading: false,
+  loadingTabPathName: '',
 };
 
 const tabSlices = createSlice({
   name: 'tab',
   initialState: initialState,
   reducers: {
+    setTabHome: (state) => {
+      state.tablist[state.selectedIndex] = {
+        id: 0,
+        title: 'Medical Copilot',
+        type: 'MG',
+        patient: {
+          sex: '',
+          age: 0,
+          visitDate: '',
+          pid: '',
+          modality: '',
+          image: '',
+        },
+        patientRequest: {
+          PID: '',
+          image: '',
+          shootingDate: '',
+          sex: '',
+          age: 0,
+          comment: '',
+          key: '',
+          agent: '',
+        },
+        messageList: [],
+        firstMessage: '',
+        isFirst: true,
+        pathname: '/medical/main',
+      };
+    },
+    setLoadingTabPathName: (state, action: PayloadAction<string>) => {
+      state.loadingTabPathName = action.payload;
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
     setSelectedTab: (state, action: PayloadAction<number>) => {
       const index = state.tablist.findIndex((tab) => tab.id === action.payload);
       if (index !== -1) {
@@ -97,6 +136,23 @@ const tabSlices = createSlice({
       state.tablist[state.selectedIndex].messageList = [
         ...state.tablist[state.selectedIndex].messageList,
         ...action.payload,
+      ];
+      state.loading = true;
+    },
+    setPrevMessageList: (state, action: PayloadAction<MessageType[]>) => {
+      state.tablist[state.selectedIndex].messageList = [
+        ...action.payload,
+        ...state.tablist[state.selectedIndex].messageList,
+      ];
+      state.loading = true;
+    },
+    addAgentMessage: (
+      state,
+      action: PayloadAction<{ alarmTabIdx: number; message: MessageType }>,
+    ) => {
+      state.tablist[action.payload.alarmTabIdx].messageList = [
+        ...state.tablist[action.payload.alarmTabIdx].messageList,
+        action.payload.message,
       ];
     },
     setIsFirst: (state) => {
@@ -419,5 +475,10 @@ export const {
   setDispatchMessageList,
   setIsFirst,
   setPatientModality,
+  addAgentMessage,
+  setLoadingTabPathName,
+  setLoading,
+  setTabHome,
+  setPrevMessageList,
 } = tabSlices.actions;
 export default tabSlices;
