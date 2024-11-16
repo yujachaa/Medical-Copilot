@@ -8,7 +8,7 @@ import ReportData from './components/report/ReportData';
 import ReportInfo from './components/report/ReportInfo';
 import Summary from './components/report/Summary';
 import styles from './page.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BiMessageRoundedDots } from '@react-icons/all-files/bi/BiMessageRoundedDots';
 import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
 import { CgClose } from '@react-icons/all-files/cg/CgClose';
@@ -17,6 +17,7 @@ import { fetchDrawing, fetchReport } from '@/apis/report';
 import { setReportData } from '@/redux/features/report/reportSlice';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
 import { useSearchParams } from 'next/navigation';
+import ReportLodaing from '@/components/ReportLodaing';
 
 type ChatProps = {
   pid: string;
@@ -35,17 +36,17 @@ export type MessageType = {
 export default function Chat({ pid }: ChatProps) {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
-  const [messages, setMessages] = useState<MessageType[]>([]);
+  // const [messages, setMessages] = useState<MessageType[]>([]);
   //어떤리포트를 처음에 띄워줄건가? 이걸 내가 한번 필터를 해야하나?
   const [selectedReportId, setReportId] = useState<string>('');
   const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
-
   const searchParams = useSearchParams();
-
-  useEffect(() => {
-    setReportId(searchParams.get('reportId')!);
-  }, [searchParams]);
+  const tabIndex = useAppSelector((state) => state.tab.selectedIndex);
+  const tabList = useAppSelector((state) => state.tab.tablist);
+  const nowTab = useMemo(() => {
+    return tabList[tabIndex];
+  }, [tabList, tabIndex]);
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
@@ -58,6 +59,10 @@ export default function Chat({ pid }: ChatProps) {
   const selectReport = (reportId: string) => {
     setReportId(reportId);
   };
+
+  useEffect(() => {
+    setReportId(searchParams.get('reportId')!);
+  }, [searchParams]);
 
   // useEffect(() => {
   //   const fetchPatient = async () => {
@@ -118,12 +123,16 @@ export default function Chat({ pid }: ChatProps) {
           </button>
         </div>
         <MessaageList
-          messagelist={messages}
-          setMessagelist={setMessages}
+          nowTab={nowTab}
           selectReport={selectReport}
           pid={pid}
         />
-        <ChatInput />
+        <ChatInput
+          nowTab={nowTab}
+          // messagelist={messages}
+          // setMessagelist={setMessages}
+          pid={pid}
+        />
       </div>
 
       {selectedReportId !== '' ? (
@@ -135,7 +144,7 @@ export default function Chat({ pid }: ChatProps) {
                 id={selectedReportId}
                 date={reportData ? new Date(reportData.createDate) : undefined}
               />
-              <ReportBtn messagelist={messages} />
+              <ReportBtn messagelist={nowTab.messageList} />
             </div>
             <ReportData />
             <Summary />
@@ -145,6 +154,7 @@ export default function Chat({ pid }: ChatProps) {
         <div className={styles.reportContainer}>
           <div className={styles.scrollable}>
             <div className={styles.reportInfo}>{/* <PluginInfo type={patient.modality} /> */}</div>
+            <ReportLodaing />
           </div>
         </div>
       )}
