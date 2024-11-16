@@ -10,7 +10,7 @@ import { setAlarmTab } from '@/redux/features/tab/tabSlice';
 // 알람 데이터 타입 정의
 type Alarm = {
   id: number;
-  reportId: string | null;
+  reportId: string;
   memberId: string;
   patientId: string;
   modality: string;

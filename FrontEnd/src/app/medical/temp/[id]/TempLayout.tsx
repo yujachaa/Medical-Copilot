@@ -46,7 +46,6 @@ export default function TempLayout() {
   const nowTab = useMemo(() => {
     return tabList[tabIndex];
   }, [tabList, tabIndex]);
-  const [loading, setLoading] = useState<number>(0);
 
   const minimizeChat = () => {
     setIsChatMinimized(!isChatMinimized);
@@ -135,15 +134,10 @@ export default function TempLayout() {
           </button>
         </div>
         <MessaageList
-          loading={loading}
-          setLoading={setLoading}
           selectReport={selectReport}
           nowTab={nowTab}
         />
-        <ChatInput
-          nowTab={nowTab}
-          setLoading={setLoading}
-        />
+        <ChatInput nowTab={nowTab} />
       </div>
 
       {/* 이부분이 랜더링이 되야한다 

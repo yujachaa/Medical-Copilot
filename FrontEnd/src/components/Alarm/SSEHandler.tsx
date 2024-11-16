@@ -1,9 +1,11 @@
 'use client';
 import { BaseURL } from '@/apis/core';
-import { useAppSelector } from '@/redux/store/hooks/store';
-import React, { useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Popup from './components/Popup';
+import { setReportId } from '@/redux/features/request/requestSlice';
+import { addAgentMessage, setLoading, setPatientModality } from '@/redux/features/tab/tabSlice';
 
 export type Token = {
   email: string;
@@ -16,13 +18,14 @@ export type Token = {
 
 export type Noti = {
   id: number;
-  reportId: string | null;
+  reportId: string;
   memberId: string;
   patientId: string;
   modality: string;
   createdDate: string;
 };
 export default function SSEHandler() {
+  const dispatch = useAppDispatch();
   const { accessToken } = useAppSelector((state) => state.user);
   const eventSourceRef = useRef<EventSource | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); //팝업 확인용 하드코딩
@@ -35,6 +38,15 @@ export default function SSEHandler() {
     modality: '',
     createdDate: '',
   });
+  const tabList = useAppSelector((state) => state.tab.tablist);
+  const tabPathName = useAppSelector((state) => state.request.selectedTabPathName);
+  const alarmTabIdx = useMemo(() => {
+    return tabList.findIndex((tab) => tab.pathname === tabPathName);
+  }, [tabList, tabPathName]);
+
+  useEffect(() => {
+    console.log(tabPathName); // 이 로그가 상태 업데이트 후 출력되는지 확인
+  }, [tabPathName]);
 
   const closePopup = () => {
     setIsClosing(true);
@@ -63,10 +75,24 @@ export default function SSEHandler() {
       };
 
       eventSourceRef.current!.onmessage = (event: MessageEvent) => {
-        console.log('알림');
-        const data = JSON.parse(event.data);
+        const data: Noti = JSON.parse(event.data);
         setAlarm(data);
 
+        const message = {
+          id: '',
+          agent: 'CXR',
+          comment: 'Analysis completed. Click on the chat to view the results.',
+          createDate: '',
+          memberId: '',
+          question: false,
+          reportId: data.reportId,
+        };
+        dispatch(setLoading(false));
+        if (alarmTabIdx !== -1) {
+          dispatch(addAgentMessage({ alarmTabIdx, message }));
+        }
+        dispatch(setReportId(data.reportId!));
+        dispatch(setPatientModality('MG'));
         //여기서 알람 팝업 열기
         setIsPopupOpen(true); // 알람 팝업 열기
         setIsClosing(false); // 팝업 열릴 때는 닫힘 상태 false
@@ -89,7 +115,7 @@ export default function SSEHandler() {
     return () => {
       eventSourceRef.current!.close();
     };
-  }, [accessToken]);
+  }, [accessToken, tabPathName]);
 
   return (
     <>
