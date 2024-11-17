@@ -93,7 +93,7 @@ const tabSlices = createSlice({
   reducers: {
     setTabHome: (state) => {
       state.tablist[state.selectedIndex] = {
-        id: 0,
+        id: ++state.increment,
         title: 'Medical Copilot',
         type: 'MG',
         patient: {
