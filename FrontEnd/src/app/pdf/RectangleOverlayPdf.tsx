@@ -2,8 +2,8 @@ import { ReportDataType } from '@/types/report';
 
 export default function RectangleOverlayPdf({ reportData }: { reportData: ReportDataType }) {
   // 원본 이미지 크기 및 비율 계산
-  const scaleX = 250 / 1024;
-  const scaleY = 250 / 1024;
+  const scaleX = 165.242 / 1024;
+  const scaleY = 165.242 / 1024;
 
   // 좌표를 현재 이미지 비율로 변환
   const Box_X1 = reportData.detection.Box_X1;
