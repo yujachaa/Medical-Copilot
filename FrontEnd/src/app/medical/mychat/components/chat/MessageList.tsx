@@ -33,7 +33,6 @@ export default function MessageList({ messagelist, setMessagelist, selectReport 
     const getPatient = async () => {
       try {
         const response = await fetchMessages(page, size, decode.id);
-        console.log(response);
         if (response.content === undefined) {
           new Error('Response 데이터가 이상합니다');
           return;

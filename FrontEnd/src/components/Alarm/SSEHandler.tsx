@@ -49,10 +49,6 @@ export default function SSEHandler() {
     return tabList.findIndex((tab) => tab.pathname === tabPathName);
   }, [tabList, tabPathName]);
 
-  useEffect(() => {
-    console.log('탭 패스네임~~', tabPathName); // 이 로그가 상태 업데이트 후 출력되는지 확인
-  }, [tabPathName]);
-
   const closePopup = () => {
     setIsClosing(true);
     setTimeout(() => {
@@ -81,7 +77,6 @@ export default function SSEHandler() {
 
       eventSourceRef.current!.onmessage = (event: MessageEvent) => {
         const data: Noti = JSON.parse(event.data);
-        console.log('sse 알람 데이터:', data);
         setAlarm(data);
 
         const message = {
@@ -94,14 +89,11 @@ export default function SSEHandler() {
           reportId: data.reportId,
         };
         dispatch(setLoading(false));
-        console.log('탭 패스네임~~', tabPathName);
 
         //알림받을 탭이 환자챗인 경우
         if (tabPathName.includes('chat')) {
-          console.log('앞에 추가요~~');
           dispatch(addPrevAgentMessage({ alarmTabIdx, message }));
         } else if (alarmTabIdx !== -1) {
-          console.log('뒤에 추가요~~');
           dispatch(addAgentMessage({ alarmTabIdx, message }));
         }
         dispatch(setReportId(data.reportId!));

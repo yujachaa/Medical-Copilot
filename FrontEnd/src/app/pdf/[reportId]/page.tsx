@@ -8,9 +8,6 @@ import { ReportDataType } from '@/types/report';
 export default async function PDFPage({ params }: { params: { reportId: string } }) {
   const reportData: ReportDataType = await fetchReport(params.reportId);
   const fip = await fetchfip(params.reportId);
-  console.log(fip);
-  console.log(params.reportId);
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
 
   return (
     <div className={styles.report}>

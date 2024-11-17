@@ -247,7 +247,6 @@ const tabSlices = createSlice({
     },
     goMypage: (state, action: PayloadAction<string>) => {
       const index = state.tablist.findIndex((tab) => tab.pathname.includes('mypage'));
-      console.log(action.payload);
       //기존의 탭이 있는 경우 세팅클릭하면 이동
       if (index !== -1) {
         state.tablist[index].pathname = action.payload;
