@@ -36,6 +36,11 @@ public class UsageController {
                 });
     }
 
+  @PostMapping("medical_chat")
+  public void usageAgent(@RequestBody UsageRequestDto requestDto) {
+      usageService.CountAgent(requestDto);
+  }
+
   @GetMapping("/monthly")
   public ResponseEntity<?> monthlyTotal(){
     MonthlyResponse monthlyResponse = null;
@@ -155,4 +160,15 @@ public class UsageController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
   }
+
+  @GetMapping("quota/{key}")
+  public ResponseEntity<?> quota(@PathVariable String key){
+    try {
+      long response = usageService.getQuota(key);
+      return ResponseEntity.status(HttpStatus.OK).body(response);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  }
+
 }

@@ -14,20 +14,30 @@ import com.newmes.cloud.domains.usage.dto.response.CountResponse;
 import com.newmes.cloud.domains.usage.dto.response.MonthlyResponse;
 import com.newmes.cloud.domains.usage.dto.response.WeeklyResponse;
 import com.newmes.cloud.domains.usage.dto.response.YearlyResponse;
+import com.newmes.cloud.domains.usage.entity.UsageEntity;
+import com.newmes.cloud.domains.usage.repository.UsageRepository;
 import com.newmes.cloud.domains.usage.repositoryES.CustomRepository;
 import com.newmes.cloud.global.kafka.producer.UsageProducer;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 
 import java.util.concurrent.CompletableFuture;
+
+import static net.logstash.logback.argument.StructuredArguments.kv;
 
 @RequiredArgsConstructor
 @Service
@@ -36,6 +46,8 @@ public class UsageServiceImpl implements UsageService{
     private final CorporateRepository corporateRepository;
     private final UsageProducer kafkaProducerService;
     private final CustomRepository customESRepository;
+    private final UsageRepository usageRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UsageServiceImpl.class);
 
     public CompletableFuture<String> processAgentUsage(UsageRequestDto requestDto) {
         Corporate corporate = Corporate.fromEntity(
@@ -52,6 +64,35 @@ public class UsageServiceImpl implements UsageService{
 
         return kafkaProducerService.sendAgentUsage(result);
     }
+    @Override
+    public void CountAgent(UsageRequestDto requestDto){
+        Corporate corporate = Corporate.fromEntity(
+                corporateRepository.findByKey(requestDto.key())
+                        .orElseThrow(() -> new CorporateNotFoundException("Invalid key: " + requestDto.key()))
+        );
+
+        AgentUsageLog result = AgentUsageLog.builder()
+                .id(corporate.getId())
+                .key(requestDto.key())
+                .agent(requestDto.agent())
+                .grade(corporate.getGrade())
+                .build();
+
+        logger.info("Business Log: Usage update successful",
+                kv("corpKey", result.getKey()),
+                kv("grade", result.getGrade()),
+                kv("totalCount", ""),
+                kv("agent", result.getAgent().toString()));
+
+    }
+
+    @Override
+    public int getQuota(String key){
+        UsageEntity entity = usageRepository.findByCorporateKey(key)
+                .orElseThrow(() -> new CorporateNotFoundException("Invalid key: " + key));
+        return entity.getAgentCount();
+    }
+
 
 
     @Override
@@ -326,4 +367,28 @@ public class UsageServiceImpl implements UsageService{
         return customESRepository.weeklyTokenCount(key);
     }
 
+    @Override
+    public void increaseUsage(String key){
+        UsageEntity entity = usageRepository.findByCorporateKey(key)
+                .orElseThrow(() -> new CorporateNotFoundException("Invalid key: " + key));
+
+        entity.incrementAgentCount();
+        usageRepository.save(entity);
+    }
+
+
+    @Scheduled(cron = "0 0 2 * * MON", zone = "Asia/Seoul")
+    public void initEntities() {
+        List<UsageEntity> usageEntities = usageRepository.findAll();
+
+        for (UsageEntity entity : usageEntities) {
+            try {
+                entity.initAgentCount();
+                usageRepository.save(entity);
+            } catch (Exception e) {
+
+            }
+        }
+
+    }
 }
