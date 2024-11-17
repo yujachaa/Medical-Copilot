@@ -69,10 +69,8 @@ export default function Chat({ pid }: ChatProps) {
   useEffect(() => {
     const getReport = async () => {
       const response = await fetchReport(selectedReportId);
-      console.log('리포트:', response);
       if (response) dispatch(setReportData(response)); //리포트 데이터 저장
     };
-    console.log('선택된 리포트 아이디', selectedReportId);
     if (selectedReportId !== '')
       getReport(); // reportId가 있는 경우 report 데이터 가져오기
     else dispatch(clearReportData()); //없는 경우 reportData 비우기
@@ -81,7 +79,6 @@ export default function Chat({ pid }: ChatProps) {
   useEffect(() => {
     const getDrawing = async () => {
       const response = await fetchDrawing(selectedReportId);
-      console.log('그림 좌표', response);
       if (response) dispatch(setCoordinates(response.coordinatesGroups));
       // setDrawingCoodinates(response.coordinatesGroups);
     };

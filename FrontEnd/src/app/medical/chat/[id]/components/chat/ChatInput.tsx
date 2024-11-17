@@ -35,7 +35,6 @@ export default function ChatInput({ nowTab, pid }: Props) {
   };
 
   const clickSend = () => {
-    console.log(comment);
     const userMessage = {
       id: '',
       agent: 'MG',
@@ -45,7 +44,6 @@ export default function ChatInput({ nowTab, pid }: Props) {
       question: true,
       reportId: '',
     };
-    console.log('유저메세지 만든거 확인', userMessage);
 
     dispatch(setPrevMessageList([userMessage]));
     // setMessagelist((prev) => [userMessage, ...prev]);
@@ -62,12 +60,11 @@ export default function ChatInput({ nowTab, pid }: Props) {
       //후속질문
       handleMedicalChat();
     }
-    console.log('로딩탭 패스네임~~~!', nowTab.pathname);
     dispatch(setLoadingTabPathName(nowTab.pathname));
   };
 
   const handleAgentChat = async () => {
-    const response = await fetchCallAI({
+    await fetchCallAI({
       PID: nowTab.patient.pid,
       image: nowTab.patient.image,
       shootingDate: nowTab.patient.visitDate,
@@ -77,7 +74,6 @@ export default function ChatInput({ nowTab, pid }: Props) {
       key: nowTab.patientRequest.key,
       agent: nowTab.patient.modality,
     });
-    console.log(response);
     const notification =
       // {
       //   id: '',

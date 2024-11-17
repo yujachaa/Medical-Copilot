@@ -12,8 +12,6 @@ export async function updateName(name: string) {
       redirect('/login?message=login_required');
     }
 
-    console.log('엑세스 토큰', accessToken);
-
     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/member/update`, {
       cache: 'no-store',
       method: 'PATCH',
@@ -25,7 +23,6 @@ export async function updateName(name: string) {
     });
 
     if (!response.ok) {
-      console.log(response);
       throw new Error('응답이 없습니다.');
     }
 

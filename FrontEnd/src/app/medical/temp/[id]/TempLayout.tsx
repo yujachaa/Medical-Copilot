@@ -16,8 +16,6 @@ import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { fetchDrawing, fetchReport } from '@/apis/report';
 import { setReportData } from '@/redux/features/report/reportSlice';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
-import { useSearchParams } from 'next/navigation';
-import { fetcMedicalAI, NoPatientQuestion } from '@/apis/Patient';
 import ReportLodaing from '@/components/ReportLodaing';
 
 export type MessageType = {
@@ -38,7 +36,6 @@ export default function TempLayout() {
   // const { patient } = useAppSelector((state) => state.main);
   const { reportData } = useAppSelector((state) => state.report);
   const dispatch = useAppDispatch();
-  const searchParams = useSearchParams();
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
@@ -56,41 +53,9 @@ export default function TempLayout() {
     setReportId(reportId);
   };
 
-  // useEffect(() => {
-  //   const fetchPatient = async () => {
-  //     const response = await fetchPatientChat(pid);
-  //     console.log('페이션트:', response);
-  //     setMessages(response.chatList);
-  //     //가장 마지막 리포트를 저장
-  //     setReportId(response.chatList[response.chatList.length - 1].reportId);
-  //   };
-  //   fetchPatient();
-  // }, [pid]);
-
-  const question = searchParams.get('question');
-  useEffect(() => {
-    //이게 있다면 PID가 없는 질문
-    if (question) {
-      console.log(question);
-      const q: NoPatientQuestion = {
-        isQuestion: true,
-        member_id: searchParams.get('memberId')!,
-        PID: searchParams.get('memberId')!,
-        comment: searchParams.get('comment')!,
-        agent: 'MG',
-        chat_list: [],
-        summary: '',
-      };
-      //호출
-      fetcMedicalAI(q);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   useEffect(() => {
     const getReport = async () => {
       const response = await fetchReport(selectedReportId);
-      console.log('리포트:', response);
       if (response) dispatch(setReportData(response)); //리포트 데이터 저장
     };
     if (selectedReportId !== '') getReport();
@@ -99,7 +64,6 @@ export default function TempLayout() {
   useEffect(() => {
     const getDrawing = async () => {
       const response = await fetchDrawing(selectedReportId);
-      console.log('그림 좌표', response);
       if (response) dispatch(setCoordinates(response.coordinatesGroups));
       // setDrawingCoodinates(response.coordinatesGroups);
     };

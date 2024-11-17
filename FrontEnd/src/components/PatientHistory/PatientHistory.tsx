@@ -42,7 +42,6 @@ export default function PatientHistory({ onClose, isAnimate }: Props) {
     const getPatientHistory = async () => {
       const data = await fetchPatientHistory();
       if (data) {
-        console.log('patient history:', data);
         setPatientHistories([{}, ...data]);
       }
     };

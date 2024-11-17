@@ -31,7 +31,6 @@ export default function Modality({ onClose, onPatientClose, newDbFlag }: Props) 
     onClose();
     onPatientClose();
     newDbFlag(true);
-    console.log('새 db 선택했음!');
   };
 
   return (

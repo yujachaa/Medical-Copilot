@@ -18,7 +18,6 @@ export default function LoginInput() {
   const handleLogin = async () => {
     const data = await fetchLogin(email, password);
     if (data) {
-      console.log(data);
       dispatch(setAccessToken(data));
       router.replace('/main');
     } else {
@@ -29,7 +28,6 @@ export default function LoginInput() {
   useEffect(() => {
     if (message === 'loginRequired') {
       alert('Login is required.');
-      console.log('얼럿');
     }
   }, [message]);
 
