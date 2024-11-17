@@ -1,80 +1,198 @@
 import Message from './Message';
 import styles from './MessageList.module.scss';
-import { MessageType } from '../../TempLayout';
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
-import { fetchMessages } from '@/apis/message';
+import { useEffect, useRef } from 'react';
+// import { fetchMessages } from '@/apis/message';
+import {
+  setDispatchMessageList,
+  setIsFirst,
+  setLoading,
+  setLoadingTabPathName,
+  tab,
+} from '@/redux/features/tab/tabSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
+import { HashLoader } from 'react-spinners';
+import { fetchCallAI, fetcMedicalAI } from '@/apis/Patient';
+import { setSelectedTabPathName } from '@/redux/features/request/requestSlice';
+import { jwtDecode } from 'jwt-decode';
+import { Token } from '@/components/Alarm/SSEHandler';
+import Image from 'next/image';
 
 type Props = {
-  messagelist: MessageType[];
-  setMessagelist: Dispatch<SetStateAction<MessageType[]>>;
   selectReport: (reportId: string) => void;
-  pid: string;
+  nowTab: tab;
 };
-export default function MessageList({ messagelist, setMessagelist, selectReport, pid }: Props) {
+
+export default function MessageList({ selectReport, nowTab }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const loader = useRef<HTMLDivElement | null>(null);
-  const [page, setPage] = useState<number>(0);
-  const [size] = useState<number>(8);
+  const dispatch = useAppDispatch();
+  const messageList = nowTab.messageList;
+  const loading = useAppSelector((state) => state.tab.loading);
+  const loadingPathName = useAppSelector((state) => state.tab.loadingTabPathName);
+  const accessToken = useAppSelector((state) => state.user.accessToken);
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: scrollRef.current.scrollHeight,
-        behavior: 'auto',
-      });
+      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, []);
+  }, [messageList]);
+
+  const handleAgentChat = async () => {
+    await fetchCallAI({
+      PID: nowTab.patient.pid,
+      image: nowTab.patient.image,
+      shootingDate: nowTab.patient.visitDate,
+      sex: nowTab.patient.sex,
+      age: nowTab.patient.age,
+      comment: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
+      key: nowTab.patientRequest.key,
+      agent: nowTab.patient.modality,
+    });
+  };
+
+  const handleMedicalChat = async () => {
+    const token: Token = jwtDecode(accessToken);
+    const response = await fetcMedicalAI({
+      comment: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
+      isQuestion: true,
+      PID: nowTab.patient.pid !== '' ? nowTab.patient.pid : token.id,
+      member_id: token.id,
+      agent: nowTab.patient.modality,
+      chat_list: messageList.map((message) => {
+        return {
+          message: message.comment,
+          isQuestion: message.question,
+        };
+      }),
+      summary: '',
+    });
+    if (response) {
+      dispatch(
+        setDispatchMessageList([
+          {
+            id: '',
+            reportId: '',
+            agent: 'ID: ${nowTab.patient.pid} MG\n${nowTab.firstMessage}',
+            comment: response.response,
+            question: false,
+            createDate: '',
+            memberId: '',
+          },
+        ]),
+      );
+    }
+    dispatch(setLoading(false));
+  };
 
   useEffect(() => {
-    const getPatient = async () => {
-      try {
-        const response = await fetchMessages(page, size, '42650703');
-        console.log(response);
-        if (response.content === undefined) {
-          new Error('Response 데이터가 이상합니다');
-          return;
-        }
-        setMessagelist((prev) => [...prev, ...response.content[0].chatList]);
-      } catch (err: unknown) {
-        console.log(err);
+    if (nowTab.isFirst) {
+      console.log(nowTab.patient.modality);
+      if (nowTab.patient.modality === 'MG') {
+        const notification = [
+          {
+            id: '',
+            reportId: '',
+            agent: 'MG',
+            comment: `ID: ${nowTab.patient.pid}\n${nowTab.firstMessage}`,
+            question: true,
+            createDate: '',
+            memberId: '',
+          },
+        ];
+        handleMedicalChat();
+        dispatch(setDispatchMessageList(notification));
+        dispatch(setLoadingTabPathName(nowTab.pathname));
+      } else if (nowTab.patient.modality === 'CXR') {
+        const notification = [
+          {
+            id: '',
+            reportId: '',
+            agent: 'CXR',
+            comment: `ID: ${nowTab.patient.pid}\n${nowTab.firstMessage}`,
+            question: true,
+            createDate: '',
+            memberId: '',
+          },
+          {
+            id: '',
+            reportId: '',
+            agent: 'CXR',
+            comment: `Analyzing the data for ID ${nowTab.patient.pid}.`,
+            question: false,
+            createDate: '',
+            memberId: '',
+          },
+        ];
+        handleAgentChat();
+        dispatch(setSelectedTabPathName(nowTab.pathname));
+        dispatch(setLoadingTabPathName(nowTab.pathname));
+        dispatch(setDispatchMessageList(notification));
+      } else {
+        const token: Token = jwtDecode(accessToken);
+        const notification = [
+          {
+            id: '',
+            reportId: '',
+            agent: 'MG',
+            comment: `${nowTab.firstMessage}`,
+            question: true,
+            createDate: '',
+            memberId: token.id,
+          },
+        ];
+        handleMedicalChat();
+        dispatch(setDispatchMessageList(notification));
+        dispatch(setLoadingTabPathName(nowTab.pathname));
       }
-    };
-    getPatient();
-  }, [page, size, pid, setMessagelist]);
-
-  const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
-    const target = entries[0];
-    if (target.isIntersecting) {
-      setPage((prev) => prev + 1);
+      dispatch(setIsFirst());
     }
   }, []);
-
-  useEffect(() => {
-    const option = {
-      threshold: 0.1,
-    };
-    const observer = new IntersectionObserver(handleObserver, option);
-    if (loader.current) observer.observe(loader.current);
-  }, [handleObserver]);
 
   return (
-    <div
-      ref={scrollRef}
-      className={styles.msgList}
-    >
-      {messagelist.map((message, index) => (
-        <Message
-          key={index}
-          sender={message.question ? 'user' : 'bot'}
-          message={message.comment}
-          data={message}
-          selectReport={selectReport}
-        />
-      ))}
-      <div
-        className="w-4 h-10 border"
-        ref={loader}
-      ></div>
+    <div className={styles.msgList}>
+      {messageList.map((message, index) => {
+        return (
+          <>
+            <Message
+              key={index}
+              sender={message.question ? 'user' : 'bot'}
+              message={message.comment}
+              data={message}
+              selectReport={selectReport}
+            />
+            {message.agent === 'CXR' && message.question && (
+              <div className={`rounded-[10px] flex flex-col items-end gap-2`}>
+                <Image
+                  className={`rounded-[10px]`}
+                  alt="cxr"
+                  src={`${nowTab.patient.image}`}
+                  width={250}
+                  height={250}
+                />
+                <div className={`w-[250px] flex flex-col gap-2`}>
+                  <div className={`w-[250px] flex gap-2`}>
+                    <span className={`${styles.key}`}>ID:</span>
+                    <span>{nowTab.patient.pid}</span>
+                  </div>
+                  <div className={`w-[250px] flex gap-2`}>
+                    <span className={`${styles.key}`}>Gender:</span>
+                    <span>{nowTab.patient.sex}</span>
+                  </div>
+                  <div className={`w-[250px] flex gap-2`}>
+                    <span className={`${styles.key}`}>Age:</span>
+                    <span>{nowTab.patient.age}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        );
+      })}
+      {loading && loadingPathName === nowTab.pathname && (
+        <div className={`mt-10 mb-10 flex justify-center`}>
+          <HashLoader color="#5DA6F6" />
+        </div>
+      )}
+      <div ref={scrollRef} />
     </div>
   );
 }

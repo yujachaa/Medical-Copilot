@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styles from './AlarmModal.module.scss';
 import Item from '@/components/Alarm/components/Item';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
-import { fetchAllAlarm, readAllAlarm } from '@/apis/alarm';
+import { fetchAllAlarm, readAlarm, readAllAlarm } from '@/apis/alarm';
+import { HashLoader } from 'react-spinners';
 
 // 알람 데이터 타입 정의
 type Alarm = {
   id: number;
-  reportId: string | null;
+  reportId: string;
   memberId: string;
   patientId: string;
   modality: string;
@@ -15,7 +16,7 @@ type Alarm = {
 };
 
 type Props = {
-  onClose?: () => void;
+  onClose: () => void;
 };
 
 export default function AlarmModal({ onClose }: Props) {
@@ -48,6 +49,12 @@ export default function AlarmModal({ onClose }: Props) {
     }
   };
 
+  const handleDelete = async (e: React.MouseEvent<SVGElement>, id: number) => {
+    e.stopPropagation();
+    readAlarm(id);
+    setAlarms((prev) => prev.filter((item) => item.id !== id));
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.box}>
@@ -74,13 +81,19 @@ export default function AlarmModal({ onClose }: Props) {
                     key={alarm.id}
                     alarmId={alarm.id}
                     alarmData={alarm}
+                    onClose={onClose}
+                    handleDelete={handleDelete}
                   />
                 ))}
               </div>
             ) : (
               <div>There are no notifications.</div>
             )
-          ) : null
+          ) : (
+            <div className="w-full h-full flex justify-center items-center">
+              <HashLoader color="#5DA6F6" />
+            </div>
+          )
           // (예정) 여기에 스피너 추가
         }
       </div>

@@ -7,7 +7,7 @@ import { fetchPDF } from '@/apis/fetchPDF';
 import RectangleOverlay from './RectangleOverlay';
 import CanvasOverlay from './CanvasOverlay';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import { MessageType } from '../../ChatLayout';
+import { MessageType } from '../../MyChat';
 import { find } from '@/apis/find';
 import { fetchImpression } from '@/apis/impression';
 import { HashLoader } from 'react-spinners';

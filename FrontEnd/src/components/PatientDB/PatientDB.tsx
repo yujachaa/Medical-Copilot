@@ -10,6 +10,7 @@ import { fetchPatient } from '@/apis/Patient';
 import { useAppDispatch } from '@/redux/store/hooks/store';
 import Modality from './Modality';
 import { setPatient } from '@/redux/features/tab/tabSlice';
+import { HashLoader } from 'react-spinners';
 
 type Props = {
   onClose: () => void;
@@ -114,58 +115,64 @@ export default function PatientDB({ onClose }: Props) {
           />
         </div>
         <div className={`${styles.table} justify-centerw-full h-full pl-4 pr-4`}>
-          <table className={`w-full`}>
-            <thead>
-              <tr>
-                <th className="flex justify-center items-center w-[100%] h-full gap-1">
-                  <span>PID</span>
-                  {!pidSort ? (
-                    <FaSortUp
-                      className={`${styles.up} flex justify-center items-center`}
-                      onClick={handlePidSort}
-                    />
-                  ) : (
-                    <FaSortDown
-                      className={`${styles.down} flex justify-center items-center`}
-                      onClick={handlePidSort}
-                    />
-                  )}
-                </th>
-                <th className="w-[12.5%]">SEX</th>
-                <th className="w-[12.5%]">AGE</th>
-                <th className="w-[30%]">Modality</th>
-                <th className="flex justify-center items-center w-[100%] h-full gap-1">
-                  <span>Visit Date</span>
+          {patientList.length === 0 ? (
+            <div className={`w-full h-full flex justify-center items-center`}>
+              <HashLoader color="#5DA6F6" />
+            </div>
+          ) : (
+            <table className={`w-full`}>
+              <thead>
+                <tr>
+                  <th className="flex justify-center items-center w-[100%] h-full gap-1">
+                    <span>PID</span>
+                    {!pidSort ? (
+                      <FaSortUp
+                        className={`${styles.up} flex justify-center items-center`}
+                        onClick={handlePidSort}
+                      />
+                    ) : (
+                      <FaSortDown
+                        className={`${styles.down} flex justify-center items-center`}
+                        onClick={handlePidSort}
+                      />
+                    )}
+                  </th>
+                  <th className="w-[12.5%]">SEX</th>
+                  <th className="w-[12.5%]">AGE</th>
+                  <th className="w-[30%]">Modality</th>
+                  <th className="flex justify-center items-center w-[100%] h-full gap-1">
+                    <span>Visit Date</span>
 
-                  {!visitedDateSort ? (
-                    <FaSortUp
-                      className={`${styles.up} flex justify-center items-center`}
-                      onClick={handleVisitedSort}
-                    />
-                  ) : (
-                    <FaSortDown
-                      className={`${styles.down} flex justify-center items-center`}
-                      onClick={handleVisitedSort}
-                    />
-                  )}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {patientList.map((patient, index) => (
-                <tr
-                  key={index}
-                  onClick={() => handleSetPatient(patient)}
-                >
-                  <td>{patient.pid}</td>
-                  <td>{patient.sex}</td>
-                  <td>{patient.age}</td>
-                  <td>{!patient.modality ? 'NO DATA' : patient.modality}</td>
-                  <td>{patient.visitDate}</td>
+                    {visitedDateSort ? (
+                      <FaSortUp
+                        className={`${styles.up} flex justify-center items-center`}
+                        onClick={handleVisitedSort}
+                      />
+                    ) : (
+                      <FaSortDown
+                        className={`${styles.down} flex justify-center items-center`}
+                        onClick={handleVisitedSort}
+                      />
+                    )}
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {patientList.map((patient, index) => (
+                  <tr
+                    key={index}
+                    onClick={() => handleSetPatient(patient)}
+                  >
+                    <td>{patient.pid}</td>
+                    <td>{patient.sex}</td>
+                    <td>{patient.age}</td>
+                    <td>{!patient.modality ? 'NO DATA' : patient.modality}</td>
+                    <td>{patient.visitDate}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
           {isOpen && (
             <Modality
               onClose={hadnleModalityClose}

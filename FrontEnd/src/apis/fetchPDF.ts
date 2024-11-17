@@ -1,7 +1,6 @@
 export const fetchPDF = async (reportId: string) => {
   try {
     const response = await fetch('/api/generate-pdf', {
-      cache: 'no-cache',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

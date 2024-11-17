@@ -10,6 +10,7 @@ import AlarmSlices from '../features/alarm/alarmSlice';
 import coordinateSlices from '../features/report/coordinateSlice';
 import reportSlices from '../features/report/reportSlice';
 import fipSlice from '../features/fip/fipSlice';
+import requestSlices from '../features/request/requestSlice';
 
 export const resetState = createAction('RESET_STATE');
 
@@ -28,6 +29,7 @@ const reducer = combineReducers({
   coordinate: coordinateSlices.reducer,
   report: reportSlices.reducer,
   fip: fipSlice.reducer,
+  request: requestSlices.reducer,
 });
 
 const rootReducer = (state: ReturnType<typeof reducer> | undefined, action: any) => {

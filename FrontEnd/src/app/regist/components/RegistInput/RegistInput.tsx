@@ -38,7 +38,7 @@ export default function RegistInput() {
         const data = await fetchRegist(email, password, name);
         if (data?.msg === 'success') {
           alert('회원가입이 완료되었습니다!');
-          router.push('/login');
+          router.replace('/login');
         }
       } catch (error: unknown) {
         // error를 unknown으로 지정
@@ -128,7 +128,7 @@ export default function RegistInput() {
         <button
           className={`w-[170px] h-[64px] flex justify-center items-center rounded-[5px] ${styles.cancel}`}
           onClick={() => {
-            router.push('/login');
+            router.replace('/login');
           }}
         >
           Cancel

@@ -1,4 +1,4 @@
-import Chat from './ChatLayout';
+import MyChat from './MyChat';
 
 type Props = {
   params: {
@@ -8,5 +8,5 @@ type Props = {
 
 export default function Page({ params }: Props) {
   console.log(params.id);
-  return <Chat />;
+  return <MyChat />;
 }
