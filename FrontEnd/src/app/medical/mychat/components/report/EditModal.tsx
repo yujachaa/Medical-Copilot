@@ -237,7 +237,6 @@ export default function EditModal({ onClose }: EditModalProps) {
 
   const handleCheck = async () => {
     dispatch(setCoordinates(coordinatesGroups));
-    console.log('좌표', coordinatesGroups);
     setIsChecked(true);
   };
 

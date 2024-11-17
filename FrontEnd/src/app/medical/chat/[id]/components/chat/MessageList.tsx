@@ -29,13 +29,11 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
   const getMessages = async (page: number, size: number, pid: string) => {
     try {
       const response = await fetchMessages(page, size, pid);
-      console.log(response);
       if (response.content === undefined) {
         new Error('Response 데이터가 이상합니다');
         return;
       }
 
-      console.log('메세지하나', response.content[0].chatList);
       //setPrevMessageList로 바꾸기!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       dispatch(setDispatchMessageList(response.content[0].chatList));
       // setMessagelist((prev) => [...prev, ...response.content[0].chatList]);
@@ -45,7 +43,6 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
   };
 
   useEffect(() => {
-    console.log('현재탭 환자정보', nowTab.patient);
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
         top: scrollRef.current.scrollHeight,
@@ -64,7 +61,7 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
       getMessages(page, size, pid);
       dispatch(setIsFirst());
     }
-  });
+  },[]);
 
   // useEffect(() => {
   //   getMessages();

@@ -30,7 +30,6 @@ const AlarmSlices = createSlice({
         state.status = 'loading';
       })
       .addCase(getOTP.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.otp = action.payload.otp;
       })
       .addCase(getOTP.rejected, (state) => {

@@ -29,11 +29,9 @@ export default function Item({ className, alarmId, alarmData, onClose, handleDel
   const dispatch = useAppDispatch();
   const clickAlarm = async () => {
     onClose();
-    console.log('알람클릭', alarmId, alarmData.reportId);
     //알람 읽기 api 호출
     const data = await readAlarm(alarmId);
     if (data) {
-      console.log('알람읽기 완료', data);
     }
     //클릭한 알람과 연결된 리포트 페이지로 이동
     router.replace(`/medical/chat/${alarmData.patientId}?reportId=${alarmData.reportId}`);
