@@ -42,7 +42,7 @@ export default function Modality({ onClose, onPatientClose }: Props) {
           />
         </div>
         <div className={`${styles.list} w-full h-[150px] flex justify-between gap-6`}>
-          {['MG', 'CXR', 'CT', 'CAPSURE'].map((modality, index) => {
+          {['MG', 'CXR', 'CT', 'CAPSULE'].map((modality, index) => {
             return (
               <div
                 key={index}
