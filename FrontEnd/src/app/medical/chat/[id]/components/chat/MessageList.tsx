@@ -2,7 +2,7 @@ import Message from './Message';
 import styles from './MessageList.module.scss';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchMessages } from '@/apis/message';
-import { setDispatchMessageList, tab } from '@/redux/features/tab/tabSlice';
+import { setDispatchMessageList, setIsFirst, tab } from '@/redux/features/tab/tabSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 // import { MessageType } from '../../ChatLayout';
 import { HashLoader } from 'react-spinners';
@@ -24,6 +24,25 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
   const dispatch = useAppDispatch();
   const loading = useAppSelector((state) => state.tab.loading);
   const loadingPathName = useAppSelector((state) => state.tab.loadingTabPathName);
+  const isFirst = nowTab.isFirst;
+
+  const getMessages = async (page: number, size: number, pid: string) => {
+    try {
+      const response = await fetchMessages(page, size, pid);
+      console.log(response);
+      if (response.content === undefined) {
+        new Error('Response 데이터가 이상합니다');
+        return;
+      }
+
+      console.log('메세지하나', response.content[0].chatList);
+      //setPrevMessageList로 바꾸기!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      dispatch(setDispatchMessageList(response.content[0].chatList));
+      // setMessagelist((prev) => [...prev, ...response.content[0].chatList]);
+    } catch (err: unknown) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     console.log('현재탭 환자정보', nowTab.patient);
@@ -35,36 +54,28 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
     }
   }, []);
 
-  useEffect(() => {
-    console.log('메세지리스트 바뀜요', messagelist);
-  }, [messagelist]);
+  // useEffect(() => {
+  //   console.log('메세지리스트 바뀜요', messagelist);
+  // }, [messagelist]);
 
   useEffect(() => {
-    const getPatient = async () => {
-      try {
-        const response = await fetchMessages(page, size, pid);
-        console.log(response);
-        if (response.content === undefined) {
-          new Error('Response 데이터가 이상합니다');
-          return;
-        }
+    //처음으로 렌더링 할 때
+    if (isFirst) {
+      getMessages(page, size, pid);
+      dispatch(setIsFirst());
+    }
+  });
 
-        console.log('메세지하나', response.content[0].chatList);
-        //setPrevMessageList로 바꾸기!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        dispatch(setDispatchMessageList(response.content[0].chatList));
-        // setMessagelist((prev) => [...prev, ...response.content[0].chatList]);
-      } catch (err: unknown) {
-        console.log(err);
-      }
-    };
-    getPatient();
-    console.log('메세지 리스트', messagelist);
-  }, [page, size, pid]);
+  // useEffect(() => {
+  //   getMessages();
+  //   console.log('메세지 리스트', messagelist);
+  // }, [page, size, pid]);
 
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
     const target = entries[0];
     if (target.isIntersecting) {
       setPage((prev) => prev + 1);
+      getMessages(page, size, pid); //페이지네이션
     }
   }, []);
 
