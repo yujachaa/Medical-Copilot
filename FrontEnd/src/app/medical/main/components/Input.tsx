@@ -95,10 +95,19 @@ export default function Input() {
         placeholder="Enter your search query"
         onChange={handleOnchage}
         defaultValue={input}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && input !== '') {
+            handleSend(tablist[selectedIndex].patient!);
+          }
+        }}
       />
       <Send
         className={'w-7 text-clip blue-logo ml-auto mr-5 cursor-pointer'}
-        onClick={() => handleSend(tablist[selectedIndex].patient!)}
+        onClick={() => {
+          if (input !== '') {
+            handleSend(tablist[selectedIndex].patient!);
+          }
+        }}
       />
     </div>
   );

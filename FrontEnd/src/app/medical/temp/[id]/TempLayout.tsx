@@ -18,6 +18,7 @@ import { setReportData } from '@/redux/features/report/reportSlice';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
 import { useSearchParams } from 'next/navigation';
 import { fetcMedicalAI, NoPatientQuestion } from '@/apis/Patient';
+import ReportLodaing from '@/components/ReportLodaing';
 
 export type MessageType = {
   id: string;
@@ -161,11 +162,7 @@ export default function TempLayout() {
           </div>
         </div>
       ) : (
-        <div className={styles.reportContainer}>
-          <div className={styles.scrollable}>
-            <div className={styles.reportInfo}>{/* <PluginInfo type={patient.modality} /> */}</div>
-          </div>
-        </div>
+        <ReportLodaing />
       )}
 
       <div
