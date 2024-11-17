@@ -40,6 +40,7 @@ export default function ExportModal({
   const [planLoading, setPlanLoading] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [pdfLoading, setPdfLoading] = useState<boolean>(false);
 
   const pdfRef = useRef<HTMLDivElement | null>(null);
 
@@ -49,7 +50,9 @@ export default function ExportModal({
 
   const handleDownloadPDF = async () => {
     if (reportData) {
-      fetchPDF(reportData.id);
+      setPdfLoading(true);
+      await fetchPDF(reportData.id);
+      setPdfLoading(false);
     }
   };
 
@@ -241,9 +244,8 @@ export default function ExportModal({
                   {findingLoading ? (
                     <HashLoader color="#5DA6F6" />
                   ) : (
-                    <input
-                      className={`w-full`}
-                      type="text"
+                    <textarea
+                      className={`${styles.fip} resize-none w-full break-words h-[95px]`}
                       value={finding}
                       onChange={(e) => {
                         if (count === 1) {
@@ -277,9 +279,8 @@ export default function ExportModal({
                   {impressionLoading ? (
                     <HashLoader color="#5DA6F6" />
                   ) : (
-                    <input
-                      className={`w-full`}
-                      type="text"
+                    <textarea
+                      className={`${styles.fip} resize-none w-full break-words h-[95px]`}
                       value={impression}
                       onChange={(e) => {
                         if (count === 2) {
@@ -313,9 +314,8 @@ export default function ExportModal({
                   {planLoading ? (
                     <HashLoader color="#5DA6F6" />
                   ) : (
-                    <input
-                      className={`w-full`}
-                      type="text"
+                    <textarea
+                      className={`${styles.fip} resize-none w-full break-words h-[95px]`}
                       value={plan}
                       onChange={(e) => {
                         if (count === 3) {
@@ -387,6 +387,12 @@ export default function ExportModal({
           </div>
         </div>
         <div className={styles.btnArea}>
+          {pdfLoading && (
+            <HashLoader
+              size={30}
+              color="#5DA6F6"
+            />
+          )}
           {!isSaved && count === 3 && (
             <button
               className="outline outline-blue-btn text-blue-btn px-3 py-2 rounded-md hover:text-white hover:bg-blue-btn"
