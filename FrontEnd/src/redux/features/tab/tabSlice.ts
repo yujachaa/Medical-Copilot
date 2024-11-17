@@ -1,3 +1,5 @@
+import { MessageType } from '@/app/medical/temp/[id]/TempLayout';
+import { Noti } from '@/components/Alarm/SSEHandler';
 import { PatientHistory } from '@/components/PatientHistory/PatientHistory';
 import { PluginType } from '@/components/Tabs/Tab';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -17,9 +19,9 @@ export type PatientReqeust = {
   shootingDate: string;
   sex: string;
   age: number;
-  comments: string;
+  comment: string;
   key: string;
-  agent: string;
+  agent: string | null;
 };
 
 export type tab = {
@@ -29,6 +31,9 @@ export type tab = {
   patient: Patient;
   pathname: string;
   patientRequest: PatientReqeust;
+  messageList: MessageType[];
+  firstMessage: string;
+  isFirst: boolean;
 };
 
 type tabProps = {
@@ -36,6 +41,8 @@ type tabProps = {
   selectedTab: number;
   increment: number;
   selectedIndex: number;
+  loading: boolean;
+  loadingTabPathName: string;
 };
 
 type changeTab = {
@@ -63,123 +70,93 @@ const initialState: tabProps = {
         shootingDate: '',
         sex: '',
         age: 0,
-        comments: '',
+        comment: '',
         key: '',
         agent: '',
       },
+      messageList: [],
+      firstMessage: '',
+      isFirst: true,
       pathname: '/medical/main',
     },
-    {
-      id: 1,
-      title: 'My Chat',
-      type: 'CXR',
-      patient: {
-        sex: '',
-        age: 0,
-        visitDate: '',
-        pid: '',
-        modality: '',
-        image: '',
-      },
-      patientRequest: {
-        PID: '',
-        image: '',
-        shootingDate: '',
-        sex: '',
-        age: 0,
-        comments: '',
-        key: '',
-        agent: '',
-      },
-      pathname: '/medical/mychat',
-    },
-    {
-      id: 2,
-      title: 'My Page',
-      type: 'MG',
-      patient: {
-        sex: '',
-        age: 0,
-        visitDate: '',
-        pid: '',
-        modality: '',
-        image: '',
-      },
-      patientRequest: {
-        PID: '',
-        image: '',
-        shootingDate: '',
-        sex: '',
-        age: 0,
-        comments: '',
-        key: '',
-        agent: '',
-      },
-      pathname: '/medical/mypage?t=profile',
-    },
-    {
-      id: 3,
-      title: 'My temp',
-      type: 'MG',
-      patient: {
-        sex: 'MALE',
-        age: 58,
-        visitDate: '2022-05-15',
-        pid: '1',
-        modality: 'CXR',
-        image: 'https://example.com/cxr.jpg',
-      },
-      patientRequest: {
-        PID: '',
-        image: '',
-        shootingDate: '',
-        sex: '',
-        age: 0,
-        comments: '',
-        key: '',
-        agent: '',
-      },
-      pathname: '/medical/temp/2',
-    },
-    {
-      id: 4,
-      title: '1 Dignosis',
-      type: 'CXR',
-      patient: {
-        sex: 'MALE',
-        age: 58,
-        visitDate: '2022-05-15',
-        pid: '1',
-        modality: 'CXR',
-        image: 'https://example.com/cxr.jpg',
-      },
-      patientRequest: {
-        PID: '',
-        image: '',
-        shootingDate: '',
-        sex: '',
-        age: 0,
-        comments: '',
-        key: '',
-        agent: '',
-      },
-      pathname: '/medical/chat/1',
-    },
   ],
-  selectedTab: 0,
+  selectedTab: 0, // 안씀
   increment: 5,
   selectedIndex: 0,
+  loading: false,
+  loadingTabPathName: '',
 };
 
 const tabSlices = createSlice({
   name: 'tab',
   initialState: initialState,
   reducers: {
+    setTabHome: (state) => {
+      state.tablist[state.selectedIndex] = {
+        id: ++state.increment,
+        title: 'Medical Copilot',
+        type: 'MG',
+        patient: {
+          sex: '',
+          age: 0,
+          visitDate: '',
+          pid: '',
+          modality: '',
+          image: '',
+        },
+        patientRequest: {
+          PID: '',
+          image: '',
+          shootingDate: '',
+          sex: '',
+          age: 0,
+          comment: '',
+          key: '',
+          agent: '',
+        },
+        messageList: [],
+        firstMessage: '',
+        isFirst: true,
+        pathname: '/medical/main',
+      };
+    },
+    setLoadingTabPathName: (state, action: PayloadAction<string>) => {
+      state.loadingTabPathName = action.payload;
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
     setSelectedTab: (state, action: PayloadAction<number>) => {
       const index = state.tablist.findIndex((tab) => tab.id === action.payload);
       if (index !== -1) {
         state.selectedIndex = index;
       }
+    },
+    setDispatchMessageList: (state, action: PayloadAction<MessageType[]>) => {
+      state.tablist[state.selectedIndex].messageList = [
+        ...state.tablist[state.selectedIndex].messageList,
+        ...action.payload,
+      ];
+      state.loading = true;
+    },
+    setPrevMessageList: (state, action: PayloadAction<MessageType[]>) => {
+      state.tablist[state.selectedIndex].messageList = [
+        ...action.payload,
+        ...state.tablist[state.selectedIndex].messageList,
+      ];
+      // state.loading = true;
+    },
+    addAgentMessage: (
+      state,
+      action: PayloadAction<{ alarmTabIdx: number; message: MessageType }>,
+    ) => {
+      state.tablist[action.payload.alarmTabIdx].messageList = [
+        ...state.tablist[action.payload.alarmTabIdx].messageList,
+        action.payload.message,
+      ];
+    },
+    setIsFirst: (state) => {
+      state.tablist[state.selectedIndex].isFirst = false;
     },
     addTab: (state) => {
       const newTab: tab = {
@@ -200,24 +177,32 @@ const tabSlices = createSlice({
           shootingDate: '',
           sex: '',
           age: 0,
-          comments: '',
+          comment: '',
           key: '',
           agent: '',
         },
+        messageList: [],
+        firstMessage: '',
+        isFirst: true,
         pathname: '/medical/main',
       };
       state.tablist.push(newTab);
       state.selectedIndex = state.tablist.length - 1;
     },
 
-    addTempTab: (state, action: PayloadAction<{ patient: Patient; uuid: string }>) => {
+    addTempTab: (
+      state,
+      action: PayloadAction<{ patient: Patient; uuid: string; firstMessage: string }>,
+    ) => {
       const { patient, uuid } = action.payload;
       state.tablist[state.selectedIndex].pathname = `/medical/temp/${uuid}`;
+      state.tablist[state.selectedIndex].firstMessage = action.payload.firstMessage;
       state.tablist[state.selectedIndex].title =
         `${patient.modality === 'MG' || patient.modality === '' ? 'MG' : patient.modality} Plugin`;
       state.tablist[state.selectedIndex].patient = JSON.parse(JSON.stringify(patient));
       state.tablist[state.selectedIndex].type =
         `${patient.modality === 'MG' || patient.modality === '' ? 'MG' : 'CXR'}`;
+      state.tablist[state.selectedIndex].messageList = [];
     },
 
     deleteTab: (state, action: PayloadAction<number>) => {
@@ -280,10 +265,13 @@ const tabSlices = createSlice({
             shootingDate: '',
             sex: '',
             age: 0,
-            comments: '',
+            comment: '',
             key: '',
             agent: '',
           },
+          messageList: [],
+          firstMessage: '',
+          isFirst: true,
           pathname: action.payload,
         };
         state.tablist.push(newTab);
@@ -300,6 +288,26 @@ const tabSlices = createSlice({
         image: action.payload.image,
       };
     },
+    setPatientModality: (state, action: PayloadAction<string>) => {
+      state.tablist[state.selectedIndex].patient = {
+        sex: state.tablist[state.selectedIndex].patient.sex,
+        age: state.tablist[state.selectedIndex].patient.age,
+        modality: action.payload,
+        visitDate: state.tablist[state.selectedIndex].patient.visitDate,
+        pid: state.tablist[state.selectedIndex].patient.pid,
+        image: state.tablist[state.selectedIndex].patient.image,
+      };
+    },
+    setPatientInit: (state) => {
+      state.tablist[state.selectedIndex].patient = {
+        sex: '',
+        age: 0,
+        modality: '',
+        visitDate: '',
+        pid: '',
+        image: '',
+      };
+    },
     setRequestModality: (state, action: PayloadAction<string>) => {
       state.tablist[state.selectedIndex].patientRequest = {
         sex: state.tablist[state.selectedIndex].patient!.sex,
@@ -308,7 +316,7 @@ const tabSlices = createSlice({
         shootingDate: state.tablist[state.selectedIndex].patient!.visitDate,
         PID: state.tablist[state.selectedIndex].patient!.pid,
         image: state.tablist[state.selectedIndex].patient!.image,
-        comments: '',
+        comment: '',
         key: 'ccf97220-30b3-4780-acab-295301698be0',
       };
     },
@@ -344,11 +352,103 @@ const tabSlices = createSlice({
               shootingDate: '',
               sex: '',
               age: 0,
-              comments: '',
+              comment: '',
               key: '',
               agent: '',
             },
+            messageList: [],
+            firstMessage: '',
+            isFirst: true,
             pathname: `/medical/chat/${action.payload.PID}`,
+          };
+          state.tablist.push(newTab);
+          state.selectedIndex = state.tablist.length - 1;
+        }
+      }
+    },
+    setAlarmTab: (state, action: PayloadAction<Noti>) => {
+      const index = state.tablist.findIndex((tab) =>
+        tab.pathname.includes('/medical/chat/' + action.payload.patientId),
+      );
+      //해당 탭이 존재한다면?!
+      if (index !== -1) {
+        //선택을 이동
+        state.selectedIndex = index;
+        state.tablist[state.selectedIndex].pathname =
+          '/medical/chat/' + action.payload.patientId + `?reportId=${action.payload.reportId}`;
+      }
+      //존재하지 않는다면 새로운 탭을 생성
+      else {
+        {
+          const newTab: tab = {
+            id: ++state.increment,
+            title: `${action.payload.patientId} Analytics`,
+            type: 'MG',
+            patient: {
+              sex: '',
+              age: 0,
+              visitDate: action.payload.createdDate,
+              pid: action.payload.patientId,
+              modality: action.payload.modality,
+              image: '',
+            },
+            patientRequest: {
+              PID: '',
+              image: '',
+              shootingDate: '',
+              sex: '',
+              age: 0,
+              comment: '',
+              key: '',
+              agent: '',
+            },
+            messageList: [],
+            firstMessage: '',
+            isFirst: true,
+            pathname:
+              `/medical/chat/${action.payload.patientId} ` + `?reportId=${action.payload.reportId}`,
+          };
+          state.tablist.push(newTab);
+          state.selectedIndex = state.tablist.length - 1;
+        }
+      }
+    },
+    setMyChatTab: (state) => {
+      const index = state.tablist.findIndex((tab) => tab.pathname.includes('/medical/mychat'));
+      //해당 탭이 존재한다면?!
+      if (index !== -1) {
+        //선택을 이동
+        state.selectedIndex = index;
+      }
+      //존재하지 않는다면 새로운 탭을 생성
+      else {
+        {
+          const newTab: tab = {
+            id: ++state.increment,
+            title: `My Chat`,
+            type: 'MG',
+            patient: {
+              sex: '',
+              age: 0,
+              visitDate: '',
+              pid: '',
+              modality: '',
+              image: '',
+            },
+            patientRequest: {
+              PID: '',
+              image: '',
+              shootingDate: '',
+              sex: '',
+              age: 0,
+              comment: '',
+              key: '',
+              agent: '',
+            },
+            pathname: `/medical/mychat`,
+            messageList: [],
+            firstMessage: '',
+            isFirst: false,
           };
           state.tablist.push(newTab);
           state.selectedIndex = state.tablist.length - 1;
@@ -370,5 +470,16 @@ export const {
   setPatient,
   setRequestModality,
   setHistoryTab,
+  setAlarmTab,
+  setMyChatTab,
+  setPatientInit,
+  setDispatchMessageList,
+  setIsFirst,
+  setPatientModality,
+  addAgentMessage,
+  setLoadingTabPathName,
+  setLoading,
+  setTabHome,
+  setPrevMessageList,
 } = tabSlices.actions;
 export default tabSlices;

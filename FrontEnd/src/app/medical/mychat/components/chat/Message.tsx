@@ -2,7 +2,7 @@ import styles from './Message.module.scss';
 import Image from 'next/image';
 import chatbotImg from '@/assets/images/chatbotImg.png';
 import userImg from '@/assets/images/userImg.png';
-import { MessageType } from '../../ChatLayout';
+import { MessageType } from '../../MyChat';
 
 interface MessageProps {
   sender: 'bot' | 'user'; // 발신자 종류를 나타내는 prop

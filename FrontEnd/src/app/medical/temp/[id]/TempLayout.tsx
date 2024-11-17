@@ -8,7 +8,7 @@ import ReportData from './components/report/ReportData';
 import ReportInfo from './components/report/ReportInfo';
 import Summary from './components/report/Summary';
 import styles from './page.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BiMessageRoundedDots } from '@react-icons/all-files/bi/BiMessageRoundedDots';
 import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
 import { CgClose } from '@react-icons/all-files/cg/CgClose';
@@ -18,10 +18,7 @@ import { setReportData } from '@/redux/features/report/reportSlice';
 import { setCoordinates } from '@/redux/features/report/coordinateSlice';
 import { useSearchParams } from 'next/navigation';
 import { fetcMedicalAI, NoPatientQuestion } from '@/apis/Patient';
-
-type ChatProps = {
-  pid: string;
-};
+import ReportLodaing from '@/components/ReportLodaing';
 
 export type MessageType = {
   id: string;
@@ -33,10 +30,9 @@ export type MessageType = {
   reportId: string;
 };
 
-export default function TempLayout({ pid }: ChatProps) {
+export default function TempLayout() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(false);
-  const [messages, setMessages] = useState<MessageType[]>([]);
   //어떤리포트를 처음에 띄워줄건가? 이걸 내가 한번 필터를 해야하나?
   const [selectedReportId, setReportId] = useState<string>('');
   // const { patient } = useAppSelector((state) => state.main);
@@ -46,6 +42,11 @@ export default function TempLayout({ pid }: ChatProps) {
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
+  const tabIndex = useAppSelector((state) => state.tab.selectedIndex);
+  const tabList = useAppSelector((state) => state.tab.tablist);
+  const nowTab = useMemo(() => {
+    return tabList[tabIndex];
+  }, [tabList, tabIndex]);
 
   const minimizeChat = () => {
     setIsChatMinimized(!isChatMinimized);
@@ -134,12 +135,10 @@ export default function TempLayout({ pid }: ChatProps) {
           </button>
         </div>
         <MessaageList
-          messagelist={messages}
-          setMessagelist={setMessages}
           selectReport={selectReport}
-          pid={pid}
+          nowTab={nowTab}
         />
-        <ChatInput />
+        <ChatInput nowTab={nowTab} />
       </div>
 
       {/* 이부분이 랜더링이 되야한다 
@@ -156,18 +155,14 @@ export default function TempLayout({ pid }: ChatProps) {
                 id={selectedReportId}
                 date={reportData ? new Date(reportData.createDate) : undefined}
               />
-              <ReportBtn messagelist={messages} />
+              <ReportBtn messagelist={nowTab.messageList} />
             </div>
             <ReportData />
             <Summary />
           </div>
         </div>
       ) : (
-        <div className={styles.reportContainer}>
-          <div className={styles.scrollable}>
-            <div className={styles.reportInfo}>{/* <PluginInfo type={patient.modality} /> */}</div>
-          </div>
-        </div>
+        <ReportLodaing />
       )}
 
       <div

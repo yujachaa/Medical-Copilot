@@ -4,7 +4,7 @@ import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircl
 import { FaSortDown } from '@react-icons/all-files/fa/FaSortDown';
 import { fetchPatientHistory } from '@/apis/Patient';
 import { useAppDispatch } from '@/redux/store/hooks/store';
-import { setHistoryTab } from '@/redux/features/tab/tabSlice';
+import { setHistoryTab, setMyChatTab } from '@/redux/features/tab/tabSlice';
 import { useRouter } from 'next/navigation';
 
 type Props = {
@@ -29,6 +29,12 @@ export default function PatientHistory({ onClose, isAnimate }: Props) {
   const goReport = (history: PatientHistory) => {
     dispatch(setHistoryTab(history));
     router.replace(`/medical/chat/${history.PID}`);
+    onClose?.();
+  };
+
+  const handleMyChat = () => {
+    router.replace(`/medical/mychat`);
+    dispatch(setMyChatTab());
     onClose?.();
   };
 
@@ -65,11 +71,11 @@ export default function PatientHistory({ onClose, isAnimate }: Props) {
 
   return (
     <div
-      className={`${!isAnimate ? styles.main : styles.mainOut} flex justify-center items-center`}
+      className={`${!isAnimate ? styles.main : styles.mainOut} w-[35%] min-w-[490px] h-[85%] min-h-[400px] flex justify-center items-center`}
     >
       <div
         ref={modalRef} // 모달을 참조에 연결
-        className={`${styles.box} w-[35%] min-w-[490px] h-[90%] min-h-[400px] rounded-[20px] flex flex-col p-4 gap-3`}
+        className={`${styles.box} w-[100%] min-w-[490px] h-[100%] min-h-[400px] rounded-[20px] flex flex-col p-4 gap-3`}
       >
         <div className={`${styles.title} flex items-center justify-between`}>
           <span>Patient History</span>
@@ -97,9 +103,7 @@ export default function PatientHistory({ onClose, isAnimate }: Props) {
                   <div
                     key={index}
                     className={`${styles.body} cursor-pointer flex justify-center items-center h-[50px] min-h-[50px] rounded-[10px]`}
-                    onClick={() => {
-                      // router.replace("/medical/mychat");
-                    }}
+                    onClick={handleMyChat}
                   >
                     <span>Go MyChat</span>
                   </div>

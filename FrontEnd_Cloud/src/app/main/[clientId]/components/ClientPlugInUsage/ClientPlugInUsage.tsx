@@ -12,11 +12,13 @@ export default function ClientPlugInUsage({
     <div className={`${styles.usage} w-[40%] h-full rounded-[10px]`}>
       <div className={`${styles.main} p-3 h-full flex flex-col`}>
         <span className={`${styles.title} text-2xl`}>Total Plug-In Usage</span>
-        <div className={`w-full h-[100%] flex justify-center items-center`}>
-          <ClientUsage
-            standard={standard}
-            serialKey={serialKey}
-          />
+        <div className={`flex-grow w-full flex justify-center`}>
+          <div className="h-full aspect-[1.2]">
+            <ClientUsage
+              standard={standard}
+              serialKey={serialKey}
+            />
+          </div>
         </div>
       </div>
     </div>
