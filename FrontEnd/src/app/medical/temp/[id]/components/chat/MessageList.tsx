@@ -50,11 +50,12 @@ export default function MessageList({ selectReport, nowTab }: Props) {
   };
 
   const handleMedicalChat = async () => {
+    const token: Token = jwtDecode(accessToken);
     const response = await fetcMedicalAI({
       comment: nowTab.isFirst ? nowTab.firstMessage : '입력한값',
       isQuestion: true,
-      PID: nowTab.patient.pid,
-      member_id: '',
+      PID: nowTab.patient.pid !== '' ? nowTab.patient.pid : token.id,
+      member_id: token.id,
       agent: nowTab.patient.modality,
       chat_list: messageList.map((message) => {
         return {
