@@ -91,7 +91,7 @@ public class KafkaConsumer {
 
         ChatRequestDto aiAnswer = ChatRequestDto.builder()
                 .agent(aiResponse.getAgent())
-                .comment(aiResponse.getAnswer() != null ? aiResponse.getAnswer() : "No answer provided")
+                .comment(aiResponse.getAnswer() != null ? aiResponse.getAnswer() : "Analysis completed. Click on the chat to view the results.")
                 .PID(aiResponse.getPID())
                 .memberId(aiResponse.getMemberId())
                 .isQuestion(false)
