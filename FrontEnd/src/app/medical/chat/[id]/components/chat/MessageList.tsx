@@ -2,10 +2,11 @@ import Message from './Message';
 import styles from './MessageList.module.scss';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchMessages } from '@/apis/message';
-import { setPrevMessageList, tab } from '@/redux/features/tab/tabSlice';
+import { setDispatchMessageList, tab } from '@/redux/features/tab/tabSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
-import { MessageType } from '../../ChatLayout';
+// import { MessageType } from '../../ChatLayout';
 import { HashLoader } from 'react-spinners';
+// import Image from 'next/image';
 
 type Props = {
   // messagelist: MessageType[];
@@ -20,17 +21,12 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
   const [page, setPage] = useState<number>(0);
   const [size] = useState<number>(8);
   const messagelist = nowTab.messageList;
-  const [reversedMessageList, setReversedMessageList] = useState<MessageType[]>([]);
   const dispatch = useAppDispatch();
   const loading = useAppSelector((state) => state.tab.loading);
   const loadingPathName = useAppSelector((state) => state.tab.loadingTabPathName);
 
-  // messagelist가 변경될 때 reversedMessageList 업데이트
   useEffect(() => {
-    setReversedMessageList([...messagelist].reverse());
-  }, [messagelist]); // messagelist가 변경될 때마다 실행
-
-  useEffect(() => {
+    console.log('현재탭 환자정보', nowTab.patient);
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
         top: scrollRef.current.scrollHeight,
@@ -51,7 +47,7 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
 
         console.log('메세지하나', response.content[0].chatList);
         //setPrevMessageList로 바꾸기!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        dispatch(setPrevMessageList(response.content[0].chatList));
+        dispatch(setDispatchMessageList(response.content[0].chatList));
         // setMessagelist((prev) => [...prev, ...response.content[0].chatList]);
       } catch (err: unknown) {
         console.log(err);
@@ -86,14 +82,41 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
           <HashLoader color="#5DA6F6" />
         </div>
       )}
-      {reversedMessageList.map((message, index) => (
-        <Message
-          key={index}
-          sender={message.question ? 'user' : 'bot'}
-          message={message.comment}
-          data={message}
-          selectReport={selectReport}
-        />
+      {messagelist.map((message, index) => (
+        <>
+          {/* {message.agent === 'CXR' && message.question && (
+            <div className={`rounded-[10px] flex flex-col items-end gap-2`}>
+              <Image
+                className={`rounded-[10px]`}
+                alt="cxr"
+                src={`${nowTab.patient.image}`}
+                width={250}
+                height={250}
+              />
+              <div className={`w-[250px] flex flex-col gap-2`}>
+                <div className={`w-[250px] flex gap-2`}>
+                  <span className={`${styles.key}`}>ID:</span>
+                  <span>{nowTab.patient.pid}</span>
+                </div>
+                <div className={`w-[250px] flex gap-2`}>
+                  <span className={`${styles.key}`}>Gender:</span>
+                  <span>{nowTab.patient.sex}</span>
+                </div>
+                <div className={`w-[250px] flex gap-2`}>
+                  <span className={`${styles.key}`}>Age:</span>
+                  <span>{nowTab.patient.age}</span>
+                </div>
+              </div>
+            </div>
+          )} */}
+          <Message
+            key={index}
+            sender={message.question ? 'user' : 'bot'}
+            message={message.comment}
+            data={message}
+            selectReport={selectReport}
+          />
+        </>
       ))}
       <div
         className="w-4 h-10 border"

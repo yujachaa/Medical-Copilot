@@ -8,9 +8,9 @@ import FilteredPatientDB from './PatientDB/FilteredPatientDB';
 import { fetcMedicalAI, fetchCallAI } from '@/apis/Patient';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import {
-  setDispatchMessageList,
   setLoading,
   setLoadingTabPathName,
+  setPrevMessageList,
   tab,
 } from '@/redux/features/tab/tabSlice';
 
@@ -46,7 +46,7 @@ export default function ChatInput({ nowTab, pid }: Props) {
     };
     console.log('유저메세지 만든거 확인', userMessage);
 
-    dispatch(setDispatchMessageList([userMessage]));
+    dispatch(setPrevMessageList([userMessage]));
     // setMessagelist((prev) => [userMessage, ...prev]);
     if (isNewDb) {
       //새 db 선택한경우 -> 에이전트 요청 후 false로 바꾸기
@@ -95,7 +95,7 @@ export default function ChatInput({ nowTab, pid }: Props) {
         memberId: '',
       };
 
-    dispatch(setDispatchMessageList([notification]));
+    dispatch(setPrevMessageList([notification]));
     dispatch(setLoadingTabPathName(nowTab.pathname));
     // setMessagelist((prev) => [notification, ...prev]);
   };
@@ -125,7 +125,7 @@ export default function ChatInput({ nowTab, pid }: Props) {
         createDate: '',
         memberId: '',
       };
-      dispatch(setDispatchMessageList([responseMessage]));
+      dispatch(setPrevMessageList([responseMessage]));
     }
     dispatch(setLoading(false));
   };
