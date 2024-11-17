@@ -16,7 +16,7 @@ export default function Popup({ onClose, isClosing, data }: PopupProps) {
   const dispatch = useAppDispatch();
   const goReport = () => {
     if (data.id !== -1) {
-      router.replace(`/medical/chat/${data.patientId}`);
+      router.replace(`/medical/chat/${data.patientId}?reportId=${data.reportId}`);
       dispatch(setAlarmTab(data));
     }
     onClose();
