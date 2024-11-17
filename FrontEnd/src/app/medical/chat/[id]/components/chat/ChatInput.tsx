@@ -13,6 +13,7 @@ import {
   setPrevMessageList,
   tab,
 } from '@/redux/features/tab/tabSlice';
+import { setSelectedTabPathName } from '@/redux/features/request/requestSlice';
 
 type Props = {
   // messagelist: MessageType[];
@@ -54,12 +55,14 @@ export default function ChatInput({ nowTab, pid }: Props) {
         handleMedicalChat();
       } else {
         handleAgentChat();
+        dispatch(setSelectedTabPathName(nowTab.pathname));
       }
       setIsNewDb(false);
     } else {
       //후속질문
       handleMedicalChat();
     }
+    console.log('로딩탭 패스네임~~~!', nowTab.pathname);
     dispatch(setLoadingTabPathName(nowTab.pathname));
   };
 

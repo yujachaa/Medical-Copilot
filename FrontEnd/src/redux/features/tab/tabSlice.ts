@@ -155,6 +155,16 @@ const tabSlices = createSlice({
         action.payload.message,
       ];
     },
+    addPrevAgentMessage: (
+      //앞에 agent 메세지 추가
+      state,
+      action: PayloadAction<{ alarmTabIdx: number; message: MessageType }>,
+    ) => {
+      state.tablist[action.payload.alarmTabIdx].messageList = [
+        action.payload.message,
+        ...state.tablist[action.payload.alarmTabIdx].messageList,
+      ];
+    },
     setIsFirst: (state) => {
       state.tablist[state.selectedIndex].isFirst = false;
     },
@@ -477,6 +487,7 @@ export const {
   setIsFirst,
   setPatientModality,
   addAgentMessage,
+  addPrevAgentMessage,
   setLoadingTabPathName,
   setLoading,
   setTabHome,
