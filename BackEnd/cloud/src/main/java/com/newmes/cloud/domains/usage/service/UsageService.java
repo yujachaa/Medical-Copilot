@@ -22,6 +22,10 @@ public interface UsageService {
 
   YearlyResponse yearly() throws IOException;
 
+  void CountAgent(UsageRequestDto requestDto);
+
+  int getQuota(String key);
+
   CountResponse total() throws IOException;
 
   YearlyResponse customerYearly(String key) throws IOException;
@@ -37,4 +41,6 @@ public interface UsageService {
   CountResponse customerWeeklyTotal(String key) throws IOException;
 
   long weeklyTokenCount(String key) throws IOException;
+
+  void increaseUsage(String key);
 }

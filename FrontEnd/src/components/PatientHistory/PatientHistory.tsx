@@ -71,11 +71,11 @@ export default function PatientHistory({ onClose, isAnimate }: Props) {
 
   return (
     <div
-      className={`${!isAnimate ? styles.main : styles.mainOut} flex justify-center items-center`}
+      className={`${!isAnimate ? styles.main : styles.mainOut} w-[35%] min-w-[490px] h-[85%] min-h-[400px] flex justify-center items-center`}
     >
       <div
         ref={modalRef} // 모달을 참조에 연결
-        className={`${styles.box} w-[35%] min-w-[490px] h-[90%] min-h-[400px] rounded-[20px] flex flex-col p-4 gap-3`}
+        className={`${styles.box} w-[100%] min-w-[490px] h-[100%] min-h-[400px] rounded-[20px] flex flex-col p-4 gap-3`}
       >
         <div className={`${styles.title} flex items-center justify-between`}>
           <span>Patient History</span>
