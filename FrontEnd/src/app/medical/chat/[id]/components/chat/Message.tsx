@@ -3,6 +3,7 @@ import Image from 'next/image';
 import chatbotImg from '@/assets/images/chatbotImg.png';
 import userImg from '@/assets/images/userImg.png';
 import { MessageType } from '../../ChatLayout';
+import { useParams, useRouter } from 'next/navigation';
 
 interface MessageProps {
   sender: 'bot' | 'user'; // 발신자 종류를 나타내는 prop
@@ -13,9 +14,14 @@ interface MessageProps {
 
 export default function Message({ sender, message, selectReport, data }: MessageProps) {
   const from = sender === 'bot' ? 'Medical Copilot' : 'You';
+  const params = useParams();
+  const router = useRouter();
 
   const handleClick = (reportId: string) => {
+    console.log('메세지 파람스', params);
     selectReport(reportId);
+    router.replace(`/medical/chat/${params.id}?reportId=${data.reportId}`);
+    // console.log('메세지 데이타', data);
   };
   return (
     <div className={`${styles.msgContainer} ${sender === 'user' ? styles.userContainer : ''}`}>
