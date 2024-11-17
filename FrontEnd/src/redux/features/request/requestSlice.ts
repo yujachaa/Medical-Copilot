@@ -19,7 +19,6 @@ const requestSlices = createSlice({
       state.reportId = action.payload;
     },
     setSelectedTabPathName: (state, action: PayloadAction<string>) => {
-      console.log(action.payload);
       state.selectedTabPathName = action.payload;
     },
   },

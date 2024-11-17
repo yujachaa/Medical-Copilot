@@ -39,7 +39,6 @@ export default function Summary() {
 
   useEffect(() => {
     adjustTextareaHeight(); // 초기 로드 시 높이 조절
-    console.log(localSummary);
   }, [localSummary]);
 
   return (

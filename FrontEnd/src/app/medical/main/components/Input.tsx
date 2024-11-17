@@ -58,7 +58,6 @@ export default function Input() {
       //환자가 선택이 안되면 그 채팅 모아두는 곳으로 전송 -> 이게 mainSlice의 initial값으로 사용될듯!
       dispatch(addTempTab({ patient: data, uuid: id, firstMessage: input }));
       router.replace(`/medical/temp/${id}`);
-      console.log(postdata);
       // await fetchCallAI(postdata);
     }
   };

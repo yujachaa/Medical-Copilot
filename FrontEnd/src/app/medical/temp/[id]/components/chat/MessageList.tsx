@@ -32,7 +32,7 @@ export default function MessageList({ selectReport, nowTab }: Props) {
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+      scrollRef.current.scrollIntoView({ behavior: 'auto' });
     }
   }, [messageList]);
 
@@ -85,7 +85,6 @@ export default function MessageList({ selectReport, nowTab }: Props) {
 
   useEffect(() => {
     if (nowTab.isFirst) {
-      console.log(nowTab.patient.modality);
       if (nowTab.patient.modality === 'MG') {
         const notification = [
           {

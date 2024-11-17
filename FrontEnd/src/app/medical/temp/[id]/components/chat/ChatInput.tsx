@@ -77,7 +77,6 @@ export default function ChatInput({ nowTab }: { nowTab: tab }) {
   };
 
   const handleSend = () => {
-    console.log(nowTab.patient.modality);
     if (nowTab.patient.modality === 'MG') {
       dispatch(setLoadingTabPathName(nowTab.pathname));
       handleMedicalChat();
