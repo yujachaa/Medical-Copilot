@@ -13,7 +13,7 @@ import { fetchImpression } from '@/apis/impression';
 import { HashLoader } from 'react-spinners';
 import { fetchPlan } from '@/apis/plan';
 import { setFinding, setImpression, setInit, setPlan } from '@/redux/features/fip/fipSlice';
-import { fetchInitfip } from '@/apis/fip';
+import { fetchfipSave } from '@/apis/fip';
 
 const fieldOptions = ['Finding', 'Impression', 'Plan'];
 type ExportModalProps = () => void;
@@ -39,13 +39,10 @@ export default function ExportModal({
   const [impressionLoading, setImpressionLoading] = useState<boolean>(false);
   const [planLoading, setPlanLoading] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [pdfLoading, setPdfLoading] = useState<boolean>(false);
 
   const pdfRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    if (reportData) {
-      fetchInitfip(reportData.id);
-    }
-  }, [reportData]);
 
   useEffect(() => {
     dispatch(setInit());
@@ -53,7 +50,17 @@ export default function ExportModal({
 
   const handleDownloadPDF = async () => {
     if (reportData) {
-      fetchPDF(reportData.id);
+      setPdfLoading(true);
+      await fetchPDF(reportData.id);
+      setPdfLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (reportData) {
+      await fetchfipSave(reportData.id, finding, impression, plan);
+      alert('Your content saving has been completed.');
+      setIsSaved(true);
     }
   };
 
@@ -234,7 +241,19 @@ export default function ExportModal({
                 <div
                   className={`${styles.analysisBox} ${findingLoading && 'flex justify-center items-center h-[70px] p-5'}`}
                 >
-                  {findingLoading ? <HashLoader color="#5DA6F6" /> : finding}
+                  {findingLoading ? (
+                    <HashLoader color="#5DA6F6" />
+                  ) : (
+                    <textarea
+                      className={`${styles.fip} resize-none w-full break-words h-[95px]`}
+                      value={finding}
+                      onChange={(e) => {
+                        if (count === 1) {
+                          dispatch(setFinding(e.target.value));
+                        }
+                      }}
+                    />
+                  )}
                 </div>
                 {count === 1 && !findingLoading && (
                   <div className="w-full flex justify-end">
@@ -257,7 +276,19 @@ export default function ExportModal({
                 <div
                   className={`${styles.analysisBox} ${impressionLoading && 'flex justify-center items-center h-[70px] p-5'}`}
                 >
-                  {impressionLoading ? <HashLoader color="#5DA6F6" /> : impression}
+                  {impressionLoading ? (
+                    <HashLoader color="#5DA6F6" />
+                  ) : (
+                    <textarea
+                      className={`${styles.fip} resize-none w-full break-words h-[95px]`}
+                      value={impression}
+                      onChange={(e) => {
+                        if (count === 2) {
+                          dispatch(setImpression(e.target.value));
+                        }
+                      }}
+                    />
+                  )}
                 </div>
                 {count === 2 && !impressionLoading && (
                   <div className="w-full flex justify-end">
@@ -280,9 +311,21 @@ export default function ExportModal({
                 <div
                   className={`${styles.analysisBox} ${planLoading && 'flex justify-center items-center h-[70px] p-5'}`}
                 >
-                  {planLoading ? <HashLoader color="#5DA6F6" /> : plan}
+                  {planLoading ? (
+                    <HashLoader color="#5DA6F6" />
+                  ) : (
+                    <textarea
+                      className={`${styles.fip} resize-none w-full break-words h-[95px]`}
+                      value={plan}
+                      onChange={(e) => {
+                        if (count === 3) {
+                          dispatch(setPlan(e.target.value));
+                        }
+                      }}
+                    />
+                  )}
                 </div>
-                {count === 3 && !planLoading && (
+                {!isSaved && count === 3 && !planLoading && (
                   <div className="w-full flex justify-end">
                     <button
                       className="text-sm underline pr-1"
@@ -300,14 +343,17 @@ export default function ExportModal({
 
             {/* 필드 추가 버튼 및 드롭다운 */}
             <div className={styles.addFieldArea}>
-              {selectedFields.length < 3 && (
-                <button
-                  className={`px-2 rounded-full bg-blue-btn text-white font-bold text-xl border-2 border-transparent hover:border-blue-btn hover:text-blue-btn hover:bg-white ${dropdownOpen ? styles.dropdownActive : ''}`}
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                >
-                  +
-                </button>
-              )}
+              {!findingLoading &&
+                !impressionLoading &&
+                !planLoading &&
+                selectedFields.length < 3 && (
+                  <button
+                    className={`px-2 rounded-full bg-blue-btn text-white font-bold text-xl border-2 border-transparent hover:border-blue-btn hover:text-blue-btn hover:bg-white ${dropdownOpen ? styles.dropdownActive : ''}`}
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                  >
+                    +
+                  </button>
+                )}
 
               {dropdownOpen && (
                 <div className="w-fit bg-white shadow-md rounded-md p-2 text-blue-btn border-solid border border-black/20">
@@ -341,13 +387,35 @@ export default function ExportModal({
           </div>
         </div>
         <div className={styles.btnArea}>
-          <button className="outline outline-blue-btn text-blue-btn px-3 py-2 rounded-md hover:text-white hover:bg-blue-btn">
-            Save
-          </button>
+          {pdfLoading && (
+            <HashLoader
+              size={30}
+              color="#5DA6F6"
+            />
+          )}
+          {!isSaved && count === 3 && (
+            <button
+              className="outline outline-blue-btn text-blue-btn px-3 py-2 rounded-md hover:text-white hover:bg-blue-btn"
+              onClick={() => {
+                handleSave();
+                setCount((prev) => prev + 1);
+              }}
+            >
+              Save
+            </button>
+          )}
           <button
             className="outline outline-[#ff484a] text-[#ff484a] px-3 py-2 rounded-md hover:text-white hover:bg-[#ff484a]"
             onClick={() => {
-              handleDownloadPDF();
+              if (isSaved) {
+                handleDownloadPDF();
+              } else {
+                if (count !== 3) {
+                  alert('Press the plus button to create finding, impression, and plan.');
+                } else {
+                  alert('Please save it first.');
+                }
+              }
             }}
           >
             Export PDF
