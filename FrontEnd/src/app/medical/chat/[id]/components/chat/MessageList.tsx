@@ -48,7 +48,7 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
           new Error('Response 데이터가 이상합니다');
           return;
         }
-
+				console.log(response);
         console.log('메세지하나', response.content[0].chatList);
         //setPrevMessageList로 바꾸기!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         dispatch(setDispatchMessageList(response.content[0].chatList));
@@ -59,6 +59,7 @@ export default function MessageList({ selectReport, pid, nowTab }: Props) {
     };
     getPatient();
     console.log('메세지 리스트', messagelist);
+		console.log(nowTab);
   }, [page, size, pid]);
 
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
