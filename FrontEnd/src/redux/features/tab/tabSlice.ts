@@ -202,6 +202,7 @@ const tabSlices = createSlice({
       state.tablist[state.selectedIndex].patient = JSON.parse(JSON.stringify(patient));
       state.tablist[state.selectedIndex].type =
         `${patient.modality === 'MG' || patient.modality === '' ? 'MG' : 'CXR'}`;
+      state.tablist[state.selectedIndex].messageList = [];
     },
 
     deleteTab: (state, action: PayloadAction<number>) => {
