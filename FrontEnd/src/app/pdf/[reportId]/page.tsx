@@ -70,7 +70,7 @@ export default async function PDFPage({ params }: { params: { reportId: string }
                   className="w-full"
                 >
                   <div className={styles.oneInfo}>
-                    <div className={`font-bold w-1/3 max-1024:text-sm max-1024:w-1/2`}>{label}</div>
+                    <div className={`font-bold w-[40%] max-1024:text-sm`}>{label}</div>
                     <div className="flex gap-[2px]">
                       <div className="">:</div>
                       <div className="max-1024:text-sm">{value}</div>
