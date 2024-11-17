@@ -2,8 +2,10 @@ import Link from 'next/link';
 import styles from './ClientListItem.module.scss';
 import { FaChevronRight } from 'react-icons/fa';
 import { client } from '@/types/client';
+import { fetchWeekUsage } from '@/apis/fetchWeekUsage';
 
-export default function ClientListItem({ client }: { client: client }) {
+export default async function ClientListItem({ client }: { client: client }) {
+  const usage = await fetchWeekUsage(client.key);
   console.log('클라이언트', client);
   return (
     <Link
@@ -16,7 +18,7 @@ export default function ClientListItem({ client }: { client: client }) {
         </span>
         <span className={`${styles.clientName}`}>{client.comName}</span>
         <div className={`${styles.tag} flex gap-6 h-[35px] justify-between`}>
-          <span className={`${styles.usage} relative`}>{client.totalCount}</span>
+          <span className={`${styles.usage} relative`}>{usage}</span>
           <span className={`${styles.week}`}>{client.subscription}weeks</span>
           <span
             style={
