@@ -52,7 +52,7 @@ export default function ChatInput({ nowTab }: { nowTab: tab }) {
           isQuestion: message.question,
         };
       }),
-      summary: '',
+      summary: nowTab.patient.pid ? '' : '',
     });
     if (response) {
       dispatch(
