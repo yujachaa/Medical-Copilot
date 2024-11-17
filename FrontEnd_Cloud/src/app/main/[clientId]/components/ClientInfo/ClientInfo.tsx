@@ -51,10 +51,8 @@ export default function ClientInfo({ data }: { data: clientDetail }) {
             className={`${data.availability ? styles.stopColor : styles.startColor} flex justify-center items-center cursor-pointer`}
             onClick={() => {
               if (data.availability) {
-                console.log('어베일러빌리티 트루');
                 dispatch(setWarningModal());
               } else {
-                console.log('어베일러빌리티 폴스');
                 handleLimit();
               }
             }}

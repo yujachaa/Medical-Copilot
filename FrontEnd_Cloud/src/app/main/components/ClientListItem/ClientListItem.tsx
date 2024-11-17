@@ -6,7 +6,6 @@ import { fetchWeekUsage } from '@/apis/fetchWeekUsage';
 
 export default async function ClientListItem({ client }: { client: client }) {
   const usage = await fetchWeekUsage(client.key);
-  console.log('클라이언트', client);
   return (
     <Link
       className={`${styles.main} w-full h-[110px] rounded-[10px] flex pl-4 pt-3 pr-2 pb-3`}
