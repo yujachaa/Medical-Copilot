@@ -13,9 +13,11 @@ import {
   setPatientInit,
   tab,
 } from '@/redux/features/tab/tabSlice';
-import { useAppDispatch } from '@/redux/store/hooks/store';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { fetchCallAI, fetcMedicalAI } from '@/apis/Patient';
 import { setSelectedTabPathName } from '@/redux/features/request/requestSlice';
+import { jwtDecode } from 'jwt-decode';
+import { Token } from '@/components/Alarm/SSEHandler';
 
 export default function ChatInput({ nowTab }: { nowTab: tab }) {
   const [isPatientModal, setPatientModal] = useState<boolean>(false);
@@ -25,6 +27,8 @@ export default function ChatInput({ nowTab }: { nowTab: tab }) {
   };
   const [comment, setComment] = useState<string>('');
   const messageList = nowTab.messageList;
+  const accessToken = useAppSelector((state) => state.user.accessToken);
+  const token: Token = jwtDecode(accessToken);
 
   const handleAgentChat = async () => {
     await fetchCallAI({
@@ -43,8 +47,8 @@ export default function ChatInput({ nowTab }: { nowTab: tab }) {
     const response = await fetcMedicalAI({
       comment: nowTab.isFirst ? nowTab.firstMessage : comment,
       isQuestion: true,
-      PID: nowTab.patient.pid,
-      member_id: '',
+      PID: nowTab.patient.pid !== '' ? nowTab.patient.pid : token.id,
+      member_id: token.id,
       agent: nowTab.patient.modality,
       chat_list: messageList.map((message) => {
         return {
