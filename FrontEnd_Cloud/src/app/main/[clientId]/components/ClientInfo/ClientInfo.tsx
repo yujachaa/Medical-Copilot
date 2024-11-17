@@ -8,7 +8,7 @@ import {
   setIsStarted,
   setWarningModal,
 } from '@/redux/features/modal/modalSlice';
-import { fetchClientWeekUsage } from '@/apis/fetchClientWeekUsage';
+import { fetchWeekUsage } from '@/apis/fetchWeekUsage';
 
 export default function ClientInfo({ data }: { data: clientDetail }) {
   const dispatch = useAppDispatch();
@@ -17,7 +17,7 @@ export default function ClientInfo({ data }: { data: clientDetail }) {
 
   useEffect(() => {
     async function getUsage() {
-      const fetchedUsage = await fetchClientWeekUsage(data);
+      const fetchedUsage = await fetchWeekUsage(data.key);
       if (fetchedUsage) {
         setUsage(fetchedUsage); // fetchedUsage의 형태에 따라 적절히 값 처리
       }
@@ -30,7 +30,6 @@ export default function ClientInfo({ data }: { data: clientDetail }) {
     if (data1 && data1.msg === 'success') {
       dispatch(setIsStarted(true));
       alert('The service has started successfully.');
-      console.log('시작 후 데이터:', data);
     }
   }, [data.key]);
 
