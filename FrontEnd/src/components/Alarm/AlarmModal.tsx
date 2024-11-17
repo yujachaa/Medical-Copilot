@@ -3,6 +3,7 @@ import styles from './AlarmModal.module.scss';
 import Item from '@/components/Alarm/components/Item';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { fetchAllAlarm, readAlarm, readAllAlarm } from '@/apis/alarm';
+import { HashLoader } from 'react-spinners';
 
 // 알람 데이터 타입 정의
 type Alarm = {
@@ -88,7 +89,11 @@ export default function AlarmModal({ onClose }: Props) {
             ) : (
               <div>There are no notifications.</div>
             )
-          ) : null
+          ) : (
+            <div className="w-full h-full flex justify-center items-center">
+              <HashLoader color="#5DA6F6" />
+            </div>
+          )
           // (예정) 여기에 스피너 추가
         }
       </div>
