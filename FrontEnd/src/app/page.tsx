@@ -21,6 +21,8 @@ export default function Home() {
           className={`${styles.logoInit} ${animation ? styles.logoActive : null}`}
           src={Logo}
           alt="Logo"
+          width={250}
+          height={250}
         />
         <div
           className={`flex flex-col text-6xl w-[365px] h-[150px] justify-center ${styles.text} gap-2`}

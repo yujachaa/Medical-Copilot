@@ -11,6 +11,8 @@ export default function ReportLodaing() {
           <Image
             src={Logo}
             alt="logo"
+            width={170}
+            height={170}
           />
         </div>
       </div>
