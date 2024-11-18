@@ -27,7 +27,6 @@ export default function ClientDetailPage({ params }: { params: { clientId: strin
       const data = await fetchClientDetail(params.clientId);
       if (data) {
         setClientDetail(data);
-        console.log('클라이언트 데이터', data);
       }
     };
     fetchDetail();

@@ -23,14 +23,13 @@ export default function ReportBtn({ messagelist }: { messagelist: MessageType[] 
     if (reportData) {
       try {
         // updateReport 호출 시 Redux 상태의 값을 전달
-        const response = await updateReport(reportData.id, {
+        await updateReport(reportData.id, {
           disease: reportData.disease || '',
           location: reportData.location,
           size: reportData.size,
           symptoms: reportData.symptoms,
           summary: reportData.summary,
         });
-        console.log('리포트 업데이트 성공:', response);
         isReportUpdated = true;
       } catch (error) {
         console.log('리포트 업데이트 실패:', error);
@@ -38,8 +37,7 @@ export default function ReportBtn({ messagelist }: { messagelist: MessageType[] 
       if (coordinates) {
         try {
           // updateReport 호출 시 Redux 상태의 값을 전달
-          const response = await updateDrawing(reportData.id, coordinates);
-          console.log('그림 업데이트 성공:', response);
+          updateDrawing(reportData.id, coordinates);
           isDrawingUpdated = true;
         } catch (error) {
           console.log('그림 업데이트 실패:', error);

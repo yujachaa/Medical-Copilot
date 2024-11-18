@@ -39,7 +39,6 @@ export function useUsageByModule(standard: number) {
           })),
         }));
 
-        console.log(newList);
         setList(removeCapsule(newList));
       }
     };

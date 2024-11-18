@@ -17,7 +17,9 @@
   background-color: white;
   box-shadow: 0 2 9 0 rgb(0, 0, 0, 0.25);
   width: 40%;
+  min-width: 490px;
   height: 40%;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
   border-radius: 20px;
@@ -32,29 +34,34 @@
 
 .list {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
-  justify-content: flex-start;
+}
+
+.modality {
+  font-weight: 700;
+
+  &:hover {
+    background-color: $tab-bg;
+  }
 }
 
 .selected {
-  padding: 5px 10px;
   border-radius: 5px;
-  background-color: #5da6f6;
-  color: white;
+  background-color: $blue-base;
   cursor: pointer;
+
+  &:hover {
+    background-color: $blue-base;
+  }
 }
 .notselected {
   cursor: pointer;
   padding: 5px 10px;
   background-color: gray;
-  color: white;
   border-radius: 5px;
 }
 .send {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
 
   span {
@@ -64,4 +71,10 @@
     color: white;
     cursor: pointer;
   }
+}
+
+.notInclude {
+  cursor: not-allowed;
+  opacity: 0.6;
+  filter: grayscale(100%);
 }

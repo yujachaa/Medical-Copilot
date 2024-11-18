@@ -14,8 +14,8 @@ import { TbFoldDown, TbFoldUp } from 'react-icons/tb';
 import { CgClose } from '@react-icons/all-files/cg/CgClose';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { fetchDrawing, fetchReport } from '@/apis/report';
-import { setReportData } from '@/redux/features/report/reportSlice';
-import { setCoordinates } from '@/redux/features/report/coordinateSlice';
+import { clearReportData, setReportData } from '@/redux/features/report/reportSlice';
+import { clearCoordinates, setCoordinates } from '@/redux/features/report/coordinateSlice';
 import { useSearchParams } from 'next/navigation';
 import ReportLodaing from '@/components/ReportLodaing';
 
@@ -61,37 +61,29 @@ export default function Chat({ pid }: ChatProps) {
   };
 
   useEffect(() => {
-    setReportId(searchParams.get('reportId')!);
+    if (searchParams.get('reportId')) {
+      setReportId(searchParams.get('reportId')!);
+    }
   }, [searchParams]);
-
-  // useEffect(() => {
-  //   const fetchPatient = async () => {
-  //     const response = await fetchPatientChat(pid);
-  //     console.log('페이션트:', response);
-  //     setMessages(response.chatList);
-  //     //가장 마지막 리포트를 저장
-  //     setReportId(response.chatList[response.chatList.length - 1].reportId);
-  //   };
-  //   fetchPatient();
-  // }, [pid]);
 
   useEffect(() => {
     const getReport = async () => {
       const response = await fetchReport(selectedReportId);
-      console.log('리포트:', response);
       if (response) dispatch(setReportData(response)); //리포트 데이터 저장
     };
-    if (selectedReportId !== '') getReport();
+    if (selectedReportId !== '')
+      getReport(); // reportId가 있는 경우 report 데이터 가져오기
+    else dispatch(clearReportData()); //없는 경우 reportData 비우기
   }, [selectedReportId, dispatch]);
 
   useEffect(() => {
     const getDrawing = async () => {
       const response = await fetchDrawing(selectedReportId);
-      console.log('그림 좌표', response);
       if (response) dispatch(setCoordinates(response.coordinatesGroups));
       // setDrawingCoodinates(response.coordinatesGroups);
     };
     if (selectedReportId !== '') getDrawing();
+    else dispatch(clearCoordinates());
   }, [selectedReportId, dispatch]);
 
   // 화면 크기 변화에 따른 채팅창 상태 업데이트

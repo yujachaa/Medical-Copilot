@@ -35,7 +35,6 @@ export default function AlarmModal({ onClose }: Props) {
         );
         setAlarms(sortedData);
         setIsFetched(true);
-        console.log('알람목록', sortedData);
       }
     };
     fetchData();
@@ -45,7 +44,6 @@ export default function AlarmModal({ onClose }: Props) {
     if (alarms.length === 0) return;
     const data = await readAllAlarm();
     if (data) {
-      console.log('알람 모두 읽기', data);
     }
   };
 

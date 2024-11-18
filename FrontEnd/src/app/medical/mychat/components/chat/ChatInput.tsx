@@ -22,6 +22,7 @@ export default function ChatInput({ messagelist, setMessagelist }: Props) {
   };
 
   const handleSend = async () => {
+    if (comment === '') return;
     const temp: chatType[] = messagelist.map((message) => ({
       message: message.comment,
       isQuestion: message.question,
@@ -67,6 +68,11 @@ export default function ChatInput({ messagelist, setMessagelist }: Props) {
         placeholder="Enter a message"
         value={comment}
         onChange={handleOnChange}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter') {
+            handleSend();
+          }
+        }}
       />
       <Send
         className={styles.sendIcon}

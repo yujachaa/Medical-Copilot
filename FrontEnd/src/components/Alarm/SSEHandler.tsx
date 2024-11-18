@@ -5,7 +5,12 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Popup from './components/Popup';
 import { setReportId } from '@/redux/features/request/requestSlice';
-import { addAgentMessage, setLoading, setPatientModality } from '@/redux/features/tab/tabSlice';
+import {
+  addAgentMessage,
+  addPrevAgentMessage,
+  setLoading,
+  setPatientModality,
+} from '@/redux/features/tab/tabSlice';
 
 export type Token = {
   email: string;
@@ -43,10 +48,6 @@ export default function SSEHandler() {
   const alarmTabIdx = useMemo(() => {
     return tabList.findIndex((tab) => tab.pathname === tabPathName);
   }, [tabList, tabPathName]);
-
-  useEffect(() => {
-    console.log(tabPathName); // 이 로그가 상태 업데이트 후 출력되는지 확인
-  }, [tabPathName]);
 
   const closePopup = () => {
     setIsClosing(true);
@@ -88,7 +89,11 @@ export default function SSEHandler() {
           reportId: data.reportId,
         };
         dispatch(setLoading(false));
-        if (alarmTabIdx !== -1) {
+
+        //알림받을 탭이 환자챗인 경우
+        if (tabPathName.includes('chat')) {
+          dispatch(addPrevAgentMessage({ alarmTabIdx, message }));
+        } else if (alarmTabIdx !== -1) {
           dispatch(addAgentMessage({ alarmTabIdx, message }));
         }
         dispatch(setReportId(data.reportId!));
