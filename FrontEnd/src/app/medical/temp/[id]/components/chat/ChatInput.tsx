@@ -123,7 +123,7 @@ export default function ChatInput({ nowTab }: { nowTab: tab }) {
 
       <input
         className={styles.chatInput}
-        placeholder="메시지를 입력하세요..."
+        placeholder="Enter a message"
         onChange={(e) => {
           setComment(e.target.value);
         }}
