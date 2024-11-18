@@ -29,6 +29,7 @@ export default function ChatInput({ nowTab }: { nowTab: tab }) {
   const messageList = nowTab.messageList;
   const accessToken = useAppSelector((state) => state.user.accessToken);
   const token: Token = jwtDecode(accessToken);
+	const reportData = useAppSelector(state => state.report.reportData);
 
   const handleAgentChat = async () => {
     await fetchCallAI({
@@ -44,6 +45,7 @@ export default function ChatInput({ nowTab }: { nowTab: tab }) {
   };
 
   const handleMedicalChat = async () => {
+		console.log(reportData?.summary);
     const response = await fetcMedicalAI({
       comment: nowTab.isFirst ? nowTab.firstMessage : comment,
       isQuestion: true,
@@ -56,7 +58,7 @@ export default function ChatInput({ nowTab }: { nowTab: tab }) {
           isQuestion: message.question,
         };
       }),
-      summary: nowTab.patient.pid ? '' : '',
+      summary: reportData ? reportData.summary : "",
     });
     if (response) {
       dispatch(
@@ -123,7 +125,7 @@ export default function ChatInput({ nowTab }: { nowTab: tab }) {
 
       <input
         className={styles.chatInput}
-        placeholder="메시지를 입력하세요..."
+        placeholder="Enter a message"
         onChange={(e) => {
           setComment(e.target.value);
         }}
