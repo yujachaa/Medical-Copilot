@@ -91,7 +91,7 @@ export default function Input() {
       <input
         className={styles.input}
         type="text"
-        placeholder="Enter your search query"
+        placeholder="Type your medical question here..."
         onChange={handleOnchage}
         defaultValue={input}
         onKeyDown={(e) => {

@@ -105,7 +105,8 @@ export type chatType = {
 };
 export async function fetcMedicalAI(datas: NoPatientQuestion) {
   try {
-    const response = await fetch(`${GPUURL}medical_chat`, {
+    // First API Request: medical_chat
+    const chatResponse = await fetch(`${GPUURL}medical_chat`, {
       cache: 'no-store',
       method: 'POST',
       headers: {
@@ -113,12 +114,37 @@ export async function fetcMedicalAI(datas: NoPatientQuestion) {
       },
       body: JSON.stringify(datas),
     });
-    if (!response.ok) {
-      throw new Error('응답이 없습니다.');
+
+    if (!chatResponse.ok) {
+      throw new Error('medical_chat API 응답이 없습니다.');
     }
-    const data = await response.json();
-    return data;
+
+    const chatData = await chatResponse.json();
+
+    const usageBody = {
+      key: 'ccf97220-30b3-4780-acab-295301698be0', // corpKey
+      agent: 'MedGuru',
+    };
+    // Second API Request: /api/usage/medical_chat
+    const usageResponse = await fetch(`https://k11s205.p.ssafy.io/cloud/api/usage/medical_chat`, {
+      cache: 'no-store',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(usageBody),
+    });
+
+    if (!usageResponse.ok) {
+      throw new Error('/api/usage/medical_chat API 응답이 없습니다.');
+    }
+
+    const usageData = await usageResponse.text();
+    console.log(usageData);
+
+    // Combine the results if necessary
+    return chatData;
   } catch (error) {
-    console.log(error);
+    console.error('API 요청 중 오류 발생:', error);
   }
 }
