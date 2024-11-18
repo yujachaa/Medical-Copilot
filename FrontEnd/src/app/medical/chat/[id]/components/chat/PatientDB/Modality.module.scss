@@ -46,11 +46,11 @@
 
 .selected {
   border-radius: 5px;
-  background-color: $blue-base;
+  background-color: $blue-msg;
   cursor: pointer;
 
   &:hover {
-    background-color: $blue-base;
+    background-color: $blue-msg;
   }
 }
 .notselected {

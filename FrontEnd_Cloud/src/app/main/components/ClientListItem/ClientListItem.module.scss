@@ -24,6 +24,9 @@
   font-size: 24px;
   font-weight: 700;
   margin-top: -5px;
+  white-space: nowrap; /* 한 줄로 표시 */
+  overflow: hidden; /* 넘친 내용 숨김 */
+  text-overflow: ellipsis; /* 넘친 내용은 ... 처리 */
 }
 
 .tag {

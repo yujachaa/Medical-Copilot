@@ -38,7 +38,7 @@ export default function MessageList({ selectReport, nowTab }: Props) {
   }, [messageList]);
 
   const handleAgentChat = async () => {
-    await fetchCallAI({
+    const response = await fetchCallAI({
       PID: nowTab.patient.pid,
       image: nowTab.patient.image,
       shootingDate: nowTab.patient.visitDate,
@@ -48,6 +48,7 @@ export default function MessageList({ selectReport, nowTab }: Props) {
       key: nowTab.patientRequest.key,
       agent: nowTab.patient.modality,
     });
+		console.log(response);
   };
 
   const handleMedicalChat = async () => {
