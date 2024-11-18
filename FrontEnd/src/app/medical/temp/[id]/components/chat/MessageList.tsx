@@ -29,6 +29,7 @@ export default function MessageList({ selectReport, nowTab }: Props) {
   const loading = useAppSelector((state) => state.tab.loading);
   const loadingPathName = useAppSelector((state) => state.tab.loadingTabPathName);
   const accessToken = useAppSelector((state) => state.user.accessToken);
+	const reportData = useAppSelector((state) => state.report.reportData);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -63,7 +64,7 @@ export default function MessageList({ selectReport, nowTab }: Props) {
           isQuestion: message.question,
         };
       }),
-      summary: '',
+      summary: reportData ? reportData.summary : "",
     });
     if (response) {
       dispatch(
@@ -158,7 +159,7 @@ export default function MessageList({ selectReport, nowTab }: Props) {
               data={message}
               selectReport={selectReport}
             />
-            {message.agent === 'CXR' && message.question && (
+            {message.agent === 'CXR' && message.question && index === messageList.length-2 && (
               <div className={`rounded-[10px] flex flex-col items-end gap-2`}>
                 <Image
                   className={`rounded-[10px]`}
