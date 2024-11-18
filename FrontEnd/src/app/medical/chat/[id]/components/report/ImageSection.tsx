@@ -1,14 +1,16 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from './ReportData.module.scss';
 import { MdOutlineDraw } from 'react-icons/md';
 import EditModal from './EditModal';
 import RectangleOverlay from './RectangleOverlay';
 import CanvasOverlay from './CanvasOverlay';
 import { useAppSelector } from '@/redux/store/hooks/store';
-import xrayDefault from '@/assets/images/xray-default.webp';
+// import xrayDefault from '@/assets/images/xray-default.webp';
+import xrayDefault from '@/assets/images/loading-gif.gif';
+import { HashLoader } from 'react-spinners';
 
 export default function ImageSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +24,9 @@ export default function ImageSection() {
   const closeModal = () => setIsModalOpen(false);
 
   const handleImageLoad = () => {
+    console.log('사진 로드 완');
     setIsImageLoaded(true);
+    console.log(isImageLoaded);
     if (imgWrapperRef.current) {
       setImageSize({
         width: imgWrapperRef.current.offsetWidth,
@@ -39,6 +43,11 @@ export default function ImageSection() {
           className={styles.imgWrapper}
           ref={imgWrapperRef}
         >
+          {!isImageLoaded ? (
+            <div className="mt-10 mb-10 flex justify-center">
+              <HashLoader color="#5DA6F6" />
+            </div>
+          ) : null}
           <Image
             src={reportData?.imageUrl || xrayDefault} // 기본 이미지 URL 설정
             alt="이미지"
@@ -47,6 +56,7 @@ export default function ImageSection() {
             style={{ objectFit: 'cover' }}
             onLoad={handleImageLoad}
             priority
+            className={!isImageLoaded ? 'hidden' : ''}
           />
           {isImageLoaded && <RectangleOverlay imgWrapperRef={imgWrapperRef} />}
           {isImageLoaded && (
