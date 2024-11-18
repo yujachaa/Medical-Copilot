@@ -12,11 +12,13 @@ type Props = {
   setMessagelist: Dispatch<SetStateAction<MessageType[]>>;
   selectReport: (reportId: string) => void;
 };
+
 export default function MessageList({ messagelist, setMessagelist, selectReport }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const loader = useRef<HTMLDivElement | null>(null);
   const [page, setPage] = useState<number>(0);
   const [size] = useState<number>(8);
+  const [isLoading, setIsLoading] = useState<boolean>(false); // 추가
   const accessToken = useAppSelector((state) => state.user.accessToken);
   const decode: Token = jwtDecode(accessToken);
 
@@ -31,15 +33,19 @@ export default function MessageList({ messagelist, setMessagelist, selectReport 
 
   useEffect(() => {
     const getPatient = async () => {
+      if (isLoading) return; // 이미 로딩 중이면 요청 중단
+
+      setIsLoading(true); // 로딩 시작
       try {
         const response = await fetchMessages(page, size, decode.id);
         if (response.content === undefined) {
-          new Error('Response 데이터가 이상합니다');
-          return;
+          throw new Error('Response 데이터가 이상합니다');
         }
         setMessagelist((prev) => [...prev, ...response.content[0].chatList]);
       } catch (err: unknown) {
         console.log(err);
+      } finally {
+        setIsLoading(false); // 로딩 종료
       }
     };
     getPatient();
@@ -48,10 +54,10 @@ export default function MessageList({ messagelist, setMessagelist, selectReport 
 
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
     const target = entries[0];
-    if (target.isIntersecting) {
+    if (target.isIntersecting && !isLoading) {
       setPage((prev) => prev + 1);
     }
-  }, []);
+  }, [isLoading]); // 의존성에 isLoading 추가
 
   useEffect(() => {
     const option = {
@@ -59,6 +65,10 @@ export default function MessageList({ messagelist, setMessagelist, selectReport 
     };
     const observer = new IntersectionObserver(handleObserver, option);
     if (loader.current) observer.observe(loader.current);
+
+    return () => {
+      if (loader.current) observer.unobserve(loader.current);
+    };
   }, [handleObserver]);
 
   return (
