@@ -154,7 +154,7 @@ export default function MessageList({ selectReport, nowTab }: Props) {
         return (
           <>
             <Message
-              key={index}
+              key={message.id}
               sender={message.question ? 'user' : 'bot'}
               message={message.comment}
               data={message}
