@@ -44,6 +44,7 @@ export default function AlarmModal({ onClose }: Props) {
     if (alarms.length === 0) return;
     const data = await readAllAlarm();
     if (data) {
+      setAlarms([]);
     }
   };
 
