@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { IoMdCloseCircleOutline } from '@react-icons/all-files/io/IoMdCloseCircleOutline';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import { setPatientModality, setRequestModality } from '@/redux/features/tab/tabSlice';
+import Image from 'next/image';
 
 type Props = {
   onClose: () => void;
@@ -30,7 +31,6 @@ export default function Modality({ onClose, onPatientClose, newDbFlag }: Props) 
     onClose();
     onPatientClose();
     newDbFlag(true);
-    console.log('새 db 선택했음!');
   };
 
   return (
@@ -43,8 +43,30 @@ export default function Modality({ onClose, onPatientClose, newDbFlag }: Props) 
             className="cursor-pointer"
           />
         </div>
-        <div className={styles.list}>
-          {modalities.length === 0 ? (
+        <div className={`${styles.list} w-full h-[150px] flex justify-between gap-6`}>
+          {['MG', 'CXR', 'CT', 'CAPSULE'].map((modality, index) => {
+            return (
+              <div
+                key={index}
+                className={`${!modalities.includes(modality) && styles.notInclude} ${styles.modality} ${modality === selectedModality && styles.selected} w-[110px] h-[150px] rounded-[10px] flex flex-col items-center justify-center gap-2 cursor-pointer`}
+                onClick={(e) => {
+                  if (modalities.includes(modality)) {
+                    handleSelect(e, modality);
+                  }
+                }}
+              >
+                <Image
+                  className={`rounded-[10px]`}
+                  alt="cxr"
+                  src={`/${modality}.png`}
+                  width={100}
+                  height={100}
+                />
+                {modality}
+              </div>
+            );
+          })}
+          {/* {modalities.length === 0 ? (
             <span>NO Modality, so automatically select MG Plugin</span>
           ) : (
             modalities.map((modality, index) => (
@@ -56,7 +78,7 @@ export default function Modality({ onClose, onPatientClose, newDbFlag }: Props) 
                 {modality}
               </div>
             ))
-          )}
+          )} */}
         </div>
         <div className={styles.send}>
           <span onClick={() => handleSetPatient()}>Select</span>

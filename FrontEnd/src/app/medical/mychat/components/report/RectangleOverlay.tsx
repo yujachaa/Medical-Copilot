@@ -40,7 +40,6 @@ export default function RectangleOverlay({ imgWrapperRef }: RectangleOverlayProp
           height: Height * scaleY,
         };
         setRectPosition(rect);
-        console.log('bbox 좌표', rect);
       }
     };
 

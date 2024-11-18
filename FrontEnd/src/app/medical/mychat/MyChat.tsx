@@ -45,7 +45,6 @@ export default function MyChat() {
   useEffect(() => {
     const getReport = async () => {
       const response = await fetchReport(selectedReportId);
-      console.log('리포트:', response);
       if (response) dispatch(setReportData(response)); //리포트 데이터 저장
     };
     if (selectedReportId !== '') getReport();
@@ -54,7 +53,6 @@ export default function MyChat() {
   useEffect(() => {
     const getDrawing = async () => {
       const response = await fetchDrawing(selectedReportId);
-      console.log('그림 좌표', response);
       if (response) dispatch(setCoordinates(response.coordinatesGroups));
       // setDrawingCoodinates(response.coordinatesGroups);
     };

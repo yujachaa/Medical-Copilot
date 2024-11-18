@@ -104,7 +104,6 @@ export type chatType = {
   isQuestion: boolean;
 };
 export async function fetcMedicalAI(datas: NoPatientQuestion) {
-  console.log(datas);
   try {
     const response = await fetch(`${GPUURL}medical_chat`, {
       cache: 'no-store',
@@ -118,7 +117,6 @@ export async function fetcMedicalAI(datas: NoPatientQuestion) {
       throw new Error('응답이 없습니다.');
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);

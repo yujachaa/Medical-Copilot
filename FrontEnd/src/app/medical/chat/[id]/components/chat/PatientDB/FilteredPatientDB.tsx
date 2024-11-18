@@ -45,7 +45,6 @@ export default function PatientDB({ onClose, newDbFlag }: Props) {
     const getPatient = async () => {
       try {
         const response = await fetchPatient(page, size);
-        console.log('겟 페이션트', response);
         if (response.content === undefined) {
           new Error('Response 데이터가 이상합니다');
           return;

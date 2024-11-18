@@ -20,7 +20,6 @@ export function useTotalUsage() {
           value: value as number,
           color: 'hsl(60, 70%, 50%)',
         }));
-        console.log('여기여기여기', newList);
         setList(removeCapsule(newList));
       }
     };

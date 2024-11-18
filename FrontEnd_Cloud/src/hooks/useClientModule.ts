@@ -18,7 +18,6 @@ type result = {
 
 export function useClientModule(standard: number, serialKey: string) {
   const [list, setList] = useState<result>([]);
-  // console.log('여기여기');
   function removeCapsule(dataList: result): result {
     return dataList.filter((item) => item.id !== 'capsule');
   }
@@ -27,7 +26,6 @@ export function useClientModule(standard: number, serialKey: string) {
     const handleTotalData = async () => {
       const data: data = await fetchClientModule(standard, serialKey);
       if (data) {
-        console.log(data);
         const newList: result = Object.entries(data).map(([key, value]) => ({
           id: key,
           color: 'hsl(166, 70%, 50%)',
@@ -41,7 +39,6 @@ export function useClientModule(standard: number, serialKey: string) {
             y: data1,
           })),
         }));
-        console.log(newList);
         setList(removeCapsule(newList));
       }
     };

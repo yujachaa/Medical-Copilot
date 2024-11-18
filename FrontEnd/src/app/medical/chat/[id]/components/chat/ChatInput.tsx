@@ -8,11 +8,12 @@ import FilteredPatientDB from './PatientDB/FilteredPatientDB';
 import { fetcMedicalAI, fetchCallAI } from '@/apis/Patient';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks/store';
 import {
-  setDispatchMessageList,
   setLoading,
   setLoadingTabPathName,
+  setPrevMessageList,
   tab,
 } from '@/redux/features/tab/tabSlice';
+import { setSelectedTabPathName } from '@/redux/features/request/requestSlice';
 
 type Props = {
   // messagelist: MessageType[];
@@ -34,7 +35,6 @@ export default function ChatInput({ nowTab, pid }: Props) {
   };
 
   const clickSend = () => {
-    console.log(comment);
     const userMessage = {
       id: '',
       agent: 'MG',
@@ -44,9 +44,8 @@ export default function ChatInput({ nowTab, pid }: Props) {
       question: true,
       reportId: '',
     };
-    console.log('유저메세지 만든거 확인', userMessage);
 
-    dispatch(setDispatchMessageList([userMessage]));
+    dispatch(setPrevMessageList([userMessage]));
     // setMessagelist((prev) => [userMessage, ...prev]);
     if (isNewDb) {
       //새 db 선택한경우 -> 에이전트 요청 후 false로 바꾸기
@@ -54,6 +53,7 @@ export default function ChatInput({ nowTab, pid }: Props) {
         handleMedicalChat();
       } else {
         handleAgentChat();
+        dispatch(setSelectedTabPathName(nowTab.pathname));
       }
       setIsNewDb(false);
     } else {
@@ -64,7 +64,7 @@ export default function ChatInput({ nowTab, pid }: Props) {
   };
 
   const handleAgentChat = async () => {
-    const response = await fetchCallAI({
+    await fetchCallAI({
       PID: nowTab.patient.pid,
       image: nowTab.patient.image,
       shootingDate: nowTab.patient.visitDate,
@@ -74,7 +74,6 @@ export default function ChatInput({ nowTab, pid }: Props) {
       key: nowTab.patientRequest.key,
       agent: nowTab.patient.modality,
     });
-    console.log(response);
     const notification =
       // {
       //   id: '',
@@ -95,7 +94,7 @@ export default function ChatInput({ nowTab, pid }: Props) {
         memberId: '',
       };
 
-    dispatch(setDispatchMessageList([notification]));
+    dispatch(setPrevMessageList([notification]));
     dispatch(setLoadingTabPathName(nowTab.pathname));
     // setMessagelist((prev) => [notification, ...prev]);
   };
@@ -125,7 +124,7 @@ export default function ChatInput({ nowTab, pid }: Props) {
         createDate: '',
         memberId: '',
       };
-      dispatch(setDispatchMessageList([responseMessage]));
+      dispatch(setPrevMessageList([responseMessage]));
     }
     dispatch(setLoading(false));
   };

@@ -155,6 +155,16 @@ const tabSlices = createSlice({
         action.payload.message,
       ];
     },
+    addPrevAgentMessage: (
+      //앞에 agent 메세지 추가
+      state,
+      action: PayloadAction<{ alarmTabIdx: number; message: MessageType }>,
+    ) => {
+      state.tablist[action.payload.alarmTabIdx].messageList = [
+        action.payload.message,
+        ...state.tablist[action.payload.alarmTabIdx].messageList,
+      ];
+    },
     setIsFirst: (state) => {
       state.tablist[state.selectedIndex].isFirst = false;
     },
@@ -237,7 +247,6 @@ const tabSlices = createSlice({
     },
     goMypage: (state, action: PayloadAction<string>) => {
       const index = state.tablist.findIndex((tab) => tab.pathname.includes('mypage'));
-      console.log(action.payload);
       //기존의 탭이 있는 경우 세팅클릭하면 이동
       if (index !== -1) {
         state.tablist[index].pathname = action.payload;
@@ -477,6 +486,7 @@ export const {
   setIsFirst,
   setPatientModality,
   addAgentMessage,
+  addPrevAgentMessage,
   setLoadingTabPathName,
   setLoading,
   setTabHome,
