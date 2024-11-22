@@ -1,0 +1,51 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  background-color: $blue-base;
+
+  &:hover {
+    background-color: #c9e1ff;
+    transform: scale(0.99);
+    transition: transform 0.3s linear;
+  }
+}
+
+.clientId {
+  font-size: 14px;
+  font-weight: 700;
+  color: $blue-btn;
+
+  .clientIdNumber {
+    color: black;
+  }
+}
+
+.clientName {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: -5px;
+  white-space: nowrap; /* 한 줄로 표시 */
+  overflow: hidden; /* 넘친 내용 숨김 */
+  text-overflow: ellipsis; /* 넘친 내용은 ... 처리 */
+}
+
+.tag {
+  width: 100%;
+  font-weight: 700;
+  color: white;
+  span {
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+  }
+}
+
+.usage {
+  background-color: $blue-btn;
+}
+
+.week {
+  background-color: $admin_mint;
+}

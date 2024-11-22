@@ -1,0 +1,41 @@
+@import '../../style/globals_variant.scss';
+
+.main {
+  background-color: $sidebar-bg;
+  z-index: 1000;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 55px;
+    flex-direction: row;
+    padding: 0 0.5rem 0 0.5rem;
+  }
+}
+
+.menuBtn {
+  color: $blue-btn;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+
+  &:hover {
+    color: $blue-logo;
+  }
+}
+
+.logo {
+  &:hover {
+    transform: scale(1.05);
+    transition: transform 0.1s linear;
+  }
+}
+
+.userIcon {
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+    transition: transform 0.1s linear;
+  }
+}

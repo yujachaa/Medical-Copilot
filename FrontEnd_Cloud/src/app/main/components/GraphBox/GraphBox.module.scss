@@ -1,0 +1,26 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  width: calc((100vw - 72px) * 66 / 100);
+  height: calc(100vh - 118px);
+
+  @media screen and (max-width: 1024px) {
+    display: flex;
+    flex-direction: column;
+    width: calc(100vw - 48px);
+  }
+
+  @media screen and (max-width: 768px) {
+    height: 100%;
+  }
+}
+
+.graph {
+  height: calc((100% - 24px) / 2);
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    height: 1024px;
+  }
+}

@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  user-select: none; /* 텍스트 선택 방지 */
+  -webkit-user-drag: none; /* 드래그 방지 (웹킷 브라우저) */
+}

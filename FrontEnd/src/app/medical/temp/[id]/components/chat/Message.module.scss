@@ -1,0 +1,57 @@
+@import '@/style/globals_variant.scss';
+
+.msgName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.msgContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 20px 0;
+
+  &.userContainer {
+    align-items: flex-end;
+    align-self: stretch;
+  }
+
+  .msg {
+    padding: 10px 15px;
+    border-radius: 5px;
+    max-width: 90%;
+    font-size: 0.9rem;
+    word-break: break-word; /* 기본적으로 줄바꿈되게 함 */
+    white-space: normal;
+
+    &.botStyle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      background: $gray-msg;
+    }
+
+    &.userStyle {
+      color: white;
+      background: $blue-msg;
+    }
+
+    span {
+      white-space: pre-line;
+    }
+  }
+}
+
+.report {
+  cursor: pointer;
+  border: 1px solid $blue-msg;
+  font-weight: 700;
+  &:hover {
+    background-color: $blue-base !important;
+  }
+}

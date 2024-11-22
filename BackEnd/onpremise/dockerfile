@@ -1,0 +1,30 @@
+
+# 1. Gradle 빌드를 위한 기본 이미지 설정
+FROM gradle:8.10.2-jdk17 AS build
+
+RUN mkdir -p /app
+
+# 2. 프로젝트 소스 복사 및 작업 디렉토리 설정
+WORKDIR /app
+
+# 3. 소스 코드를 Docker 이미지로 복사
+COPY . .
+
+# 4. Gradle을 사용해 애플리케이션 빌드 (여기서는 bootJar를 사용)
+RUN gradle bootJar --no-daemon
+
+# 5. 빌드된 애플리케이션을 실행하기 위한 OpenJDK 17 기반의 경량 이미지
+FROM openjdk:17-jdk-alpine
+
+
+# 6. 작업 디렉토리 설정
+WORKDIR /app
+
+# 7. 빌드 단계에서 생성된 jar 파일을 복사
+COPY --from=build /app/build/libs/*.jar app.jar
+
+# 8. 애플리케이션 실행 명령어 설정
+CMD ["java", "-jar", "app.jar"]
+
+# 9. 컨테이너 포트 설정 (Spring Boot의 기본 포트)
+EXPOSE 8080

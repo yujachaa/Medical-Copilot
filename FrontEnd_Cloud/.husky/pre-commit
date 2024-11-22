@@ -1,0 +1,1 @@
+cd FrontEnd_Cloud && npx lint-staged

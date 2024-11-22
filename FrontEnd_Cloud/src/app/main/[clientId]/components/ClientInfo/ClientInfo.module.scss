@@ -1,0 +1,107 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  @media screen and (max-width: 768px) {
+    min-height: 350px;
+  }
+}
+
+.title {
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+  }
+}
+
+.name {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+  color: $blue-logo;
+
+  @media screen and (max-width: 1024px) {
+    font-size: 48px;
+  }
+}
+
+.tokens {
+  font-size: 20px;
+
+  @media screen and (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+.edit {
+  font-size: 20px;
+  color: white;
+  font-weight: 700;
+  width: 70px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: $admin_main;
+
+  &:hover {
+    background-color: darken($admin_main, 10%);
+  }
+}
+
+.stop {
+  font-size: 20px;
+  color: white;
+  font-weight: 700;
+  width: 70px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: $admin_main;
+}
+
+.key {
+  font-size: 20px;
+}
+
+.medGuruCount {
+  color: $blue-logo;
+}
+
+.usage {
+  font-size: 48px;
+  font-weight: 700;
+  @media screen and (max-width: 1024px) {
+    font-size: 40px;
+  }
+}
+
+.stopColor {
+  font-size: 20px;
+  color: white;
+  font-weight: 700;
+  width: 70px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #ffafcc;
+
+  &:hover {
+    background-color: darken(#ffafcc, 10%);
+  }
+}
+
+.startColor {
+  font-size: 20px;
+  color: white;
+  font-weight: 700;
+  width: 70px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: $admin_main;
+
+  &:hover {
+    background-color: darken($admin_main, 10%);
+  }
+}
+
+.textThrough {
+  text-decoration: line-through;
+}
