@@ -1,0 +1,20 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  width: calc(100vw);
+  height: calc(100vh - 70px);
+  background-color: rgb(0, 0, 0, 0.4);
+}
+
+.logbox {
+  background-color: $admin-log-base;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 32px;
+}
+
+.logItems {
+  height: calc(100% - 110px);
+}

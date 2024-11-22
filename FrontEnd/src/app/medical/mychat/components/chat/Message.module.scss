@@ -1,0 +1,43 @@
+@import '@/style/globals_variant.scss';
+
+.msgName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.msgContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 20px 0;
+
+  &.userContainer {
+    align-items: flex-end;
+    align-self: stretch;
+  }
+
+  .msg {
+    padding: 10px 15px;
+    border-radius: 5px;
+    max-width: 90%;
+    font-size: 0.9rem;
+
+    &.botStyle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      background: $gray-msg;
+      cursor: pointer;
+    }
+
+    &.userStyle {
+      color: white;
+      background: $blue-msg;
+    }
+  }
+}

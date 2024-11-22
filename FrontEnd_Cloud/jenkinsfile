@@ -1,0 +1,87 @@
+
+pipeline {
+		environment { 
+			dockerImage = ''
+		}
+		
+		agent any 
+		
+		stages {
+			stage('GitHub Repository Clone') { 
+				steps {
+				  
+					git branch: 'develop', credentialsId: 'git-access-token', url: 'https://lab.ssafy.com/s11-final/S11P31S205.git'
+				  
+				}
+			} 
+
+			stage('Prepare Environment') {
+            	steps {
+					sshagent(['ssh-key']) {
+						sh 'scp ubuntu@k11s205.p.ssafy.io:/home/ubuntu/medical-copilot/frontend/cloud/.env ./FrontEnd_Cloud/.env'	
+					}				
+				}
+        	}
+			
+			stage('Build image') {
+				steps {
+					script {
+						dockerimage = docker.build("jiyoungheo/medical-copilot-front-cloud:v1", "./FrontEnd_Cloud")
+					}
+				}
+			}
+			
+			stage('Push image') {
+				steps {
+					script {
+						withDockerRegistry(credentialsId: 'dockerhub-accesstoken') {
+							dockerimage.push()
+						}
+					}
+				}
+			}
+
+			stage('EC2 connect') {
+				steps {
+					sshagent(['ssh-key']) {
+					    withCredentials([string(credentialsId: 'dockerhub-password', variable: 'DOCKERHUB_PASSWORD')]) {
+						sh """
+							ssh -o StrictHostKeyChecking=no ubuntu@k11s205.p.ssafy.io '
+							docker stop medical-copilot-front-cloud
+							docker rm medical-copilot-front-cloud
+							docker image prune -f
+							docker login -u jiyoungheo.dev@gmail.com -p $DOCKERHUB_PASSWORD
+							docker pull jiyoungheo/medical-copilot-front-cloud:v1
+							docker run -d -p 3000:3000 -v /home/ubuntu/medical-copilot/frontend/cloud/.env:/app/.env --name medical-copilot-front-cloud jiyoungheo/medical-copilot-front-cloud:v1
+							'
+						"""
+					    }
+					}
+				}
+			}
+		}
+		post {
+        success {
+        	script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                mattermostSend (color: 'good', 
+                message: "빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)", 
+				endpoint: 'https://meeting.ssafy.com/hooks/ypu137wxnf8sx8ywhdw95ttn8o', 
+                channel: 's205_git'
+                )
+            }
+        }
+        failure {
+        	script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                mattermostSend (color: 'danger', 
+                message: "빌드 실패: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)", 
+				endpoint: 'https://meeting.ssafy.com/hooks/ypu137wxnf8sx8ywhdw95ttn8o', 
+                channel: 's205_git'
+                )
+            }
+        }
+    }
+}

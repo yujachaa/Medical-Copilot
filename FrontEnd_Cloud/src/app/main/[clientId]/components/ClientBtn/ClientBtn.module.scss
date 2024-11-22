@@ -1,0 +1,37 @@
+@import '@/style/globals_variant.scss';
+
+.standard {
+  font-weight: 700;
+  color: #c4c4c4;
+  span {
+    display: flex;
+    width: 70px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: $blue-base;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $admin-main;
+      color: white;
+    }
+  }
+}
+
+.errorlog {
+  font-size: 24px;
+  font-weight: 700;
+  background-color: $admin_log_error;
+  box-shadow: 0 2 5 0 rgba(0, 0, 0, 0.25);
+
+  @media screen and (max-width: 768px) {
+    transform: scale(0.9);
+  }
+}
+
+.active {
+  background-color: $admin-main !important;
+  color: white;
+}

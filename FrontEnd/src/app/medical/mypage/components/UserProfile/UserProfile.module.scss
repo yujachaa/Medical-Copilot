@@ -1,0 +1,25 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  background-color: $blue-base;
+
+  .title {
+    font-weight: 700;
+    color: $blue-btn;
+  }
+  .info {
+    font-weight: 700;
+    font-size: 16px;
+  }
+}
+
+.setting {
+  border: 1px solid black;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    background-color: $blue-btn;
+    border: 1px solid $blue-btn;
+  }
+}

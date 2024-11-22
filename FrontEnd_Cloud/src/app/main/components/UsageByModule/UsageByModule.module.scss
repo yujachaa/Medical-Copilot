@@ -1,0 +1,44 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  height: calc((100% - 24px) / 2);
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2 5 0 rgb(0, 0, 0, 0.25);
+
+  @media screen and (max-width: 768px) {
+    height: 500px;
+  }
+}
+
+.title {
+  font-weight: 700;
+
+  @media screen and (max-width: 768px) {
+    font-size: 18px;
+  }
+}
+
+.standard {
+  font-weight: 700;
+  color: #c4c4c4;
+  span {
+    display: flex;
+    width: 70px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: $blue-base;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      color: white;
+      background-color: $admin_main;
+    }
+  }
+}
+
+.active {
+  color: white;
+  background-color: $admin_main !important;
+}

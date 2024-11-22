@@ -1,0 +1,41 @@
+@import '@/style/globals_variant.scss';
+
+.main {
+  background-color: rgb(0, 0, 0, 0.3);
+}
+
+.box {
+  background-color: white;
+}
+
+.mark {
+  color: #ef476f;
+}
+
+.warning {
+  font-weight: 700;
+}
+
+.btns {
+  button {
+    width: 70px;
+    height: 40px;
+    border-radius: 10px;
+    font-weight: 700;
+
+    &:nth-child(2) {
+      background-color: $tab-bg;
+      &:hover {
+        background-color: darken($tab-bg, 10%);
+      }
+    }
+
+    &:first-child {
+      background-color: #ffafcc;
+      color: black;
+      &:hover {
+        background-color: darken(#ffafcc, 10%);
+      }
+    }
+  }
+}
