@@ -25,7 +25,7 @@
 <!-- <summary>gif</summary> -->
 <!-- <div markdown="5"> -->
   
-||
+<!-- ||
 | :---: |
 |**메인화면**|
 | ![main](/exec/newtab1.PNG) |
@@ -44,7 +44,7 @@
 | **(관리자)메인화면** |
 | ![cloudMain](/exec/cloud_monitoring.PNG) |
 | **(관리자)고객사 상세 페이지** |
-| ![cloudDetail](/exec/cloud_detail.PNG) |
+| ![cloudDetail](/exec/cloud_detail.PNG) | -->
 
 
 <!-- </div> -->
@@ -58,8 +58,8 @@
   </tr>
   <tr>
     <td><strong>이미지</strong></td>
-    <td><img src="./exec/newtab1.PNG" alt="main" width="300"/></td>
-    <td><img src="./exec/newtab2.PNG" alt="chat" width="300"/></td>
+    <td><img src="./exec/newtab1.PNG" alt="main" width="500"/></td>
+    <td><img src="./exec/newtab2.PNG" alt="chat" width="500"/></td>
   </tr>
   <tr>
     <th>기능 이름</th>
@@ -68,8 +68,8 @@
   </tr>
   <tr>
     <td><strong>이미지</strong></td>
-    <td><img src="./exec/report.PNG" alt="report" width="300"/></td>
-    <td><img src="./exec/drawing.PNG" alt="drawing" width="300"/></td>
+    <td><img src="./exec/report.PNG" alt="report" width="500"/></td>
+    <td><img src="./exec/drawing.PNG" alt="drawing" width="500"/></td>
   </tr>
   <tr>
     <th>기능 이름</th>
@@ -78,8 +78,8 @@
   </tr>
   <tr>
     <td><strong>이미지</strong></td>
-    <td><img src="./exec/result.PNG" alt="result" width="300"/></td>
-    <td><img src="./exec/analyze.PNG" alt="alarm" width="300"/></td>
+    <td><img src="./exec/result.PNG" alt="result" width="500"/></td>
+    <td><img src="./exec/analyze.PNG" alt="alarm" width="500"/></td>
   </tr>
   <tr>
     <th>기능 이름</th>
@@ -88,7 +88,7 @@
   </tr>
   <tr>
     <td><strong>이미지</strong></td>
-    <td><img src="./exec/watch.jpg" alt="result" width="300"/></td>
+    <td><img src="./exec/watch.jpg" alt="result" width="500"/></td>
     <td></td>
   </tr>
   
@@ -103,8 +103,8 @@
   </tr>
   <tr>
     <td><strong>이미지</strong></td>
-    <td><img src="./exec/cloud_monitoring.PNG" alt="cloudMain" width="300"/></td>
-    <td><img src="./exec/cloud_detail.PNG" alt="cloudDetail" width="300"/></td>
+    <td><img src="./exec/cloud_monitoring.PNG" alt="cloudMain" width="500"/></td>
+    <td><img src="./exec/cloud_detail.PNG" alt="cloudDetail" width="500"/></td>
   </tr>
 </table>
 
