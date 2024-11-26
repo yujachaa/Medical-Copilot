@@ -58,8 +58,8 @@
   </tr>
   <tr>
     <td><strong>이미지</strong></td>
-    <td><img src="./exec/newtab1.PNG" alt="main" width="500"/></td>
-    <td><img src="./exec/newtab2.PNG" alt="chat" width="500"/></td>
+    <td><img src="./exec/newtab1.PNG" alt="main" width="450"/></td>
+    <td><img src="./exec/newtab2.PNG" alt="chat" width="450"/></td>
   </tr>
   <tr>
     <th></th>
@@ -68,8 +68,8 @@
   </tr>
   <tr>
     <td><strong>이미지</strong></td>
-    <td><img src="./exec/report.PNG" alt="report" width="500"/></td>
-    <td><img src="./exec/drawing.PNG" alt="drawing" width="500"/></td>
+    <td><img src="./exec/report.PNG" alt="report" width="450"/></td>
+    <td><img src="./exec/drawing.PNG" alt="drawing" width="450"/></td>
   </tr>
   <tr>
     <th></th>
@@ -78,8 +78,8 @@
   </tr>
   <tr>
     <td><strong>이미지</strong></td>
-    <td><img src="./exec/result.PNG" alt="result" width="500"/></td>
-    <td><img src="./exec/analyze.PNG" alt="alarm" width="500"/></td>
+    <td><img src="./exec/result.PNG" alt="result" width="450"/></td>
+    <td><img src="./exec/analyze.PNG" alt="alarm" width="450"/></td>
   </tr>
   <tr>
     <th></th>
@@ -88,7 +88,7 @@
   </tr>
   <tr>
     <td><strong>이미지</strong></td>
-    <td><img src="./exec/watch.jpg" alt="result" width="500"/></td>
+    <td><img src="./exec/watch.jpg" alt="result" width="450"/></td>
     <td></td>
   </tr>
   
@@ -103,8 +103,8 @@
   </tr>
   <tr>
     <td><strong>이미지</strong></td>
-    <td><img src="./exec/cloud_monitoring.PNG" alt="cloudMain" width="500"/></td>
-    <td><img src="./exec/cloud_detail.PNG" alt="cloudDetail" width="500"/></td>
+    <td><img src="./exec/cloud_monitoring.PNG" alt="cloudMain" width="450"/></td>
+    <td><img src="./exec/cloud_detail.PNG" alt="cloudDetail" width="450"/></td>
   </tr>
 </table>
 
