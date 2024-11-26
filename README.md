@@ -28,23 +28,23 @@
 ||
 | :---: |
 |**메인화면**|
-| ![main](/exec/newtab1.png) |
+| ![main](/exec/newtab1.PNG) |
 | **채팅화면** |
-| ![chat](/exec/newtab2.png) |
+| ![chat](/exec/newtab2.PNG) |
 | **보고서 조회** |
-| ![report](/exec/report.png) |
+| ![report](/exec/report.PNG) |
 | **보고서 편집** |
-| ![drawing](/exec/drawing.png) |
+| ![drawing](/exec/drawing.PNG) |
 | **내보내기 보고서 생성** |
-| ![result](/exec/result.png) |
+| ![result](/exec/result.PNG) |
 | **웹 알림 화면** |
-| ![alarm](/exec/analyze.png) |
+| ![alarm](/exec/analyze.PNG) |
 | **워치 알림 화면** |
 | ![watch](/exec/watch.jpg) |
 | **(관리자)메인화면** |
-| ![cloudMain](/exec/cloud_monitoring.png) |
+| ![cloudMain](/exec/cloud_monitoring.PNG) |
 | **(관리자)고객사 상세 페이지** |
-| ![cloudDetail](/exec/cloud_detail.png) |
+| ![cloudDetail](/exec/cloud_detail.PNG) |
 
 
 <!-- </div> -->
