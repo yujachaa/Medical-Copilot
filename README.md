@@ -49,6 +49,64 @@
 
 <!-- </div> -->
 <!-- </details> -->
+### Medical Copilot (온프레미스)
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <th>기능 이름</th>
+    <th>메인화면</th>
+    <th>채팅화면</th>
+  </tr>
+  <tr>
+    <td><strong>이미지</strong></td>
+    <td><img src="./exec/newtab1.PNG" alt="main" width="300"/></td>
+    <td><img src="./exec/newtab2.PNG" alt="chat" width="300"/></td>
+  </tr>
+  <tr>
+    <th>기능 이름</th>
+    <th>보고서 조회</th>
+    <th>보고서 편집</th>
+  </tr>
+  <tr>
+    <td><strong>이미지</strong></td>
+    <td><img src="./exec/report.PNG" alt="report" width="300"/></td>
+    <td><img src="./exec/drawing.PNG" alt="drawing" width="300"/></td>
+  </tr>
+  <tr>
+    <th>기능 이름</th>
+    <th>내보내기 보고서 생성</th>
+    <th>웹 알림 화면</th>
+  </tr>
+  <tr>
+    <td><strong>이미지</strong></td>
+    <td><img src="./exec/result.PNG" alt="result" width="300"/></td>
+    <td><img src="./exec/analyze.PNG" alt="alarm" width="300"/></td>
+  </tr>
+  <tr>
+    <th>기능 이름</th>
+    <th>워치 알림 화면</th>
+    <th></th>
+  </tr>
+  <tr>
+    <td><strong>이미지</strong></td>
+    <td><img src="./exec/watch.jpg" alt="result" width="300"/></td>
+    <td></td>
+  </tr>
+  
+</table>
+
+### 관리자 (클라우드)
+<table style="width: 100%; text-align: center;">
+  <tr>
+    <th>기능 이름</th>
+    <th>메인화면</th>
+    <th>고객사 상세 페이지</th>
+  </tr>
+  <tr>
+    <td><strong>이미지</strong></td>
+    <td><img src="./exec/cloud_monitoring.PNG" alt="cloudMain" width="300"/></td>
+    <td><img src="./exec/cloud_detail.PNG" alt="cloudDetail" width="300"/></td>
+  </tr>
+</table>
 
 ## 핵심 기능 소개 🔑
 - **AI 진단 및 병증 탐지**: 흉부 X-Ray 이미지에서 병증을 탐지하고 발견된 질병을 보고서로 제공하여 시간 절약 ⏱️
