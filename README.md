@@ -24,12 +24,12 @@
 
 | 전성모 (FRONT) | 권성민 (FRONT) | 이윤주 (FRONT) |
 | --- | --- | --- | 
-| <img src="https://avatars.githubusercontent.com/u/93931316?v=4" width="300" height="300"/>|<img src="https://avatars.githubusercontent.com/u/148304305?v=4" width="300" height="300"/>|<img src="https://avatars.githubusercontent.com/u/116258012?v=4" width="300" height="300"/>
+| <img src="https://avatars.githubusercontent.com/u/136889446?v=4" width="300" height="300"/>|<img src="https://avatars.githubusercontent.com/u/42410000?v=4" width="300" height="300"/>|<img src="https://avatars.githubusercontent.com/u/114348883?v=4" width="300" height="300"/>
 | [@jeonsm22](https://github.com/jeonsm22) |  [@kwonja](https://github.com/kwonja) | [@yujachaa](https://github.com/yujachaa) |
 
 | 윤여준 (BACK) | 이서영 (BACK) | 허지영 (BACK) |
 | --- | --- | --- |
-| <img src="./front-end/tokime/public/icons/icon-192.png" width="300" height="300"/>|<img src="https://avatars.githubusercontent.com/u/156387275?v=4" width="300" height="300"/>|<img src="https://avatars.githubusercontent.com/u/156514414?v=4" width="300" height="300"/>
+| <img src="https://avatars.githubusercontent.com/u/171137407?v=4" width="300" height="300"/>|<img src="https://avatars.githubusercontent.com/u/97634089?v=4" width="300" height="300"/>|<img src="https://avatars.githubusercontent.com/u/93931316?v=4" width="300" height="300"/>
 | [@joon-kr](https://github.com/joon-kr) |  [@SL01223](https://github.com/SL01223) | [@jiyoung-Heo](https://github.com/jiyoung-Heo) |
 
 ## 기술 스택, 빌드 버전 및 기타 도구
