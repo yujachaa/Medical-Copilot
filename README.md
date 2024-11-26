@@ -52,7 +52,7 @@
 ### Medical Copilot (온프레미스)
 <table style="width: 100%; text-align: center;">
   <tr>
-    <th>기능이름</th>
+    <th></th>
     <th>메인화면</th>
     <th>채팅화면</th>
   </tr>
@@ -62,7 +62,7 @@
     <td><img src="./exec/newtab2.PNG" alt="chat" width="500"/></td>
   </tr>
   <tr>
-    <th>기능이름</th>
+    <th></th>
     <th>보고서 조회</th>
     <th>보고서 편집</th>
   </tr>
@@ -72,7 +72,7 @@
     <td><img src="./exec/drawing.PNG" alt="drawing" width="500"/></td>
   </tr>
   <tr>
-    <th>기능이름</th>
+    <th></th>
     <th>내보내기 보고서 생성</th>
     <th>웹 알림 화면</th>
   </tr>
@@ -82,7 +82,7 @@
     <td><img src="./exec/analyze.PNG" alt="alarm" width="500"/></td>
   </tr>
   <tr>
-    <th>기능이름</th>
+    <th></th>
     <th>워치 알림 화면</th>
     <th></th>
   </tr>
@@ -97,7 +97,7 @@
 ### 관리자 (클라우드)
 <table style="width: 100%; text-align: center;">
   <tr>
-    <th>기능이름</th>
+    <th></th>
     <th>메인화면</th>
     <th>고객사 상세 페이지</th>
   </tr>
