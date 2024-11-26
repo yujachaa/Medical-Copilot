@@ -8,6 +8,7 @@
 </div>
 
 **SSAFY 11기 2학기 자율 프로젝트 (기업연계)**
+>**개발기간: 24.10.14~24.11.19**
 
 <details>
 <summary>시연 영상 링크</summary>
@@ -18,7 +19,50 @@
 </div>
 </details>
 
->**개발기간: 24.10.14~24.11.19**
+
+## 화면구성 📺
+<details>
+<summary>gif</summary>
+<div markdown="5">
+  
+||
+| :---: |
+|**tt**|
+| ![tt](t) |
+| **tt** |
+| ![tt](t) |
+| **tt** |
+| ![tt](t) |
+| **tt** |
+| ![tt](t) |
+| **tt** |
+| ![tt](t) |
+| **tt** |
+| ![tt](exec/사연분석.gif) |
+| **tt** |
+| ![tt](t) |
+
+</div>
+</details>
+
+
+## 주요기술 📦
+### ⭐️ LangChain
+- 리포트 내보내기, 범용의학질문 시 적용
+- Chain을 이용하여 자동화된 파이프라인을 구성함으로써 문맥을 유지한 질문 및 답변 기능 제공
+
+### ⭐️ 프롬프트 엔지니어링
+- 다양한 오픈소스 모델을 테스트하여 최적의 모델 선정(Llama3.8 medical tune)
+- 질문에 따라 5가지 분기처리를 통해 최적화된 프롬프트를 생성하여 맞춤형 템플릿 적용
+  
+### ⭐️할루시네이션 방지
+- 신뢰도 기반 분석
+  - classification & Detection 모델에서 병증 1차 판별
+  - 신뢰도와 결과를 기반으로 VLM응답 생성
+  - 참조 및 비교대상의 존재로 할루시네이션 현상 감소
+- Feedback Loop
+  - LLM의 응답을 input과 비교검증하며 타당도 검증
+
 
 ## 개발팀 소개
 
@@ -44,12 +88,13 @@
 ![image3.png](/exec/ai.png)
 
 ### Frontend
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) 
+![Typescript](https://img.shields.io/badge/typescript-3178C6.svg?style=for-the-badge&logo=typescript&logoColor=white) 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
 ![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
+![Storybook](https://img.shields.io/badge/storybook-FF4785.svg?style=for-the-badge&logo=SASS&logoColor=white)
+
 
 ### Backend
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) 
@@ -91,8 +136,9 @@
 <div markdown="1">
 
 ```text
-- React: 5.0.1
+- React: 18.3.1
 - Next.js: 14.2.16
+- Redux : 5.0.1
 - Node.js: 20.18.0
 - Java: 17
 - Spring boot: 3.3.5
@@ -1077,48 +1123,6 @@
 </div>
 </details>
 
-## 화면구성 📺
-<details>
-<summary>gif</summary>
-<div markdown="5">
-  
-||
-| :---: |
-|**tt**|
-| ![tt](t) |
-| **tt** |
-| ![tt](t) |
-| **tt** |
-| ![tt](t) |
-| **tt** |
-| ![tt](t) |
-| **tt** |
-| ![tt](t) |
-| **tt** |
-| ![tt](exec/사연분석.gif) |
-| **tt** |
-| ![tt](t) |
-
-</div>
-</details>
-
-
-## 주요기술 📦
-### ⭐️ LangChain
-- 리포트 내보내기, 범용의학질문 시 적용
-- Chain을 이용하여 자동화된 파이프라인을 구성함으로써 문맥을 유지한 질문 및 답변 기능 제공
-
-### ⭐️ 프롬프트 엔지니어링
-- 다양한 오픈소스 모델을 테스트하여 최적의 모델 선정(Llama3.8 medical tune)
-- 질문에 따라 5가지 분기처리를 통해 최적화된 프롬프트를 생성하여 맞춤형 템플릿 적용
-  
-### ⭐️할루시네이션 방지
-- 신뢰도 기반 분석
-  - classification & Detection 모델에서 병증 1차 판별
-  - 신뢰도와 결과를 기반으로 VLM응답 생성
-  - 참조 및 비교대상의 존재로 할루시네이션 현상 감소
-- Feedback Loop
-  - LLM의 응답을 input과 비교검증하며 타당도 검증
 
 ## 빌드 
 
