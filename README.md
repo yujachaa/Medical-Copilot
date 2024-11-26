@@ -11,10 +11,10 @@
 >**개발기간: 24.10.14~24.11.19(6주)**
 
 <details>
-<summary>시연 영상 링크</summary>
+<summary>관리자 페이지 시연 영상 링크</summary>
 <div markdown="0"  align="center">
 
-[![시연 영상](https://img.youtube.com/vi/09fVQTDObuY/hqdefault.jpg)](https://youtu.be/09fVQTDObuY) 
+[![시연 영상](https://img.youtube.com/vi/Nh_D-ig0tik/hqdefault.jpg)](https://youtu.be/Nh_D-ig0tik) 
 
 </div>
 </details>
