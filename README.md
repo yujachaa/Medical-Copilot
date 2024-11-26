@@ -52,7 +52,7 @@
 ### Medical Copilot (온프레미스)
 <table style="width: 100%; text-align: center;">
   <tr>
-    <th>기능 이름</th>
+    <th>기능이름</th>
     <th>메인화면</th>
     <th>채팅화면</th>
   </tr>
@@ -62,7 +62,7 @@
     <td><img src="./exec/newtab2.PNG" alt="chat" width="500"/></td>
   </tr>
   <tr>
-    <th>기능 이름</th>
+    <th>기능이름</th>
     <th>보고서 조회</th>
     <th>보고서 편집</th>
   </tr>
@@ -72,7 +72,7 @@
     <td><img src="./exec/drawing.PNG" alt="drawing" width="500"/></td>
   </tr>
   <tr>
-    <th>기능 이름</th>
+    <th>기능이름</th>
     <th>내보내기 보고서 생성</th>
     <th>웹 알림 화면</th>
   </tr>
@@ -82,7 +82,7 @@
     <td><img src="./exec/analyze.PNG" alt="alarm" width="500"/></td>
   </tr>
   <tr>
-    <th>기능 이름</th>
+    <th>기능이름</th>
     <th>워치 알림 화면</th>
     <th></th>
   </tr>
@@ -97,7 +97,7 @@
 ### 관리자 (클라우드)
 <table style="width: 100%; text-align: center;">
   <tr>
-    <th>기능 이름</th>
+    <th>기능이름</th>
     <th>메인화면</th>
     <th>고객사 상세 페이지</th>
   </tr>
@@ -124,10 +124,10 @@
 3. **문맥 기반 보고서 생성 및 PDF 다운로드** 📄
    - langChain을 통해 문맥이 유지되는 보고서(finding, impression, plan)를 순차적으로 생성하고, 생성된 보고서는 PDF 다운로드를 제공합니다.
 
-4. **보고서 생성 알림** 🔍
+4. **보고서 생성 알림** 🔔
    - SSE(Server-Sent-Event)를 통해 웹, 태블릿, 워치 등 로그인 된 모든 기기에서 보고서 생성 완료 알림을 받을 수 있습니다!
 
-5. **서비스 이용자 관리**
+5. **서비스 이용자 관리** 📊
    - Medical Copilot 서비스는 Onpremise 방식으로 제공됩니다. 서비스를 이용하는 병원 고객 각각의 AI 서비스 이용량 및 통계 정보를 클라우드 서비스로 제공합니다.
 
    
